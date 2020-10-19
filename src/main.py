@@ -1,13 +1,10 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication
+from src.views import  main_window
 
 app = QApplication(sys.argv)
-window = QMainWindow()
-window.setWindowTitle("Graph Filter")
-label = QLabel("Hello World!")
-label.setAlignment(Qt.AlignCenter)
-window.setCentralWidget(label)
+window = main_window.MainWindow()
+
 window.show()
 # start the event loop
 app.exec_()
