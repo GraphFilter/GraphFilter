@@ -5,7 +5,7 @@
 > This project is a reimplementation in python of [GraphFilter](https://github.com/atilaajones/GraphFilter) project that provides more functionalities to the software.  
 
 The main goal of this software is to give assistance to Graph Theory and Spectral Graph Theory researchers to establish or refute conjectures quickly and simply,
-providing for visualization a filtered list of graphs accourding to the properties given by the user. 
+providing for visualization a filtered list of graphs according to the properties given by the user. 
 
 ## Technologies
 
