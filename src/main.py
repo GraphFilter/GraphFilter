@@ -4,7 +4,7 @@ from src.views import  main_window
 
 app = QApplication(sys.argv)
 window = main_window.MainWindow()
-
+dir
 window.show()
 # start the event loop
 app.exec_()
