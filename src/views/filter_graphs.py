@@ -21,6 +21,7 @@ class FilterGraphs(QWidget):
         group_box = QGroupBox("Dictionary of invariants")
         invariants = QVBoxLayout(self)
         invariants.setSpacing(0)
+        invariants.setContentsMargins(0, 0, 0, 0)
         invariants.addWidget(QLabel("ac - Algebraic Connectivity"))
         invariants.addWidget(QLabel("mu1 - Largest Lapla Eigen"))
         invariants.addWidget(QLabel("mu2 - Second Largest Lapla"))

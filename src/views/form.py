@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 def file_area():
     group_box = QGroupBox("Files")
     files = QGridLayout()
-    files.setSpacing(0)
+    files.setSpacing(30)
     files.addWidget(QPushButton("Open .q6 file"), 0, 0)
     files.addWidget(QLineEdit(), 0, 1)
     files.addWidget(QPushButton("Output .q6"), 1, 0)
