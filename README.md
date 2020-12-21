@@ -22,7 +22,7 @@ To run and edit the project, be sure to have installed in your computer the foll
 After that, you'll need to clone this repo:
 
 ```
-git clone https://github.com/GraphFilter/GraphFilter.git
+git clone https://github.com/GraphFilter/GraphFilter.py.git
 ```
 
 ## Setup
@@ -34,19 +34,43 @@ At the ```cmd```, type:
 ```
 python -m venv ./venv
 ```
+
+After that you should see a venv directory.
+
+To run commands using venv, go to ```Scripts``` directory inside ```venv```:
+```
+project
+│   main.py
+│   ...
+└─── venv
+     └─── Scripts
+         │   activate
+```
+To use the virtual environment, run:
+
+```
+activate
+```
 Then, using the virtual environment, install the project requirements:
 
 ```
 pip install -r requirements.txt
 ```
 
-That will prevent you to install the libs in the local computer, and it will be available only on the project scope.
+That will prevent you to install the libs in the local computer, and it will be available only on the project scope.  
 
-## How to edit
+## Editing
 
 Whenever you install a new library, you need to update the ```requirements.txt``` file.
 
 At the ```cmd```, run:
 ```
 pip freeze > requirements.txt
+```
+## Running
+
+### venv:
+To see the project running, inside the virtual environment at ```cmd```, run:
+```
+python main.py
 ```
