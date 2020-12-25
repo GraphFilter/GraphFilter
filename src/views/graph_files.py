@@ -1,6 +1,4 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
-from PyQt5 import QtCore
 
 
 class GraphFiles(QWizardPage):
@@ -29,4 +27,3 @@ class GraphFiles(QWizardPage):
         file_dialog = QFileDialog()
         file_name = file_dialog.getOpenFileName(self, 'OpenFile')
         self.graph_files.setText(file_name[0])
-
