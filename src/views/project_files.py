@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from PyQt5 import QtCore
+import pathlib
 
 
 class ProjectFiles(QWizardPage):
@@ -12,6 +13,8 @@ class ProjectFiles(QWizardPage):
         self.project_name_input.returnPressed.connect(self.save_project_name)
 
         self.project_location_input = QLineEdit()
+        self.project_location_input.setText(str(pathlib.Path().absolute()))
+
         project_location_button = QPushButton("...")
         project_location_button.clicked.connect(self.open_file)
 
@@ -57,8 +60,8 @@ class ProjectFiles(QWizardPage):
 
     def open_file(self):
         file_dialog = QFileDialog()
-        file_name = file_dialog.getOpenFileName(self, 'OpenFile')
-        self.project_location_input.setText(file_name[0])
+        directory_path = file_dialog.getExistingDirectory()
+        self.project_location_input.setText(directory_path)
 
     def save_project_name(self):
         print(self.project_name_input.text())

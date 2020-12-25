@@ -7,15 +7,16 @@ class Equations(QWizardPage):
         super().__init__()
 
         self.conditions = QGroupBox("Conditions")
-        self.conditions.setFixedWidth(200)
+        self.conditions.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.conditions.setMinimumWidth(150)
         self.create_conditions()
 
         math_tab = QTabWidget()
-        math_tab.setFixedHeight(200)
         math_tab.addTab(Tab0(), "Tab0")
         math_tab.addTab(Tab1(), "Tab1")
 
         equation = QLineEdit()
+        equation.setPlaceholderText("placeholder...")
 
         mode = QGroupBox("Mode")
         mode.setFixedHeight(200)
@@ -25,9 +26,11 @@ class Equations(QWizardPage):
         mode.setLayout(mode_layout)
 
         sider_layout = QVBoxLayout()
-        sider_layout.setSpacing(80)
+        sider_layout.addStretch(2)
         sider_layout.addWidget(math_tab)
+        sider_layout.addStretch(5)
         sider_layout.addWidget(equation)
+        sider_layout.addStretch(45)
         sider_layout.addWidget(mode)
 
         main_layout = QHBoxLayout()
@@ -48,9 +51,11 @@ class Tab0(QWidget):
         super().__init__()
 
         layout = QGridLayout()
+        layout.setSpacing(20)
         for i, n in enumerate(range(0, 9)):
             layout.addWidget(QPushButton("%"), 0, n)
             layout.addWidget(QPushButton("%"), 1, n)
+            layout.addWidget(QPushButton("%"), 2, n)
 
         self.setLayout(layout)
 
