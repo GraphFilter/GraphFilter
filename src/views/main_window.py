@@ -26,4 +26,4 @@ class MainWindow(QMainWindow):
     def init_window(self):
         self.setWindowIcon(self.icon)
         self.setWindowTitle(self.title_bar)
-        self.setMinimumSize(self.width, self.height)
+        self.setFixedSize(self.width, self.height)

@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5 import QtCore
+from src.views import wizard
 
 
 class Central(QWidget):
@@ -22,11 +23,13 @@ class Central(QWidget):
         open_button.setIcon(QIcon("views/resources/icons/folder.png"))
         open_button.setMinimumHeight(50)
         open_button.setMinimumWidth(100)
+        open_button.clicked.connect(self.open_project)
 
         new_button = QPushButton("New Project")
         new_button.setIcon(QIcon("views/resources/icons/mais.png"))
         new_button.setMinimumHeight(50)
         new_button.setMinimumWidth(150)
+        new_button.clicked.connect(self.open_wizard)
 
         layout = QVBoxLayout(self)
         layout.addStretch(3)
@@ -41,3 +44,12 @@ class Central(QWidget):
         layout.addStretch(3)
         layout.setAlignment(open_button, QtCore.Qt.AlignCenter)
         layout.setAlignment(new_button, QtCore.Qt.AlignCenter)
+
+        self.wizard = wizard.Wizard()
+
+    def open_wizard(self):
+        self.wizard.open()
+
+    def open_project(self):
+        file_dialog = QFileDialog()
+        file_dialog.getOpenFileName(self, 'OpenFile')
