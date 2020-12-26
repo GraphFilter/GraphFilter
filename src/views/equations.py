@@ -32,8 +32,10 @@ class Equations(QWizardPage):
         mode_layout.addWidget(QRadioButton("Find counter example"))
         mode.setLayout(mode_layout)
 
+        # TODO: learn how to control better the spacing in vbox items
+
         sider_layout = QVBoxLayout()
-        sider_layout.addStretch(2)
+        sider_layout.addStretch(3)
         sider_layout.addWidget(math_tab)
         sider_layout.addStretch(5)
         sider_layout.addWidget(self.equation)

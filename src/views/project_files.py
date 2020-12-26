@@ -12,7 +12,7 @@ class ProjectFiles(QWizardPage):
         self.project_name_input = QLineEdit()
         self.project_name_input.returnPressed.connect(self.save_project_name)
 
-        #  NOTE: this is to prevent user to click next without filling this input
+        # NOTE: this is to prevent user to click next without filling this input
         # self.registerField('project_name*', self.project_name_input)
 
         self.project_location_input = QLineEdit()

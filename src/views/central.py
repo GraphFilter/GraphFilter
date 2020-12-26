@@ -21,13 +21,13 @@ class Central(QWidget):
         logo.setPixmap(QPixmap("views/resources/icons/hexagono.png").scaled(64, 64, QtCore.Qt.KeepAspectRatio))
         logo.setAlignment(QtCore.Qt.AlignCenter)
 
-        open_button = QPushButton("Open")
+        open_button = QPushButton("  Open")
         open_button.setIcon(QIcon("views/resources/icons/folder.png"))
         open_button.setMinimumHeight(50)
         open_button.setMinimumWidth(100)
         open_button.clicked.connect(self.open_project)
 
-        new_button = QPushButton("New Project")
+        new_button = QPushButton("  New Project")
         new_button.setIcon(QIcon("views/resources/icons/mais.png"))
         new_button.setMinimumHeight(50)
         new_button.setMinimumWidth(150)

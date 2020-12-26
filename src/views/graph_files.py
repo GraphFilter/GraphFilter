@@ -33,17 +33,14 @@ class GraphFiles(QWizardPage):
     def add_file(self):
         input_file = QLineEdit()
         button = QPushButton("...")
-        add = QPushButton("+")
         remove = QPushButton("-")
 
-        add.clicked.connect(self.add_file)
         button.clicked.connect(lambda: self.open_file(input_file))
 
         layout = QHBoxLayout()
         layout.addWidget(QLabel("Graph .q6 file:"))
         layout.addWidget(input_file)
         layout.addWidget(button)
-        layout.addWidget(add)
         layout.addWidget(remove)
 
         self.form.addRow(layout)

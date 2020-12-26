@@ -19,7 +19,6 @@ class MainWindow(QMainWindow):
         rectangle.moveCenter(center_point)
         self.move(rectangle.topLeft())
 
-        self.setObjectName("main_window")
         self.setCentralWidget(central.Central(self))
         self.init_window()
 
