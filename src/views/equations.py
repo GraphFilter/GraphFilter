@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QFont
 
 
 class Equations(QWizardPage):
@@ -11,12 +12,18 @@ class Equations(QWizardPage):
         self.conditions.setMinimumWidth(150)
         self.create_conditions()
 
-        math_tab = QTabWidget()
-        math_tab.addTab(Tab0(), "Tab0")
-        math_tab.addTab(Tab1(), "Tab1")
+        self.checkboxes = []
 
-        equation = QLineEdit()
-        equation.setPlaceholderText("placeholder...")
+        self.Tab0 = Tab0(self)
+        self.Tab1 = Tab1()
+
+        math_tab = QTabWidget()
+        math_tab.addTab(self.Tab0, "Tab0")
+        math_tab.addTab(self.Tab1, "Tab1")
+
+        self.equation = QLineEdit()
+        self.equation.setPlaceholderText("placeholder...")
+        self.equation.setFont(QFont("Sanserif", 10))
 
         mode = QGroupBox("Mode")
         mode.setFixedHeight(200)
@@ -29,7 +36,7 @@ class Equations(QWizardPage):
         sider_layout.addStretch(2)
         sider_layout.addWidget(math_tab)
         sider_layout.addStretch(5)
-        sider_layout.addWidget(equation)
+        sider_layout.addWidget(self.equation)
         sider_layout.addStretch(45)
         sider_layout.addWidget(mode)
 
@@ -41,21 +48,41 @@ class Equations(QWizardPage):
 
     def create_conditions(self):
         conditions_layout = QVBoxLayout()
-        for i in range(1, 20):
-            conditions_layout.addWidget(QCheckBox("Checkbox"))
+        checkbox = QCheckBox("Checkbox")
+        checkbox.clicked.connect(lambda: self.checked(checkbox))
+        conditions_layout.addWidget(checkbox)
         self.conditions.setLayout(conditions_layout)
+
+        # NOTE: this code generate multiples checkboxes
+        # for i in range(1, 20):
+        #    checkbox = QCheckBox("Checkbox")
+        #    checkbox.clicked.connect(lambda: self.checked(checkbox))
+        #    conditions_layout.addWidget(checkbox)
+        # self.conditions.setLayout(conditions_layout)
+
+    def set_line_text(self, text):
+        self.equation.setText(self.equation.text() + text)
+
+    def checked(self, checkbox):
+        if checkbox.isChecked():
+            print(checkbox.isChecked())
+            self.checkboxes.append(checkbox)
+        else:
+            self.checkboxes.remove(checkbox)
+        print(self.checkboxes)
 
 
 class Tab0(QWidget):
-    def __init__(self):
+    def __init__(self, equations):
         super().__init__()
 
         layout = QGridLayout()
         layout.setSpacing(20)
-        for i, n in enumerate(range(0, 9)):
-            layout.addWidget(QPushButton("%"), 0, n)
-            layout.addWidget(QPushButton("%"), 1, n)
-            layout.addWidget(QPushButton("%"), 2, n)
+
+        button = QPushButton("%")
+        button.clicked.connect(lambda: equations.set_line_text(button.text()))
+
+        layout.addWidget(button, 0, 0)
 
         self.setLayout(layout)
 

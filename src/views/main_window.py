@@ -20,7 +20,7 @@ class MainWindow(QMainWindow):
         self.move(rectangle.topLeft())
 
         self.setObjectName("main_window")
-        self.setCentralWidget(central.Central())
+        self.setCentralWidget(central.Central(self))
         self.init_window()
 
     def init_window(self):

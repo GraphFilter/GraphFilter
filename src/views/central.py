@@ -6,8 +6,10 @@ from src.views import wizard
 
 class Central(QWidget):
 
-    def __init__(self):
+    def __init__(self, main_window):
         super().__init__()
+
+        self.main_window = main_window
 
         title = QLabel("<h1>Graph Filter</h1>")
         title.setAlignment(QtCore.Qt.AlignCenter)
@@ -45,9 +47,10 @@ class Central(QWidget):
         layout.setAlignment(open_button, QtCore.Qt.AlignCenter)
         layout.setAlignment(new_button, QtCore.Qt.AlignCenter)
 
-        self.wizard = wizard.Wizard()
+        self.wizard = wizard.Wizard(self.main_window)
 
     def open_wizard(self):
+        self.main_window.close()
         self.wizard.open()
 
     def open_project(self):
