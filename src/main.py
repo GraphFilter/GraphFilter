@@ -1,10 +1,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from src.views import main_window
-
+from src.views.central import Central
+from src.views.project_window import ProjectWindow
+from src.views.main_window import MainWindow
 
 app = QApplication(sys.argv)
-window = main_window.MainWindow()
+window = MainWindow()
 
 # stylesheet = ""
 #

@@ -45,7 +45,7 @@ class ProjectFiles(QWizardPage):
         # draw_graph.setIconSize(QtCore.QSize(40, 40))
         #
         # filter_graphs = QToolButton()
-        # filter_graphs.setIcon(QIcon("views/resources/icons/filtro.png"))
+        # filter_graphs.setIcon(QIcon("views/resources/icons/filter.png"))
         # filter_graphs.setText("New Project")
         # filter_graphs.setMinimumHeight(100)
         # filter_graphs.setMinimumWidth(100)

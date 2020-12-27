@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5 import QtCore
-from src.views import wizard
+from src.views.wizard import Wizard
 
 
-class Central(QWidget):
+class Central(QVBoxLayout):
 
     def __init__(self, main_window):
         super().__init__()
@@ -18,9 +18,10 @@ class Central(QWidget):
         version.setAlignment(QtCore.Qt.AlignCenter)
 
         logo = QLabel("")
-        logo.setPixmap(QPixmap("views/resources/icons/hexagono.png").scaled(64, 64, QtCore.Qt.KeepAspectRatio))
+        logo.setPixmap(QPixmap("views/resources/icons/hexagon.png").scaled(92, 92, QtCore.Qt.KeepAspectRatio))
         logo.setAlignment(QtCore.Qt.AlignCenter)
 
+        # TODO: how to separate icons from titles in buttons
         open_button = QPushButton("  Open")
         open_button.setIcon(QIcon("views/resources/icons/folder.png"))
         open_button.setMinimumHeight(50)
@@ -28,26 +29,25 @@ class Central(QWidget):
         open_button.clicked.connect(self.open_project)
 
         new_button = QPushButton("  New Project")
-        new_button.setIcon(QIcon("views/resources/icons/mais.png"))
+        new_button.setIcon(QIcon("views/resources/icons/plus.png"))
         new_button.setMinimumHeight(50)
         new_button.setMinimumWidth(150)
         new_button.clicked.connect(self.open_wizard)
 
-        layout = QVBoxLayout(self)
-        layout.addStretch(3)
-        layout.addWidget(logo)
-        layout.addStretch(2)
-        layout.addWidget(title)
-        layout.addWidget(version)
-        layout.addStretch(3)
-        layout.addWidget(open_button)
-        layout.addStretch(1)
-        layout.addWidget(new_button)
-        layout.addStretch(3)
-        layout.setAlignment(open_button, QtCore.Qt.AlignCenter)
-        layout.setAlignment(new_button, QtCore.Qt.AlignCenter)
+        self.addStretch(3)
+        self.addWidget(logo)
+        self.addStretch(2)
+        self.addWidget(title)
+        self.addWidget(version)
+        self.addStretch(3)
+        self.addWidget(open_button)
+        self.addStretch(1)
+        self.addWidget(new_button)
+        self.addStretch(3)
+        self.setAlignment(open_button, QtCore.Qt.AlignCenter)
+        self.setAlignment(new_button, QtCore.Qt.AlignCenter)
 
-        self.wizard = wizard.Wizard(self.main_window)
+        self.wizard = Wizard(self.main_window)
 
     def open_wizard(self):
         self.main_window.close()
@@ -55,4 +55,4 @@ class Central(QWidget):
 
     def open_project(self):
         file_dialog = QFileDialog()
-        file_dialog.getOpenFileName(self, 'OpenFile')
+        file_dialog.getOpenFileName()

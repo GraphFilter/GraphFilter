@@ -49,6 +49,9 @@ class Equations(QWizardPage):
         self.setLayout(main_layout)
 
     def create_conditions(self):
+
+        # TODO: groupbox with scroll bar
+
         conditions_layout = QVBoxLayout()
         checkbox = QCheckBox("Checkbox")
         checkbox.clicked.connect(lambda: self.checked(checkbox))
@@ -68,9 +71,9 @@ class Equations(QWizardPage):
     def checked(self, checkbox):
         if checkbox.isChecked():
             print(checkbox.isChecked())
-            self.checkboxes.append(checkbox)
+            self.checkboxes.append(checkbox.text())
         else:
-            self.checkboxes.remove(checkbox)
+            self.checkboxes.remove(checkbox.text())
         print(self.checkboxes)
 
 
