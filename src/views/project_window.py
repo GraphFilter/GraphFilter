@@ -140,11 +140,12 @@ class ProjectWindow(QMainWindow):
         self.info = QDockWidget("Info", self)
         self.info.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
-        self.table = QTableWidget()
-        self.table.setHorizontalHeaderLabels(["Invariants", "Results"])
-
-        self.table.setColumnCount(2)
-        self.table.setRowCount(5)
+        # TODO: learn how to add items to TableView
+        model = QtGui.QStandardItemModel()
+        model.setHorizontalHeaderLabels(['Invariants', 'Results'])
+        self.table = QTableView()
+        self.table.setModel(model)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         self.info.setWidget(self.table)
 
