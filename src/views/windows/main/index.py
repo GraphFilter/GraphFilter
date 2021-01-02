@@ -1,17 +1,15 @@
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtWidgets import *
-from src.views.central import Central
+from src.views.windows.main.content import Content
 
 
-class MainWindow(QDialog):
+class Index(QMainWindow):
 
     def __init__(self):
         super().__init__()
 
-        pixmap = QtGui.QPixmap(1, 1)
-        pixmap.fill(QtCore.Qt.transparent)
         self.title_bar = "Graph Filter"
-        self.icon = QtGui.QIcon(pixmap)
+        self.icon = QtGui.QIcon("views/resources/icons/hexagon.png")
 
         self.width = 600
         self.height = 600
@@ -21,11 +19,14 @@ class MainWindow(QDialog):
         rectangle.moveCenter(center_point)
         self.move(rectangle.topLeft())
 
-        self.setLayout(Central(self))
+        self.setCentralWidget(Content(self))
         self.init_window()
 
     def init_window(self):
         self.setWindowIcon(self.icon)
         self.setWindowTitle(self.title_bar)
         self.setFixedSize(self.width, self.height)
-        self.setWindowFlags(QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowTitleHint | QtCore.Qt.WindowCloseButtonHint)
+        self.setWindowFlags(QtCore.Qt.CustomizeWindowHint
+                            | QtCore.Qt.WindowTitleHint
+                            | QtCore.Qt.WindowCloseButtonHint
+                            | QtCore.Qt.WindowStaysOnTopHint)

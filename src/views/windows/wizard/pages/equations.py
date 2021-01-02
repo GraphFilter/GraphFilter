@@ -25,26 +25,26 @@ class Equations(QWizardPage):
         self.equation.setPlaceholderText("placeholder...")
         self.equation.setFont(QFont("Sanserif", 10))
 
-        mode = QGroupBox("Mode")
-        mode.setFixedHeight(200)
-        mode_layout = QVBoxLayout()
-        mode_layout.addWidget(QRadioButton("Filter Graphs"))
-        mode_layout.addWidget(QRadioButton("Find counter example"))
-        mode.setLayout(mode_layout)
+        method = QGroupBox("Method")
+        method.setFixedHeight(200)
+        method_layout = QVBoxLayout()
+        method_layout.addWidget(QRadioButton("Filter Graphs"))
+        method_layout.addWidget(QRadioButton("Find counter example"))
+        method.setLayout(method_layout)
 
         # TODO: learn how to control better the spacing in vbox items
 
-        sider_layout = QVBoxLayout()
-        sider_layout.addStretch(3)
-        sider_layout.addWidget(math_tab)
-        sider_layout.addStretch(5)
-        sider_layout.addWidget(self.equation)
-        sider_layout.addStretch(45)
-        sider_layout.addWidget(mode)
+        aside_layout = QVBoxLayout()
+        aside_layout.addStretch(3)
+        aside_layout.addWidget(math_tab)
+        aside_layout.addStretch(5)
+        aside_layout.addWidget(self.equation)
+        aside_layout.addStretch(45)
+        aside_layout.addWidget(method)
 
         main_layout = QHBoxLayout()
         main_layout.addWidget(self.conditions)
-        main_layout.addLayout(sider_layout)
+        main_layout.addLayout(aside_layout)
 
         self.setLayout(main_layout)
 

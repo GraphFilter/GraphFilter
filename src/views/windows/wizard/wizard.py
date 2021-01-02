@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import *
-from src.views.project_files import ProjectFiles
-from src.views.equations import Equations
-from src.views.graph_files import GraphFiles
-from src.views.project_window import ProjectWindow
+from src.views.windows.wizard.pages.project_files import ProjectFiles
+from src.views.windows.wizard.pages.equations import Equations
+from src.views.windows.wizard.pages.graph_files import GraphFiles
+from src.views.windows.project.project_window import ProjectWindow
 from PyQt5 import QtGui, QtCore
 
 
@@ -26,13 +26,19 @@ class Wizard(QWizard):
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
         self.setWizardStyle(QWizard.WizardStyle(0))
-        self.setWindowIcon(QtGui.QIcon("views/resources/icons/hexagon.png"))
+
+        pixmap = QtGui.QPixmap(1,1)
+        pixmap.fill(QtCore.Qt.transparent)
+        self.setWindowIcon(QtGui.QIcon(pixmap))
 
         cancel = self.button(QWizard.CancelButton)
         cancel.clicked.connect(self.show_main_window)
 
         finish = self.button(QWizard.FinishButton)
         finish.clicked.connect(lambda: self.project_window.show())
+
+    def closeEvent(self, event):
+        self.main_window.show()
 
     def show_main_window(self):
         self.main_window.show()

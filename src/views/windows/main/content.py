@@ -1,10 +1,10 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5 import QtCore
-from src.views.wizard import Wizard
+from src.views.windows.wizard.wizard import Wizard
 
 
-class Central(QVBoxLayout):
+class Content(QWidget):
 
     def __init__(self, main_window):
         super().__init__()
@@ -34,18 +34,19 @@ class Central(QVBoxLayout):
         new_button.setMinimumWidth(150)
         new_button.clicked.connect(self.open_wizard)
 
-        self.addStretch(3)
-        self.addWidget(logo)
-        self.addStretch(2)
-        self.addWidget(title)
-        self.addWidget(version)
-        self.addStretch(3)
-        self.addWidget(open_button)
-        self.addStretch(1)
-        self.addWidget(new_button)
-        self.addStretch(3)
-        self.setAlignment(open_button, QtCore.Qt.AlignCenter)
-        self.setAlignment(new_button, QtCore.Qt.AlignCenter)
+        layout = QVBoxLayout(self)
+        layout.addStretch(3)
+        layout.addWidget(logo)
+        layout.addStretch(2)
+        layout.addWidget(title)
+        layout.addWidget(version)
+        layout.addStretch(3)
+        layout.addWidget(open_button)
+        layout.addStretch(1)
+        layout.addWidget(new_button)
+        layout.addStretch(3)
+        layout.setAlignment(open_button, QtCore.Qt.AlignCenter)
+        layout.setAlignment(new_button, QtCore.Qt.AlignCenter)
 
         self.wizard = Wizard(self.main_window)
 
