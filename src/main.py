@@ -4,6 +4,7 @@ from src.views.windows.main.index import Index
 from src.views.windows.project.project_window import ProjectWindow
 
 app = QApplication(sys.argv)
+
 window = Index()
 
 
