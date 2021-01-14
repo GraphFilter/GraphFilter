@@ -11,4 +11,5 @@ PyQt5==5.15.2
 PyQt5-sip==12.8.1
 sage==0.0.0
 sagemath==1.3.0
+scipy==1.6.0
 simpleeval==0.9.10
