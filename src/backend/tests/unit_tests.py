@@ -1,11 +1,11 @@
 import os
 import unittest
-from filter_list import Filter_list
+from filter_list import FilterList
 import filter_list as ftl
 import numpy as np
 import Operations_and_Invariants.invariant_bool as i_bool
 from Operations_and_Invariants.invariant_bool import Utils
-from Operations_and_Invariants import invariant_num as i_num
+from Operations_and_Invariants import invariantnum as i_num
 from Operations_and_Invariants import operations as oper
 import networkx as nx
 
@@ -14,7 +14,7 @@ class Helper:
 
     @staticmethod
     def choice_bool_inv(choices):
-        ibool = i_bool.Invariant_bool()
+        ibool = i_bool.InvariantBool()
         inv_choices = []
         for x in choices:
             inv_choices.append(ibool.all[x])
@@ -37,14 +37,14 @@ class Helper:
 
     @staticmethod
     def run(file, expression, choices):
-        return Filter_list.run(Helper.list_graphs_from(file), expression, Helper.choice_bool_inv(choices))[1]
+        return FilterList.run(Helper.list_graphs_from(file), expression, Helper.choice_bool_inv(choices))[1]
 
     @staticmethod
     def some_c_exem(file, expression, choices):
-        return Filter_list.find_counter_example(
+        return FilterList.find_counter_example(
             Helper.list_graphs_from(file),
             expression,
-            Helper.choice_bool_inv(choices))[0]
+            Helper.choice_bool_inv(choices))
 
 
 class Backend_unit_tests(unittest.TestCase):
@@ -59,9 +59,9 @@ class Backend_unit_tests(unittest.TestCase):
         self.assertEqual('error', ftl.split_expression(expression3))
 
     def test_name_of_all_num_invariant(self):
-        for inv in i_num.Invariant_num().all:
+        for inv in i_num.InvariantNum().all:
             for j in range(0, len(inv.code)):
-                self.assertTrue(Helper.run('resources/graphs/graphs1.g6', f'{inv.code[j]}(G)==1', []) >= 0)
+                self.assertTrue(Helper.run('resources/graphs/single_graph.g6', f'{inv.code[j]}(G)==1', []) >= 0)
 
     def test_AND_logic(self):
         exp1 = str(i_num.edge_connectivity.code[0]) + '(G) >=3'
@@ -92,28 +92,31 @@ class Backend_unit_tests(unittest.TestCase):
     def test_name_of_all_bool_invariant(self):
         j = 0
         isBool = True
-        all_choices = np.arange(len(i_bool.Invariant_bool().all))
-        for inv in i_bool.Invariant_bool().all:
-            self.assertTrue(Helper.run('resources/graphs/graphs1.g6', '', [j]) >= 0)
+        all_choices = np.arange(len(i_bool.InvariantBool().all))
+        for inv in i_bool.InvariantBool().all:
+            self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', [j]) >= 0)
             isBool = isBool and inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
             j = j + 1
         self.assertTrue(isinstance(isBool, bool))
-        self.assertTrue(Helper.run('resources/graphs/graphs1.g6', '', all_choices) >= 0)
+        self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', all_choices) >= 0)
 
     def test_graph_operations(self):
         alpha = str(i_num.independence_number.code[0])
-        for op in oper.graph_operations.all:
-            self.assertTrue(Helper.run('resources/graphs/graphs1.g6',
+        for op in oper.GraphOperations.all:
+            self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
                                        f'{alpha}{str(op.code[0])}(G)>0', []) >= 1)
 
     def test_math_operations(self):
-        for op in oper.math_operations.all:
-            self.assertTrue(Helper.run('resources/graphs/graphs1.g6',
+        for op in oper.MathOperations.all:
+            self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
                                        f'{str(op.code)}(2)>0', []) >= 0)
+
     def test_find_counterexample(self):
         diam = str(i_num.diameter.code[0])
-        self.assertFalse(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16]))
-        self.assertTrue(Helper.run('resources/graphs/graphs9.g6', f'{diam}(G)<=4', []))
+        self.assertTrue(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16]) == '')
+        self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', []) != '')
+        no_tree = 'ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?'
+        self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', [9]), no_tree)
 
     def test_not_100percent_filter(self):
         diam = str(i_num.diameter.code[0])
@@ -123,7 +126,8 @@ class Backend_unit_tests(unittest.TestCase):
         diam = str(i_num.diameter.code[0])
         sqrt = str(oper.sqrt.code)
         c = str(oper.complement.code)
-        self.assertEqual(1, Helper.run('resources/graphs/graphs1.g6', f'{sqrt}({diam}({c}(G)))>0', []))
+        self.assertEqual(1, Helper.run('resources/graphs/single_graph.g6', f'{sqrt}({diam}({c}(G)))>0', []))
+
 
 class Miscellaneous_tests(unittest.TestCase):
 
@@ -134,8 +138,11 @@ class Miscellaneous_tests(unittest.TestCase):
         gamma = str(i_num.domination_number.code[0])
         eigen1A = str(i_num.largest_1_Eigen_A.code[0])
         eigen1Q = str(i_num.largest_1_Eigen_A.code[0])
-        self.assertEqual(1, Helper.run('resources/graphs/graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2', [7, 8]))
-        self.assertEqual(1, Helper.run('resources/graphs/graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1A}(G)', [0]))
+        self.assertEqual(1,
+                         Helper.run('resources/graphs/graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2', [7, 8]))
+        self.assertEqual(1,
+                         Helper.run('resources/graphs/graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1A}(G)',
+                                    [0]))
         self.assertEqual(1, Helper.run('resources/graphs/graphs10.g6', f'{eigen1Q}(G)>2 OR {eigen1Q}(G)<=2', [5]))
 
     def test_largest_eigen_L(self):

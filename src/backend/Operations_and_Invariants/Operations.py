@@ -2,13 +2,13 @@ import networkx as nx
 import numpy as np
 
 
-class math_operations:
+class MathOperations:
     code = None
     dic_function = {}
     all = []
 
     def __init__(self):
-        for subclass in math_operations.__subclasses__():
+        for subclass in MathOperations.__subclasses__():
             self.all.append(subclass)
             self.dic_function[subclass.code] = subclass.Calculate
 
@@ -17,13 +17,13 @@ class math_operations:
         pass
 
 
-class graph_operations:
+class GraphOperations:
     code = None
     dic_function = {}
     all = []
 
     def __init__(self):
-        self.all = graph_operations.__subclasses__()
+        self.all = GraphOperations.__subclasses__()
         '''
         data = pd.read_excel(os.path.abspath('invariants_data.xlsx'), sheet_name='Operation')
         line = 0
@@ -32,7 +32,7 @@ class graph_operations:
             subclass.link = data.loc[line].at['Link']
             subclass.implement = data.loc[line].at['Implementation']
         '''
-        for subclass in graph_operations.__subclasses__():
+        for subclass in GraphOperations.__subclasses__():
             self.all.append(subclass)
             self.dic_function[subclass.code] = subclass.Calculate
 
@@ -46,7 +46,7 @@ class graph_operations:
         pass
 
 
-class complement(graph_operations):
+class complement(GraphOperations):
     name = "Complement of graph"
     code = "c"
 
@@ -55,7 +55,7 @@ class complement(graph_operations):
         return nx.complement(graph)
 
 
-class line(graph_operations):
+class line(GraphOperations):
     name = "Line of graph"
     code = "l"
 
@@ -64,7 +64,7 @@ class line(graph_operations):
         return nx.line_graph(graph)
 
 
-class sin(math_operations):
+class sin(MathOperations):
     name = "sin"
     code = "sin"
 
@@ -73,7 +73,7 @@ class sin(math_operations):
         return np.sin(x)
 
 
-class cos(math_operations):
+class cos(MathOperations):
     name = "cos"
     code = "cos"
 
@@ -82,7 +82,7 @@ class cos(math_operations):
         return np.sin(x)
 
 
-class tan(math_operations):
+class tan(MathOperations):
     name = "tan"
     code = "tan"
 
@@ -91,7 +91,7 @@ class tan(math_operations):
         return np.tan(x)
 
 
-class log(math_operations):
+class log(MathOperations):
     name = "Logarithm in base 10"
     code = "log"
 
@@ -100,7 +100,7 @@ class log(math_operations):
         return np.log10(x)
 
 
-class ln(math_operations):
+class ln(MathOperations):
     name = "Natural Logarithm"
     code = "ln"
 
@@ -109,7 +109,7 @@ class ln(math_operations):
         return np.log(x)
 
 
-class sqrt(math_operations):
+class sqrt(MathOperations):
     name = "Square root"
     code = "sqrt"
 
@@ -118,7 +118,7 @@ class sqrt(math_operations):
         return np.sqrt(x)
 
 
-class absolute(math_operations):
+class absolute(MathOperations):
     name = "Absolute"
     code = "abs"
 

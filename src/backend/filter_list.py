@@ -1,7 +1,7 @@
 from simpleeval import simple_eval
 import networkx as nx
 from Operations_and_Invariants import operations as op
-from Operations_and_Invariants import invariant_num as inum
+from Operations_and_Invariants import invariantnum as inum
 from Operations_and_Invariants import invariant_bool as ibool
 
 
@@ -16,15 +16,15 @@ def split_expression(expression):
         return expression.replace(" ", ""), 'SINGLE'
 
 
-class Filter_list:
+class FilterList:
 
     @staticmethod
     def run(listG6_in, expression, list_inv_bool):
         listG6_out = []
         functions = {}
-        functions.update(inum.Invariant_num().dic_function)
-        functions.update(op.math_operations().dic_function)
-        functions.update(op.graph_operations().dic_function)
+        functions.update(inum.InvariantNum().dic_function)
+        functions.update(op.MathOperations.dic_function)
+        functions.update(op.GraphOperations().dic_function)
         expressions, AND_OR = split_expression(expression)
         count = 0
         total = 0
@@ -68,9 +68,9 @@ class Filter_list:
     @staticmethod
     def find_counter_example(listG6_in, expression, list_inv_bool):
         functions = {}
-        functions.update(inum.Invariant_num().dic_function)
-        functions.update(op.math_operations().dic_function)
-        functions.update(op.graph_operations().dic_function)
+        functions.update(inum.InvariantNum().dic_function)
+        functions.update(op.MathOperations().dic_function)
+        functions.update(op.GraphOperations().dic_function)
         expressions, AND_OR = split_expression(expression)
         graph_satisfies = True
         for g6code in listG6_in:
@@ -84,18 +84,23 @@ class Filter_list:
                     for exp in expressions:
                         graph_satisfies = simple_eval(exp, functions=functions, names=names)
                         if not graph_satisfies:
-                            return True, g6code
+                            return g6code
                 elif AND_OR == "OR":
                     for exp in expressions:
                         graph_satisfies = simple_eval(exp, functions=functions, names=names)
                         if graph_satisfies:
                             break
                     if not graph_satisfies:
-                        return True, g6code
+                        return g6code
             # Check the boolean invariants
+                if not graph_satisfies:
+                    return g6code
             if graph_satisfies:
-                for item in list_inv_bool:
-                    graph_satisfies = item.calculate(g, )
+                for bool_inv in list_inv_bool:
+                    if bool_inv == ibool.k_Regular:
+                        graph_satisfies = bool_inv.calculate(g, k=1)
+                    else:
+                        graph_satisfies = bool_inv.calculate(g)
                     if not graph_satisfies:
-                        return True, g6code
-        return False, ''
+                        return g6code
+        return ''

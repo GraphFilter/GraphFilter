@@ -5,10 +5,10 @@ import numpy as np
 import scipy.sparse as ss
 
 
-class Invariant_bool:
+class InvariantBool:
 
     def __init__(self):
-        self.all = Invariant_bool.__subclasses__()
+        self.all = InvariantBool.__subclasses__()
 
     name = None
     link = None
@@ -20,7 +20,7 @@ class Invariant_bool:
         pass
 
 
-class planar(Invariant_bool):
+class planar(InvariantBool):
     name = "planar"
 
     @staticmethod
@@ -28,7 +28,7 @@ class planar(Invariant_bool):
         return nx.check_planarity(graph)[0]
 
 
-class connected(Invariant_bool):
+class connected(InvariantBool):
     name = "connected"
 
     @staticmethod
@@ -36,7 +36,7 @@ class connected(Invariant_bool):
         return nx.is_connected(graph)
 
 
-class biconnected(Invariant_bool):
+class biconnected(InvariantBool):
     name = "biconnected"
 
     @staticmethod
@@ -44,7 +44,7 @@ class biconnected(Invariant_bool):
         return nx.is_biconnected(graph)
 
 
-class bipartite(Invariant_bool):
+class bipartite(InvariantBool):
     name = 'bipartite'
 
     @staticmethod
@@ -52,7 +52,7 @@ class bipartite(Invariant_bool):
         return nx.is_bipartite(graph)
 
 
-class eulerian(Invariant_bool):
+class eulerian(InvariantBool):
     name = 'Eulerian'
 
     @staticmethod
@@ -60,7 +60,7 @@ class eulerian(Invariant_bool):
         return gp.is_eulerian(graph)
 
 
-class chordal(Invariant_bool):
+class chordal(InvariantBool):
     name = 'Chordal'
 
     @staticmethod
@@ -68,7 +68,7 @@ class chordal(Invariant_bool):
         return gp.is_chordal(graph)
 
 
-class triangle_free(Invariant_bool):
+class triangle_free(InvariantBool):
     name = 'Triangle-free'
 
     @staticmethod
@@ -76,7 +76,7 @@ class triangle_free(Invariant_bool):
         return gp.is_triangle_free(graph)
 
 
-class regular(Invariant_bool):
+class regular(InvariantBool):
     name = 'Regular'
 
     @staticmethod
@@ -84,7 +84,7 @@ class regular(Invariant_bool):
         return gp.is_regular(graph)
 
 
-class clawfree(Invariant_bool):
+class clawfree(InvariantBool):
     name = 'Claw-free'
 
     @staticmethod
@@ -92,7 +92,7 @@ class clawfree(Invariant_bool):
         return gp.is_claw_free(graph)
 
 
-class tree(Invariant_bool):
+class tree(InvariantBool):
     name = 'Tree'
 
     @staticmethod
@@ -100,7 +100,7 @@ class tree(Invariant_bool):
         return nx.is_tree(graph)
 
 
-class k_Regular(Invariant_bool):
+class k_Regular(InvariantBool):
     name = 'k-regular'
 
     @staticmethod
@@ -108,7 +108,7 @@ class k_Regular(Invariant_bool):
         return gp.is_k_regular(graph, k=k)
 
 
-class some_Aeigen_integer(Invariant_bool):
+class some_Aeigen_integer(InvariantBool):
     name = 'Some A-eigenvalue integer'
 
     @staticmethod
@@ -117,7 +117,7 @@ class some_Aeigen_integer(Invariant_bool):
         return Utils.Is_there_a_integer(la.eigvalsh(matrix))
 
 
-class some_Leigen_integer(Invariant_bool):
+class some_Leigen_integer(InvariantBool):
     name = "Some L-eigenvalue integer"
 
     @staticmethod
@@ -126,7 +126,7 @@ class some_Leigen_integer(Invariant_bool):
         return Utils.Is_there_a_integer(la.eigvalsh(matrix))
 
 
-class some_Qeigen_integer(Invariant_bool):
+class some_Qeigen_integer(InvariantBool):
     name = "Some Q-eigenvalue integer"
 
     @staticmethod
@@ -135,7 +135,7 @@ class some_Qeigen_integer(Invariant_bool):
         return Utils.Is_there_a_integer(la.eigvalsh(matrix))
 
 
-class Some_Deigen_integer(Invariant_bool):
+class Some_Deigen_integer(InvariantBool):
     name = "Some D-eigenvalue integer"
 
     @staticmethod
@@ -143,7 +143,7 @@ class Some_Deigen_integer(Invariant_bool):
         return Utils.Is_there_a_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
 
 
-class A_integral(Invariant_bool):
+class A_integral(InvariantBool):
     name = "A-integral"
 
     @staticmethod
@@ -152,7 +152,7 @@ class A_integral(Invariant_bool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class L_integral(Invariant_bool):
+class L_integral(InvariantBool):
     name = "L-integral"
 
     @staticmethod
@@ -161,7 +161,7 @@ class L_integral(Invariant_bool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class Q_integral(Invariant_bool):
+class Q_integral(InvariantBool):
     name = "Q-integral"
 
     @staticmethod
@@ -170,7 +170,7 @@ class Q_integral(Invariant_bool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class D_integral(Invariant_bool):
+class D_integral(InvariantBool):
     name = "D-integral"
 
     @staticmethod
@@ -178,7 +178,7 @@ class D_integral(Invariant_bool):
         return Utils.Integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
 
 
-class Largest_Aeigen_integer(Invariant_bool):
+class Largest_Aeigen_integer(InvariantBool):
     name = "Largest A-eigenvalue is integer"
 
     @staticmethod
@@ -187,7 +187,7 @@ class Largest_Aeigen_integer(Invariant_bool):
         return Utils.Is_a_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
-class Largest_Leigen_integer(Invariant_bool):
+class Largest_Leigen_integer(InvariantBool):
     name = "Largest L-eigenvalue is integer"
 
     @staticmethod
@@ -196,7 +196,7 @@ class Largest_Leigen_integer(Invariant_bool):
         return Utils.Is_a_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
-class Largest_Qeigen_integer(Invariant_bool):
+class Largest_Qeigen_integer(InvariantBool):
     name = "Largest Q-eigenvalue is integer"
 
     @staticmethod
@@ -205,7 +205,7 @@ class Largest_Qeigen_integer(Invariant_bool):
         return Utils.Is_a_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
-class Largest_Deigen_integer(Invariant_bool):
+class Largest_Deigen_integer(InvariantBool):
     name = "Largest D-eigenvalue is integer"
 
     @staticmethod
