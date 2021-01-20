@@ -2,13 +2,13 @@ import networkx as nx
 import numpy as np
 
 
-class Math_operations:
+class math_operations:
     code = None
     dic_function = {}
     all = []
 
     def __init__(self):
-        for subclass in Math_operations.__subclasses__():
+        for subclass in math_operations.__subclasses__():
             self.all.append(subclass)
             self.dic_function[subclass.code] = subclass.Calculate
 
@@ -17,13 +17,13 @@ class Math_operations:
         pass
 
 
-class Graph_operations:
+class graph_operations:
     code = None
     dic_function = {}
     all = []
 
     def __init__(self):
-        self.all = Graph_operations.__subclasses__()
+        self.all = graph_operations.__subclasses__()
         '''
         data = pd.read_excel(os.path.abspath('invariants_data.xlsx'), sheet_name='Operation')
         line = 0
@@ -32,7 +32,7 @@ class Graph_operations:
             subclass.link = data.loc[line].at['Link']
             subclass.implement = data.loc[line].at['Implementation']
         '''
-        for subclass in Graph_operations.__subclasses__():
+        for subclass in graph_operations.__subclasses__():
             self.all.append(subclass)
             self.dic_function[subclass.code] = subclass.Calculate
 
@@ -46,7 +46,7 @@ class Graph_operations:
         pass
 
 
-class ComplementOf(Graph_operations):
+class complement(graph_operations):
     name = "Complement of graph"
     code = "c"
 
@@ -55,7 +55,7 @@ class ComplementOf(Graph_operations):
         return nx.complement(graph)
 
 
-class LineOf(Graph_operations):
+class line(graph_operations):
     name = "Line of graph"
     code = "l"
 
@@ -64,7 +64,7 @@ class LineOf(Graph_operations):
         return nx.line_graph(graph)
 
 
-class Sin(Math_operations):
+class sin(math_operations):
     name = "sin"
     code = "sin"
 
@@ -73,7 +73,7 @@ class Sin(Math_operations):
         return np.sin(x)
 
 
-class Cos(Math_operations):
+class cos(math_operations):
     name = "cos"
     code = "cos"
 
@@ -82,7 +82,7 @@ class Cos(Math_operations):
         return np.sin(x)
 
 
-class Tan(Math_operations):
+class tan(math_operations):
     name = "tan"
     code = "tan"
 
@@ -91,7 +91,7 @@ class Tan(Math_operations):
         return np.tan(x)
 
 
-class Log(Math_operations):
+class log(math_operations):
     name = "Logarithm in base 10"
     code = "log"
 
@@ -100,7 +100,7 @@ class Log(Math_operations):
         return np.log10(x)
 
 
-class Ln(Math_operations):
+class ln(math_operations):
     name = "Natural Logarithm"
     code = "ln"
 
@@ -109,7 +109,7 @@ class Ln(Math_operations):
         return np.log(x)
 
 
-class Sqrt(Math_operations):
+class sqrt(math_operations):
     name = "Square root"
     code = "sqrt"
 
@@ -118,16 +118,10 @@ class Sqrt(Math_operations):
         return np.sqrt(x)
 
 
-class Absolute(Math_operations):
+class absolute(math_operations):
     name = "Absolute"
     code = "abs"
 
     @staticmethod
     def Calculate(x):
         return np.abs(x)
-
-if __name__ == '__main__':
-    Operations = Graph_operations()
-    print(ComplementOf.defi)
-    print(ComplementOf.link)
-    print(ComplementOf.implement)

@@ -1,11 +1,11 @@
 from simpleeval import simple_eval
 import networkx as nx
-from Operations_and_Invariants import Operations as op
-from Operations_and_Invariants import Invariant_num as inum
-from Operations_and_Invariants import Invariant_bool as ibool
+from Operations_and_Invariants import operations as op
+from Operations_and_Invariants import invariant_num as inum
+from Operations_and_Invariants import invariant_bool as ibool
 
 
-def Split_The_Expression(expression):
+def split_expression(expression):
     if "AND" in expression and "OR" in expression:
         return 'error'
     elif "AND" in expression:
@@ -16,22 +16,22 @@ def Split_The_Expression(expression):
         return expression.replace(" ", ""), 'SINGLE'
 
 
-class Filter:
+class Filter_list:
 
     @staticmethod
-    def Run(listG6_in, expression, list_inv_bool):
+    def run(listG6_in, expression, list_inv_bool):
         listG6_out = []
         functions = {}
         functions.update(inum.Invariant_num().dic_function)
-        functions.update(op.Math_operations().dic_function)
-        functions.update(op.Graph_operations().dic_function)
-        expressions, AND_OR = Split_The_Expression(expression)
+        functions.update(op.math_operations().dic_function)
+        functions.update(op.graph_operations().dic_function)
+        expressions, AND_OR = split_expression(expression)
         count = 0
         total = 0
         for g6code in listG6_in:
-            if g6code=='' or g6code==' ':
+            if g6code == '' or g6code == ' ':
                 continue
-            total=total+1
+            total = total + 1
             graph_satisfies = True
             g = nx.from_graph6_bytes(g6code.encode('utf-8'))
             names = {"G": g, "g": g}
@@ -66,12 +66,12 @@ class Filter:
         return listG6_out, float(count / total)
 
     @staticmethod
-    def FindCounterExample(listG6_in, expression, list_inv_bool):
+    def find_counter_example(listG6_in, expression, list_inv_bool):
         functions = {}
         functions.update(inum.Invariant_num().dic_function)
-        functions.update(op.Math_operations().dic_function)
-        functions.update(op.Graph_operations().dic_function)
-        expressions, AND_OR = Split_The_Expression(expression)
+        functions.update(op.math_operations().dic_function)
+        functions.update(op.graph_operations().dic_function)
+        expressions, AND_OR = split_expression(expression)
         graph_satisfies = True
         for g6code in listG6_in:
             g = nx.from_graph6_bytes(g6code.encode('utf-8'))
@@ -84,18 +84,18 @@ class Filter:
                     for exp in expressions:
                         graph_satisfies = simple_eval(exp, functions=functions, names=names)
                         if not graph_satisfies:
-                            return g6code
+                            return True, g6code
                 elif AND_OR == "OR":
                     for exp in expressions:
                         graph_satisfies = simple_eval(exp, functions=functions, names=names)
                         if graph_satisfies:
                             break
                     if not graph_satisfies:
-                        return g6code
+                        return True, g6code
             # Check the boolean invariants
             if graph_satisfies:
                 for item in list_inv_bool:
                     graph_satisfies = item.calculate(g, )
                     if not graph_satisfies:
-                        return g6code
-        return False
+                        return True, g6code
+        return False, ''

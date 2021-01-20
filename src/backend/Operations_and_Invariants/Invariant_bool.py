@@ -9,28 +9,18 @@ class Invariant_bool:
 
     def __init__(self):
         self.all = Invariant_bool.__subclasses__()
-        '''
-        data = pd.read_excel(os.path.abspath('invariants_data.xlsx'), sheet_name='Invariant_bool')
-        i = 0
-        for inv in self.all:
-            inv.defi = data.loc[i].at['Definition']
-            inv.link = data.loc[i].at['Link']
-            inv.implement = data.loc[i].at['Implementation']
-            i = i + 1
-        '''
 
     name = None
-    defi = None
     link = None
     implement = None
     error = 0.00001
 
     @staticmethod
-    def calculate(graph, k=0):
+    def calculate(**kwargs):
         pass
 
 
-class Planar(Invariant_bool):
+class planar(Invariant_bool):
     name = "planar"
 
     @staticmethod
@@ -38,7 +28,7 @@ class Planar(Invariant_bool):
         return nx.check_planarity(graph)[0]
 
 
-class Connected(Invariant_bool):
+class connected(Invariant_bool):
     name = "connected"
 
     @staticmethod
@@ -46,7 +36,7 @@ class Connected(Invariant_bool):
         return nx.is_connected(graph)
 
 
-class Biconnected(Invariant_bool):
+class biconnected(Invariant_bool):
     name = "biconnected"
 
     @staticmethod
@@ -54,7 +44,7 @@ class Biconnected(Invariant_bool):
         return nx.is_biconnected(graph)
 
 
-class Bipartite(Invariant_bool):
+class bipartite(Invariant_bool):
     name = 'bipartite'
 
     @staticmethod
@@ -62,7 +52,7 @@ class Bipartite(Invariant_bool):
         return nx.is_bipartite(graph)
 
 
-class Eulerian(Invariant_bool):
+class eulerian(Invariant_bool):
     name = 'Eulerian'
 
     @staticmethod
@@ -70,7 +60,7 @@ class Eulerian(Invariant_bool):
         return gp.is_eulerian(graph)
 
 
-class Chordal(Invariant_bool):
+class chordal(Invariant_bool):
     name = 'Chordal'
 
     @staticmethod
@@ -78,7 +68,7 @@ class Chordal(Invariant_bool):
         return gp.is_chordal(graph)
 
 
-class Triangle_free(Invariant_bool):
+class triangle_free(Invariant_bool):
     name = 'Triangle-free'
 
     @staticmethod
@@ -86,7 +76,7 @@ class Triangle_free(Invariant_bool):
         return gp.is_triangle_free(graph)
 
 
-class Regular(Invariant_bool):
+class regular(Invariant_bool):
     name = 'Regular'
 
     @staticmethod
@@ -94,19 +84,21 @@ class Regular(Invariant_bool):
         return gp.is_regular(graph)
 
 
-class Clawfree(Invariant_bool):
+class clawfree(Invariant_bool):
     name = 'Claw-free'
 
     @staticmethod
     def calculate(graph):
         return gp.is_claw_free(graph)
 
-class Tree(Invariant_bool):
+
+class tree(Invariant_bool):
     name = 'Tree'
 
     @staticmethod
     def calculate(graph):
         return nx.is_tree(graph)
+
 
 class k_Regular(Invariant_bool):
     name = 'k-regular'
@@ -116,7 +108,7 @@ class k_Regular(Invariant_bool):
         return gp.is_k_regular(graph, k=k)
 
 
-class Some_Aeigen_integer(Invariant_bool):
+class some_Aeigen_integer(Invariant_bool):
     name = 'Some A-eigenvalue integer'
 
     @staticmethod
@@ -125,7 +117,7 @@ class Some_Aeigen_integer(Invariant_bool):
         return Utils.Is_there_a_integer(la.eigvalsh(matrix))
 
 
-class Some_Leigen_integer(Invariant_bool):
+class some_Leigen_integer(Invariant_bool):
     name = "Some L-eigenvalue integer"
 
     @staticmethod
@@ -134,7 +126,7 @@ class Some_Leigen_integer(Invariant_bool):
         return Utils.Is_there_a_integer(la.eigvalsh(matrix))
 
 
-class Some_Qeigen_integer(Invariant_bool):
+class some_Qeigen_integer(Invariant_bool):
     name = "Some Q-eigenvalue integer"
 
     @staticmethod
@@ -247,10 +239,3 @@ class Utils:
             if not Utils.Approx_to_int(number).is_integer():
                 return False
         return True
-
-
-if __name__ == '__main__':
-    I_bool = Invariant_bool()
-    print(Regular.defi)
-    print(Regular.link)
-    print(Regular.implement)
