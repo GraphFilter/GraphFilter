@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import *
 dict_invariant = {'alpha': '\u03b1', 'betha': '\u03b2', 'gamma': '\u03b3'}
 dict_math_operation = {'sin': 'sin', 'cos': 'cos', 'sqrt': '\u221A'}
 dict_graph_operation = {'complement': 'c', 'line': '\u2113'}
-dict_union= {**dict_invariant, **dict_graph_operation, **dict_math_operation}
+dict_union = {**dict_invariant, **dict_graph_operation, **dict_math_operation}
+
 
 class Equations(QWizardPage):
 
@@ -89,13 +90,14 @@ class Equations(QWizardPage):
         self.conditions.setLayout(layout_aux)
 
     def set_line_text(self, text):
-        self.equation.setText(self.equation.text() + text)
+        button_clicked = QPushButton().sender()
+        self.equation.setText(self.equation.text() + button_clicked.text())
 
     def update_line_text(self):
-        textEquation = self.equation.text()
+        text_equation = self.equation.text()
         for text, symbol in dict_union.items():
-            textEquation = textEquation.replace(text, symbol)
-        self.equation.setText(textEquation)
+            text_equation = text_equation.replace(text, symbol)
+        self.equation.setText(text_equation)
 
     def checked(self, checkbox):
         if checkbox.isChecked():
@@ -111,15 +113,13 @@ class TabNumericInvariant(QWidget):
         super().__init__()
 
         layout = QGridLayout()
-        i = 0
-        for key in dict_invariant:
+
+        for i, key in enumerate(dict_invariant):
             button = QPushButton(dict_invariant[key])
             button.setFont(QtGui.QFont("Cambria Math", 12))
             button.setToolTip(key)  # key and name
-            button.clicked.connect(lambda: equations.set_line_text(dict_invariant[key]))
+            button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
-            i = i + 1
-            # todo: bug - the buttons always prints betha
 
         self.setLayout(layout)
 
@@ -129,15 +129,13 @@ class TabGraphOperation(QWidget):
         super().__init__()
 
         layout = QGridLayout()
-        i = 0
-        for key in dict_graph_operation:
+
+        for i, key in enumerate(dict_graph_operation):
             button = QPushButton(dict_graph_operation[key])
             button.setFont(QtGui.QFont("Cambria Math", 12))
             button.setToolTip(f'{key} : -invariant-')  # key and name of invariant or operation
-            button.clicked.connect(lambda: equations.set_line_text(dict_graph_operation[key]))
+            button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
-            i = i + 1
-            # todo: bug - the buttons always prints betha
 
         self.setLayout(layout)
 
@@ -147,15 +145,13 @@ class TabMathOperation(QWidget):
         super().__init__()
 
         layout = QGridLayout()
-        i = 0
-        for key in dict_math_operation:
+
+        for i, key in enumerate(dict_math_operation):
             button = QPushButton(dict_math_operation[key])
             button.setFont(QtGui.QFont("Cambria Math", 12))
             button.setToolTip(key)  # key and name
-            button.clicked.connect(lambda: equations.set_line_text(dict_math_operation[key]))
+            button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
-            i = i + 1
-            # todo: bug - the buttons always prints betha
 
         self.setLayout(layout)
 
