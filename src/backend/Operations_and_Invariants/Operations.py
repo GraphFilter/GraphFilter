@@ -10,10 +10,10 @@ class MathOperations:
     def __init__(self):
         for subclass in MathOperations.__subclasses__():
             self.all.append(subclass)
-            self.dic_function[subclass.code] = subclass.Calculate
+            self.dic_function[subclass.code] = subclass.calculate
 
     @staticmethod
-    def Calculate(graph):
+    def calculate(graph):
         pass
 
 
@@ -34,7 +34,7 @@ class GraphOperations:
         '''
         for subclass in GraphOperations.__subclasses__():
             self.all.append(subclass)
-            self.dic_function[subclass.code] = subclass.Calculate
+            self.dic_function[subclass.code] = subclass.calculate
 
     name = None
     defi = None
@@ -42,86 +42,86 @@ class GraphOperations:
     implement = None
 
     @staticmethod
-    def Calculate(graph):
+    def calculate(graph):
         pass
 
 
-class complement(GraphOperations):
+class Complement(GraphOperations):
     name = "Complement of graph"
     code = "c"
 
     @staticmethod
-    def Calculate(graph):
+    def calculate(graph):
         return nx.complement(graph)
 
 
-class line(GraphOperations):
+class Line(GraphOperations):
     name = "Line of graph"
     code = "l"
 
     @staticmethod
-    def Calculate(graph):
+    def calculate(graph):
         return nx.line_graph(graph)
 
 
-class sin(MathOperations):
+class Sin(MathOperations):
     name = "sin"
     code = "sin"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.sin(x)
 
 
-class cos(MathOperations):
+class Cos(MathOperations):
     name = "cos"
     code = "cos"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.sin(x)
 
 
-class tan(MathOperations):
+class Tan(MathOperations):
     name = "tan"
     code = "tan"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.tan(x)
 
 
-class log(MathOperations):
+class Log(MathOperations):
     name = "Logarithm in base 10"
     code = "log"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.log10(x)
 
 
-class ln(MathOperations):
+class Ln(MathOperations):
     name = "Natural Logarithm"
     code = "ln"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.log(x)
 
 
-class sqrt(MathOperations):
+class Sqrt(MathOperations):
     name = "Square root"
     code = "sqrt"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.sqrt(x)
 
 
-class absolute(MathOperations):
+class Absolute(MathOperations):
     name = "Absolute"
     code = "abs"
 
     @staticmethod
-    def Calculate(x):
+    def calculate(x):
         return np.abs(x)

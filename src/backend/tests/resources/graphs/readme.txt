@@ -4,7 +4,7 @@ a generic single graph
 -----------------------------
 
 graphs1
-Some trees and only one no-tree (ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?)
+Some trees and only one no-tree in line 264
 
 -----------------------------
 

@@ -3,10 +3,10 @@ import unittest
 from filter_list import FilterList
 import filter_list as ftl
 import numpy as np
-import Operations_and_Invariants.invariant_bool as i_bool
-from Operations_and_Invariants.invariant_bool import Utils
-from Operations_and_Invariants import invariantnum as i_num
-from Operations_and_Invariants import operations as oper
+import operations_and_invariants.bool_invariants as i_bool
+from operations_and_invariants.bool_invariants import Utils
+from operations_and_invariants import num_invariants as i_num
+from operations_and_invariants import operations as oper
 import networkx as nx
 
 
@@ -47,7 +47,7 @@ class Helper:
             Helper.choice_bool_inv(choices))
 
 
-class Backend_unit_tests(unittest.TestCase):
+class BackendUnitTests(unittest.TestCase):
 
     def test_split_expression(self):
         expression1 = 'chi(G)==5 AND omega(l(G))>=1 AND n(G)<=lambda1(G)'
@@ -64,29 +64,29 @@ class Backend_unit_tests(unittest.TestCase):
                 self.assertTrue(Helper.run('resources/graphs/single_graph.g6', f'{inv.code[j]}(G)==1', []) >= 0)
 
     def test_AND_logic(self):
-        exp1 = str(i_num.edge_connectivity.code[0]) + '(G) >=3'
-        exp2 = str(i_num.vertex_connectivity.code[0]) + '(G) >=5'
-        exp3 = str(i_num.clique_number.code[0]) + '(G) ==4'
-        exp4 = str(i_num.largest_1_eigen_L.code[0]) + '(G) > 10'
-        exp4N = str(i_num.largest_1_eigen_L.code[0]) + '(G) <= 10'
+        exp1 = str(i_num.EdgeConnectivity.code[0]) + '(G) >=3'
+        exp2 = str(i_num.VertexConnectivity.code[0]) + '(G) >=5'
+        exp3 = str(i_num.CliqueNumber.code[0]) + '(G) ==4'
+        exp4 = str(i_num.Largest1EigenL.code[0]) + '(G) > 10'
+        exp4N = str(i_num.Largest1EigenL.code[0]) + '(G) <= 10'
         self.assertEqual(1, Helper.run('resources/graphs/graphs11.g6',
                                        f'{exp1} AND {exp2} AND {exp3} AND {exp4}', []))
         self.assertEqual(0, Helper.run('resources/graphs/graphs11.g6',
                                        f'{exp1} AND {exp2} AND {exp3} AND {exp4N}', []))
 
     def test_OR_logic(self):
-        exp1 = str(i_num.edge_connectivity.code[0]) + '(G) >=3'
-        exp2 = str(i_num.independence_number.code[0]) + '(G) >= 7'
-        exp1N = str(i_num.edge_connectivity.code[0]) + '(G) <3'
-        exp2N = str(i_num.independence_number.code[0]) + '(G) < 7'
+        exp1 = str(i_num.EdgeConnectivity.code[0]) + '(G) >=3'
+        exp2 = str(i_num.IndependenceNumber.code[0]) + '(G) >= 7'
+        exp1N = str(i_num.EdgeConnectivity.code[0]) + '(G) <3'
+        exp2N = str(i_num.IndependenceNumber.code[0]) + '(G) < 7'
 
         self.assertEqual(1, Helper.run('resources/graphs/graphs12.g6', f'{exp1} OR {exp2}', []))
         self.assertTrue(Helper.run('resources/graphs/graphs12.g6', f'{exp1N} OR {exp2N}', []) < 1)
 
     def test_integral(self):
-        self.assertTrue(Utils.Is_a_integer(1))
-        self.assertTrue(Utils.Is_a_integer(1.000001))
-        self.assertTrue(Utils.Is_a_integer(0.999998))
+        self.assertTrue(Utils.IsInteger(1))
+        self.assertTrue(Utils.IsInteger(1.000001))
+        self.assertTrue(Utils.IsInteger(0.999998))
         self.assertEqual(1, Helper.run('resources/graphs/graphs2.g6', '', [16]))
 
     def test_name_of_all_bool_invariant(self):
@@ -101,7 +101,7 @@ class Backend_unit_tests(unittest.TestCase):
         self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', all_choices) >= 0)
 
     def test_graph_operations(self):
-        alpha = str(i_num.independence_number.code[0])
+        alpha = str(i_num.IndependenceNumber.code[0])
         for op in oper.GraphOperations.all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
                                        f'{alpha}{str(op.code[0])}(G)>0', []) >= 1)
@@ -112,32 +112,32 @@ class Backend_unit_tests(unittest.TestCase):
                                        f'{str(op.code)}(2)>0', []) >= 0)
 
     def test_find_counterexample(self):
-        diam = str(i_num.diameter.code[0])
+        diam = str(i_num.Diameter.code[0])
         self.assertTrue(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16]) == '')
         self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', []) != '')
         no_tree = 'ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?'
         self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', [9]), no_tree)
 
     def test_not_100percent_filter(self):
-        diam = str(i_num.diameter.code[0])
+        diam = str(i_num.Diameter.code[0])
         self.assertEqual(1 / 3, Helper.run('resources/graphs/graphs9.g6', f'{diam}(G)==3', []))
 
     def test_interpret_composition_functions(self):
-        diam = str(i_num.diameter.code[0])
-        sqrt = str(oper.sqrt.code)
-        c = str(oper.complement.code)
+        diam = str(i_num.Diameter.code[0])
+        sqrt = str(oper.Sqrt.code)
+        c = str(oper.Complement.code)
         self.assertEqual(1, Helper.run('resources/graphs/single_graph.g6', f'{sqrt}({diam}({c}(G)))>0', []))
 
 
-class Miscellaneous_tests(unittest.TestCase):
+class MiscellaneousTests(unittest.TestCase):
 
     def test_expression_with_choices(self):
-        a = str(i_num.algebraic_connectivity.code[0])
-        diam = str(i_num.diameter.code[0])
-        alpha = str(i_num.independence_number.code[0])
-        gamma = str(i_num.domination_number.code[0])
-        eigen1A = str(i_num.largest_1_Eigen_A.code[0])
-        eigen1Q = str(i_num.largest_1_Eigen_A.code[0])
+        a = str(i_num.AlgebraicConnectivity.code[0])
+        diam = str(i_num.Diameter.code[0])
+        alpha = str(i_num.IndependenceNumber.code[0])
+        gamma = str(i_num.DominationNumber.code[0])
+        eigen1A = str(i_num.Largest1EigenA.code[0])
+        eigen1Q = str(i_num.Largest1EigenQ.code[0])
         self.assertEqual(1,
                          Helper.run('resources/graphs/graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2', [7, 8]))
         self.assertEqual(1,
@@ -146,16 +146,16 @@ class Miscellaneous_tests(unittest.TestCase):
         self.assertEqual(1, Helper.run('resources/graphs/graphs10.g6', f'{eigen1Q}(G)>2 OR {eigen1Q}(G)<=2', [5]))
 
     def test_largest_eigen_L(self):
-        eigen1L = str(i_num.largest_1_eigen_L.code[0])
+        eigen1L = str(i_num.Largest1EigenL.code[0])
         self.assertEqual(1, Helper.run('resources/graphs/graphs5.g6', f'{eigen1L}(G)>5', [9]))
 
     def test_wilf_result(self):
         self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', 'chi(G)<=eigen1A(G)+1', []))
 
     def test_independence_and_matching(self):
-        alpha = str(i_num.independence_number.code[0])
-        match = str(i_num.matching_number.code[0])
-        line = str(oper.line.code[0])
+        alpha = str(i_num.IndependenceNumber.code[0])
+        match = str(i_num.MatchingNumber.code[0])
+        line = str(oper.Line.code[0])
         self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', f'{match}(G)=={alpha}({line}(G))', []))
 
     def test_perfect_graphs(self):

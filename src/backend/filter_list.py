@@ -1,8 +1,8 @@
 from simpleeval import simple_eval
 import networkx as nx
-from Operations_and_Invariants import operations as op
-from Operations_and_Invariants import invariantnum as inum
-from Operations_and_Invariants import invariant_bool as ibool
+from operations_and_invariants import operations as op
+from operations_and_invariants import num_invariants as inum
+from operations_and_invariants import bool_invariants as ibool
 
 
 def split_expression(expression):
@@ -52,7 +52,7 @@ class FilterList:
             # Check the boolean invariants
             if graph_satisfies:
                 for bool_inv in list_inv_bool:
-                    if bool_inv == ibool.k_Regular:
+                    if bool_inv == ibool.KRegular:
                         graph_satisfies = bool_inv.calculate(g, k=1)
                     else:
                         graph_satisfies = bool_inv.calculate(g)
@@ -97,7 +97,7 @@ class FilterList:
                     return g6code
             if graph_satisfies:
                 for bool_inv in list_inv_bool:
-                    if bool_inv == ibool.k_Regular:
+                    if bool_inv == ibool.KRegular:
                         graph_satisfies = bool_inv.calculate(g, k=1)
                     else:
                         graph_satisfies = bool_inv.calculate(g)

@@ -20,7 +20,7 @@ class InvariantBool:
         pass
 
 
-class planar(InvariantBool):
+class Planar(InvariantBool):
     name = "planar"
 
     @staticmethod
@@ -28,7 +28,7 @@ class planar(InvariantBool):
         return nx.check_planarity(graph)[0]
 
 
-class connected(InvariantBool):
+class Connected(InvariantBool):
     name = "connected"
 
     @staticmethod
@@ -36,7 +36,7 @@ class connected(InvariantBool):
         return nx.is_connected(graph)
 
 
-class biconnected(InvariantBool):
+class Biconnected(InvariantBool):
     name = "biconnected"
 
     @staticmethod
@@ -44,7 +44,7 @@ class biconnected(InvariantBool):
         return nx.is_biconnected(graph)
 
 
-class bipartite(InvariantBool):
+class Bipartite(InvariantBool):
     name = 'bipartite'
 
     @staticmethod
@@ -52,7 +52,7 @@ class bipartite(InvariantBool):
         return nx.is_bipartite(graph)
 
 
-class eulerian(InvariantBool):
+class Eulerian(InvariantBool):
     name = 'Eulerian'
 
     @staticmethod
@@ -60,7 +60,7 @@ class eulerian(InvariantBool):
         return gp.is_eulerian(graph)
 
 
-class chordal(InvariantBool):
+class Chordal(InvariantBool):
     name = 'Chordal'
 
     @staticmethod
@@ -68,7 +68,7 @@ class chordal(InvariantBool):
         return gp.is_chordal(graph)
 
 
-class triangle_free(InvariantBool):
+class Triangle_free(InvariantBool):
     name = 'Triangle-free'
 
     @staticmethod
@@ -76,7 +76,7 @@ class triangle_free(InvariantBool):
         return gp.is_triangle_free(graph)
 
 
-class regular(InvariantBool):
+class Regular(InvariantBool):
     name = 'Regular'
 
     @staticmethod
@@ -84,7 +84,7 @@ class regular(InvariantBool):
         return gp.is_regular(graph)
 
 
-class clawfree(InvariantBool):
+class Clawfree(InvariantBool):
     name = 'Claw-free'
 
     @staticmethod
@@ -92,7 +92,7 @@ class clawfree(InvariantBool):
         return gp.is_claw_free(graph)
 
 
-class tree(InvariantBool):
+class Tree(InvariantBool):
     name = 'Tree'
 
     @staticmethod
@@ -100,7 +100,7 @@ class tree(InvariantBool):
         return nx.is_tree(graph)
 
 
-class k_Regular(InvariantBool):
+class KRegular(InvariantBool):
     name = 'k-regular'
 
     @staticmethod
@@ -108,42 +108,42 @@ class k_Regular(InvariantBool):
         return gp.is_k_regular(graph, k=k)
 
 
-class some_Aeigen_integer(InvariantBool):
+class SomeEigenIntegerA(InvariantBool):
     name = 'Some A-eigenvalue integer'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.Is_there_a_integer(la.eigvalsh(matrix))
+        return Utils.IsThereInteger(la.eigvalsh(matrix))
 
 
-class some_Leigen_integer(InvariantBool):
+class SomeEigenIntegerL(InvariantBool):
     name = "Some L-eigenvalue integer"
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.Is_there_a_integer(la.eigvalsh(matrix))
+        return Utils.IsThereInteger(la.eigvalsh(matrix))
 
 
-class some_Qeigen_integer(InvariantBool):
+class SomeEigenIntegerQ(InvariantBool):
     name = "Some Q-eigenvalue integer"
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.Is_there_a_integer(la.eigvalsh(matrix))
+        return Utils.IsThereInteger(la.eigvalsh(matrix))
 
 
-class Some_Deigen_integer(InvariantBool):
+class SomeEigenIntegerD(InvariantBool):
     name = "Some D-eigenvalue integer"
 
     @staticmethod
     def calculate(graph):
-        return Utils.Is_there_a_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        return Utils.IsThereInteger(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
 
 
-class A_integral(InvariantBool):
+class IntegralA(InvariantBool):
     name = "A-integral"
 
     @staticmethod
@@ -152,7 +152,7 @@ class A_integral(InvariantBool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class L_integral(InvariantBool):
+class IntegralL(InvariantBool):
     name = "L-integral"
 
     @staticmethod
@@ -161,7 +161,7 @@ class L_integral(InvariantBool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class Q_integral(InvariantBool):
+class IntegralQ(InvariantBool):
     name = "Q-integral"
 
     @staticmethod
@@ -170,7 +170,7 @@ class Q_integral(InvariantBool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class D_integral(InvariantBool):
+class integralD(InvariantBool):
     name = "D-integral"
 
     @staticmethod
@@ -178,64 +178,64 @@ class D_integral(InvariantBool):
         return Utils.Integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
 
 
-class Largest_Aeigen_integer(InvariantBool):
+class LargestEigenIntegerA(InvariantBool):
     name = "Largest A-eigenvalue is integer"
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.Is_a_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.IsInteger(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
-class Largest_Leigen_integer(InvariantBool):
+class LargestEigenIntegerL(InvariantBool):
     name = "Largest L-eigenvalue is integer"
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.Is_a_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.IsInteger(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
-class Largest_Qeigen_integer(InvariantBool):
+class LargestEigenIntegerQ(InvariantBool):
     name = "Largest Q-eigenvalue is integer"
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.Is_a_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.IsInteger(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
-class Largest_Deigen_integer(InvariantBool):
+class LargestEigenIntegerD(InvariantBool):
     name = "Largest D-eigenvalue is integer"
 
     @staticmethod
     def calculate(graph):
-        return Utils.Is_a_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+        return Utils.IsInteger(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
 
 
 class Utils:
 
     @staticmethod
-    def Approx_to_int(number, error=0.00001):
+    def ApproxToInt(number, error=0.00001):
         if abs(round(number) - number) <= error:
             return float(round(number))
         else:
             return number
 
     @staticmethod
-    def Is_there_a_integer(list):
+    def IsThereInteger(list):
         for number in list:
-            if Utils.Approx_to_int(number).is_integer():
+            if Utils.ApproxToInt(number).is_integer():
                 return True
         return False
 
     @staticmethod
-    def Is_a_integer(number):
-        return Utils.Approx_to_int(number).is_integer()
+    def IsInteger(number):
+        return Utils.ApproxToInt(number).is_integer()
 
     @staticmethod
     def Integral(list):
         for number in list:
-            if not Utils.Approx_to_int(number).is_integer():
+            if not Utils.ApproxToInt(number).is_integer():
                 return False
         return True
