@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QFont
+from PyQt5 import QtCore
 
 
 class Equations(QWizardPage):
@@ -10,6 +11,10 @@ class Equations(QWizardPage):
         self.conditions = QGroupBox("Conditions")
         self.conditions.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.conditions.setMinimumWidth(150)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+
         self.create_conditions()
 
         self.checkboxes = []
@@ -56,14 +61,22 @@ class Equations(QWizardPage):
         checkbox = QCheckBox("Checkbox")
         checkbox.clicked.connect(lambda: self.checked(checkbox))
         conditions_layout.addWidget(checkbox)
+
         self.conditions.setLayout(conditions_layout)
 
         # NOTE: this code generate multiples checkboxes
-        # for i in range(1, 20):
-        #    checkbox = QCheckBox("Checkbox")
-        #    checkbox.clicked.connect(lambda: self.checked(checkbox))
-        #    conditions_layout.addWidget(checkbox)
+        # for i in range(1, 80):
+        #     checkbox = QCheckBox("Checkbox")
+        #     checkbox.clicked.connect(lambda: self.checked(checkbox))
+        #     conditions_layout.addWidget(checkbox)
         # self.conditions.setLayout(conditions_layout)
+
+        layout_aux = QVBoxLayout()
+        widget_aux = QWidget()
+        widget_aux.setLayout(conditions_layout)
+        self.scroll_area.setWidget(widget_aux)
+        layout_aux.addWidget(self.scroll_area)
+        self.conditions.setLayout(layout_aux)
 
     def set_line_text(self, text):
         self.equation.setText(self.equation.text() + text)
