@@ -68,7 +68,7 @@ class Chordal(InvariantBool):
         return gp.is_chordal(graph)
 
 
-class Triangle_free(InvariantBool):
+class TriangleFree(InvariantBool):
     name = 'Triangle-free'
 
     @staticmethod
@@ -84,7 +84,7 @@ class Regular(InvariantBool):
         return gp.is_regular(graph)
 
 
-class Clawfree(InvariantBool):
+class ClawFree(InvariantBool):
     name = 'Claw-free'
 
     @staticmethod
@@ -170,7 +170,7 @@ class IntegralQ(InvariantBool):
         return Utils.Integral(la.eigvalsh(matrix))
 
 
-class integralD(InvariantBool):
+class IntegralD(InvariantBool):
     name = "D-integral"
 
     @staticmethod
