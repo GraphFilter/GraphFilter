@@ -1,6 +1,14 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QFont
+import sys
 
+from PyQt5 import QtGui
+from PyQt5.QtGui import QFont
+from PyQt5.QtWidgets import *
+
+# note the dicts will be imported from backend
+dict_invariant = {'alpha': '\u03b1', 'betha': '\u03b2', 'gamma': '\u03b3'}
+dict_math_operation = {'sin': 'sin', 'cos': 'cos', 'sqrt': '\u221A'}
+dict_graph_operation = {'complement': 'c', 'line': '\u2113'}
+dict_union= {**dict_invariant, **dict_graph_operation, **dict_math_operation}
 
 class Equations(QWizardPage):
 
@@ -14,16 +22,19 @@ class Equations(QWizardPage):
 
         self.checkboxes = []
 
-        self.Tab0 = Tab0(self)
-        self.Tab1 = Tab1()
+        self.TabNumericInvariant = TabNumericInvariant(self)
+        self.TabGraphOperation = TabGraphOperation(self)
+        self.TabMathOperation = TabMathOperation(self)
 
         math_tab = QTabWidget()
-        math_tab.addTab(self.Tab0, "Tab0")
-        math_tab.addTab(self.Tab1, "Tab1")
+        math_tab.addTab(self.TabNumericInvariant, "Numeric Invariants")
+        math_tab.addTab(self.TabGraphOperation, "Graph Operations")
+        math_tab.addTab(self.TabMathOperation, "Math Operations")
 
         self.equation = QLineEdit()
         self.equation.setPlaceholderText("placeholder...")
-        self.equation.setFont(QFont("Sanserif", 10))
+        self.equation.setFont(QFont("Cambria Math", 12))
+        self.equation.textEdited.connect(lambda: self.update_line_text())
 
         method = QGroupBox("Method")
         method.setFixedHeight(200)
@@ -68,6 +79,12 @@ class Equations(QWizardPage):
     def set_line_text(self, text):
         self.equation.setText(self.equation.text() + text)
 
+    def update_line_text(self):
+        textEquation = self.equation.text()
+        for text, symbol in dict_union.items():
+            textEquation = textEquation.replace(text, symbol)
+        self.equation.setText(textEquation)
+
     def checked(self, checkbox):
         if checkbox.isChecked():
             print(checkbox.isChecked())
@@ -77,28 +94,61 @@ class Equations(QWizardPage):
         print(self.checkboxes)
 
 
-class Tab0(QWidget):
+class TabNumericInvariant(QWidget):
     def __init__(self, equations):
         super().__init__()
 
         layout = QGridLayout()
-        layout.setSpacing(20)
-
-        button = QPushButton("%")
-        button.clicked.connect(lambda: equations.set_line_text(button.text()))
-
-        layout.addWidget(button, 0, 0)
+        i = 0
+        for key in dict_invariant:
+            button = QPushButton(dict_invariant[key])
+            button.setFont(QtGui.QFont("Cambria Math", 12))
+            button.setToolTip(key)  # key and name
+            button.clicked.connect(lambda: equations.set_line_text(dict_invariant[key]))
+            layout.addWidget(button, 0, i)
+            i = i + 1
+            # todo: bug - the buttons always prints betha
 
         self.setLayout(layout)
 
 
-class Tab1(QWidget):
-    def __init__(self):
+class TabGraphOperation(QWidget):
+    def __init__(self, equations):
         super().__init__()
 
         layout = QGridLayout()
-        for i, n in enumerate(range(0, 9)):
-            layout.addWidget(QPushButton("%"), 0, n)
-            layout.addWidget(QPushButton("%"), 1, n)
+        i = 0
+        for key in dict_graph_operation:
+            button = QPushButton(dict_graph_operation[key])
+            button.setFont(QtGui.QFont("Cambria Math", 12))
+            button.setToolTip(f'{key} : -invariant-')  # key and name of invariant or operation
+            button.clicked.connect(lambda: equations.set_line_text(dict_graph_operation[key]))
+            layout.addWidget(button, 0, i)
+            i = i + 1
+            # todo: bug - the buttons always prints betha
 
         self.setLayout(layout)
+
+
+class TabMathOperation(QWidget):
+    def __init__(self, equations):
+        super().__init__()
+
+        layout = QGridLayout()
+        i = 0
+        for key in dict_math_operation:
+            button = QPushButton(dict_math_operation[key])
+            button.setFont(QtGui.QFont("Cambria Math", 12))
+            button.setToolTip(key)  # key and name
+            button.clicked.connect(lambda: equations.set_line_text(dict_math_operation[key]))
+            layout.addWidget(button, 0, i)
+            i = i + 1
+            # todo: bug - the buttons always prints betha
+
+        self.setLayout(layout)
+
+
+if __name__ == '__main__':
+    App = QApplication(sys.argv)
+    window = Equations()
+    sys.exit(App.exec())
