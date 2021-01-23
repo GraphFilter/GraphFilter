@@ -37,6 +37,8 @@ class Wizard(QWizard):
         finish = self.button(QWizard.FinishButton)
         finish.clicked.connect(lambda: self.project_window.show())
 
+        self.setButtonText(QWizard.FinishButton, "Start")
+
     def closeEvent(self, event):
         self.main_window.show()
 
