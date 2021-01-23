@@ -35,6 +35,7 @@ class Equations(QWizardPage):
         math_tab.addTab(self.TabNumericInvariant, "Numeric Invariants")
         math_tab.addTab(self.TabGraphOperation, "Graph Operations")
         math_tab.addTab(self.TabMathOperation, "Math Operations")
+        math_tab.setMinimumWidth(700)
 
         self.equation = QLineEdit()
         self.equation.setPlaceholderText("placeholder...")
