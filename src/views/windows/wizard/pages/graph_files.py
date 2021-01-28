@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import *
 
 class GraphFiles(QWizardPage):
 
+    files_added = []
+
     def __init__(self):
         super().__init__()
 
@@ -29,6 +31,9 @@ class GraphFiles(QWizardPage):
         file_dialog.setNameFilters(["Text files (*.txt)", "Graph Filter (*.g6)"])
         file_path = file_dialog.getOpenFileName(filter="Graph Filter (*.g6)")
         input_file.setText(file_path[0])
+        if file_path[0] != '':
+            self.files_added.append(file_path[0])
+
 
     def add_file(self):
         input_file = QLineEdit()

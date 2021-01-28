@@ -35,7 +35,7 @@ class Wizard(QWizard):
         cancel.clicked.connect(self.show_main_window)
 
         finish = self.button(QWizard.FinishButton)
-        finish.clicked.connect(lambda: self.project_window.show())
+        finish.clicked.connect(self.start_filter)
 
         self.setButtonText(QWizard.FinishButton, "Start")
 
@@ -44,3 +44,10 @@ class Wizard(QWizard):
 
     def show_main_window(self):
         self.main_window.show()
+
+    def start_filter(self):
+        # TODO I believe that this point can do the filtering
+        self.project_window.visualize.load_file_out(GraphFiles.files_added[0]) # filtering here
+        self.project_window.show()
+
+
