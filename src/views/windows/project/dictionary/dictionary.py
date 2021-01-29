@@ -1,5 +1,9 @@
+import sys
+
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore, QtGui
+import xlrd
+import os
 
 
 class Dictionary(QWidget):
@@ -14,11 +18,20 @@ class Dictionary(QWidget):
         self.concepts.setMaximumWidth(250)
 
         self.concepts_list = QListWidget()
-
+        self.sheet = xlrd.open_workbook(os.getcwd() + '/views/resources/data_dictionary.xls').sheet_by_name('dic')
         self.title = QLabel()
+        self.title.setFont(QtGui.QFont("Arial", 16,))
+        self.title.setWordWrap(True);
         self.definitions = QLabel()
+        self.definitions.setWordWrap(True);
+        self.definitions.setFont(QtGui.QFont("Arial", 12))
         self.usages = QLabel()
+        self.usages.setWordWrap(True);
+        self.usages.setFont(QtGui.QFont("Arial", 12))
         self.references = QLabel()
+        self.references.setWordWrap(True);
+        self.references.setFont(QtGui.QFont("Arial", 12))
+
 
         self.create_concepts()
 
@@ -32,6 +45,7 @@ class Dictionary(QWidget):
         aside_layout.addWidget(self.usages)
         aside_layout.addWidget(QLabel("<h2>References</h2>"))
         aside_layout.addWidget(self.references)
+        aside_layout.setSpacing(0)
 
         main_layout = QHBoxLayout()
         main_layout.addWidget(self.concepts)
@@ -44,8 +58,9 @@ class Dictionary(QWidget):
         concepts_layout = QVBoxLayout()
 
         # NOTE: this code generate multiples items
-        for i in range(1, 20):
-            self.concepts_list.insertItem(i, f"Concept {i}")
+        for i in range(1, self.sheet.nrows):
+            self.concepts_list.insertItem(i, self.sheet.cell_value(i, 0))
+
 
         self.concepts_list.clicked.connect(self.on_clicked_concept)
 
@@ -55,4 +70,16 @@ class Dictionary(QWidget):
         self.title.setText(f"<h1>{self.concepts_list.currentItem().text()}<\h1>")
 
     def on_clicked_concept(self):
-        self.title.setText(f"<h1>{self.concepts_list.currentItem().text()}<\h1>")
+        line_sheet = self.concepts_list.currentRow()+1
+        self.title.setText(f"<b>{self.concepts_list.currentItem().text()}<\b>")
+        self.definitions.setText(u"{0}".format(self.sheet.cell_value(line_sheet, 1)).encode("utf-8"))
+        self.usages.setText(self.sheet.cell_value(line_sheet, 2))
+        self.references.setOpenExternalLinks(True)
+        self.references.setText('<a href={0}>{0}</a>'.format(self.sheet.cell_value(line_sheet, 3)))
+
+
+
+
+
+
+
