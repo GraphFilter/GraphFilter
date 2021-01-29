@@ -46,8 +46,8 @@ class Wizard(QWizard):
         self.main_window.show()
 
     def start_filter(self):
-        # TODO I believe that this point can do the filtering
-        self.project_window.visualize.load_file_out(GraphFiles.files_added[0]) # filtering here
+        # NOTE: I believe that this point can do the filtering
+        self.project_window.visualize.fill_combo(GraphFiles.files_added[0])  # filtering here
         self.project_window.show()
 
 

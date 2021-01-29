@@ -16,6 +16,10 @@ class Visualize(QWidget):
 
         self.project_window = project_window
 
+        self.combo_graphs = QComboBox()
+        self.combo_graphs.adjustSize()
+        self.combo_graphs.setMaximumWidth(200)
+
         self.create_tool_bar()
         self.create_docks()
 
@@ -27,11 +31,7 @@ class Visualize(QWidget):
             self.tool_bar.setMovable(False)
             self.tool_bar.addWidget(QLabel("List of graphs filtered"))
 
-            self.graphs_list = QComboBox()
-            self.graphs_list.adjustSize()
-            self.graphs_list.setMaximumWidth(500)
-
-            self.tool_bar.addWidget(self.graphs_list)
+            self.tool_bar.addWidget(self.combo_graphs)
             self.tool_bar.addSeparator()
             self.tool_bar.addAction(self.project_window.zoom_in_action)
             self.tool_bar.addAction(self.project_window.zoom_out_action)
@@ -54,12 +54,8 @@ class Visualize(QWidget):
             self.graph = None
             self.info = None
 
-    def load_file_out(self, file_out_path):
-        file = open(file_out_path, 'r')
-        list_graphs_g6 = file.read().splitlines()
+    def fill_combo(self, file_out_path):
+        file = open(file_out_path, 'r').read().splitlines()
 
-        for i in range(0, len(list_graphs_g6)):
-            self.graphs_list.addItem(f'Graph {i}')
-
-
-
+        for i, line in enumerate(file):
+            self.combo_graphs.addItem(f'Graph {i} - {line}')
