@@ -3,51 +3,64 @@ from PyQt5.QtWidgets import *
 
 class GraphFiles(QWizardPage):
 
-    files_added = []
-
     def __init__(self):
         super().__init__()
 
+        self.files_added = []
+
         graph_files_input = QLineEdit()
         graph_files_button = QPushButton("...")
-        graph_files_add = QPushButton("+")
-        graph_files_add.clicked.connect(self.add_file)
+        self.graph_files_add = QPushButton("+")
+        self.graph_files_add.setEnabled(False)
+        self.graph_files_add.clicked.connect(self.add_file)
 
-        graph_files_button.clicked.connect(lambda: self.open_file(graph_files_input))
+        graph_files_button.clicked.connect(self.open_file)
 
         file_line = QHBoxLayout()
         file_line.addWidget(QLabel("Graph .q6 file:"))
         file_line.addWidget(graph_files_input)
         file_line.addWidget(graph_files_button)
-        file_line.addWidget(graph_files_add)
+        file_line.addWidget(self.graph_files_add)
 
         self.form = QFormLayout()
         self.form.addRow(file_line)
 
         self.setLayout(self.form)
 
-    def open_file(self, input_file):
+    def open_file(self):
+        button_clicked = QPushButton().sender()
+        form = button_clicked.parentWidget()
+        input_file = form.findChildren(QLineEdit)
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt)", "Graph Filter (*.g6)"])
         file_path = file_dialog.getOpenFileName(filter="Graph Filter (*.g6)")
-        input_file.setText(file_path[0])
-        if file_path[0] != '':
+        if file_path[0] not in self.files_added and file_path[0] != '':
+            input_file[-1].setText(file_path[0])
             self.files_added.append(file_path[0])
-
+            self.graph_files_add.setEnabled(True)
+        print(self.files_added)
 
     def add_file(self):
-        input_file = QLineEdit()
-        button = QPushButton("...")
-        remove = QPushButton("-")
+        button_clicked = QPushButton().sender()
+        form = button_clicked.parentWidget()
+        input_file = form.findChildren(QLineEdit)
+        if input_file[-1].text() != '':
+            input_file = QLineEdit()
+            button = QPushButton("...")
+            remove = QPushButton("-")
 
-        button.clicked.connect(lambda: self.open_file(input_file))
+            button.clicked.connect(self.open_file)
 
-        layout = QHBoxLayout()
-        layout.addWidget(QLabel("Graph .q6 file:"))
-        layout.addWidget(input_file)
-        layout.addWidget(button)
-        layout.addWidget(remove)
+            layout = QHBoxLayout()
+            layout.addWidget(QLabel("Graph .q6 file:"))
+            layout.addWidget(input_file)
+            layout.addWidget(button)
+            layout.addWidget(remove)
 
-        self.form.addRow(layout)
+            self.form.addRow(layout)
 
-        remove.clicked.connect(lambda: self.form.removeRow(layout))
+            remove.clicked.connect(lambda: self.form.removeRow(layout))
+            self.graph_files_add.setEnabled(False)
+
+    def return_files(self):
+        return self.files_added

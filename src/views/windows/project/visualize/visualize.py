@@ -55,7 +55,7 @@ class Visualize(QWidget):
             self.info = None
 
     def fill_combo(self, file_out_path):
-        file = open(file_out_path, 'r').read().splitlines()
-
-        for i, line in enumerate(file):
-            self.combo_graphs.addItem(f'Graph {i} - {line}')
+        for file in file_out_path:
+            lines = open(file, 'r').read().splitlines()
+            for i, line in enumerate(lines):
+                self.combo_graphs.addItem(f'Graph {i} - {line}')
