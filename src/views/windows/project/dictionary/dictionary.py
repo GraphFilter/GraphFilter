@@ -1,5 +1,5 @@
 import os
-import xlrd
+import json
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 
@@ -16,7 +16,10 @@ class Dictionary(QWidget):
         self.concepts.setMaximumWidth(250)
 
         self.concepts_list = QListWidget()
-        self.sheet = xlrd.open_workbook(os.getcwd() + '/views/resources/data_dictionary.xls').sheet_by_name('dic')
+        f = open('views/resources/data_dictionary.json')
+        data = json.load(f)
+
+        self.dictionary = data['dic']
         self.title = QLabel()
         self.title.setFont(QtGui.QFont("Arial", 20))
         self.title.setWordWrap(True)
@@ -57,8 +60,8 @@ class Dictionary(QWidget):
         concepts_layout = QVBoxLayout()
 
         # NOTE: this code generate multiples items
-        for i in range(1, self.sheet.nrows):
-            self.concepts_list.insertItem(i, self.sheet.cell_value(i, 0))
+        for i, concept in enumerate(self.dictionary):
+            self.concepts_list.insertItem(i, concept['name'])
 
         # TODO connect with select from keyboard
         self.concepts_list.clicked.connect(self.on_clicked_concept)
@@ -67,12 +70,11 @@ class Dictionary(QWidget):
         self.concepts.setLayout(concepts_layout)
         self.concepts_list.setCurrentItem(self.concepts_list.item(0))
         self.on_clicked_concept()
-        # self.title.setText(f"<h1>{self.concepts_list.currentItem().text()}<\h1>")
 
     def on_clicked_concept(self):
-        line_sheet = self.concepts_list.currentRow() + 1
+        line_sheet = self.concepts_list.currentRow()
         self.title.setText(self.concepts_list.currentItem().text())
-        self.definitions.setText(self.sheet.cell_value(line_sheet, 1))
-        self.usages.setText(self.sheet.cell_value(line_sheet, 2))
+        self.definitions.setText(self.dictionary[line_sheet]['definition'])
+        self.usages.setText(self.dictionary[line_sheet]['usage'])
         self.references.setOpenExternalLinks(True)
-        self.references.setText('<a href={0}>{0}</a>'.format(self.sheet.cell_value(line_sheet, 3)))
+        self.references.setText('<a href={0}>{0}</a>'.format(self.dictionary[line_sheet]['link']))
