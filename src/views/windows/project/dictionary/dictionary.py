@@ -20,15 +20,23 @@ class Dictionary(QWidget):
         data = json.load(f)
 
         self.dictionary = data['dic']
+
         self.title = QLabel()
         self.title.setFont(QtGui.QFont("Arial", 20))
         self.title.setWordWrap(True)
+
         self.definitions = QLabel()
         self.definitions.setWordWrap(True)
         self.definitions.setFont(QtGui.QFont("Arial", 14))
+
         self.usages = QLabel()
         self.usages.setWordWrap(True)
         self.usages.setFont(QtGui.QFont("Arial", 14))
+
+        self.implementations = QLabel()
+        self.implementations.setWordWrap(True)
+        self.implementations.setFont(QtGui.QFont("Arial", 14))
+
         self.references = QLabel()
         self.references.setWordWrap(True)
         self.references.setFont(QtGui.QFont("Arial", 14))
@@ -36,16 +44,25 @@ class Dictionary(QWidget):
         self.create_concepts()
 
         aside_layout = QVBoxLayout()
+
         aside_layout.addWidget(self.title)
         aside_layout.addSpacing(30)
+
         aside_layout.addWidget(QLabel("<h2>Definitions</h2>"))
         aside_layout.addSpacing(10)
         aside_layout.addWidget(self.definitions)
         aside_layout.addSpacing(30)
+
         aside_layout.addWidget(QLabel("<h2>Usages</h2>"))
         aside_layout.addSpacing(10)
         aside_layout.addWidget(self.usages)
         aside_layout.addSpacing(30)
+
+        aside_layout.addWidget(QLabel("<h2>Implementations</h2>"))
+        aside_layout.addSpacing(10)
+        aside_layout.addWidget(self.implementations)
+        aside_layout.addSpacing(30)
+
         aside_layout.addWidget(QLabel("<h2>References</h2>"))
         aside_layout.addWidget(self.references)
         aside_layout.addStretch(0)
@@ -76,5 +93,6 @@ class Dictionary(QWidget):
         self.title.setText(self.concepts_list.currentItem().text())
         self.definitions.setText(self.dictionary[line_sheet]['definition'])
         self.usages.setText(self.dictionary[line_sheet]['usage'])
+        self.implementations.setText(self.dictionary[line_sheet]['implementation'])
         self.references.setOpenExternalLinks(True)
         self.references.setText('<a href={0}>{0}</a>'.format(self.dictionary[line_sheet]['link']))
