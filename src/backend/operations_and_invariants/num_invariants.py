@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 import numpy.linalg as la
 import scipy.sparse as ss
-from operations_and_invariants.bool_invariants import Utils
+from bool_invariants import Utils
 
 
 class InvariantNum:
@@ -16,12 +16,12 @@ class InvariantNum:
         self.all = InvariantNum.__subclasses__()
         for inv in self.all:
             for j in range(0, len(inv.code)):
-                self.dic_function[inv.code[j]] = inv.calculate
+                self.dic_function[inv.code[j]] = inv.calc
 
     name = None
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         pass
 
 
@@ -30,7 +30,7 @@ class ChromaticNumber(InvariantNum):
     code = ['chi']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.chromatic_number(graph)
 
 
@@ -39,7 +39,7 @@ class NumberVertices(InvariantNum):
     code = ['n']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.number_of_nodes(graph)
 
 
@@ -48,7 +48,7 @@ class NumberEdges(InvariantNum):
     code = ['m']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.number_of_edges(graph)
 
 
@@ -57,7 +57,7 @@ class CliqueNumber(InvariantNum):
     code = ['omega']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.clique_number(graph)
 
 
@@ -66,7 +66,7 @@ class IndependenceNumber(InvariantNum):
     code = ['alpha']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.independence_number(graph)
 
 
@@ -75,7 +75,7 @@ class DominationNumber(InvariantNum):
     code = ['gamma']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.domination_number(graph)
 
 
@@ -84,7 +84,7 @@ class TotalDominationNumber(InvariantNum):
     code = ['gamma']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.total_domination_number(graph)
 
 
@@ -93,7 +93,7 @@ class ConnectedDominationNumber(InvariantNum):
     code = ['d']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.total_domination_number(graph)
 
 
@@ -148,7 +148,7 @@ class MatchingNumber(InvariantNum):
     code = ['match', 'nu']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.matching_number(graph)
 
 
@@ -157,7 +157,7 @@ class VertexConnectivity(InvariantNum):
     code = ['kappa']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.node_connectivity(graph)
 
 
@@ -166,7 +166,7 @@ class EdgeConnectivity(InvariantNum):
     code = ['econ']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.edge_connectivity(graph)
 
 
@@ -175,7 +175,7 @@ class NumberComponnents(InvariantNum):
     code = ['w']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.number_connected_components(graph)
 
 
@@ -184,12 +184,12 @@ class Valency(InvariantNum):
     code = ['val']
 
     @staticmethod
-    def calculate(graph):
-        degSeq = gp.degree_sequence(graph)
+    def calc(graph):
+        deg_seq = gp.degree_sequence(graph)
         valencies = []
         for i in range(0, nx.number_of_nodes(graph)):
-            if degSeq[i] not in valencies:
-                valencies.append(degSeq[i])
+            if deg_seq[i] not in valencies:
+                valencies.append(deg_seq[i])
         return len(valencies)
 
 
@@ -198,7 +198,7 @@ class DegreeMax(InvariantNum):
     code = ['Delta']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return np.max(gp.degree_sequence(graph))
 
 
@@ -207,7 +207,7 @@ class DegreeMin(InvariantNum):
     code = ['delta']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return np.min(gp.degree_sequence(graph))
 
 
@@ -216,7 +216,7 @@ class DegreeAverage(InvariantNum):
     code = ['avgDegree']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return np.average(gp.degree_sequence(graph))
 
 
@@ -225,7 +225,7 @@ class VertexCover(InvariantNum):
     code = ['tau']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return gp.vertex_cover_number(graph)
 
 
@@ -234,7 +234,7 @@ class Diameter(InvariantNum):
     code = ["diam"]
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         if nx.is_connected(graph):
             return nx.diameter(graph)
         else:
@@ -246,7 +246,7 @@ class Radius(InvariantNum):
     code = ["r"]
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.diameter(graph)
 
 
@@ -255,9 +255,9 @@ class Largest1EigenA(InvariantNum):
     code = ["eigen1A"]
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         m = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.ApproxToInt(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenL(InvariantNum):
@@ -265,9 +265,9 @@ class Largest1EigenL(InvariantNum):
     code = ["eigen1L"]
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.ApproxToInt(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenQ(InvariantNum):
@@ -275,9 +275,9 @@ class Largest1EigenQ(InvariantNum):
     code = ["eigen1Q"]
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.ApproxToInt(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenD(InvariantNum):
@@ -285,8 +285,8 @@ class Largest1EigenD(InvariantNum):
     code = ["eigen1D"]
 
     @staticmethod
-    def calculate(graph):
-        return Utils.ApproxToInt(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+    def calc(graph):
+        return Utils.approx_to_int(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
 
 
 class AlgebraicConnectivity(InvariantNum):
@@ -294,9 +294,9 @@ class AlgebraicConnectivity(InvariantNum):
     code = ['a']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.ApproxToInt(la.eigvalsh(m)[1])
+        return Utils.approx_to_int(la.eigvalsh(m)[1])
 
 
 class WienerIndex(InvariantNum):
@@ -304,8 +304,8 @@ class WienerIndex(InvariantNum):
     code = ['wiener']
 
     @staticmethod
-    def calculate(graph):
-        return Utils.ApproxToInt(nx.wiener_index(graph))
+    def calc(graph):
+        return Utils.approx_to_int(nx.wiener_index(graph))
 
 
 class EstradaIndex(InvariantNum):
@@ -313,8 +313,8 @@ class EstradaIndex(InvariantNum):
     code = ['estrada']
 
     @staticmethod
-    def calculate(graph):
-        return Utils.ApproxToInt(nx.estrada_index(graph))
+    def calc(graph):
+        return Utils.approx_to_int(nx.estrada_index(graph))
 
 
 class Nullity(InvariantNum):
@@ -322,7 +322,7 @@ class Nullity(InvariantNum):
     code = ['null']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.number_of_nodes(graph) - la.matrix_rank(nx.adj_matrix(graph))
 
 
@@ -340,7 +340,7 @@ class NumberSpanningTree(InvariantNum):
         return new
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return la.det(NumberSpanningTree.submatrix(nx.laplacian_matrix(graph)))
 
 
@@ -349,7 +349,7 @@ class Density(InvariantNum):
     code = ['den']
 
     @staticmethod
-    def calculate(graph):
+    def calc(graph):
         return nx.density(graph)
 
 

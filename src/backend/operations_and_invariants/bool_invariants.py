@@ -114,7 +114,7 @@ class SomeEigenIntegerA(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.IsThereInteger(la.eigvalsh(matrix))
+        return Utils.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerL(InvariantBool):
@@ -123,7 +123,7 @@ class SomeEigenIntegerL(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.IsThereInteger(la.eigvalsh(matrix))
+        return Utils.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerQ(InvariantBool):
@@ -132,7 +132,7 @@ class SomeEigenIntegerQ(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.IsThereInteger(la.eigvalsh(matrix))
+        return Utils.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerD(InvariantBool):
@@ -140,7 +140,7 @@ class SomeEigenIntegerD(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return Utils.IsThereInteger(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        return Utils.is_there_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
 
 
 class IntegralA(InvariantBool):
@@ -149,7 +149,7 @@ class IntegralA(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.Integral(la.eigvalsh(matrix))
+        return Utils.integral(la.eigvalsh(matrix))
 
 
 class IntegralL(InvariantBool):
@@ -158,7 +158,7 @@ class IntegralL(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.Integral(la.eigvalsh(matrix))
+        return Utils.integral(la.eigvalsh(matrix))
 
 
 class IntegralQ(InvariantBool):
@@ -167,7 +167,7 @@ class IntegralQ(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.Integral(la.eigvalsh(matrix))
+        return Utils.integral(la.eigvalsh(matrix))
 
 
 class IntegralD(InvariantBool):
@@ -175,7 +175,7 @@ class IntegralD(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        return Utils.integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
 
 
 class LargestEigenIntegerA(InvariantBool):
@@ -184,7 +184,7 @@ class LargestEigenIntegerA(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.IsInteger(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerL(InvariantBool):
@@ -193,7 +193,7 @@ class LargestEigenIntegerL(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.IsInteger(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerQ(InvariantBool):
@@ -202,7 +202,7 @@ class LargestEigenIntegerQ(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.IsInteger(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerD(InvariantBool):
@@ -210,32 +210,32 @@ class LargestEigenIntegerD(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return Utils.IsInteger(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
 
 
 class Utils:
 
     @staticmethod
-    def ApproxToInt(number, error=0.00001):
+    def approx_to_int(number, error=0.00001):
         if abs(round(number) - number) <= error:
             return float(round(number))
         else:
             return number
 
     @staticmethod
-    def IsThereInteger(list):
-        for number in list:
-            if Utils.ApproxToInt(number).is_integer():
+    def is_there_integer(gorup):
+        for number in gorup:
+            if Utils.approx_to_int(number).is_integer():
                 return True
         return False
 
     @staticmethod
-    def IsInteger(number):
-        return Utils.ApproxToInt(number).is_integer()
+    def is_integer(number):
+        return Utils.approx_to_int(number).is_integer()
 
     @staticmethod
-    def Integral(list):
-        for number in list:
-            if not Utils.ApproxToInt(number).is_integer():
+    def integral(group):
+        for number in group:
+            if not Utils.approx_to_int(number).is_integer():
                 return False
         return True

@@ -53,9 +53,9 @@ class FilterList:
             if graph_satisfies:
                 for bool_inv in list_inv_bool:
                     if bool_inv == ibool.KRegular:
-                        graph_satisfies = bool_inv.calculate(g, k=1)
+                        graph_satisfies = bool_inv.calc(g, k=1)
                     else:
-                        graph_satisfies = bool_inv.calculate(g)
+                        graph_satisfies = bool_inv.calc(g)
                     if not graph_satisfies:
                         break
             if graph_satisfies:
@@ -98,9 +98,9 @@ class FilterList:
             if graph_satisfies:
                 for bool_inv in list_inv_bool:
                     if bool_inv == ibool.KRegular:
-                        graph_satisfies = bool_inv.calculate(g, k=1)
+                        graph_satisfies = bool_inv.calc(g, k=1)
                     else:
-                        graph_satisfies = bool_inv.calculate(g)
+                        graph_satisfies = bool_inv.calc(g)
                     if not graph_satisfies:
                         return g6code
         return ''
