@@ -40,6 +40,7 @@ class Equations(QWizardPage):
         self.equation = QLineEdit()
         self.equation.setPlaceholderText("placeholder...")
         self.equation.setFont(QFont("Cambria Math", 12))
+        self.equation.setMaximumHeight(30)
         self.equation.textEdited.connect(lambda: self.update_line_text())
 
         method = QGroupBox("Method")
