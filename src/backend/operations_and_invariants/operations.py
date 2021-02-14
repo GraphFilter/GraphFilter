@@ -25,7 +25,7 @@ class GraphOperations:
     def __init__(self):
         self.all = GraphOperations.__subclasses__()
         '''
-        data = pd.read_excel(os.path.abspath('invariants_data.xlsx'), sheet_name='Operation')
+        data = pd.read_excel(os.path.abspath('data_dictionary.xlsx'), sheet_name='Operation')
         line = 0
         for subclass in self.all:
             subclass.defi = data.loc[line].at['Definition']
