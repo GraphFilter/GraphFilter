@@ -19,8 +19,8 @@ def split_expression(expression):
 class FilterList:
 
     @staticmethod
-    def run(listG6_in, expression, list_inv_bool):
-        listG6_out = []
+    def run(list_g6_in, expression, list_inv_bool):
+        list_g6_out = []
         functions = {}
         functions.update(inum.InvariantNum().dic_function)
         functions.update(op.MathOperations.dic_function)
@@ -28,7 +28,7 @@ class FilterList:
         expressions, AND_OR = split_expression(expression)
         count = 0
         total = 0
-        for g6code in listG6_in:
+        for g6code in list_g6_in:
             if g6code == '' or g6code == ' ':
                 continue
             total = total + 1
@@ -59,21 +59,21 @@ class FilterList:
                     if not graph_satisfies:
                         break
             if graph_satisfies:
-                listG6_out.append(g6code)
+                list_g6_out.append(g6code)
                 count = count + 1
             else:
                 continue
-        return listG6_out, float(count / total)
+        return list_g6_out, float(count / total)
 
     @staticmethod
-    def find_counter_example(listG6_in, expression, list_inv_bool):
+    def find_counter_example(list_g6_in, expression, list_inv_bool):
         functions = {}
         functions.update(inum.InvariantNum().dic_function)
         functions.update(op.MathOperations().dic_function)
         functions.update(op.GraphOperations().dic_function)
         expressions, AND_OR = split_expression(expression)
         graph_satisfies = True
-        for g6code in listG6_in:
+        for g6code in list_g6_in:
             g = nx.from_graph6_bytes(g6code.encode('utf-8'))
             names = {"G": g, "g": g}
             # Check the expressions
