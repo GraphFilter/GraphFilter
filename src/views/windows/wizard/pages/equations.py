@@ -6,7 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
-# note the dicts will be imported from backend
+# NOTE: the dicts will be imported from backend
 dict_invariant = {'alpha': '\u03b1', 'betha': '\u03b2', 'gamma': '\u03b3'}
 dict_math_operation = {'sin': 'sin', 'cos': 'cos', 'sqrt': '\u221A'}
 dict_graph_operation = {'complement': 'c', 'line': '\u2113'}

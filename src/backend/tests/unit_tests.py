@@ -20,13 +20,13 @@ class Helper:
             inv_choices.append(ibool.all[x])
         return inv_choices
 
-    # note
-    # 0: 'planar', 1: 'connected', 2: 'biconnected', 3: 'bipartite', 4: 'Eulerian', 5: 'Chordal', 6: 'Triangle-free',
-    # 7: 'Regular', 8: 'Claw-free', 9: 'Tree', 10: 'k-regular', 11: 'Some A-eigenvalue integer',
-    # 12: 'Some L-eigenvalue integer', 13: 'Some Q-eigenvalue integer', 14: 'Some D-eigenvalue integer',
-    # 15: 'A-integral', 16: 'L-integral', 17: 'Q-integral', 18: 'D-integral', 19: 'Largest A-eigenvalue is integer',
-    # 20: 'Largest L-eigenvalue is integer', 21: 'Largest Q-eigenvalue is integer',
-    # 22: 'Largest D-eigenvalue is integer'}
+    # NOTE:
+    #  0: 'planar', 1: 'connected', 2: 'biconnected', 3: 'bipartite', 4: 'Eulerian', 5: 'Chordal', 6: 'Triangle-free',
+    #  7: 'Regular', 8: 'Claw-free', 9: 'Tree', 10: 'k-regular', 11: 'Some A-eigenvalue integer',
+    #  12: 'Some L-eigenvalue integer', 13: 'Some Q-eigenvalue integer', 14: 'Some D-eigenvalue integer',
+    #  15: 'A-integral', 16: 'L-integral', 17: 'Q-integral', 18: 'D-integral', 19: 'Largest A-eigenvalue is integer',
+    #  20: 'Largest L-eigenvalue is integer', 21: 'Largest Q-eigenvalue is integer',
+    #  22: 'Largest D-eigenvalue is integer'}
 
     @staticmethod
     def list_graphs_from(name_file):

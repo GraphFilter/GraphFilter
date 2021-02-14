@@ -80,7 +80,7 @@ class Dictionary(QWidget):
         for i, concept in enumerate(self.dictionary):
             self.concepts_list.insertItem(i, concept['name'])
 
-        # TODO connect with select from keyboard
+        # TODO: connect with select from keyboard
         self.concepts_list.clicked.connect(self.on_clicked_concept)
 
         concepts_layout.addWidget(self.concepts_list)
