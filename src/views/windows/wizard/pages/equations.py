@@ -64,8 +64,6 @@ class Equations(QWizardPage):
         self.setLayout(main_layout)
 
     def create_conditions(self):
-
-
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
         scroll_area.setFrameShape(QFrame.NoFrame)

@@ -17,11 +17,12 @@ class Wizard(QWizard):
 
         self.main_window = main_window
         self.project_window = ProjectWindow()
+        self.graph_files = GraphFiles()
 
         self.setWindowTitle("New Project")
         self.addPage(ProjectFiles())
         self.addPage(Equations())
-        self.addPage(GraphFiles())
+        self.addPage(self.graph_files)
         self.setFixedSize(self.width, self.height)
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
@@ -35,7 +36,7 @@ class Wizard(QWizard):
         cancel.clicked.connect(self.show_main_window)
 
         finish = self.button(QWizard.FinishButton)
-        finish.clicked.connect(lambda: self.project_window.show())
+        finish.clicked.connect(self.start_filter)
 
         self.setButtonText(QWizard.FinishButton, "Start")
 
@@ -44,3 +45,10 @@ class Wizard(QWizard):
 
     def show_main_window(self):
         self.main_window.show()
+
+    def start_filter(self):
+        # NOTE: I believe that this point can do the filtering
+        self.project_window.visualize.fill_combo(self.graph_files.return_files())  # filtering here
+        self.project_window.show()
+
+
