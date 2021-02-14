@@ -59,8 +59,16 @@ class GraphFiles(QWizardPage):
 
             self.form.addRow(layout)
 
-            remove.clicked.connect(lambda: self.form.removeRow(layout))
+            remove.clicked.connect(lambda: self.remove_row(layout, input_file))
             self.graph_files_add.setEnabled(False)
 
     def return_files(self):
         return self.files_added
+
+    def remove_row(self, layout, input_file):
+        text = input_file.text()
+        if text in self.files_added:
+            self.files_added.remove(input_file.text())
+        print(self.files_added)
+        self.form.removeRow(layout)
+        self.graph_files_add.setEnabled(True)
