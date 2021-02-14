@@ -118,6 +118,7 @@ class TabNumericInvariant(QWidget):
 
         for i, key in enumerate(dict_invariant):
             button = QPushButton(dict_invariant[key])
+            button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
             button.setToolTip(key)  # key and name
             button.clicked.connect(equations.set_line_text)
@@ -134,6 +135,7 @@ class TabGraphOperation(QWidget):
 
         for i, key in enumerate(dict_graph_operation):
             button = QPushButton(dict_graph_operation[key])
+            button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
             button.setToolTip(f'{key} : -invariant-')  # key and name of invariant or operation
             button.clicked.connect(equations.set_line_text)
@@ -150,6 +152,7 @@ class TabMathOperation(QWidget):
 
         for i, key in enumerate(dict_math_operation):
             button = QPushButton(dict_math_operation[key])
+            button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
             button.setToolTip(key)  # key and name
             button.clicked.connect(equations.set_line_text)
