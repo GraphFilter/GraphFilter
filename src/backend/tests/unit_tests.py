@@ -84,9 +84,9 @@ class BackendUnitTests(unittest.TestCase):
         self.assertTrue(Helper.run('resources/graphs/graphs12.g6', f'{exp1N} OR {exp2N}', []) < 1)
 
     def test_integral(self):
-        self.assertTrue(Utils.IsInteger(1))
-        self.assertTrue(Utils.IsInteger(1.000001))
-        self.assertTrue(Utils.IsInteger(0.999998))
+        self.assertTrue(Utils.is_integer(1))
+        self.assertTrue(Utils.is_integer(1.000001))
+        self.assertTrue(Utils.is_integer(0.999998))
         self.assertEqual(1, Helper.run('resources/graphs/graphs2.g6', '', [16]))
 
     def test_name_of_all_bool_invariant(self):
@@ -95,7 +95,7 @@ class BackendUnitTests(unittest.TestCase):
         all_choices = np.arange(len(i_bool.InvariantBool().all))
         for inv in i_bool.InvariantBool().all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', [j]) >= 0)
-            isBool = isBool and inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
+            isBool = isBool and inv.calc(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
             j = j + 1
         self.assertTrue(isinstance(isBool, bool))
         self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', all_choices) >= 0)
