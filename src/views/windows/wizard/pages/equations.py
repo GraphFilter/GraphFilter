@@ -18,14 +18,11 @@ class Equations(QWizardPage):
 
         self.conditions = QGroupBox("Conditions")
         self.conditions.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.conditions.setMinimumWidth(150)
-
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidgetResizable(True)
+        self.conditions.setMinimumWidth(200)
 
         self.create_conditions()
 
-        self.checkboxes = []
+        self.radios = {}
 
         self.TabNumericInvariant = TabNumericInvariant(self)
         self.TabGraphOperation = TabGraphOperation(self)
@@ -68,28 +65,53 @@ class Equations(QWizardPage):
 
     def create_conditions(self):
 
-        # TODO: groupbox with scroll bar
 
-        conditions_layout = QVBoxLayout()
-        checkbox = QCheckBox("Checkbox")
-        checkbox.clicked.connect(lambda: self.checked(checkbox))
-        conditions_layout.addWidget(checkbox)
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setFrameShape(QFrame.NoFrame)
 
-        self.conditions.setLayout(conditions_layout)
+        conditions_layout = QGridLayout()
+        conditions_layout.setHorizontalSpacing(20)
 
-        # NOTE: this code generate multiples checkboxes
-        # for i in range(1, 80):
-        #     checkbox = QCheckBox("Checkbox")
-        #     checkbox.clicked.connect(lambda: self.checked(checkbox))
-        #     conditions_layout.addWidget(checkbox)
-        # self.conditions.setLayout(conditions_layout)
+        button_group = QGroupBox()
+        button_group.setFlat(True)
 
-        layout_aux = QVBoxLayout()
+        glayout_aux = QGridLayout()
+        glayout_aux.setColumnMinimumWidth(0, 50)
+        glayout_aux.addWidget(QLabel("true"), 0, 1, Qt.AlignCenter)
+        glayout_aux.addWidget(QLabel("false"), 0, 2, Qt.AlignCenter)
+        button_group.setLayout(glayout_aux)
+        conditions_layout.addWidget(button_group, 0, 0)
+
+        # NOTE: this code generate multiples radio buttons
+        for i in range(1, 80):
+            button_group = QGroupBox()
+            button_group.setFlat(True)
+            button_group.setObjectName(f"Condition {i}")
+
+            glayout_aux = QGridLayout()
+            glayout_aux.addWidget(QLabel(f"Condition {i}"), i, 0)
+            glayout_aux.setColumnMinimumWidth(0, 50)
+
+            true = QRadioButton()
+            true.clicked.connect(self.checked)
+            true.setObjectName("true")
+
+            false = QRadioButton()
+            false.clicked.connect(self.checked)
+            false.setObjectName("false")
+
+            glayout_aux.addWidget(true, i, 1, Qt.AlignCenter)
+            glayout_aux.addWidget(false, i, 2, Qt.AlignCenter)
+            button_group.setLayout(glayout_aux)
+            conditions_layout.addWidget(button_group, i, 0)
+
+        vlayout_aux = QVBoxLayout()
         widget_aux = QWidget()
         widget_aux.setLayout(conditions_layout)
-        self.scroll_area.setWidget(widget_aux)
-        layout_aux.addWidget(self.scroll_area)
-        self.conditions.setLayout(layout_aux)
+        scroll_area.setWidget(widget_aux)
+        vlayout_aux.addWidget(scroll_area)
+        self.conditions.setLayout(vlayout_aux)
 
     def set_line_text(self, text):
         button_clicked = QPushButton().sender()
@@ -101,13 +123,22 @@ class Equations(QWizardPage):
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
 
-    def checked(self, checkbox):
-        if checkbox.isChecked():
-            print(checkbox.isChecked())
-            self.checkboxes.append(checkbox.text())
-        else:
-            self.checkboxes.remove(checkbox.text())
-        print(self.checkboxes)
+    def checked(self):
+        radio = QRadioButton().sender()
+        groupbox = radio.parentWidget()
+
+        if groupbox.objectName() in self.radios.keys():
+            if self.radios.get(groupbox.objectName()) == radio.objectName():
+                radio.setAutoExclusive(False)
+                radio.setChecked(False)
+                radio.setAutoExclusive(True)
+                self.radios.pop(groupbox.objectName())
+                print(self.radios)
+                return
+
+        self.radios[groupbox.objectName()] = radio.objectName()
+
+        print(self.radios)
 
 
 class TabNumericInvariant(QWidget):
