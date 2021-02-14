@@ -2,7 +2,9 @@ import sys
 
 from PyQt5 import QtGui
 from PyQt5.QtGui import QFont
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 
 # note the dicts will be imported from backend
 dict_invariant = {'alpha': '\u03b1', 'betha': '\u03b2', 'gamma': '\u03b3'}
@@ -111,7 +113,7 @@ class Equations(QWizardPage):
         vlayout_aux.addWidget(scroll_area)
         self.conditions.setLayout(vlayout_aux)
 
-    def set_line_text(self, text):
+    def set_line_text(self):
         button_clicked = QPushButton().sender()
         self.equation.setText(self.equation.text() + button_clicked.text())
 
