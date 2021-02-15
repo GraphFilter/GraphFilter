@@ -2,6 +2,14 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from src.views.windows.project.visualize.docks.info import Info
 from src.views.windows.project.visualize.docks.graph import Graph
+import re
+
+
+def match_graph_code(text):
+    pattern = re.compile(r'(Graph \d* - )(.*)')
+    match = pattern.match(text)
+    print(match.group(2))
+    return match.group(2)
 
 
 class Visualize(QWidget):
@@ -19,6 +27,9 @@ class Visualize(QWidget):
         self.combo_graphs = QComboBox()
         self.combo_graphs.adjustSize()
         self.combo_graphs.setMaximumWidth(200)
+        self.combo_graphs.activated.connect(self.change_graph)
+
+        self.current_graph = 'L??????????^~@'
 
         self.create_tool_bar()
         self.create_docks()
@@ -59,3 +70,8 @@ class Visualize(QWidget):
             lines = open(file, 'r').read().splitlines()
             for i, line in enumerate(lines):
                 self.combo_graphs.addItem(f'Graph {i} - {line}')
+        self.graph.plot_graph(match_graph_code(self.combo_graphs.currentText()))
+
+    def change_graph(self):
+        match_graph_code(self.combo_graphs.currentText())
+        self.graph.plot_graph(self.current_graph)
