@@ -51,4 +51,8 @@ class Wizard(QWizard):
         self.project_window.visualize.fill_combo(self.graph_files.return_files())  # filtering here
         self.project_window.show()
 
+    def disable_next(self):
+        self.button(QtGui.QWizard.NextButton).setEnabled(False)
+
+
 

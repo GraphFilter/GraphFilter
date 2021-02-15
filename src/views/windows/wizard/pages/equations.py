@@ -41,6 +41,7 @@ class Equations(QWizardPage):
         self.equation.setFont(QFont("Cambria Math", 12))
         self.equation.setMaximumHeight(30)
         self.equation.textEdited.connect(lambda: self.update_line_text())
+        self.registerField('equation*', self.equation)
 
         method = QGroupBox("Method")
         method.setFixedHeight(200)
