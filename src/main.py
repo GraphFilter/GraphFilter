@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication
 from src.views.windows.main.index import Index
-from src.views.windows.project.project_window import ProjectWindow
+# from src.views.windows.project.project_window import ProjectWindow
 
 app = QApplication(sys.argv)
 window = Index()

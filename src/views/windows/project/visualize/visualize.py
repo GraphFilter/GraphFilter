@@ -5,6 +5,13 @@ from src.views.windows.project.visualize.docks.graph import Graph
 import re
 
 
+def match_graph_code(text):
+    pattern = re.compile(r'(Graph \d* - )(.*)')
+    match = pattern.match(text)
+    print(match.group(2))
+    return match.group(2)
+
+
 class Visualize(QWidget):
 
     def __init__(self, project_window):
@@ -45,7 +52,7 @@ class Visualize(QWidget):
 
     def create_docks(self):
         if (self.graph and self.info) is None:
-            self.graph = Graph(self, self.current_graph)
+            self.graph = Graph(self)
             self.info = Info(self)
             self.project_window.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.graph)
             self.project_window.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.info)
@@ -63,10 +70,8 @@ class Visualize(QWidget):
             lines = open(file, 'r').read().splitlines()
             for i, line in enumerate(lines):
                 self.combo_graphs.addItem(f'Graph {i} - {line}')
+        self.graph.plot_graph(match_graph_code(self.combo_graphs.currentText()))
 
     def change_graph(self):
-        selected_graph = QComboBox().sender()
-        pattern = re.compile(r'(Graph \d * -)(.*)')
-        match = pattern.match(selected_graph.currentText())
-        print(match.group(2))
-        self.current_graph = match.group(2)
+        match_graph_code(self.combo_graphs.currentText())
+        self.graph.plot_graph(self.current_graph)
