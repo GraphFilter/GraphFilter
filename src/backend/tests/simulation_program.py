@@ -3,7 +3,7 @@ from filter_list import FilterList
 from src.backend.operations_and_invariants import bool_invariants as i_bool
 
 file_in = open(os.path.abspath('resources/graphs/graphs7.g6'), 'r')
-list = file_in.read().splitlines()
+group = file_in.read().splitlines()
 
 expression = input('Equation:')
 
@@ -20,6 +20,6 @@ inv_choice = []
 for i in range(0, len(choice)):
     inv_choice.append(ibool.all[int(choice[i])])
 
-list_out, p = FilterList.run(list, expression=expression, list_inv_bool=inv_choice)
+list_out, p = FilterList.run(group, expression=expression, list_inv_bool=inv_choice)
 file_in.close()
 print(p)
