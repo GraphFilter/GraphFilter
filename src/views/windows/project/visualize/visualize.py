@@ -8,7 +8,6 @@ import re
 def match_graph_code(text):
     pattern = re.compile(r'(Graph \d* - )(.*)')
     match = pattern.match(text)
-    print(match.group(2))
     return match.group(2)
 
 
@@ -29,7 +28,7 @@ class Visualize(QWidget):
         self.combo_graphs.setMaximumWidth(200)
         self.combo_graphs.activated.connect(self.change_graph)
 
-        self.current_graph = 'L??????????^~@'
+        self.current_graph = None
 
         self.create_tool_bar()
         self.create_docks()
@@ -53,6 +52,8 @@ class Visualize(QWidget):
     def create_docks(self):
         if (self.graph and self.info) is None:
             self.graph = Graph(self)
+            if self.current_graph is not None:
+                self.graph.plot_graph(self.current_graph)
             self.info = Info(self)
             self.project_window.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.graph)
             self.project_window.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.info)
@@ -70,8 +71,11 @@ class Visualize(QWidget):
             lines = open(file, 'r').read().splitlines()
             for i, line in enumerate(lines):
                 self.combo_graphs.addItem(f'Graph {i} - {line}')
-        self.graph.plot_graph(match_graph_code(self.combo_graphs.currentText()))
+        self.current_graph = match_graph_code(self.combo_graphs.currentText())
+        if self.current_graph is not None:
+            self.graph.plot_graph(self.current_graph)
 
     def change_graph(self):
-        match_graph_code(self.combo_graphs.currentText())
-        self.graph.plot_graph(self.current_graph)
+        self.current_graph = match_graph_code(self.combo_graphs.currentText())
+        if self.current_graph is not None:
+            self.graph.plot_graph(self.current_graph)
