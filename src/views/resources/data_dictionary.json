@@ -2,204 +2,204 @@
   "dic": [
     {
       "name": "Chromatic Number",
-      "definition" : "The chromatic number of a graph \u0246 is the smallest number of colors needed to color the vertices of $G$ so that no two adjacent vertices share the same color, denoted by $chi(G)$.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Graph_coloring",
+      "definition" : "The chromatic number of a graph G is the smallest number of colors needed to color the vertices of G so that no two adjacent vertices share the same color",
+      "usage": "For filtering click in '\u03c7' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/ChromaticNumber.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Number of vertices",
       "definition" : "Number of vertices",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'n' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Graph_theory",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Number of Edges",
       "definition" : "Number of Edges",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'E' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Graph_theory",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Clique Number",
-      "definition" : "The clique number $omega(G)$ of a graph $G$ is the number of vertices in a maximum clique in $G$.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The clique number of a graph G is the number of vertices in a maximum clique in G.",
+      "usage": "For filtering click in '\u03c9' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Clique_(graph_theory)",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Independence Number",
-      "definition" : "The independence number of a graph $G$ is the number of vertices in a maximum independent set in G.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The independence number of a graph G is the number of vertices in a maximum independent set in G.",
+      "usage": "For filtering click in '\u237a' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Independent_set_(graph_theory)",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Domination Number",
-      "definition" : "The domination number is the number of vertices in a smallest dominating set for $G$. A dominating set for a graph $G=(V, E)$ is a subset $D$ of $V$ such that every vertex not in $D$ is adjacent to at least one member of $D$.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Dominating_set",
+      "definition" : "The domination number is the number of vertices in a smallest dominating set for G. A dominating set for a graph G=(V, E) is a subset D of V such that every vertex not in D is adjacent to at least one member of D.",
+      "usage": "For filtering click in '\u0194' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/DominationNumber.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Total Domination Number",
-      "definition" : "The total domination number $$gamma_t$$ of a graph is the size of a smallest total dominating set, where a total dominating set is a set of vertices of the graph such that all vertices (including those in the set itself) have a neighbor in the set. Total dominating numbers are defined only for graphs having no isolated vertex",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The total domination number of a graph is the size of a smallest total dominating set, where a total dominating set is a set of vertices of the graph such that all vertices (including those in the set itself) have a neighbor in the set. Total dominating numbers are defined only for graphs having no isolated vertex",
+      "usage": "For filtering click in '\u0194<sub>t</sub>' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/TotalDominationNumber.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Connected Domination Number",
-      "definition" : "The connected domination number of a connected graph $G$, denoted $d(G)$, is the size of a minimum connected dominating set of a graph $G$. A connected dominating set in a connected graph $G$ is a dominating set in $G$ whose vertices induce a connected subgraph",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The connected domination number of a connected graph G, denoted $d(G)$, is the size of a minimum connected dominating set of a graph G. A connected dominating set in a connected graph G is a dominating set in G whose vertices induce a connected subgraph",
+      "usage": "For filtering click in 'd' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/ConnectedDominatingSet.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Matching Number",
-      "definition" : "The matching number $u(G)$ of graph $G$, sometimes known as the edge independence number, is the size of a maximum independent edge set. ",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Matching_(graph_theory)",
+      "definition" : "The matching number of graph G, sometimes known as the edge independence number, is the size of a maximum independent edge set. ",
+      "usage": "For filtering click in '\u03bd' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/MatchingNumber.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Vertex Connectivity",
-      "definition" : "The vertex connectivity $kappa(G)$ of a graph $G$, also called \"point connectivity\" or simply \"connectivity,\" is the minimum size of a vertex cut, i.e., a vertex subset $Ssubset V(G)$ such that $G-S$ is disconnected or has only one vertex.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "It's the minimum number of nodes that must be removed to disconnect the graph or render it trivial.",
+      "usage": "For filtering click in \u03f0 code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/VertexConnectivity.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Edge Connectivity",
-      "definition" : "The minimum number of edges $lambda(G)$ whose deletion from a graph $G$ disconnects $G$, also called the line connectivity.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "It's the minimum number of edges that must be removed to disconnect the graph.",
+      "usage": "For filtering click in \u03bb code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/EdgeConnectivity.html",
       "implementation": "Grinpy Python library"
     },
     {
-      "name": "Number of componnents",
+      "name": "Number of components",
       "definition" : "It's the number of maximals componnents in the graph",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'w' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Component_(graph_theory)",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Degree regularity",
       "definition" : "It's the number of distinct values in the sequence of degrees of the graph.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Graph_theory",
+      "usage": "For filtering click in 'd<sub>r</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/VertexDegree.html",
       "implementation": ""
     },
     {
       "name": "Maximum Degree",
-      "definition" : "It's the number of distinct values in the sequence of degrees of the graph.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Graph_theory",
+      "definition" : "It's the largest vertex degree of G",
+      "usage": "For filtering click in \u0394 code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/VertexDegree.html",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Minimum Degree",
-      "definition" : "Minimum Degree",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Graph_theory",
+      "definition" : "It's the smallest vertex degree of G",
+      "usage": "For filtering click in \u1e9f code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/VertexDegree.html",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Average Degree",
-      "definition" : "Average Degree",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Graph_theory",
+      "definition" : "It's the average degree per vertex in the graph",
+      "usage": "For filtering click in 'd<sub>a</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/VertexDegree.html",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Vertex Cover Number",
-      "definition" : " It's the size of a minimum vertex cover, denoted by $tau(G)$. A vertex cover (or node cover) of a graph is a set of vertices that includes at least one endpoint of every edge of the graph. ",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
-      "link": "https://en.wikipedia.org/wiki/Vertex_cover",
+      "definition" : " It's the size of a minimum vertex cover. A vertex cover (or node cover) of a graph is a set of vertices that includes at least one endpoint of every edge of the graph. ",
+      "usage": "For filtering click in \u03c4 code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "link": "https://mathworld.wolfram.com/VertexCover.html",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Diameter",
       "definition" : "It's the greatest distance between any pair of vertices.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'diam' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Distance_(graph_theory)",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Radius",
-      "definition" : "The radius r of a graph is the minimum eccentricity of any vertex. The eccentricity of a vertex $v$ is the greatest distance between v and any other vertex.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The radius r of a graph is the minimum eccentricity of any vertex. The eccentricity of a vertex is the greatest distance between it and any other vertex.",
+      "usage": "For filtering click in 'r' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Distance_(graph_theory)",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Largest A-eigenvalue",
       "definition" : "It's the largest eigenvalue of adjacency matrix. ",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u03bb<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Adjacency_matrix",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Largest L-eigenvalue",
-      "definition" : "It's the largest eigenvalue of Laplacian matrix, this is $L=D-A$, where D is the degree matrix and A is the adjacency matrix of the graph.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "It's the largest eigenvalue of Laplacian matrix, this is L=D-A, where D is the degree matrix and A is the adjacency matrix of the graph.",
+      "usage": "For filtering click in '\u03bc<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Largest Q-eigenvalue",
       "definition" : "It's the largest eigenvalue of Signless Laplacian matrix. Given a simple graph G with n vertices, its Signless Laplacian matrix is Q=D+A, where D is the degree matrix and A is the adjacency matrix of the graph.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'q<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix#Signless_Laplacian",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Largest D-eigenvalue",
       "definition" : "It's the largest eigenvalue of graph distance matrix. This matrix is the square where each entry (i,j) represents the distance between the vertices i and j.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u0398<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/GraphDistanceMatrix.html",
       "implementation": "Numpy and NetworkX python Library"
     },
     {
       "name": "Algebraic Connectivity",
       "definition" : "It's the second-smallest eigenvalue (counting multiple eigenvalues separately) of the Laplacian matrix of G. This is L=D-A, where D is the degree matrix and A is the adjacency matrix of the graph.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'a' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Algebraic_connectivity",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Wiener Index",
-      "definition" : "The Wiener index (or the \"path number\") is a graph index defined for a graph on $n$ nodes by $W=frac{1}{2}sum_{i=1}^{n} sum_{j=1}^{n}d(i,j)$, where $d(i,j)$ is the graph distance matrix, with the distance between the vertices $i$ and $j$.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The Wiener index (or the \"path number\") is a graph index defined for a graph on n nodes by W=\u00bd \u03a3 \u03a3 d(i,j), where d(i,j) is the distance between the vertices i and j.",
+      "usage": "For filtering click in 'W' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/WienerIndex.html",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Estrada Index",
-      "definition" : "It's a graph index defined for a graph on $n$ nodes by $EE(G)=sum _{j=1}^{n}e^{lambda _{j}, where $lambda_i$ is the eigenvalue of adjancecy matrix.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "It's a graph index defined for a graph on n nodes by EE=\u03a3 e<sup>\u03bb</sup>, where \u03bb are the eigenvalues of adjancecy matrix.",
+      "usage": "For filtering click in 'EE' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Estrada_index",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Nullity",
-      "definition" : "In the matrix theory of graphs, the nullity of the graph is the nullity of the adjacency matrix $A$ of the graph. The nullity of $A$ is given by $n − r$ where, $r$ is the rank of the adjacency matrix.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "In the matrix theory of graphs, the nullity of the graph is the nullity of the adjacency matrix A of the graph. This nullity equals the multiplicity of the eigenvalue 0 in the spectrum of the adjacency matrix",
+      "usage": "For filtering click in '\u03b7' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Nullity_(graph_theory)",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Number spanning trees",
-      "definition" : "The number $t(G)$ of spanning trees of a connected graph $G$. A spanning tree $T$ of an undirected graph $G$ is a subgraph that is a tree which includes all of the vertices of $G$. This invariant can be obtained from Kirchhoff's theorem.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The number of spanning trees of a connected graph G. A spanning tree T of an undirected graph G is a subgraph that is a tree which includes all of the vertices of G. This invariant can be obtained from Kirchhoff's theorem.",
+      "usage": "For filtering click in 't' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Spanning_tree",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Density",
-      "definition" : "It's the number $den(G)=frac{2m}{n(n-1)}$, where $m$ and $n$ are the number of edges and nodes, in order. The density is 0 for a graph without edges and 1 for a complete graph.",
-      "usage": "For filtering write the X code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The graph density of simple graphs is defined to be the ratio of the number of edges with respect to the maximum possible edges The density is 0 for a graph without edges and 1 for a complete graph.",
+      "usage": "For filtering click in 'D' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://networkx.org/documentation/networkx-1.10/reference/generated/networkx.classes.function.density.html",
       "implementation": "NetworkX Python Library"
     },
@@ -226,7 +226,7 @@
     },
     {
       "name": "Bipartite",
-      "definition" : "It's a graph whose vertices can be divided into two disjoint and independent sets $U$ and $V$ such that every edge connects a vertex in $U$ to one in $V$.",
+      "definition" : "It's a graph whose vertices can be divided into two disjoint and independent sets U and V such that every edge connects a vertex in U to one in V.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can mark it in the invariants menu to calculate in the plotted graph.",
       "link": "https://en.wikipedia.org/wiki/Bipartite_graph",
       "implementation": "NetworkX Python Library"
@@ -261,43 +261,43 @@
     },
     {
       "name": "k-regular graph",
-      "definition" : "It's a regular graph with vertices of degree $k$.",
+      "definition" : "It's a regular graph with vertices of degree k.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can mark it in the invariants menu to calculate in the plotted graph.",
       "link": "https://en.wikipedia.org/wiki/Regular_graph",
       "implementation": "Grinpy Python library"
     },
     {
-      "name": "Some M -eigenvalue integer",
-      "definition" : "Checks if there is an integer M-eigenvalue, where $M=A, L, Q or D$.",
+      "name": "Some M-eigenvalue integer",
+      "definition" : "Checks if there is an integer M-eigenvalue, where M is A, L, Q or D.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can mark it in the invariants menu to calculate in the plotted graph.",
-      "link": "",
-      "implementation": ""
+      "link": "none",
+      "implementation": "own implementation"
     },
     {
       "name": "M-integral",
-      "definition" : "Checks if all M-eigenvalues are integer, where $M=A, L, Q or D$.",
+      "definition" : "Checks if all M-eigenvalues are integer, where M is A, L, Q or D.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can mark it in the invariants menu to calculate in the plotted graph.",
-      "link": "",
-      "implementation": ""
+      "link": "none",
+      "implementation": "own implementation"
     },
     {
       "name": "Largest M-eigenvalue is integer",
-      "definition" : "Checks whether the largest M-eigenvalue is an integer, where $M=A, L, Q or D$.",
+      "definition" : "Checks whether the largest M-eigenvalue is an integer, where M is A, L, Q or D.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can mark it in the invariants menu to calculate in the plotted graph.",
-      "link": "",
-      "implementation": ""
+      "link": "none",
+      "implementation": "own implementation"
     },
     {
       "name": "Complement",
-      "definition" : "The complement of a graph G is a graph H on the same vertices such that two distinct vertices of H are adjacent if and only if they are not adjacent in G.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The complement of a graph G is a graph c(G) on the same vertices such that two distinct vertices of c(G) are adjacent if and only if they are not adjacent in G.",
+      "usage": "For filtering click in 'c' code in the equation to use it.",
       "link": "https://en.wikipedia.org/wiki/Complement_graph",
       "implementation": "NetworkX Python Library"
     },
     {
       "name": "Line graph",
-      "definition" : "The line graph of an undirected graph $G$ is another graph $ell(G)$ that represents the adjacencies between edges of $G$. $ell(G)$ is constructed in the following way: for each edge in $G$, make a vertex in $ell(G)$; for every two edges in $G$ that have a vertex in common, make an edge between their corresponding vertices in $ell(G)$.",
-      "usage": "For filtering write the X code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "definition" : "The line graph of an undirected graph G is another graph \u2113(G) that represents the adjacencies between edges of G. It's constructed in the following way: for each edge in G, make a vertex in \u2113(G); for every two edges in G that have a vertex in common, make an edge between their corresponding vertices in \u2113(G).",
+      "usage": "For filtering click in '\u2113' code in the equation to use it.",
       "link": "https://en.wikipedia.org/wiki/Line_graph",
       "implementation": "NetworkX Python Library"
     }

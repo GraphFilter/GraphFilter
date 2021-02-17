@@ -57,7 +57,7 @@ class Complement(GraphOperations):
 
 class Line(GraphOperations):
     name = "Line of graph"
-    code = "l"
+    code = "\u2113"
 
     @staticmethod
     def calculate(graph):
