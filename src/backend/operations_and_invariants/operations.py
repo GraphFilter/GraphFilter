@@ -4,13 +4,14 @@ import numpy as np
 
 class MathOperations:
     code = None
+    code_string = None
     dic_function = {}
     all = []
 
     def __init__(self):
-        for subclass in MathOperations.__subclasses__():
-            self.all.append(subclass)
-            self.dic_function[subclass.code] = subclass.calculate
+        self.all = MathOperations.__subclasses__()
+        for inv in self.all:
+            self.dic_function[inv.code] = inv.calculate
 
     @staticmethod
     def calculate(graph):
@@ -19,22 +20,17 @@ class MathOperations:
 
 class GraphOperations:
     code = None
+    code_literal = None
     dic_function = {}
+    dic_translate = {}
     all = []
 
     def __init__(self):
         self.all = GraphOperations.__subclasses__()
-        '''
-        data = pd.read_excel(os.path.abspath('data_dictionary.xlsx'), sheet_name='Operation')
-        line = 0
-        for subclass in self.all:
-            subclass.defi = data.loc[line].at['Definition']
-            subclass.link = data.loc[line].at['Link']
-            subclass.implement = data.loc[line].at['Implementation']
-        '''
-        for subclass in GraphOperations.__subclasses__():
-            self.all.append(subclass)
-            self.dic_function[subclass.code] = subclass.calculate
+        for i, inv in enumerate(self.all):
+            inv.code_literal = 'gop' + str(i)
+            self.dic_function[inv.code_literal] = inv.calculate
+            self.dic_translate[inv.code] = inv.code_literal
 
     name = None
     defi = None

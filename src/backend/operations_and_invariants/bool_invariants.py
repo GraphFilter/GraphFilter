@@ -223,8 +223,8 @@ class Utils:
             return number
 
     @staticmethod
-    def is_there_integer(gorup):
-        for number in gorup:
+    def is_there_integer(group):
+        for number in group:
             if Utils.approx_to_int(number).is_integer():
                 return True
         return False

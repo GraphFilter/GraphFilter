@@ -17,7 +17,7 @@
     {
       "name": "Number of Edges",
       "definition" : "Number of Edges",
-      "usage": "For filtering click in 'E' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u0415' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Graph_theory",
       "implementation": "NetworkX Python Library"
     },
@@ -177,7 +177,7 @@
     },
     {
       "name": "Estrada Index",
-      "definition" : "It's a graph index defined for a graph on n nodes by EE=\u03a3 e<sup>\u03bb</sup>, where \u03bb are the eigenvalues of adjancecy matrix.",
+      "definition" : "It's a graph index defined for a graph on n nodes by EE=\u03a3 e<sup>\u03bb</sup>, where \u03bb are the eigenvalues of adjacency matrix.",
       "usage": "For filtering click in 'EE' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Estrada_index",
       "implementation": "NetworkX Python Library"
@@ -192,14 +192,14 @@
     {
       "name": "Number spanning trees",
       "definition" : "The number of spanning trees of a connected graph G. A spanning tree T of an undirected graph G is a subgraph that is a tree which includes all of the vertices of G. This invariant can be obtained from Kirchhoff's theorem.",
-      "usage": "For filtering click in 't' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u0288' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Spanning_tree",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Density",
       "definition" : "The graph density of simple graphs is defined to be the ratio of the number of edges with respect to the maximum possible edges The density is 0 for a graph without edges and 1 for a complete graph.",
-      "usage": "For filtering click in 'D' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u018a' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://networkx.org/documentation/networkx-1.10/reference/generated/networkx.classes.function.density.html",
       "implementation": "NetworkX Python Library"
     },

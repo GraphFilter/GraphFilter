@@ -5,7 +5,13 @@ from operations_and_invariants import num_invariants as inum
 from operations_and_invariants import bool_invariants as ibool
 
 
-def split_expression(expression):
+def split_translate_expression(expression):
+
+    for code, code_literal in inum.InvariantNum.dic_translate.items():
+        expression = str(expression).replace(code+"(", code_literal+"(")
+    for code, code_literal in op.GraphOperations.dic_translate.items():
+        expression = str(expression).replace(code+"(", code_literal+"(")
+
     if "AND" in expression and "OR" in expression:
         return 'error'
     elif "AND" in expression:
@@ -23,9 +29,9 @@ class FilterList:
         list_g6_out = []
         functions = {}
         functions.update(inum.InvariantNum().dic_function)
-        functions.update(op.MathOperations.dic_function)
+        functions.update(op.MathOperations().dic_function)
         functions.update(op.GraphOperations().dic_function)
-        expressions, AND_OR = split_expression(expression)
+        expressions, AND_OR = split_translate_expression(expression)
         count = 0
         total = 0
         for g6code in list_g6_in:
@@ -38,7 +44,7 @@ class FilterList:
             # Check the expressions
             if len(expression) > 0:
                 if AND_OR == 'SINGLE':
-                    graph_satisfies = simple_eval(expression, functions=functions, names=names)
+                    graph_satisfies = simple_eval(expressions, functions=functions, names=names)
                 elif AND_OR == 'AND':
                     for exp in expressions:
                         graph_satisfies = simple_eval(exp, functions=functions, names=names)
@@ -53,9 +59,9 @@ class FilterList:
             if graph_satisfies:
                 for bool_inv in list_inv_bool:
                     if bool_inv == ibool.KRegular:
-                        graph_satisfies = bool_inv.calc(g, k=1)
+                        graph_satisfies = bool_inv.calculate(g, k=1)
                     else:
-                        graph_satisfies = bool_inv.calc(g)
+                        graph_satisfies = bool_inv.calculate(g)
                     if not graph_satisfies:
                         break
             if graph_satisfies:
@@ -71,7 +77,7 @@ class FilterList:
         functions.update(inum.InvariantNum().dic_function)
         functions.update(op.MathOperations().dic_function)
         functions.update(op.GraphOperations().dic_function)
-        expressions, AND_OR = split_expression(expression)
+        expressions, AND_OR = split_translate_expression(expression)
         graph_satisfies = True
         for g6code in list_g6_in:
             g = nx.from_graph6_bytes(g6code.encode('utf-8'))
@@ -79,7 +85,7 @@ class FilterList:
             # Check the expressions
             if len(expression) > 0:
                 if AND_OR == 'SINGLE':
-                    graph_satisfies = simple_eval(expression, functions=functions, names=names)
+                    graph_satisfies = simple_eval(expressions, functions=functions, names=names)
                 elif AND_OR == 'AND':
                     for exp in expressions:
                         graph_satisfies = simple_eval(exp, functions=functions, names=names)
@@ -98,9 +104,9 @@ class FilterList:
             if graph_satisfies:
                 for bool_inv in list_inv_bool:
                     if bool_inv == ibool.KRegular:
-                        graph_satisfies = bool_inv.calc(g, k=1)
+                        graph_satisfies = bool_inv.calculate(g, k=1)
                     else:
-                        graph_satisfies = bool_inv.calc(g)
+                        graph_satisfies = bool_inv.calculate(g)
                     if not graph_satisfies:
                         return g6code
         return ''

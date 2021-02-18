@@ -49,21 +49,38 @@ class Helper:
 
 class BackendUnitTests(unittest.TestCase):
 
-    def test_split_expression(self):
+    def test_split_and_translate_expression(self):
+        i_num.InvariantNum()
+        oper.GraphOperations()
         chi = str(i_num.ChromaticNumber.code)
         line = str(oper.Line.code)
         omega = str(i_num.CliqueNumber.code)
         lambda1 = str(i_num.Largest1EigenA.code)
         n = str(i_num.NumberVertices.code)
+        chi_str = str(i_num.ChromaticNumber.code_literal)
+        line_str = str(oper.Line.code_literal)
+        omega_str = str(i_num.CliqueNumber.code_literal)
+        lambda1_str = str(i_num.Largest1EigenA.code_literal)
+        n_str = str(i_num.NumberVertices.code_literal)
         expression1 = f'{chi}(G)==5 AND {omega}({line}(G))>=1 AND {n}(G)<={lambda1}(G)'
-        expression_split = [f'{chi}(G)==5', f'{omega}({line}(G))>=1', f'{n}(G)<={lambda1}(G)']
+        expression_translated = [f'{chi_str}(G)==5', f'{omega_str}({line_str}(G))>=1', f'{n_str}(G)<={lambda1_str}(G)']
         expression2 = f'{chi}(G)==5 OR {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
         expression3 = f'{chi}(G)==5 AND {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
-        self.assertEqual(expression_split, ftl.split_expression(expression1)[0])
-        self.assertEqual(expression_split, ftl.split_expression(expression2)[0])
-        self.assertEqual('error', ftl.split_expression(expression3))
+        self.assertEqual(expression_translated, ftl.split_translate_expression(expression1)[0])
+        self.assertEqual(expression_translated, ftl.split_translate_expression(expression2)[0])
+        self.assertEqual('error', ftl.split_translate_expression(expression3))
+
+    def test_translate_code_to_code_literal(self):
+        i_num.InvariantNum()
+        oper.GraphOperations()
+        for inv in i_num.InvariantNum().all:
+            expression = f'{inv.code}(G)==1'
+            expression_translated = f'{inv.code_literal}(G)==1'
+            self.assertEqual(expression_translated, ftl.split_translate_expression(expression)[0])
 
     def test_name_of_all_num_invariant(self):
+        i_num.InvariantNum()
+        oper.GraphOperations()
         for inv in i_num.InvariantNum().all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', f'{inv.code}(G)==1', []) >= 0)
 
@@ -99,7 +116,7 @@ class BackendUnitTests(unittest.TestCase):
         all_choices = np.arange(len(i_bool.InvariantBool().all))
         for inv in i_bool.InvariantBool().all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', [j]) >= 0)
-            is_bool = is_bool and inv.calc(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
+            is_bool = is_bool and inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
             j = j + 1
         self.assertTrue(isinstance(is_bool, bool))
         self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', all_choices) >= 0)
@@ -154,7 +171,9 @@ class MiscellaneousTests(unittest.TestCase):
         self.assertEqual(1, Helper.run('resources/graphs/graphs5.g6', f'{eigen1_l}(G)>5', [9]))
 
     def test_wilf_result(self):
-        self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', 'chi(G)<=eigen1A(G)+1', []))
+        chi = str(i_num.ChromaticNumber.code)
+        eigen1 = str(i_num.Largest1EigenA.code)
+        self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', []))
 
     def test_independence_and_matching(self):
         alpha = str(i_num.IndependenceNumber.code)
@@ -163,7 +182,9 @@ class MiscellaneousTests(unittest.TestCase):
         self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', f'{match}(G)=={alpha}({line}(G))', []))
 
     def test_perfect_graphs(self):
-        self.assertEqual(1, Helper.run('resources/graphs/graphs8.g6', 'chi(G)==omega(G)', []))
+        chi = str(i_num.ChromaticNumber.code)
+        omega = str(i_num.CliqueNumber.code)
+        self.assertEqual(1, Helper.run('resources/graphs/graphs8.g6', f'{chi}(G)=={omega}(G)', []))
 
 
 if __name__ == '__main__':
