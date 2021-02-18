@@ -1,5 +1,5 @@
-import os
 import json
+
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 
@@ -27,11 +27,11 @@ class Dictionary(QWidget):
 
         self.definitions = QLabel()
         self.definitions.setWordWrap(True)
-        self.definitions.setFont(QtGui.QFont("Arial", 14))
+        self.definitions.setFont(QtGui.QFont("Cambria", 14))
 
         self.usages = QLabel()
         self.usages.setWordWrap(True)
-        self.usages.setFont(QtGui.QFont("Arial", 14))
+        self.usages.setFont(QtGui.QFont("Cambria", 14))
 
         self.implementations = QLabel()
         self.implementations.setWordWrap(True)
