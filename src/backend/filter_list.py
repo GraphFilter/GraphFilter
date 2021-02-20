@@ -3,7 +3,6 @@ import networkx as nx
 from operations_and_invariants import operations as op
 from operations_and_invariants import num_invariants as inum
 from operations_and_invariants import bool_invariants as ibool
-import json
 
 
 class FilterList:
@@ -12,51 +11,25 @@ class FilterList:
     list_inv_bool = None
     list_g6_out = []
     functions_to_eval = {}
-    invariants_selected = []
-    out = []
-
-    # NOTE: variable out
-    #  out is a list [graph1,graph2,...]
-    #  each graph_i is a dic {'g6code': CODE , 'results': RESULTS}
-    #  CODE is a string with g6code
-    #  RESULTS is a dic {name_invariant : value}
+    list_out = None
 
     def __init__(self, list_g6_in, expression, list_inv_bool):
         self.list_g6_in = list_g6_in
         self.list_inv_bool = list_inv_bool
-        invariant_num = inum.InvariantNum()
-        operations_math = op.MathOperations()
-        operations_graph = op.GraphOperations()
-        self.functions_to_eval.update(invariant_num.dic_function)
-        self.functions_to_eval.update(operations_graph.dic_function)
-        self.functions_to_eval.update(operations_math.dic_function)
+        self.invariant_num = inum.InvariantNum()
+        self.operations_math = op.MathOperations()
+        self.operations_graph = op.GraphOperations()
+        self.functions_to_eval.update(self.invariant_num.dic_function)
+        self.functions_to_eval.update(self.operations_graph.dic_function)
+        self.functions_to_eval.update(self.operations_math.dic_function)
         self.expressions, self.AND_OR = self.split_translate_expression(expression)
-        self.fill_invariants_selected(self.expressions, invariant_num.all)
 
-    def load_json(self):
-        with open('out_filtered_file.json', 'w') as json_file:
-            json.dump(self.out, json_file)
-        return json_file
 
-    def fill_invariants_selected(self, expressions, set_invariant_num):
-        self.invariants_selected = self.list_inv_bool
-        for inv in set_invariant_num:
-            for expression in expressions:
-                if inv.code_literal in expression:
-                    self.invariants_selected.append(inv)
-
-    def save_invariants_dic_from(self, graph):
-        dic = {}
-        for inv in self.invariants_selected:
-            dic[inv.name] = str(inv.calculate(graph))
-        return dic
-
-    @staticmethod
-    def split_translate_expression(expression):
-        for code, code_literal in inum.InvariantNum.dic_translate.items():
-            expression = str(expression).replace(code + "(", code_literal + "(")
-        for code, code_literal in op.GraphOperations.dic_translate.items():
-            expression = str(expression).replace(code + "(", code_literal + "(")
+    def split_translate_expression(self, expression):
+        for inv in self.invariant_num.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for inv in self.operations_graph.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
 
         if "AND" in expression and "OR" in expression:
             return 'error'
@@ -68,7 +41,7 @@ class FilterList:
             return expression.replace(" ", ""), 'SINGLE'
 
     def run(self):
-        self.out = []
+        self.list_out = []
         count = 0
         total = 0
         for g6code in self.list_g6_in:
@@ -102,14 +75,14 @@ class FilterList:
                     if not graph_satisfies:
                         break
             if graph_satisfies:
-                self.out.append({'g6code': g6code, 'results': self.save_invariants_dic_from(g)})
+                self.list_out.append(g6code)
                 count = count + 1
             else:
                 continue
         return float(count / total)
 
     def find_counter_example(self):
-        self.out = []
+        self.list_out = []
         graph_satisfies = True
         for g6code in self.list_g6_in:
             if g6code == '' or g6code == ' ':
@@ -124,7 +97,7 @@ class FilterList:
                     for exp in self.expressions:
                         graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
                         if not graph_satisfies:
-                            self.out.append({'g6code': g6code, 'results': self.save_invariants_dic_from(g)})
+                            self.list_out.append(g6code)
                             return True
                 elif self.AND_OR == "OR":
                     for exp in self.expressions:
@@ -132,11 +105,11 @@ class FilterList:
                         if graph_satisfies:
                             break
                     if not graph_satisfies:
-                        self.out.append({'g6code': g6code, 'results': self.save_invariants_dic_from(g)})
+                        self.list_out.append(g6code)
                         return True
                 # Check the boolean invariants
                 if not graph_satisfies:
-                    self.out.append({'g6code': g6code, 'results': self.save_invariants_dic_from(g)})
+                    self.list_out.append(g6code)
                     return True
             if graph_satisfies:
                 for bool_inv in self.list_inv_bool:
@@ -145,6 +118,6 @@ class FilterList:
                     else:
                         graph_satisfies = bool_inv.calculate(g)
                     if not graph_satisfies:
-                        self.out.append({'g6code': g6code, 'results': self.save_invariants_dic_from(g)})
+                        self.list_out.append(g6code)
                         return True
         return False

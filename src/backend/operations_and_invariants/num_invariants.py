@@ -19,7 +19,6 @@ class InvariantNum:
         for i, invar in enumerate(self.all):
             invar.code_literal = 'F' + str(i)
             self.dic_function[invar.code_literal] = invar.calculate
-            self.dic_translate[invar.code] = invar.code_literal
 
     @staticmethod
     def calculate(graph):

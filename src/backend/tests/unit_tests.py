@@ -43,7 +43,7 @@ class Helper:
     def some_c_exem(file, expression, choices):
         ftl = FilterList(Helper.list_graphs_from(file), expression, Helper.choice_bool_inv(choices))
         boolean = ftl.find_counter_example()
-        return boolean, ftl.out
+        return boolean, ftl.list_out
 
 
 class BackendUnitTests(unittest.TestCase):
@@ -65,17 +65,19 @@ class BackendUnitTests(unittest.TestCase):
         expression_translated = [f'{chi_str}(G)==5', f'{omega_str}({line_str}(G))>=1', f'{n_str}(G)<={lambda1_str}(G)']
         expression2 = f'{chi}(G)==5 OR {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
         expression3 = f'{chi}(G)==5 AND {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
-        self.assertEqual(expression_translated, FilterList.split_translate_expression(expression1)[0])
-        self.assertEqual(expression_translated, FilterList.split_translate_expression(expression2)[0])
-        self.assertEqual('error', FilterList.split_translate_expression(expression3))
+        ftl = FilterList([], '', [])
+        self.assertEqual(expression_translated, ftl.split_translate_expression(expression1)[0])
+        self.assertEqual(expression_translated, ftl.split_translate_expression(expression2)[0])
+        self.assertEqual('error', ftl.split_translate_expression(expression3))
 
     def test_translate_code_to_code_literal(self):
         i_num.InvariantNum()
         oper.GraphOperations()
+        ftl = FilterList([], '', [])
         for inv in i_num.InvariantNum().all:
             expression = f'{inv.code}(G)==1'
             expression_translated = f'{inv.code_literal}(G)==1'
-            self.assertEqual(expression_translated, FilterList.split_translate_expression(expression)[0])
+            self.assertEqual(expression_translated, ftl.split_translate_expression(expression)[0])
 
     def test_name_of_all_num_invariant(self):
         i_num.InvariantNum()
@@ -132,11 +134,11 @@ class BackendUnitTests(unittest.TestCase):
                                        f'{str(op.code)}(2)>0', []) >= 0)
 
     def test_find_counterexample(self):
-        # diam = str(i_num.Diameter.code)
-        # self.assertFalse(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16])[0])
-        # self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', [])[0])
+        diam = str(i_num.Diameter.code)
+        self.assertFalse(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16])[0])
+        self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', [])[0])
         no_tree = 'ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?'
-        self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', [9])[1][0]['g6code'], no_tree)
+        self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', [9])[1][0], no_tree)
 
     def test_not_100percent_filter(self):
         diam = str(i_num.Diameter.code)
@@ -147,17 +149,6 @@ class BackendUnitTests(unittest.TestCase):
         sqrt = str(oper.Sqrt.code)
         c = str(oper.Complement.code)
         self.assertEqual(1, Helper.run('resources/graphs/single_graph.g6', f'{sqrt}({diam}({c}(G)))>0', []))
-
-    def test_json_file_exported(self):
-        a = str(i_num.AlgebraicConnectivity.code)
-        diam = str(i_num.Diameter.code)
-        ftl = FilterList(
-            Helper.list_graphs_from('resources/graphs/graphs3.g6'),
-            f'{a}(G)<=5 AND {a}(G)*{diam}(G)>=2 AND {diam}(G)==2',
-            Helper.choice_bool_inv([7, 8]))
-        ftl.run()
-        file = ftl.load_json()
-        self.assertTrue(file.name.endswith('.json'))
 
 
 class MiscellaneousTests(unittest.TestCase):
