@@ -30,7 +30,6 @@ class GraphOperations:
         for i, inv in enumerate(self.all):
             inv.code_literal = 'gop' + str(i)
             self.dic_function[inv.code_literal] = inv.calculate
-            self.dic_translate[inv.code] = inv.code_literal
 
     name = None
     defi = None

@@ -1,7 +1,6 @@
 import os
 import unittest
 from filter_list import FilterList
-import filter_list as ftl
 import numpy as np
 import operations_and_invariants.bool_invariants as i_bool
 from operations_and_invariants.bool_invariants import Utils
@@ -37,14 +36,14 @@ class Helper:
 
     @staticmethod
     def run(file, expression, choices):
-        return FilterList.run(Helper.list_graphs_from(file), expression, Helper.choice_bool_inv(choices))[1]
+        ftl = FilterList(Helper.list_graphs_from(file), expression, Helper.choice_bool_inv(choices))
+        return ftl.run()
 
     @staticmethod
     def some_c_exem(file, expression, choices):
-        return FilterList.find_counter_example(
-            Helper.list_graphs_from(file),
-            expression,
-            Helper.choice_bool_inv(choices))
+        ftl = FilterList(Helper.list_graphs_from(file), expression, Helper.choice_bool_inv(choices))
+        boolean = ftl.find_counter_example()
+        return boolean, ftl.list_out
 
 
 class BackendUnitTests(unittest.TestCase):
@@ -66,6 +65,7 @@ class BackendUnitTests(unittest.TestCase):
         expression_translated = [f'{chi_str}(G)==5', f'{omega_str}({line_str}(G))>=1', f'{n_str}(G)<={lambda1_str}(G)']
         expression2 = f'{chi}(G)==5 OR {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
         expression3 = f'{chi}(G)==5 AND {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
+        ftl = FilterList([], '', [])
         self.assertEqual(expression_translated, ftl.split_translate_expression(expression1)[0])
         self.assertEqual(expression_translated, ftl.split_translate_expression(expression2)[0])
         self.assertEqual('error', ftl.split_translate_expression(expression3))
@@ -73,6 +73,7 @@ class BackendUnitTests(unittest.TestCase):
     def test_translate_code_to_code_literal(self):
         i_num.InvariantNum()
         oper.GraphOperations()
+        ftl = FilterList([], '', [])
         for inv in i_num.InvariantNum().all:
             expression = f'{inv.code}(G)==1'
             expression_translated = f'{inv.code_literal}(G)==1'
@@ -134,10 +135,10 @@ class BackendUnitTests(unittest.TestCase):
 
     def test_find_counterexample(self):
         diam = str(i_num.Diameter.code)
-        self.assertTrue(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16]) == '')
-        self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', []) != '')
+        self.assertFalse(Helper.some_c_exem('resources/graphs/graphs2.g6', '', [16])[0])
+        self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', [])[0])
         no_tree = 'ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?'
-        self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', [9]), no_tree)
+        self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', [9])[1][0], no_tree)
 
     def test_not_100percent_filter(self):
         diam = str(i_num.Diameter.code)
@@ -161,6 +162,7 @@ class MiscellaneousTests(unittest.TestCase):
         eigen1_q = str(i_num.Largest1EigenQ.code)
         self.assertEqual(1,
                          Helper.run('resources/graphs/graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2', [7, 8]))
+
         self.assertEqual(1,
                          Helper.run('resources/graphs/graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1_a}(G)',
                                     [0]))

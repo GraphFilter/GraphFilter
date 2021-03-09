@@ -5,36 +5,46 @@ from operations_and_invariants import num_invariants as inum
 from operations_and_invariants import bool_invariants as ibool
 
 
-def split_translate_expression(expression):
-
-    for code, code_literal in inum.InvariantNum.dic_translate.items():
-        expression = str(expression).replace(code+"(", code_literal+"(")
-    for code, code_literal in op.GraphOperations.dic_translate.items():
-        expression = str(expression).replace(code+"(", code_literal+"(")
-
-    if "AND" in expression and "OR" in expression:
-        return 'error'
-    elif "AND" in expression:
-        return expression.replace(" ", "").split("AND"), 'AND'
-    elif "OR" in expression:
-        return expression.replace(" ", "").split("OR"), 'OR'
-    else:
-        return expression.replace(" ", ""), 'SINGLE'
-
-
 class FilterList:
+    list_g6_in = None
+    expressions = None
+    list_inv_bool = None
+    list_g6_out = []
+    functions_to_eval = {}
+    list_out = None
 
-    @staticmethod
-    def run(list_g6_in, expression, list_inv_bool):
-        list_g6_out = []
-        functions = {}
-        functions.update(inum.InvariantNum().dic_function)
-        functions.update(op.MathOperations().dic_function)
-        functions.update(op.GraphOperations().dic_function)
-        expressions, AND_OR = split_translate_expression(expression)
+    def __init__(self, list_g6_in, expression, list_inv_bool):
+        self.list_g6_in = list_g6_in
+        self.list_inv_bool = list_inv_bool
+        self.invariant_num = inum.InvariantNum()
+        self.operations_math = op.MathOperations()
+        self.operations_graph = op.GraphOperations()
+        self.functions_to_eval.update(self.invariant_num.dic_function)
+        self.functions_to_eval.update(self.operations_graph.dic_function)
+        self.functions_to_eval.update(self.operations_math.dic_function)
+        self.expressions, self.AND_OR = self.split_translate_expression(expression)
+
+
+    def split_translate_expression(self, expression):
+        for inv in self.invariant_num.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for inv in self.operations_graph.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+
+        if "AND" in expression and "OR" in expression:
+            return 'error'
+        elif "AND" in expression:
+            return expression.replace(" ", "").split("AND"), 'AND'
+        elif "OR" in expression:
+            return expression.replace(" ", "").split("OR"), 'OR'
+        else:
+            return expression.replace(" ", ""), 'SINGLE'
+
+    def run(self):
+        self.list_out = []
         count = 0
         total = 0
-        for g6code in list_g6_in:
+        for g6code in self.list_g6_in:
             if g6code == '' or g6code == ' ':
                 continue
             total = total + 1
@@ -42,22 +52,22 @@ class FilterList:
             g = nx.from_graph6_bytes(g6code.encode('utf-8'))
             names = {"G": g, "g": g}
             # Check the expressions
-            if len(expression) > 0:
-                if AND_OR == 'SINGLE':
-                    graph_satisfies = simple_eval(expressions, functions=functions, names=names)
-                elif AND_OR == 'AND':
-                    for exp in expressions:
-                        graph_satisfies = simple_eval(exp, functions=functions, names=names)
+            if len(self.expressions) > 0:
+                if self.AND_OR == 'SINGLE':
+                    graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
+                elif self.AND_OR == 'AND':
+                    for exp in self.expressions:
+                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
                         if not graph_satisfies:
                             break
-                elif AND_OR == "OR":
-                    for exp in expressions:
-                        graph_satisfies = simple_eval(exp, functions=functions, names=names)
+                elif self.AND_OR == "OR":
+                    for exp in self.expressions:
+                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
                         if graph_satisfies:
                             break
             # Check the boolean invariants
             if graph_satisfies:
-                for bool_inv in list_inv_bool:
+                for bool_inv in self.list_inv_bool:
                     if bool_inv == ibool.KRegular:
                         graph_satisfies = bool_inv.calculate(g, k=1)
                     else:
@@ -65,48 +75,49 @@ class FilterList:
                     if not graph_satisfies:
                         break
             if graph_satisfies:
-                list_g6_out.append(g6code)
+                self.list_out.append(g6code)
                 count = count + 1
             else:
                 continue
-        return list_g6_out, float(count / total)
+        return float(count / total)
 
-    @staticmethod
-    def find_counter_example(list_g6_in, expression, list_inv_bool):
-        functions = {}
-        functions.update(inum.InvariantNum().dic_function)
-        functions.update(op.MathOperations().dic_function)
-        functions.update(op.GraphOperations().dic_function)
-        expressions, AND_OR = split_translate_expression(expression)
+    def find_counter_example(self):
+        self.list_out = []
         graph_satisfies = True
-        for g6code in list_g6_in:
+        for g6code in self.list_g6_in:
+            if g6code == '' or g6code == ' ':
+                continue
             g = nx.from_graph6_bytes(g6code.encode('utf-8'))
             names = {"G": g, "g": g}
             # Check the expressions
-            if len(expression) > 0:
-                if AND_OR == 'SINGLE':
-                    graph_satisfies = simple_eval(expressions, functions=functions, names=names)
-                elif AND_OR == 'AND':
-                    for exp in expressions:
-                        graph_satisfies = simple_eval(exp, functions=functions, names=names)
+            if len(self.expressions) > 0:
+                if self.AND_OR == 'SINGLE':
+                    graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
+                elif self.AND_OR == 'AND':
+                    for exp in self.expressions:
+                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
                         if not graph_satisfies:
-                            return g6code
-                elif AND_OR == "OR":
-                    for exp in expressions:
-                        graph_satisfies = simple_eval(exp, functions=functions, names=names)
+                            self.list_out.append(g6code)
+                            return True
+                elif self.AND_OR == "OR":
+                    for exp in self.expressions:
+                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
                         if graph_satisfies:
                             break
                     if not graph_satisfies:
-                        return g6code
-            # Check the boolean invariants
+                        self.list_out.append(g6code)
+                        return True
+                # Check the boolean invariants
                 if not graph_satisfies:
-                    return g6code
+                    self.list_out.append(g6code)
+                    return True
             if graph_satisfies:
-                for bool_inv in list_inv_bool:
+                for bool_inv in self.list_inv_bool:
                     if bool_inv == ibool.KRegular:
                         graph_satisfies = bool_inv.calculate(g, k=1)
                     else:
                         graph_satisfies = bool_inv.calculate(g)
                     if not graph_satisfies:
-                        return g6code
-        return ''
+                        self.list_out.append(g6code)
+                        return True
+        return False
