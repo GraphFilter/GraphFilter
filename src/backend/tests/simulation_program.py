@@ -1,5 +1,5 @@
 import os
-from filter_list import FilterList
+from src.backend.filter_list import FilterList
 from src.backend.operations_and_invariants import bool_invariants as i_bool
 
 file_in = open(os.path.abspath('resources/graphs/graphs7.g6'), 'r')
