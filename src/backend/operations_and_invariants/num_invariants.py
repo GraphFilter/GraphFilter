@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 import numpy.linalg as la
 import scipy.sparse as ss
-from operations_and_invariants.bool_invariants import Utils
+from src.backend.operations_and_invariants.bool_invariants import Utils
 
 
 class InvariantNum:

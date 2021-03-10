@@ -1,8 +1,8 @@
 from simpleeval import simple_eval
 import networkx as nx
-from operations_and_invariants import operations as op
-from operations_and_invariants import num_invariants as inum
-from operations_and_invariants import bool_invariants as ibool
+from src.backend.operations_and_invariants import operations as op
+from src.backend.operations_and_invariants import num_invariants as inum
+from src.backend.operations_and_invariants import bool_invariants as ibool
 
 
 class FilterList:
@@ -23,7 +23,6 @@ class FilterList:
         self.functions_to_eval.update(self.operations_graph.dic_function)
         self.functions_to_eval.update(self.operations_math.dic_function)
         self.expressions, self.AND_OR = self.split_translate_expression(expression)
-
 
     def split_translate_expression(self, expression):
         for inv in self.invariant_num.all:
