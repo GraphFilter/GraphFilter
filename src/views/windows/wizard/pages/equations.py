@@ -26,6 +26,8 @@ class Equations(QWizardPage):
 
         self.radios = {}
 
+        self.method = ''
+
         self.TabNumericInvariant = TabNumericInvariant(self)
         self.TabGraphOperation = TabGraphOperation(self)
         self.TabMathOperation = TabMathOperation(self)
@@ -42,12 +44,16 @@ class Equations(QWizardPage):
         self.equation.setMaximumHeight(30)
         self.equation.textEdited.connect(lambda: self.update_line_text())
 
-        method = QGroupBox("Method")
-        method.setFixedHeight(200)
+        box_method = QGroupBox("Method")
+        box_method.setFixedHeight(200)
         method_layout = QVBoxLayout()
-        method_layout.addWidget(QRadioButton("Filter Graphs"))
-        method_layout.addWidget(QRadioButton("Find counter example"))
-        method.setLayout(method_layout)
+        self.radio_filter = QRadioButton("Filter Graphs")
+        self.radio_counter = QRadioButton("Find counter example")
+        self.radio_filter.clicked.connect(self.method_clicked)
+        self.radio_counter.clicked.connect(self.method_clicked)
+        method_layout.addWidget(self.radio_filter)
+        method_layout.addWidget(self.radio_counter)
+        box_method.setLayout(method_layout)
 
         # TODO: learn how to control better the spacing in vbox items
 
@@ -57,13 +63,21 @@ class Equations(QWizardPage):
         aside_layout.addStretch(5)
         aside_layout.addWidget(self.equation)
         aside_layout.addStretch(45)
-        aside_layout.addWidget(method)
+        aside_layout.addWidget(box_method)
 
         main_layout = QHBoxLayout()
         main_layout.addWidget(self.conditions)
         main_layout.addLayout(aside_layout)
 
         self.setLayout(main_layout)
+
+    def method_clicked(self):
+        choice = QPushButton().sender().text()
+        if 'filter' in choice.lower():
+            self.method = 'filter'
+        else:
+            self.method = 'counterexample'
+        self.completeChanged.emit()
 
     def create_conditions(self):
         scroll_area = QScrollArea()
@@ -116,12 +130,14 @@ class Equations(QWizardPage):
     def set_line_text(self):
         button_clicked = QPushButton().sender()
         self.equation.setText(self.equation.text() + button_clicked.text())
+        self.completeChanged.emit()
 
     def update_line_text(self):
         text_equation = self.equation.text()
         for text, symbol in dict_union.items():
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
+        self.completeChanged.emit()
 
     def checked(self):
         radio = QRadioButton().sender()
@@ -138,7 +154,17 @@ class Equations(QWizardPage):
 
         self.radios[groupbox.objectName()] = radio.objectName()
 
+        self.completeChanged.emit()
+
         print(self.radios)
+
+    def isComplete(self):
+        if (not self.equation.text() and not self.radios) or (not self.method):
+            print('not text')
+            return False
+        else:
+            print('text')
+            return True
 
 
 class TabNumericInvariant(QWidget):

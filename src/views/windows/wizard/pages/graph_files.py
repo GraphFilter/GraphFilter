@@ -9,7 +9,10 @@ class GraphFiles(QWizardPage):
         self.files_added = []
 
         graph_files_input = QLineEdit()
+        self.registerField('graph_files*', graph_files_input)
+
         graph_files_button = QPushButton("...")
+
         self.graph_files_add = QPushButton("+")
         self.graph_files_add.setEnabled(False)
         self.graph_files_add.clicked.connect(self.add_file)
