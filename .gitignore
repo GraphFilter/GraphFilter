@@ -199,3 +199,5 @@ compile_commands.json
 .idea/
 
 venv/
+
+project.json

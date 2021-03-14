@@ -4,6 +4,7 @@ from src.views.windows.wizard.pages.equations import Equations
 from src.views.windows.wizard.pages.graph_files import GraphFiles
 from src.views.windows.project.project_window import ProjectWindow
 from PyQt5 import QtGui, QtCore
+import json
 
 
 class Wizard(QWizard):
@@ -17,18 +18,23 @@ class Wizard(QWizard):
 
         self.main_window = main_window
         self.project_window = ProjectWindow()
+
+        self.project_files = ProjectFiles()
+        self.equations = Equations()
         self.graph_files = GraphFiles()
 
         self.setWindowTitle("New Project")
-        self.addPage(ProjectFiles())
-        self.addPage(Equations())
+
+        self.addPage(self.project_files)
+        self.addPage(self.equations)
         self.addPage(self.graph_files)
+
         self.setFixedSize(self.width, self.height)
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
         self.setWizardStyle(QWizard.WizardStyle(0))
 
-        pixmap = QtGui.QPixmap(1,1)
+        pixmap = QtGui.QPixmap(1, 1)
         pixmap.fill(QtCore.Qt.transparent)
         self.setWindowIcon(QtGui.QIcon(pixmap))
 
@@ -47,6 +53,8 @@ class Wizard(QWizard):
         self.main_window.show()
 
     def start_filter(self):
+        self.save_project()
+
         # NOTE: I believe that this point can do the filtering
         self.project_window.visualize.fill_combo(self.graph_files.return_files())  # filtering here
         self.project_window.show()
@@ -54,5 +62,17 @@ class Wizard(QWizard):
     def disable_next(self):
         self.button(QtGui.QWizard.NextButton).setEnabled(False)
 
+    def save_project(self):
+        project_dictionary = {
+            "project_name": self.project_files.project_name_input.text(),
+            "project_folder": self.project_files.project_location_input.text(),
+            "equation": self.equations.equation.text(),
+            "conditions": self.equations.radios,
+            "method": self.equations.method,
+            "graphs": self.graph_files.files_added
+        }
+        project_json = json.dumps(project_dictionary)
 
-
+        file_json = open("project.json", "w")
+        file_json.write(project_json)
+        file_json.close()
