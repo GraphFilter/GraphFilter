@@ -99,13 +99,14 @@ class Tree(InvariantBool):
     def calculate(graph):
         return nx.is_tree(graph)
 
+# TODO: create k-regular in numeric invariant
 
-class KRegular(InvariantBool):
-    name = 'k-regular'
-
-    @staticmethod
-    def calculate(graph, k):
-        return gp.is_k_regular(graph, k=k)
+# class KRegular(InvariantBool):
+#     name = 'k-regular'
+#
+#     @staticmethod
+#     def calculate(graph, k):
+#         return gp.is_k_regular(graph, k=k)
 
 
 class SomeEigenIntegerA(InvariantBool):

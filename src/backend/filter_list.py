@@ -2,7 +2,6 @@ from simpleeval import simple_eval
 import networkx as nx
 from src.backend.operations_and_invariants import operations as op
 from src.backend.operations_and_invariants import num_invariants as inum
-from src.backend.operations_and_invariants import bool_invariants as ibool
 
 
 class FilterList:
@@ -14,6 +13,9 @@ class FilterList:
     list_out = None
 
     def __init__(self, list_g6_in, expression, list_inv_bool):
+        # note: list_g6_in: list with graphs6 string
+        #  expression: (in)equation string with AND OR
+        #  list_inv_bool: list of couples [invariant, True/False]
         self.list_g6_in = list_g6_in
         self.list_inv_bool = list_inv_bool
         self.invariant_num = inum.InvariantNum()
@@ -67,10 +69,10 @@ class FilterList:
             # Check the boolean invariants
             if graph_satisfies:
                 for bool_inv in self.list_inv_bool:
-                    if bool_inv == ibool.KRegular:
-                        graph_satisfies = bool_inv.calculate(g, k=1)
+                    if bool_inv[1]:
+                        graph_satisfies = bool_inv[0].calculate(g)
                     else:
-                        graph_satisfies = bool_inv.calculate(g)
+                        graph_satisfies = not bool_inv[0].calculate(g)
                     if not graph_satisfies:
                         break
             if graph_satisfies:
@@ -112,10 +114,10 @@ class FilterList:
                     return True
             if graph_satisfies:
                 for bool_inv in self.list_inv_bool:
-                    if bool_inv == ibool.KRegular:
-                        graph_satisfies = bool_inv.calculate(g, k=1)
+                    if bool_inv[1]:
+                        graph_satisfies = bool_inv[0].calculate(g)
                     else:
-                        graph_satisfies = bool_inv.calculate(g)
+                        graph_satisfies = not bool_inv[0].calculate(g)
                     if not graph_satisfies:
                         self.list_out.append(g6code)
                         return True

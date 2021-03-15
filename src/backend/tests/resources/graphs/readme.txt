@@ -8,12 +8,12 @@ Some trees and only one no-tree in line 264
 
 -----------------------------
 
-file2
+graphs2
 only cographs
 
 -----------------------------
 
-file3
+graphs3
  	Algebraic Connectivity <= 5.0
 AND	Algebraic Connectivity >= 2.0
 AND	Diameter = 2.0
@@ -22,21 +22,21 @@ AND	Claw-Free = true
 
 -----------------------------
 
-file4
+graphs4
 	Edge Connectivity = 3.0
 AND	Planar = true
 AND	Regular = true
 
 -----------------------------
 
-file5
+graphs5
  	Laplacian Largest Eigenvalue > 5.0
 AND	Acyclic = true
 AND	Connected = true
 
 -----------------------------
 
-file6
+graphs6
  	Planar = true
 AND	Independence Number >= 7.0
 AND	Minimum Dominating Set = 8.0
@@ -46,31 +46,31 @@ AND	Radius >= 3.0
 
 -----------------------------
 
-file7
+graphs7
 All graphs with 7 vertices
 
 chi<eigen1A+1
 
 -----------------------------
 
-file8
+graphs8
 Perfect graphs
 
 -----------------------------
 
-file9
+graphs9
 1/3 with Diameter = 3.0
 1/3 with Diameter = 4.0
 1/3 with Diameter = 5.0
 
 -----------------------------
 
-file10
+graphs10
 Chordal with 7 vertices
 
 -----------------------------
 
-file11
+graphs11
  	Edge Connectivity >= 3.0
 AND	Vertex Connectivity >= 5.0
 AND	Clique Number = 4.0
@@ -78,6 +78,20 @@ AND	Laplacian Largest Eigenvalue > 10.0
 
 -----------------------------
 
-file 12
-file11 OR file 6
+graphs 12
+graphs11 OR graphs6
+
+-----------------------------
+
+graphs13
+99 graphs
+ 	Claw-Free = false
+AND	Regular = false
+AND	Average Degree < 5.0
+AND	Connected = true
+AND	Acyclic = false
+
+1 graph
+And one graph Acyclic = True
+
 
