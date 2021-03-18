@@ -73,6 +73,10 @@ class Wizard(QWizard):
         }
         project_json = json.dumps(project_dictionary)
 
-        file_json = open("project.json", "w")
-        file_json.write(project_json)
-        file_json.close()
+        project_location = self.project_files.project_location_input.text().replace('\\', '/')
+
+        filename = f"{project_location}/{self.project_files.project_name_input.text()}.json"
+
+        with open(filename, "w") as file_json:
+            file_json.write(project_json)
+            file_json.close()
