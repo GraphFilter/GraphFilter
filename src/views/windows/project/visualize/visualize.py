@@ -55,8 +55,6 @@ class Visualize(QWidget):
             self.right_button.setIconSize(QtCore.QSize(20, 20))
             self.right_button.clicked.connect(self.move_down)
 
-            print(os.path)
-
             self.tool_bar.addWidget(self.combo_graphs)
             self.tool_bar.addWidget(self.left_button)
             self.tool_bar.addWidget(self.right_button)
@@ -107,6 +105,8 @@ class Visualize(QWidget):
         self.current_graph = match_graph_code(self.combo_graphs.currentText())
         if self.current_graph is not None:
             self.graph.plot_graph(self.current_graph)
+
+        self.info.fill_info_table({"test": self.combo_graphs.currentText()})
 
     def move_up(self):
         self.combo_graphs.setCurrentIndex(self.combo_graphs.currentIndex() - 1)
