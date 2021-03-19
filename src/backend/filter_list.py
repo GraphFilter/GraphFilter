@@ -1,29 +1,33 @@
 from simpleeval import simple_eval
 import networkx as nx
 from src.backend.operations_and_invariants import operations as op
-from src.backend.operations_and_invariants import num_invariants as inum
+from src.backend.operations_and_invariants import num_invariants as i_num
+from src.backend.operations_and_invariants import bool_invariants as i_bool
 
 
 class FilterList:
     list_g6_in = None
     expressions = None
-    list_inv_bool = None
+    list_inv_bool_choices = None
     list_g6_out = []
     functions_to_eval = {}
     list_out = None
 
-    def __init__(self, list_g6_in, expression, list_inv_bool):
+    def __init__(self):
         # note: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
-        #  list_inv_bool: list of couples [invariant, True/False]
-        self.list_g6_in = list_g6_in
-        self.list_inv_bool = list_inv_bool
-        self.invariant_num = inum.InvariantNum()
+        #  list_inv_bool_choices: list of couples [invariant, True/False]
+        self.invariant_bool = i_bool.InvariantBool()
+        self.invariant_num = i_num.InvariantNum()
         self.operations_math = op.MathOperations()
         self.operations_graph = op.GraphOperations()
         self.functions_to_eval.update(self.invariant_num.dic_function)
         self.functions_to_eval.update(self.operations_graph.dic_function)
         self.functions_to_eval.update(self.operations_math.dic_function)
+
+    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices):
+        self.list_g6_in = list_g6_in
+        self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = self.split_translate_expression(expression)
 
     def split_translate_expression(self, expression):
@@ -68,7 +72,7 @@ class FilterList:
                             break
             # Check the boolean invariants
             if graph_satisfies:
-                for bool_inv in self.list_inv_bool:
+                for bool_inv in self.list_inv_bool_choices:
                     if bool_inv[1]:
                         graph_satisfies = bool_inv[0].calculate(g)
                     else:
@@ -113,7 +117,7 @@ class FilterList:
                     self.list_out.append(g6code)
                     return True
             if graph_satisfies:
-                for bool_inv in self.list_inv_bool:
+                for bool_inv in self.list_inv_bool_choices:
                     if bool_inv[1]:
                         graph_satisfies = bool_inv[0].calculate(g)
                     else:

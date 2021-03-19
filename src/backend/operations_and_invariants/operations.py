@@ -42,7 +42,7 @@ class GraphOperations:
 
 
 class Complement(GraphOperations):
-    name = "Complement of graph"
+    name = "Complement"
     code = "c"
 
     @staticmethod
@@ -51,7 +51,7 @@ class Complement(GraphOperations):
 
 
 class Line(GraphOperations):
-    name = "Line of graph"
+    name = "Line"
     code = "\u2113"
 
     @staticmethod

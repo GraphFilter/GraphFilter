@@ -19,12 +19,14 @@ class Helper:
 
     @staticmethod
     def run(file, expression, choices):
-        ftl = FilterList(Helper.list_graphs_from(file), expression, choices)
+        ftl = FilterList()
+        ftl.set_inputs(Helper.list_graphs_from(file), expression, choices)
         return ftl.run()
 
     @staticmethod
     def some_c_exem(file, expression, choices):
-        ftl = FilterList(Helper.list_graphs_from(file), expression, choices)
+        ftl = FilterList()
+        ftl.set_inputs(Helper.list_graphs_from(file), expression, choices)
         boolean = ftl.find_counter_example()
         return boolean, ftl.list_out
 
@@ -48,7 +50,8 @@ class BackendUnitTests(unittest.TestCase):
         expression_translated = [f'{chi_str}(G)==5', f'{omega_str}({line_str}(G))>=1', f'{n_str}(G)<={lambda1_str}(G)']
         expression2 = f'{chi}(G)==5 OR {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
         expression3 = f'{chi}(G)==5 AND {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
-        ftl = FilterList([], '', [])
+        ftl = FilterList()
+        ftl.set_inputs([], '', [])
         self.assertEqual(expression_translated, ftl.split_translate_expression(expression1)[0])
         self.assertEqual(expression_translated, ftl.split_translate_expression(expression2)[0])
         self.assertEqual('error', ftl.split_translate_expression(expression3))
@@ -56,7 +59,8 @@ class BackendUnitTests(unittest.TestCase):
     def test_translate_code_to_code_literal(self):
         i_num.InvariantNum()
         oper.GraphOperations()
-        ftl = FilterList([], '', [])
+        ftl = FilterList()
+        ftl.set_inputs([], '', [])
         for inv in i_num.InvariantNum().all:
             expression = f'{inv.code}(G)==1'
             expression_translated = f'{inv.code_literal}(G)==1'

@@ -5,13 +5,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
-# NOTE: the dicts will be imported from backend
-dict_invariant = {'alpha': '\u03b1', 'betha': '\u03b2', 'gamma': '\u03b3'}
-dict_math_operation = {'sin': 'sin', 'cos': 'cos', 'sqrt': '\u221A'}
-dict_graph_operation = {'complement': 'c', 'line': '\u2113'}
-dict_union = {**dict_invariant, **dict_graph_operation, **dict_math_operation}
-
+from src.backend.filter_list import FilterList
 
 class Equations(QWizardPage):
 
@@ -28,6 +22,15 @@ class Equations(QWizardPage):
 
         self.method = ''
 
+        self.filter_backend = FilterList()
+        self.dict_num_invariant = {}
+        self.dict_graph_operation = {}
+        self.dict_math_operation = {}
+        self.dict_bool_invariant = {}
+        self.dict_text_equation = {}
+        self.build_dic_invariants()
+
+        #TODO: set scroll area in tabs
         self.TabNumericInvariant = TabNumericInvariant(self)
         self.TabGraphOperation = TabGraphOperation(self)
         self.TabMathOperation = TabMathOperation(self)
@@ -70,6 +73,22 @@ class Equations(QWizardPage):
         main_layout.addLayout(aside_layout)
 
         self.setLayout(main_layout)
+
+    def build_dic_invariants(self):
+
+        for inv in self.filter_backend.invariant_num.all:
+            self.dict_num_invariant[inv.name] = inv.code
+
+        for op in self.filter_backend.operations_graph.all:
+            self.dict_graph_operation[op.name] = op.code
+
+        for op in self.filter_backend.operations_math.all:
+            self.dict_math_operation[op.name] = op.code
+
+        for inv in self.filter_backend.invariant_bool.all:
+            self.dict_bool_invariant[inv.name] = inv
+
+        self.dict_text_equation = {**self.dict_num_invariant, **self.dict_graph_operation, **self.dict_math_operation}
 
     def method_clicked(self):
         choice = QPushButton().sender().text()
@@ -129,12 +148,12 @@ class Equations(QWizardPage):
 
     def set_line_text(self):
         button_clicked = QPushButton().sender()
-        self.equation.setText(self.equation.text() + button_clicked.text())
+        self.equation.setText(self.equation.text() + self.dict_text_equation[button_clicked.text()])
         self.completeChanged.emit()
 
     def update_line_text(self):
         text_equation = self.equation.text()
-        for text, symbol in dict_union.items():
+        for text, symbol in self.dict_text_equation.items():
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
         self.completeChanged.emit()
@@ -173,11 +192,12 @@ class TabNumericInvariant(QWidget):
 
         layout = QGridLayout()
 
-        for i, key in enumerate(dict_invariant):
-            button = QPushButton(dict_invariant[key])
+        for i, key in enumerate(equations.dict_num_invariant):
+            button = QPushButton(key)
+            button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(key)  # key and name
+            button.setToolTip(f'{key} : {equations.dict_num_invariant[key]}')
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 
@@ -190,11 +210,12 @@ class TabGraphOperation(QWidget):
 
         layout = QGridLayout()
 
-        for i, key in enumerate(dict_graph_operation):
-            button = QPushButton(dict_graph_operation[key])
+        for i, key in enumerate(equations.dict_graph_operation):
+            button = QPushButton(key)
+            button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(f'{key} : -invariant-')  # key and name of invariant or operation
+            button.setToolTip(f'{key} : {equations.dict_graph_operation[key]}')  # key and name of invariant or operation
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 
@@ -207,11 +228,12 @@ class TabMathOperation(QWidget):
 
         layout = QGridLayout()
 
-        for i, key in enumerate(dict_math_operation):
-            button = QPushButton(dict_math_operation[key])
+        for i, key in enumerate(equations.dict_math_operation):
+            button = QPushButton(key)
+            button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(key)  # key and name
+            button.setToolTip(f'{key} : {equations.dict_math_operation[key]}')
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 
