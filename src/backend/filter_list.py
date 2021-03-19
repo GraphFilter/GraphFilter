@@ -9,7 +9,6 @@ class FilterList:
     list_g6_in = None
     expressions = None
     list_inv_bool_choices = None
-    #list_g6_out = []
     functions_to_eval = {}
     list_out = None
 
@@ -44,6 +43,21 @@ class FilterList:
             return expression.replace(" ", "").split("OR"), 'OR'
         else:
             return expression.replace(" ", ""), 'SINGLE'
+
+    def validate_expression(self):
+        g = nx.trivial_graph()
+        names = {"G": g, "g": g}
+        if self.AND_OR == 'error':
+            return False
+        try:
+            if self.AND_OR == 'SINGLE':
+                simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
+            elif self.AND_OR == 'AND' or self.AND_OR == 'OR':
+                for exp in self.expressions:
+                    simple_eval(exp, functions=self.functions_to_eval, names=names)
+        except:
+            return False
+        return True
 
     def run_filter(self):
         self.list_out = []
