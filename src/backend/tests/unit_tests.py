@@ -21,13 +21,13 @@ class Helper:
     def run(file, expression, choices):
         ftl = FilterList()
         ftl.set_inputs(Helper.list_graphs_from(file), expression, choices)
-        return ftl.run()
+        return ftl.run_filter()
 
     @staticmethod
     def some_c_exem(file, expression, choices):
         ftl = FilterList()
         ftl.set_inputs(Helper.list_graphs_from(file), expression, choices)
-        boolean = ftl.find_counter_example()
+        boolean = ftl.run_find_counterexample()
         return boolean, ftl.list_out
 
 

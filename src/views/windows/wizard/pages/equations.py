@@ -5,14 +5,13 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from src.backend.filter_list import FilterList
 
 class Equations(QWizardPage):
 
-    def __init__(self):
+    def __init__(self, filter_backend):
         super().__init__()
 
-        self.filter_backend = FilterList()
+        self.filter_backend = filter_backend
         self.dict_num_invariant = {}
         self.dict_graph_operation = {}
         self.dict_math_operation = {}
@@ -185,14 +184,14 @@ class Equations(QWizardPage):
             print('text')
             return True
 
-    def extractFilteringData(self):
+    def extract_filtering_data(self):
         list_inv_bool_choices = []
-        for inv_name, value in self.radios:
-            if value == "true":
+        for inv_name in self.radios.keys():
+            if self.radios[inv_name] == "true":
                 list_inv_bool_choices.append((self.dict_bool_invariant[inv_name], True))
-            elif value == "false":
+            elif self.radios[inv_name] == "false":
                 list_inv_bool_choices.append((self.dict_bool_invariant[inv_name], False))
-        return self.equation.text(), list_inv_bool_choices
+        return self.equation.text(), list_inv_bool_choices, self.method
 
 
 class TabNumericInvariant(QWidget):

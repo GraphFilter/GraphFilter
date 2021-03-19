@@ -66,11 +66,9 @@ class Visualize(QWidget):
             self.graph = None
             self.info = None
 
-    def fill_combo(self, file_out_path):
-        for file in file_out_path:
-            lines = open(file, 'r').read().splitlines()
-            for i, line in enumerate(lines):
-                self.combo_graphs.addItem(f'Graph {i} - {line}')
+    def fill_combo(self, list_graphs):
+        for i, line in enumerate(list_graphs):
+            self.combo_graphs.addItem(f'Graph {i} - {line}')
         self.current_graph = match_graph_code(self.combo_graphs.currentText())
         if self.current_graph is not None:
             self.graph.plot_graph(self.current_graph)

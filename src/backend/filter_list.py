@@ -9,7 +9,7 @@ class FilterList:
     list_g6_in = None
     expressions = None
     list_inv_bool_choices = None
-    list_g6_out = []
+    #list_g6_out = []
     functions_to_eval = {}
     list_out = None
 
@@ -45,7 +45,7 @@ class FilterList:
         else:
             return expression.replace(" ", ""), 'SINGLE'
 
-    def run(self):
+    def run_filter(self):
         self.list_out = []
         count = 0
         total = 0
@@ -86,7 +86,7 @@ class FilterList:
                 continue
         return float(count / total)
 
-    def find_counter_example(self):
+    def run_find_counterexample(self):
         self.list_out = []
         graph_satisfies = True
         for g6code in self.list_g6_in:

@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import *
+
+from src.backend.filter_list import FilterList
 from src.views.windows.wizard.pages.project_files import ProjectFiles
 from src.views.windows.wizard.pages.equations import Equations
 from src.views.windows.wizard.pages.graph_files import GraphFiles
@@ -12,6 +14,8 @@ class Wizard(QWizard):
     def __init__(self, main_window):
         super().__init__()
 
+        self.filter_backend = FilterList()
+
         # TODO: remove icon from window
         self.width = 900
         self.height = 600
@@ -20,7 +24,7 @@ class Wizard(QWizard):
         self.project_window = ProjectWindow()
 
         self.project_files = ProjectFiles()
-        self.equations = Equations()
+        self.equations = Equations(self.filter_backend)
         self.graph_files = GraphFiles()
 
         self.setWindowTitle("New Project")
@@ -53,12 +57,17 @@ class Wizard(QWizard):
         self.main_window.show()
 
     def start_filter(self):
-        expression, list_inv_bool_choices = self.equations.extractFilteringData()
-
+        expression, list_inv_bool_choices, method = self.equations.extract_filtering_data()
+        list_g6_in = self.graph_files.extract_list_graphs_input()
+        self.filter_backend.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         self.save_project()
 
-        # NOTE: I believe that this point can do the filtering
-        self.project_window.visualize.fill_combo(self.graph_files.return_files())  # filtering here
+        if method == 'filter':
+            return_run = self.filter_backend.run_filter()
+        elif method == 'counterexample':
+            return_run = self.filter_backend.run_find_counterexample()
+        #TODO: usar a porcentagem retornada
+        self.project_window.visualize.fill_combo(self.filter_backend.list_out)
         self.project_window.show()
 
     def disable_next(self):
