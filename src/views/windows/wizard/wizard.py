@@ -53,6 +53,8 @@ class Wizard(QWizard):
         self.main_window.show()
 
     def start_filter(self):
+        expression, list_inv_bool_choices = self.equations.extractFilteringData()
+
         self.save_project()
 
         # NOTE: I believe that this point can do the filtering

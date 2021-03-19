@@ -12,6 +12,14 @@ class Equations(QWizardPage):
     def __init__(self):
         super().__init__()
 
+        self.filter_backend = FilterList()
+        self.dict_num_invariant = {}
+        self.dict_graph_operation = {}
+        self.dict_math_operation = {}
+        self.dict_bool_invariant = {}
+        self.dict_text_equation = {}
+        self.build_dic_invariants()
+
         self.conditions = QGroupBox("Conditions")
         self.conditions.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.conditions.setMinimumWidth(200)
@@ -21,14 +29,6 @@ class Equations(QWizardPage):
         self.radios = {}
 
         self.method = ''
-
-        self.filter_backend = FilterList()
-        self.dict_num_invariant = {}
-        self.dict_graph_operation = {}
-        self.dict_math_operation = {}
-        self.dict_bool_invariant = {}
-        self.dict_text_equation = {}
-        self.build_dic_invariants()
 
         #TODO: set scroll area in tabs
         self.TabNumericInvariant = TabNumericInvariant(self)
@@ -117,13 +117,13 @@ class Equations(QWizardPage):
         conditions_layout.addWidget(button_group, 0, 0)
 
         # NOTE: this code generate multiples radio buttons
-        for i in range(1, 80):
+        for i, key in enumerate(self.dict_bool_invariant):
             button_group = QGroupBox()
             button_group.setFlat(True)
-            button_group.setObjectName(f"Condition {i}")
+            button_group.setObjectName(f"{key}")
 
             glayout_aux = QGridLayout()
-            glayout_aux.addWidget(QLabel(f"Condition {i}"), i, 0)
+            glayout_aux.addWidget(QLabel(f"{key}"), i+1, 0)
             glayout_aux.setColumnMinimumWidth(0, 50)
 
             true = QRadioButton()
@@ -134,10 +134,10 @@ class Equations(QWizardPage):
             false.clicked.connect(self.checked)
             false.setObjectName("false")
 
-            glayout_aux.addWidget(true, i, 1, Qt.AlignCenter)
-            glayout_aux.addWidget(false, i, 2, Qt.AlignCenter)
+            glayout_aux.addWidget(true, i+1, 1, Qt.AlignCenter)
+            glayout_aux.addWidget(false, i+1, 2, Qt.AlignCenter)
             button_group.setLayout(glayout_aux)
-            conditions_layout.addWidget(button_group, i, 0)
+            conditions_layout.addWidget(button_group, i+1, 0)
 
         vlayout_aux = QVBoxLayout()
         widget_aux = QWidget()
@@ -184,6 +184,15 @@ class Equations(QWizardPage):
         else:
             print('text')
             return True
+
+    def extractFilteringData(self):
+        list_inv_bool_choices = []
+        for inv_name, value in self.radios:
+            if value == "true":
+                list_inv_bool_choices.append((self.dict_bool_invariant[inv_name], True))
+            elif value == "false":
+                list_inv_bool_choices.append((self.dict_bool_invariant[inv_name], False))
+        return self.equation.text(), list_inv_bool_choices
 
 
 class TabNumericInvariant(QWidget):
