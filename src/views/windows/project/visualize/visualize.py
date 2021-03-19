@@ -4,7 +4,6 @@ from src.views.windows.project.visualize.docks.info import Info
 from src.views.windows.project.visualize.docks.graph import Graph
 import re
 from PyQt5 import QtGui
-import os
 
 
 def match_graph_code(text):
