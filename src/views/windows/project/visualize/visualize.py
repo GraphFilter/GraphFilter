@@ -3,6 +3,7 @@ from PyQt5 import QtCore
 from src.views.windows.project.visualize.docks.info import Info
 from src.views.windows.project.visualize.docks.graph import Graph
 import re
+from PyQt5 import QtGui
 
 
 def match_graph_code(text):
@@ -28,6 +29,9 @@ class Visualize(QWidget):
         self.combo_graphs.setMaximumWidth(200)
         self.combo_graphs.activated.connect(self.change_graph)
 
+        self.left_button = QPushButton()
+        self.right_button = QPushButton()
+
         self.current_graph = None
 
         self.create_tool_bar()
@@ -41,7 +45,18 @@ class Visualize(QWidget):
             self.tool_bar.setMovable(False)
             self.tool_bar.addWidget(QLabel("List of graphs filtered"))
 
+            self.left_button.setIcon(QtGui.QIcon("views/resources/icons/left_arrow_key.png"))
+            self.left_button.setIconSize(QtCore.QSize(20, 20))
+            self.left_button.clicked.connect(self.move_up)
+            self.left_button.setDisabled(True)
+
+            self.right_button.setIcon(QtGui.QIcon("views/resources/icons/right_arrow_key.png"))
+            self.right_button.setIconSize(QtCore.QSize(20, 20))
+            self.right_button.clicked.connect(self.move_down)
+
             self.tool_bar.addWidget(self.combo_graphs)
+            self.tool_bar.addWidget(self.left_button)
+            self.tool_bar.addWidget(self.right_button)
             self.tool_bar.addSeparator()
             self.tool_bar.addAction(self.project_window.zoom_in_action)
             self.tool_bar.addAction(self.project_window.zoom_out_action)
@@ -74,6 +89,26 @@ class Visualize(QWidget):
             self.graph.plot_graph(self.current_graph)
 
     def change_graph(self):
+        if self.combo_graphs.currentIndex() == 0:
+            self.left_button.setDisabled(True)
+        else:
+            self.left_button.setDisabled(False)
+
+        if self.combo_graphs.currentIndex() == self.combo_graphs.count() -1:
+            self.right_button.setDisabled(True)
+        else:
+            self.right_button.setDisabled(False)
+
         self.current_graph = match_graph_code(self.combo_graphs.currentText())
         if self.current_graph is not None:
             self.graph.plot_graph(self.current_graph)
+
+        self.info.fill_info_table({"test": self.combo_graphs.currentText()})
+
+    def move_up(self):
+        self.combo_graphs.setCurrentIndex(self.combo_graphs.currentIndex() - 1)
+        self.change_graph()
+
+    def move_down(self):
+        self.combo_graphs.setCurrentIndex(self.combo_graphs.currentIndex() + 1)
+        self.change_graph()
