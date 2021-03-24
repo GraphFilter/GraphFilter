@@ -5,19 +5,19 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from src.backend.filter_list import FilterList
 
 class Equations(QWizardPage):
 
-    def __init__(self, filter_backend):
+    def __init__(self, filter_backend: FilterList):
         super().__init__()
 
         self.filter_backend = filter_backend
-        self.dict_num_invariant = {}
-        self.dict_graph_operation = {}
-        self.dict_math_operation = {}
-        self.dict_bool_invariant = {}
-        self.dict_text_equation = {}
-        self.build_dic_invariants()
+        self.dict_num_invariant = filter_backend.invariant_num.dic_name_code
+        self.dict_graph_operation = filter_backend.operations_graph.dic_name_code
+        self.dict_math_operation = filter_backend.operations_math.dic_name_code
+        self.dict_bool_invariant = filter_backend.invariant_bool.dic_name_inv
+        self.dict_text_equation = {**self.dict_num_invariant, **self.dict_graph_operation, **self.dict_math_operation}
 
         self.conditions = QGroupBox("Conditions")
         self.conditions.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -25,7 +25,7 @@ class Equations(QWizardPage):
 
         self.create_conditions()
 
-        self.radios = {}
+        self.dict_inv_bool_choices = {}
 
         self.method = ''
 
@@ -72,22 +72,6 @@ class Equations(QWizardPage):
         main_layout.addLayout(aside_layout)
 
         self.setLayout(main_layout)
-
-    def build_dic_invariants(self):
-
-        for inv in self.filter_backend.invariant_num.all:
-            self.dict_num_invariant[inv.name] = inv.code
-
-        for op in self.filter_backend.operations_graph.all:
-            self.dict_graph_operation[op.name] = op.code
-
-        for op in self.filter_backend.operations_math.all:
-            self.dict_math_operation[op.name] = op.code
-
-        for inv in self.filter_backend.invariant_bool.all:
-            self.dict_bool_invariant[inv.name] = inv
-
-        self.dict_text_equation = {**self.dict_num_invariant, **self.dict_graph_operation, **self.dict_math_operation}
 
     def method_clicked(self):
         choice = QPushButton().sender().text()
@@ -160,38 +144,28 @@ class Equations(QWizardPage):
     def checked(self):
         radio = QRadioButton().sender()
         groupbox = radio.parentWidget()
-
-        if groupbox.objectName() in self.radios.keys():
-            if self.radios.get(groupbox.objectName()) == radio.objectName():
+        if groupbox.objectName() in self.dict_inv_bool_choices.keys():
+            if self.dict_inv_bool_choices.get(groupbox.objectName()) == radio.objectName():
                 radio.setAutoExclusive(False)
                 radio.setChecked(False)
                 radio.setAutoExclusive(True)
-                self.radios.pop(groupbox.objectName())
-                print(self.radios)
+                self.dict_inv_bool_choices.pop(groupbox.objectName())
+                print(self.dict_inv_bool_choices)
                 return
 
-        self.radios[groupbox.objectName()] = radio.objectName()
+        self.dict_inv_bool_choices[groupbox.objectName()] = radio.objectName()
 
         self.completeChanged.emit()
 
-        print(self.radios)
+        print(self.dict_inv_bool_choices)
 
     def isComplete(self):
-        if (not self.equation.text() and not self.radios) or (not self.method):
+        if (not self.equation.text() and not self.dict_inv_bool_choices) or (not self.method):
             print('not text')
             return False
         else:
             print('text')
             return True
-
-    def extract_filtering_data(self):
-        list_inv_bool_choices = []
-        for inv_name in self.radios.keys():
-            if self.radios[inv_name] == "true":
-                list_inv_bool_choices.append((self.dict_bool_invariant[inv_name], True))
-            elif self.radios[inv_name] == "false":
-                list_inv_bool_choices.append((self.dict_bool_invariant[inv_name], False))
-        return self.equation.text(), list_inv_bool_choices, self.method
 
 
 class TabNumericInvariant(QWidget):

@@ -9,16 +9,17 @@ from src.backend.operations_and_invariants.bool_invariants import Utils
 class InvariantNum:
     code = None
     dic_function = {}
-    dic_translate = {}
+    dic_name_code = {}
     all = []
     name = None
     code_literal = None
 
     def __init__(self):
         self.all = InvariantNum.__subclasses__()
-        for i, invar in enumerate(self.all):
-            invar.code_literal = 'F' + str(i)
-            self.dic_function[invar.code_literal] = invar.calculate
+        for i, inv in enumerate(self.all):
+            inv.code_literal = 'F' + str(i)
+            self.dic_function[inv.code_literal] = inv.calculate
+            self.dic_name_code[inv.name] = inv.code
 
     @staticmethod
     def calculate(graph):
@@ -355,4 +356,3 @@ class Density(InvariantNum):
 
 if __name__ == '__main__':
     inv = InvariantNum()
-    print(inv.dic_translate)

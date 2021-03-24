@@ -11,11 +11,16 @@ class FilterList:
     list_inv_bool_choices = None
     functions_to_eval = {}
     list_out = None
+    invariant_bool = None
+    invariant_num = None
+    operations_math = None
+    operations_graph = None
+
 
     def __init__(self):
         # note: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
-        #  list_inv_bool_choices: list of couples [invariant, True/False]
+        #  list_inv_bool_choices: list of couples [invariant_name, 'true' or 'false']
         self.invariant_bool = i_bool.InvariantBool()
         self.invariant_num = i_num.InvariantNum()
         self.operations_math = op.MathOperations()
@@ -87,10 +92,10 @@ class FilterList:
             # Check the boolean invariants
             if graph_satisfies:
                 for bool_inv in self.list_inv_bool_choices:
-                    if bool_inv[1]:
-                        graph_satisfies = bool_inv[0].calculate(g)
+                    if bool_inv[1] == 'true':
+                        graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     else:
-                        graph_satisfies = not bool_inv[0].calculate(g)
+                        graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     if not graph_satisfies:
                         break
             if graph_satisfies:
@@ -132,10 +137,10 @@ class FilterList:
                     return True
             if graph_satisfies:
                 for bool_inv in self.list_inv_bool_choices:
-                    if bool_inv[1]:
-                        graph_satisfies = bool_inv[0].calculate(g)
+                    if bool_inv[1] == 'true':
+                        graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     else:
-                        graph_satisfies = not bool_inv[0].calculate(g)
+                        graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     if not graph_satisfies:
                         self.list_out.append(g6code)
                         return True

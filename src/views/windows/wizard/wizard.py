@@ -57,14 +57,20 @@ class Wizard(QWizard):
         self.main_window.show()
 
     def start_filter(self):
-        expression, list_inv_bool_choices, method = self.equations.extract_filtering_data()
-        list_g6_in = self.graph_files.extract_list_graphs_input()
+        list_g6_in = []
+        for file in self.graph_files.files_added:
+            list_g6_in.extend(open(file, 'r').read().splitlines())
+
+        expression = self.equations.equation.text()
+
+        list_inv_bool_choices = self.equations.dict_inv_bool_choices.items()
+
         self.filter_backend.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         self.save_project()
 
-        if method == 'filter':
+        if self.equations.method == 'filter':
             return_run = self.filter_backend.run_filter()
-        elif method == 'counterexample':
+        elif self.equations.method == 'counterexample':
             return_run = self.filter_backend.run_find_counterexample()
         #TODO: usar a porcentagem retornada
         self.project_window.visualize.fill_combo(self.filter_backend.list_out)
@@ -78,7 +84,7 @@ class Wizard(QWizard):
             "project_name": self.project_files.project_name_input.text(),
             "project_folder": self.project_files.project_location_input.text(),
             "equation": self.equations.equation.text(),
-            "conditions": self.equations.radios,
+            "conditions": self.equations.dict_inv_bool_choices,
             "method": self.equations.method,
             "graphs": self.graph_files.files_added
         }

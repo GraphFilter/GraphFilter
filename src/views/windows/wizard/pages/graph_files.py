@@ -68,11 +68,6 @@ class GraphFiles(QWizardPage):
     def return_files(self):
         return self.files_added
 
-    def extract_list_graphs_input(self):
-        lines = []
-        for file in self.files_added:
-            lines.extend(open(file, 'r').read().splitlines())
-        return lines
 
     def remove_row(self, layout, input_file):
         text = input_file.text()
