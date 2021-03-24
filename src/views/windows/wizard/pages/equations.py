@@ -139,6 +139,10 @@ class Equations(QWizardPage):
         for text, symbol in self.dict_text_equation.items():
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
+        if self.filter_backend.validate_expression(self.equation.text()):
+            self.equation.setStyleSheet('background-color: blue;')
+        else:
+            self.equation.setStyleSheet('background-color: red;')
         self.completeChanged.emit()
 
     def checked(self):

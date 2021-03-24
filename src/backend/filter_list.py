@@ -16,7 +16,6 @@ class FilterList:
     operations_math = None
     operations_graph = None
 
-
     def __init__(self):
         # note: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
@@ -49,20 +48,23 @@ class FilterList:
         else:
             return expression.replace(" ", ""), 'SINGLE'
 
-    def validate_expression(self):
+    def validate_expression(self, expression):
+        if len(expression) == 0:
+            return True
         g = nx.trivial_graph()
         names = {"G": g, "g": g}
-        if self.AND_OR == 'error':
+        expressions, AND_OR = self.split_translate_expression(expression)
+        if AND_OR == 'error':
             return False
         try:
-            if self.AND_OR == 'SINGLE':
-                simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
-            elif self.AND_OR == 'AND' or self.AND_OR == 'OR':
-                for exp in self.expressions:
-                    simple_eval(exp, functions=self.functions_to_eval, names=names)
+            if AND_OR == 'SINGLE':
+                validate = isinstance(simple_eval(expressions, functions=self.functions_to_eval, names=names), bool)
+            elif AND_OR == 'AND' or AND_OR == 'OR':
+                for exp in expressions:
+                    validate = validate and isinstance(simple_eval(exp, functions=self.functions_to_eval, names=names), bool)
         except:
             return False
-        return True
+        return validate
 
     def run_filter(self):
         self.list_out = []
