@@ -72,7 +72,8 @@ class Wizard(QWizard):
             return_run = self.filter_backend.run_filter()
         elif self.equations.method == 'counterexample':
             return_run = self.filter_backend.run_find_counterexample()
-        #TODO: usar a porcentagem retornada
+
+        # TODO: Use the percentage returned by filtering
         self.project_window.visualize.fill_combo(self.filter_backend.list_out)
         self.project_window.show()
 

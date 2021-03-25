@@ -30,8 +30,7 @@ class Helper:
         boolean = ftl.run_find_counterexample()
         return boolean, ftl.list_out
 
-
-class BackendUnitTests(unittest.TestCase):
+class ExpressionUnitTests(unittest.TestCase):
 
     def test_split_and_translate_expression(self):
         i_num.InvariantNum()
@@ -71,6 +70,22 @@ class BackendUnitTests(unittest.TestCase):
         oper.GraphOperations()
         for inv in i_num.InvariantNum().all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', f'{inv.code}(G)==1', []) >= 0)
+
+    def test_validate_expression(self):
+        ftl = FilterList()
+        chi = str(i_num.ChromaticNumber.code)
+        eta = str(i_num.Nullity.code)
+        c = str(oper.Complement.code)
+        self.assertFalse(ftl.validate_expression('xx'))
+        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2'))
+        self.assertFalse(ftl.validate_expression(f'{chi}(G)'))
+        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2l'))
+        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))=2'))
+        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))==2 AND {chi}(G)>2'))
+        self.assertFalse(ftl.validate_expression(f'{chi}(G)==2 OR {eta}({c}(G))<2 AND {chi}(G)>=2'))
+
+
+class BackendUnitTests(unittest.TestCase):
 
     def test_AND_logic(self):
         exp1 = str(i_num.EdgeConnectivity.code) + '(G) >=3'

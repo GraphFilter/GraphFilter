@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from src.backend.filter_list import FilterList
 
+
 class Equations(QWizardPage):
 
     def __init__(self, filter_backend: FilterList):
@@ -29,7 +30,7 @@ class Equations(QWizardPage):
 
         self.method = ''
 
-        #TODO: set scroll area in tabs
+        # TODO: set scroll area in tabs
         self.TabNumericInvariant = TabNumericInvariant(self)
         self.TabGraphOperation = TabGraphOperation(self)
         self.TabMathOperation = TabMathOperation(self)
@@ -45,6 +46,7 @@ class Equations(QWizardPage):
         self.equation.setFont(QFont("Cambria Math", 12))
         self.equation.setMaximumHeight(30)
         self.equation.textEdited.connect(lambda: self.update_line_text())
+        self.valid_equation = True
 
         box_method = QGroupBox("Method")
         box_method.setFixedHeight(200)
@@ -106,7 +108,7 @@ class Equations(QWizardPage):
             button_group.setObjectName(f"{key}")
 
             glayout_aux = QGridLayout()
-            glayout_aux.addWidget(QLabel(f"{key}"), i+1, 0)
+            glayout_aux.addWidget(QLabel(f"{key}"), i + 1, 0)
             glayout_aux.setColumnMinimumWidth(0, 50)
 
             true = QRadioButton()
@@ -117,10 +119,10 @@ class Equations(QWizardPage):
             false.clicked.connect(self.checked)
             false.setObjectName("false")
 
-            glayout_aux.addWidget(true, i+1, 1, Qt.AlignCenter)
-            glayout_aux.addWidget(false, i+1, 2, Qt.AlignCenter)
+            glayout_aux.addWidget(true, i + 1, 1, Qt.AlignCenter)
+            glayout_aux.addWidget(false, i + 1, 2, Qt.AlignCenter)
             button_group.setLayout(glayout_aux)
-            conditions_layout.addWidget(button_group, i+1, 0)
+            conditions_layout.addWidget(button_group, i + 1, 0)
 
         vlayout_aux = QVBoxLayout()
         widget_aux = QWidget()
@@ -139,10 +141,7 @@ class Equations(QWizardPage):
         for text, symbol in self.dict_text_equation.items():
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
-        if self.filter_backend.validate_expression(self.equation.text()):
-            self.equation.setStyleSheet('background-color: blue;')
-        else:
-            self.equation.setStyleSheet('background-color: red;')
+        self.valid_equation = self.filter_backend.validate_expression(self.equation.text())
         self.completeChanged.emit()
 
     def checked(self):
@@ -164,12 +163,15 @@ class Equations(QWizardPage):
         print(self.dict_inv_bool_choices)
 
     def isComplete(self):
-        if (not self.equation.text() and not self.dict_inv_bool_choices) or (not self.method):
-            print('not text')
-            return False
+        if self.method:
+            if self.dict_inv_bool_choices and self.valid_equation:
+                return True
+            elif self.valid_equation and self.equation.text():
+                return True
+            else:
+                return False
         else:
-            print('text')
-            return True
+            return False
 
 
 class TabNumericInvariant(QWidget):
@@ -201,7 +203,8 @@ class TabGraphOperation(QWidget):
             button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(f'{key} : {equations.dict_graph_operation[key]}')  # key and name of invariant or operation
+            button.setToolTip(
+                f'{key} : {equations.dict_graph_operation[key]}')  # key and name of invariant or operation
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 

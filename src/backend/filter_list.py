@@ -1,8 +1,9 @@
-from simpleeval import simple_eval
 import networkx as nx
-from src.backend.operations_and_invariants import operations as op
-from src.backend.operations_and_invariants import num_invariants as i_num
+from simpleeval import simple_eval
+
 from src.backend.operations_and_invariants import bool_invariants as i_bool
+from src.backend.operations_and_invariants import num_invariants as i_num
+from src.backend.operations_and_invariants import operations as op
 
 
 class FilterList:
@@ -15,6 +16,7 @@ class FilterList:
     invariant_num = None
     operations_math = None
     operations_graph = None
+    AND_OR = None
 
     def __init__(self):
         # note: list_g6_in: list with graphs6 string
@@ -40,7 +42,7 @@ class FilterList:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
 
         if "AND" in expression and "OR" in expression:
-            return 'error'
+            return '', 'error'
         elif "AND" in expression:
             return expression.replace(" ", "").split("AND"), 'AND'
         elif "OR" in expression:
@@ -58,13 +60,19 @@ class FilterList:
             return False
         try:
             if AND_OR == 'SINGLE':
-                validate = isinstance(simple_eval(expressions, functions=self.functions_to_eval, names=names), bool)
+                if not isinstance(
+                        simple_eval(expressions, functions=self.functions_to_eval, names=names),
+                        bool):
+                    return False
             elif AND_OR == 'AND' or AND_OR == 'OR':
                 for exp in expressions:
-                    validate = validate and isinstance(simple_eval(exp, functions=self.functions_to_eval, names=names), bool)
+                    if not isinstance(
+                            simple_eval(exp, functions=self.functions_to_eval, names=names),
+                            bool):
+                        return False
         except:
             return False
-        return validate
+        return True
 
     def run_filter(self):
         self.list_out = []
