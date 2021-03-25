@@ -30,6 +30,7 @@ class Helper:
         boolean = ftl.run_find_counterexample()
         return boolean, ftl.list_out
 
+
 class ExpressionUnitTests(unittest.TestCase):
 
     def test_split_and_translate_expression(self):
