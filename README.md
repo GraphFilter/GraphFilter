@@ -14,7 +14,7 @@ providing for visualization a filtered list of graphs according to the propertie
 
 ## Requirements
 
-To run_filter and edit the project, be sure to have installed in your computer the following softwares:
+To run and edit the project, be sure to have installed in your computer the following softwares:
 
 - [Python](https://www.python.org/downloads/)
 - A code editor
@@ -37,7 +37,7 @@ python -m venv ./venv
 
 After that you should see a venv directory.
 
-To run_filter commands using venv, go to ```Scripts``` directory inside ```venv```:
+To run commands using venv, go to ```Scripts``` directory inside ```venv```:
 ```
 project
 │   main.py
@@ -46,7 +46,7 @@ project
      └─── Scripts
          │   activate
 ```
-To use the virtual environment, run_filter:
+To use the virtual environment, run:
 
 ```
 activate
@@ -63,14 +63,14 @@ That will prevent you to install the libs in the local computer, and it will be 
 
 Whenever you install a new library, you need to update the ```requirements.txt``` file.
 
-At the ```cmd```, run_filter:
+At the ```cmd```, run:
 ```
 pip freeze > requirements.txt
 ```
 ## Running
 
 ### venv:
-To see the project running, inside the virtual environment at ```cmd```, run_filter:
+To see the project running, inside the virtual environment at ```cmd```, run:
 ```
 python main.py
 ```
