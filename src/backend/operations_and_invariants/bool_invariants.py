@@ -7,13 +7,18 @@ import scipy.sparse as ss
 
 class InvariantBool:
 
-    def __init__(self):
-        self.all = InvariantBool.__subclasses__()
-
+    dic_name_inv = {}
     name = None
     link = None
     implement = None
     error = 0.00001
+
+    def __init__(self):
+        self.all = InvariantBool.__subclasses__()
+        for inv in self.all:
+            self.dic_name_inv[inv.name] = inv
+
+
 
     @staticmethod
     def calculate(**kwargs):

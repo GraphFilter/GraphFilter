@@ -20,6 +20,6 @@ inv_choice = []
 for i in range(0, len(choice)):
     inv_choice.append(ibool.all[int(choice[i])])
 
-list_out, p = FilterList.run(group, expression=expression, list_inv_bool=inv_choice)
+list_out, p = FilterList.run_filter(group, expression=expression, list_inv_bool=inv_choice)
 file_in.close()
 print(p)

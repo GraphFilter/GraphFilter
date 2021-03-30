@@ -1,29 +1,38 @@
-from simpleeval import simple_eval
 import networkx as nx
+from simpleeval import simple_eval
+
+from src.backend.operations_and_invariants import bool_invariants as i_bool
+from src.backend.operations_and_invariants import num_invariants as i_num
 from src.backend.operations_and_invariants import operations as op
-from src.backend.operations_and_invariants import num_invariants as inum
 
 
 class FilterList:
     list_g6_in = None
     expressions = None
-    list_inv_bool = None
-    list_g6_out = []
+    list_inv_bool_choices = None
     functions_to_eval = {}
     list_out = None
+    invariant_bool = None
+    invariant_num = None
+    operations_math = None
+    operations_graph = None
+    AND_OR = None
 
-    def __init__(self, list_g6_in, expression, list_inv_bool):
+    def __init__(self):
         # note: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
-        #  list_inv_bool: list of couples [invariant, True/False]
-        self.list_g6_in = list_g6_in
-        self.list_inv_bool = list_inv_bool
-        self.invariant_num = inum.InvariantNum()
+        #  list_inv_bool_choices: list of couples [invariant_name, 'true' or 'false']
+        self.invariant_bool = i_bool.InvariantBool()
+        self.invariant_num = i_num.InvariantNum()
         self.operations_math = op.MathOperations()
         self.operations_graph = op.GraphOperations()
         self.functions_to_eval.update(self.invariant_num.dic_function)
         self.functions_to_eval.update(self.operations_graph.dic_function)
         self.functions_to_eval.update(self.operations_math.dic_function)
+
+    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices):
+        self.list_g6_in = list_g6_in
+        self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = self.split_translate_expression(expression)
 
     def split_translate_expression(self, expression):
@@ -33,7 +42,7 @@ class FilterList:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
 
         if "AND" in expression and "OR" in expression:
-            return 'error'
+            return '', 'error'
         elif "AND" in expression:
             return expression.replace(" ", "").split("AND"), 'AND'
         elif "OR" in expression:
@@ -41,7 +50,31 @@ class FilterList:
         else:
             return expression.replace(" ", ""), 'SINGLE'
 
-    def run(self):
+    def validate_expression(self, expression):
+        if len(expression) == 0:
+            return True
+        g = nx.trivial_graph()
+        names = {"G": g, "g": g}
+        expressions, AND_OR = self.split_translate_expression(expression)
+        if AND_OR == 'error':
+            return False
+        try:
+            if AND_OR == 'SINGLE':
+                if not isinstance(
+                        simple_eval(expressions, functions=self.functions_to_eval, names=names),
+                        bool):
+                    return False
+            elif AND_OR == 'AND' or AND_OR == 'OR':
+                for exp in expressions:
+                    if not isinstance(
+                            simple_eval(exp, functions=self.functions_to_eval, names=names),
+                            bool):
+                        return False
+        except:
+            return False
+        return True
+
+    def run_filter(self):
         self.list_out = []
         count = 0
         total = 0
@@ -68,11 +101,11 @@ class FilterList:
                             break
             # Check the boolean invariants
             if graph_satisfies:
-                for bool_inv in self.list_inv_bool:
-                    if bool_inv[1]:
-                        graph_satisfies = bool_inv[0].calculate(g)
+                for bool_inv in self.list_inv_bool_choices:
+                    if bool_inv[1] == 'true':
+                        graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     else:
-                        graph_satisfies = not bool_inv[0].calculate(g)
+                        graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     if not graph_satisfies:
                         break
             if graph_satisfies:
@@ -82,7 +115,7 @@ class FilterList:
                 continue
         return float(count / total)
 
-    def find_counter_example(self):
+    def run_find_counterexample(self):
         self.list_out = []
         graph_satisfies = True
         for g6code in self.list_g6_in:
@@ -113,11 +146,11 @@ class FilterList:
                     self.list_out.append(g6code)
                     return True
             if graph_satisfies:
-                for bool_inv in self.list_inv_bool:
-                    if bool_inv[1]:
-                        graph_satisfies = bool_inv[0].calculate(g)
+                for bool_inv in self.list_inv_bool_choices:
+                    if bool_inv[1] == 'true':
+                        graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     else:
-                        graph_satisfies = not bool_inv[0].calculate(g)
+                        graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                     if not graph_satisfies:
                         self.list_out.append(g6code)
                         return True

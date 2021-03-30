@@ -5,18 +5,20 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
-# NOTE: the dicts will be imported from backend
-dict_invariant = {'alpha': '\u03b1', 'betha': '\u03b2', 'gamma': '\u03b3'}
-dict_math_operation = {'sin': 'sin', 'cos': 'cos', 'sqrt': '\u221A'}
-dict_graph_operation = {'complement': 'c', 'line': '\u2113'}
-dict_union = {**dict_invariant, **dict_graph_operation, **dict_math_operation}
+from src.backend.filter_list import FilterList
 
 
 class Equations(QWizardPage):
 
-    def __init__(self):
+    def __init__(self, filter_backend: FilterList):
         super().__init__()
+
+        self.filter_backend = filter_backend
+        self.dict_num_invariant = filter_backend.invariant_num.dic_name_code
+        self.dict_graph_operation = filter_backend.operations_graph.dic_name_code
+        self.dict_math_operation = filter_backend.operations_math.dic_name_code
+        self.dict_bool_invariant = filter_backend.invariant_bool.dic_name_inv
+        self.dict_text_equation = {**self.dict_num_invariant, **self.dict_graph_operation, **self.dict_math_operation}
 
         self.conditions = QGroupBox("Conditions")
         self.conditions.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -24,10 +26,11 @@ class Equations(QWizardPage):
 
         self.create_conditions()
 
-        self.radios = {}
+        self.dict_inv_bool_choices = {}
 
         self.method = ''
 
+        # TODO: set scroll area in tabs
         self.TabNumericInvariant = TabNumericInvariant(self)
         self.TabGraphOperation = TabGraphOperation(self)
         self.TabMathOperation = TabMathOperation(self)
@@ -43,6 +46,7 @@ class Equations(QWizardPage):
         self.equation.setFont(QFont("Cambria Math", 12))
         self.equation.setMaximumHeight(30)
         self.equation.textEdited.connect(lambda: self.update_line_text())
+        self.valid_equation = True
 
         box_method = QGroupBox("Method")
         box_method.setFixedHeight(200)
@@ -98,13 +102,13 @@ class Equations(QWizardPage):
         conditions_layout.addWidget(button_group, 0, 0)
 
         # NOTE: this code generate multiples radio buttons
-        for i in range(1, 80):
+        for i, key in enumerate(self.dict_bool_invariant):
             button_group = QGroupBox()
             button_group.setFlat(True)
-            button_group.setObjectName(f"Condition {i}")
+            button_group.setObjectName(f"{key}")
 
             glayout_aux = QGridLayout()
-            glayout_aux.addWidget(QLabel(f"Condition {i}"), i, 0)
+            glayout_aux.addWidget(QLabel(f"{key}"), i + 1, 0)
             glayout_aux.setColumnMinimumWidth(0, 50)
 
             true = QRadioButton()
@@ -115,10 +119,10 @@ class Equations(QWizardPage):
             false.clicked.connect(self.checked)
             false.setObjectName("false")
 
-            glayout_aux.addWidget(true, i, 1, Qt.AlignCenter)
-            glayout_aux.addWidget(false, i, 2, Qt.AlignCenter)
+            glayout_aux.addWidget(true, i + 1, 1, Qt.AlignCenter)
+            glayout_aux.addWidget(false, i + 1, 2, Qt.AlignCenter)
             button_group.setLayout(glayout_aux)
-            conditions_layout.addWidget(button_group, i, 0)
+            conditions_layout.addWidget(button_group, i + 1, 0)
 
         vlayout_aux = QVBoxLayout()
         widget_aux = QWidget()
@@ -129,42 +133,45 @@ class Equations(QWizardPage):
 
     def set_line_text(self):
         button_clicked = QPushButton().sender()
-        self.equation.setText(self.equation.text() + button_clicked.text())
+        self.equation.setText(self.equation.text() + self.dict_text_equation[button_clicked.text()])
         self.completeChanged.emit()
 
     def update_line_text(self):
         text_equation = self.equation.text()
-        for text, symbol in dict_union.items():
+        for text, symbol in self.dict_text_equation.items():
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
+        self.valid_equation = self.filter_backend.validate_expression(self.equation.text())
         self.completeChanged.emit()
 
     def checked(self):
         radio = QRadioButton().sender()
         groupbox = radio.parentWidget()
-
-        if groupbox.objectName() in self.radios.keys():
-            if self.radios.get(groupbox.objectName()) == radio.objectName():
+        if groupbox.objectName() in self.dict_inv_bool_choices.keys():
+            if self.dict_inv_bool_choices.get(groupbox.objectName()) == radio.objectName():
                 radio.setAutoExclusive(False)
                 radio.setChecked(False)
                 radio.setAutoExclusive(True)
-                self.radios.pop(groupbox.objectName())
-                print(self.radios)
+                self.dict_inv_bool_choices.pop(groupbox.objectName())
+                print(self.dict_inv_bool_choices)
                 return
 
-        self.radios[groupbox.objectName()] = radio.objectName()
+        self.dict_inv_bool_choices[groupbox.objectName()] = radio.objectName()
 
         self.completeChanged.emit()
 
-        print(self.radios)
+        print(self.dict_inv_bool_choices)
 
     def isComplete(self):
-        if (not self.equation.text() and not self.radios) or (not self.method):
-            print('not text')
-            return False
+        if self.method:
+            if self.dict_inv_bool_choices and self.valid_equation:
+                return True
+            elif self.valid_equation and self.equation.text():
+                return True
+            else:
+                return False
         else:
-            print('text')
-            return True
+            return False
 
 
 class TabNumericInvariant(QWidget):
@@ -173,11 +180,12 @@ class TabNumericInvariant(QWidget):
 
         layout = QGridLayout()
 
-        for i, key in enumerate(dict_invariant):
-            button = QPushButton(dict_invariant[key])
+        for i, key in enumerate(equations.dict_num_invariant):
+            button = QPushButton(key)
+            button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(key)  # key and name
+            button.setToolTip(f'{key} : {equations.dict_num_invariant[key]}')
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 
@@ -190,11 +198,13 @@ class TabGraphOperation(QWidget):
 
         layout = QGridLayout()
 
-        for i, key in enumerate(dict_graph_operation):
-            button = QPushButton(dict_graph_operation[key])
+        for i, key in enumerate(equations.dict_graph_operation):
+            button = QPushButton(key)
+            button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(f'{key} : -invariant-')  # key and name of invariant or operation
+            button.setToolTip(
+                f'{key} : {equations.dict_graph_operation[key]}')  # key and name of invariant or operation
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 
@@ -207,11 +217,12 @@ class TabMathOperation(QWidget):
 
         layout = QGridLayout()
 
-        for i, key in enumerate(dict_math_operation):
-            button = QPushButton(dict_math_operation[key])
+        for i, key in enumerate(equations.dict_math_operation):
+            button = QPushButton(key)
+            button.setText(key)
             button.setMaximumSize(70, 40)
             button.setFont(QtGui.QFont("Cambria Math", 12))
-            button.setToolTip(key)  # key and name
+            button.setToolTip(f'{key} : {equations.dict_math_operation[key]}')
             button.clicked.connect(equations.set_line_text)
             layout.addWidget(button, 0, i)
 

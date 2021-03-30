@@ -7,11 +7,13 @@ class MathOperations:
     code_string = None
     dic_function = {}
     all = []
+    dic_name_code = {}
 
     def __init__(self):
         self.all = MathOperations.__subclasses__()
         for inv in self.all:
             self.dic_function[inv.code] = inv.calculate
+            self.dic_name_code[inv.name] = inv.code
 
     @staticmethod
     def calculate(graph):
@@ -22,7 +24,7 @@ class GraphOperations:
     code = None
     code_literal = None
     dic_function = {}
-    dic_translate = {}
+    dic_name_code = {}
     all = []
 
     def __init__(self):
@@ -30,6 +32,7 @@ class GraphOperations:
         for i, inv in enumerate(self.all):
             inv.code_literal = 'gop' + str(i)
             self.dic_function[inv.code_literal] = inv.calculate
+            self.dic_name_code[inv.name] = inv.code
 
     name = None
     defi = None
@@ -42,7 +45,7 @@ class GraphOperations:
 
 
 class Complement(GraphOperations):
-    name = "Complement of graph"
+    name = "Complement"
     code = "c"
 
     @staticmethod
@@ -51,7 +54,7 @@ class Complement(GraphOperations):
 
 
 class Line(GraphOperations):
-    name = "Line of graph"
+    name = "Line"
     code = "\u2113"
 
     @staticmethod
