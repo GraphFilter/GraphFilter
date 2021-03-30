@@ -127,8 +127,8 @@ div.vis-configuration.vis-config-colorBlock {
     height: 19px;
     border: 1px solid #444444;
     border-radius: 2px;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     cursor: pointer;
 }
 
@@ -152,7 +152,7 @@ input.vis-configuration.vis-config-range {
     -webkit-appearance: none;
 
     /*fix for FF unable to apply focus style bug */
-    border: 0px solid white;
+    border: 0 solid white;
     background-color: rgba(0, 0, 0, 0);
 
     /*required for proper track sizing in FF*/
@@ -173,7 +173,7 @@ input.vis-configuration.vis-config-range::-webkit-slider-runnable-track {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#c8c8c8', GradientType=0); /* IE6-9 */
 
     border: 1px solid #999999;
-    box-shadow: #aaaaaa 0px 0px 3px 0px;
+    box-shadow: #aaaaaa 0 0 3px 0;
     border-radius: 3px;
 }
 
@@ -191,7 +191,7 @@ input.vis-configuration.vis-config-range::-webkit-slider-thumb {
     background: -ms-linear-gradient(top, #3876c2 0%, #385380 100%); /* IE10+ */
     background: linear-gradient(to bottom, #3876c2 0%, #385380 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3876c2', endColorstr='#385380', GradientType=0); /* IE6-9 */
-    box-shadow: #111927 0px 0px 1px 0px;
+    box-shadow: #111927 0 0 1px 0;
     margin-top: -7px;
 }
 
@@ -223,7 +223,7 @@ input.vis-configuration.vis-config-range::-moz-range-track {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#dedede', endColorstr='#c8c8c8', GradientType=0); /* IE6-9 */
 
     border: 1px solid #999999;
-    box-shadow: #aaaaaa 0px 0px 3px 0px;
+    box-shadow: #aaaaaa 0 0 3px 0;
     border-radius: 3px;
 }
 
@@ -994,13 +994,13 @@ div.vis-network div.vis-edit-mode div.vis-button {
     -moz-border-radius: 15px;
     border-radius: 15px;
     display: inline-block;
-    background-position: 0px 0px;
+    background-position: 0 0;
     background-repeat: no-repeat;
     height: 24px;
     margin-left: 10px;
     /*vertical-align:middle;*/
     cursor: pointer;
-    padding: 0px 8px 0px 8px;
+    padding: 0 8px 0 8px;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -1074,7 +1074,7 @@ div.vis-network div.vis-manipulation div.vis-separator-line {
     width: 1px;
     height: 21px;
     background-color: #bdbdbd;
-    margin: 0px 7px 0 15px; /*top right bottom left*/
+    margin: 0 7px 0 15px; /*top right bottom left*/
 }
 
 /* TODO: is this redundant?
@@ -1176,7 +1176,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 div.vis-color-picker {
     position: absolute;
-    top: 0px;
+    top: 0;
     left: 30px;
     margin-top: -140px;
     margin-left: 30px;
@@ -1187,7 +1187,7 @@ div.vis-color-picker {
     border-radius: 15px;
     background-color: #ffffff;
     display: none;
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 10px 0px;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 10px 0;
 }
 
 div.vis-color-picker div.vis-arrow {
