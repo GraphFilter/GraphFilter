@@ -201,3 +201,6 @@ compile_commands.json
 venv/
 
 project.json
+
+src/plot/data.js
+src/*.json
