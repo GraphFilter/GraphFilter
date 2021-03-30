@@ -73,9 +73,9 @@ class Visualize(QWidget):
                 self.graph.plot_graph(self.current_graph)
             self.info = Info(self)
             self.invariants = Invariants(self)
-            self.project_window.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.graph)
-            self.project_window.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.info)
-            self.project_window.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.invariants)
+            self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants)
+            self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph)
+            self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.info)
 
     def remove_docks(self):
         if self.graph and self.info is not None:
