@@ -1,9 +1,9 @@
 import networkx as nx
 from simpleeval import simple_eval
 
-from src.backend.operations_and_invariants import bool_invariants as i_bool
-from src.backend.operations_and_invariants import num_invariants as i_num
-from src.backend.operations_and_invariants import operations as op
+from src.domain.operations_and_invariants import bool_invariants as i_bool
+from src.domain.operations_and_invariants import num_invariants as i_num
+from src.domain.operations_and_invariants import operations as op
 
 
 class FilterList:

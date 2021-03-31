@@ -14,7 +14,7 @@ from src.views.windows.project.project_window import ProjectWindow
 app = QApplication(sys.argv)
 window = ProjectWindow()
 file_dir = os.path.dirname(os.path.realpath('__file__'))
-current_file_dir = os.path.join(file_dir, '../../backend/tests/resources/graphs/graphs1.g6').replace('\\', '/')
+current_file_dir = os.path.join(file_dir, '../../domain/tests/resources/graphs/graphs1.g6').replace('\\', '/')
 window.visualize.fill_combo([current_file_dir])
 
 # NOTE:

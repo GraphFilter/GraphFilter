@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 
-from src.backend.filter_list import FilterList
+from src.domain.filter_list import FilterList
 from src.views.windows.wizard.pages.project_files import ProjectFiles
 from src.views.windows.wizard.pages.equations import Equations
 from src.views.windows.wizard.pages.graph_files import GraphFiles

@@ -5,7 +5,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from src.backend.filter_list import FilterList
+from src.domain.filter_list import FilterList
 
 
 class Equations(QWizardPage):

@@ -1,10 +1,10 @@
 import os
 import unittest
-from src.backend.filter_list import FilterList
-import src.backend.operations_and_invariants.bool_invariants as i_bool
-from src.backend.operations_and_invariants.bool_invariants import Utils
-from src.backend.operations_and_invariants import num_invariants as i_num
-from src.backend.operations_and_invariants import operations as oper
+from src.domain.filter_list import FilterList
+import src.domain.operations_and_invariants.bool_invariants as i_bool
+from src.domain.operations_and_invariants.bool_invariants import Utils
+from src.domain.operations_and_invariants import num_invariants as i_num
+from src.domain.operations_and_invariants import operations as oper
 import networkx as nx
 
 
