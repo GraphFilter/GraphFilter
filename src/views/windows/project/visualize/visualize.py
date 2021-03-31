@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from src.views.windows.project.visualize.docks.info import Info
 from src.views.windows.project.visualize.docks.graph import Graph
+from src.views.windows.project.visualize.docks.invariants import Invariants
 import re
 from PyQt5 import QtGui
 
@@ -19,6 +20,7 @@ class Visualize(QWidget):
 
         self.graph = None
         self.info = None
+        self.invariants = None
 
         self.tool_bar = None
 
@@ -65,21 +67,25 @@ class Visualize(QWidget):
             self.project_window.addToolBar(self.tool_bar)
 
     def create_docks(self):
-        if (self.graph and self.info) is None:
+        if (self.graph and self.info and self.invariants) is None:
             self.graph = Graph(self)
             if self.current_graph is not None:
                 self.graph.plot_graph(self.current_graph)
             self.info = Info(self)
-            self.project_window.addDockWidget(QtCore.Qt.TopDockWidgetArea, self.graph)
-            self.project_window.addDockWidget(QtCore.Qt.BottomDockWidgetArea, self.info)
+            self.invariants = Invariants(self)
+            self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants)
+            self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph)
+            self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.info)
 
     def remove_docks(self):
         if self.graph and self.info is not None:
             self.project_window.removeDockWidget(self.graph)
             self.project_window.removeDockWidget(self.info)
+            self.project_window.removeDockWidget(self.invariants)
 
             self.graph = None
             self.info = None
+            self.invariants = None
 
     def fill_combo(self, list_graphs):
         for i, line in enumerate(list_graphs):
