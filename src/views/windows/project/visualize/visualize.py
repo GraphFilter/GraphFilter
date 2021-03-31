@@ -32,7 +32,9 @@ class Visualize(QWidget):
         self.combo_graphs.activated.connect(self.change_graph)
 
         self.left_button = QPushButton()
+        self.left_button.clicked.connect(self.move_up)
         self.right_button = QPushButton()
+        self.right_button.clicked.connect(self.move_down)
 
         self.current_graph = None
 
@@ -49,12 +51,12 @@ class Visualize(QWidget):
 
             self.left_button.setIcon(QtGui.QIcon("views/resources/icons/left_arrow_key.png"))
             self.left_button.setIconSize(QtCore.QSize(20, 20))
-            self.left_button.clicked.connect(self.move_up)
+
             self.left_button.setDisabled(True)
 
             self.right_button.setIcon(QtGui.QIcon("views/resources/icons/right_arrow_key.png"))
             self.right_button.setIconSize(QtCore.QSize(20, 20))
-            self.right_button.clicked.connect(self.move_down)
+            self.right_button.setDisabled(False)
 
             self.tool_bar.addWidget(self.combo_graphs)
             self.tool_bar.addWidget(self.left_button)
@@ -88,6 +90,7 @@ class Visualize(QWidget):
             self.invariants = None
 
     def fill_combo(self, list_graphs):
+        self.combo_graphs.clear()
         for i, line in enumerate(list_graphs):
             self.combo_graphs.addItem(f'Graph {i} - {line}')
         self.current_graph = match_graph_code(self.combo_graphs.currentText())
