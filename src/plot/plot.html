@@ -89,8 +89,8 @@
             <h1 id="node-operation"></h1>
         </div>
         <div class="modal-body">
-            <label for="node-label">Label</label>
-            <input type="text" id="node-label" value="new value">
+            <label for="node-color">Color</label>
+            <input type="color" id="node-color" value="new value">
         </div>
         <div class="modal-footer">
             <button id="node-cancelButton">Cancel</button>
@@ -151,7 +151,7 @@
                 hideNodesOnDrag: false
             },
             physics: {
-                enabled: true,
+                enabled: false,
                 stabilization: {
                     enabled: true,
                     fit: true,
@@ -181,7 +181,7 @@
         };
 
         function editNode(data, cancelAction, callback) {
-            document.getElementById("node-label").value = data.label;
+            document.getElementById("node-color").value = data.color.background;
             document.getElementById("node-saveButton").onclick = saveNodeData.bind(
                 this,
                 data,
@@ -207,7 +207,8 @@
         }
 
         function saveNodeData(data, callback) {
-            data.label = document.getElementById("node-label").value;
+            data.color.background = document.getElementById("node-color").value;
+            data.color.highlight.background = document.getElementById("node-color").value;
             clearNodePopUp();
             console.log(data);
             data.shadow = null;
