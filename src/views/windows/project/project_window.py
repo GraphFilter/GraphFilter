@@ -143,8 +143,8 @@ class ProjectWindow(QMainWindow):
     def on_about(self):
         self.about.setWindowTitle("About")
 
-        about_title = QLabel("<h1>Graph Filter<\h1>")
-        about_version = QLabel("<h2>Version 1.0<\h2>")
+        about_title = QLabel(r"<h1>Graph Filter<\h1>")
+        about_version = QLabel(r"<h2>Version 1.0<\h2>")
 
         about_layout = QVBoxLayout()
         about_layout.addWidget(about_title)

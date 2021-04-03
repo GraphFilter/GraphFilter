@@ -75,16 +75,13 @@ class Wizard(QWizard):
         self.save_project()
 
         if self.method.method == 'filter':
-            return_run = self.filter_backend.run_filter()
+            self.filter_backend.run_filter()
         elif self.method.method == 'counterexample':
-            return_run = self.filter_backend.run_find_counterexample()
+            self.filter_backend.run_find_counterexample()
 
         # TODO: Use the percentage returned by filtering
         self.project_window.visualize.fill_combo(self.filter_backend.list_out)
         self.project_window.show()
-
-    def disable_next(self):
-        self.button(QtGui.QWizard.NextButton).setEnabled(False)
 
     def save_project(self):
         project_dictionary = {

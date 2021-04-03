@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
 
+
 class Info(QDockWidget):
 
     def __init__(self, visualize):

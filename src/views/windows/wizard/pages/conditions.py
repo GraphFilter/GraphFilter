@@ -1,6 +1,4 @@
-import sys
-
-
+# import sys
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -30,7 +28,6 @@ class Conditions(QWizardPage):
 
         hint_button = QPushButton()
         hint_button.setStyleSheet("border-radius: 50")
-
 
         layout = QVBoxLayout()
         layout.addWidget(QLabel("<h3>Conditions</h3>"))
@@ -72,11 +69,11 @@ class ComboBoxesGroup(QGroupBox):
         button_group = QGroupBox()
         button_group.setFlat(True)
 
-        glayout_aux = QGridLayout()
-        glayout_aux.setColumnMinimumWidth(0, 200)
-        glayout_aux.addWidget(QLabel("true"), 0, 1, Qt.AlignCenter)
-        glayout_aux.addWidget(QLabel("false"), 0, 2, Qt.AlignCenter)
-        button_group.setLayout(glayout_aux)
+        grid_layout_aux = QGridLayout()
+        grid_layout_aux.setColumnMinimumWidth(0, 200)
+        grid_layout_aux.addWidget(QLabel("true"), 0, 1, Qt.AlignCenter)
+        grid_layout_aux.addWidget(QLabel("false"), 0, 2, Qt.AlignCenter)
+        button_group.setLayout(grid_layout_aux)
         self.conditions_layout.addWidget(button_group, 0, 0)
 
     def fill_combos(self):
@@ -85,9 +82,9 @@ class ComboBoxesGroup(QGroupBox):
             button_group.setFlat(True)
             button_group.setObjectName(f"{key}")
 
-            glayout_aux = QGridLayout()
-            glayout_aux.addWidget(QLabel(f"{key}"), i + 1, 0)
-            glayout_aux.setColumnMinimumWidth(0, 200)
+            grid_layout_aux = QGridLayout()
+            grid_layout_aux.addWidget(QLabel(f"{key}"), i + 1, 0)
+            grid_layout_aux.setColumnMinimumWidth(0, 200)
 
             true = QRadioButton()
             true.clicked.connect(self.checked)
@@ -97,17 +94,17 @@ class ComboBoxesGroup(QGroupBox):
             false.clicked.connect(self.checked)
             false.setObjectName("false")
 
-            glayout_aux.addWidget(true, i + 1, 1, Qt.AlignCenter)
-            glayout_aux.addWidget(false, i + 1, 2, Qt.AlignCenter)
-            button_group.setLayout(glayout_aux)
+            grid_layout_aux.addWidget(true, i + 1, 1, Qt.AlignCenter)
+            grid_layout_aux.addWidget(false, i + 1, 2, Qt.AlignCenter)
+            button_group.setLayout(grid_layout_aux)
             self.conditions_layout.addWidget(button_group, i + 1, 0)
 
-        vlayout_aux = QVBoxLayout()
+        vertical_layout_aux = QVBoxLayout()
         widget_aux = QWidget()
         widget_aux.setLayout(self.conditions_layout)
         self.scroll_area.setWidget(widget_aux)
-        vlayout_aux.addWidget(self.scroll_area)
-        self.setLayout(vlayout_aux)
+        vertical_layout_aux.addWidget(self.scroll_area)
+        self.setLayout(vertical_layout_aux)
 
     def checked(self):
         radio = QRadioButton().sender()

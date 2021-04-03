@@ -103,7 +103,7 @@ class Visualize(QWidget):
         else:
             self.left_button.setDisabled(False)
 
-        if self.combo_graphs.currentIndex() == self.combo_graphs.count() -1:
+        if self.combo_graphs.currentIndex() == self.combo_graphs.count() - 1:
             self.right_button.setDisabled(True)
         else:
             self.right_button.setDisabled(False)

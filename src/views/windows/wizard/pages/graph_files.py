@@ -68,7 +68,6 @@ class GraphFiles(QWizardPage):
     def return_files(self):
         return self.files_added
 
-
     def remove_row(self, layout, input_file):
         text = input_file.text()
         if text in self.files_added:
