@@ -3,6 +3,8 @@ from PyQt5.QtWidgets import *
 from src.domain.filter_list import FilterList
 from src.views.windows.wizard.pages.project_files import ProjectFiles
 from src.views.windows.wizard.pages.equations import Equations
+from src.views.windows.wizard.pages.conditions import Conditions
+from src.views.windows.wizard.pages.method import Method
 from src.views.windows.wizard.pages.graph_files import GraphFiles
 from src.views.windows.project.project_window import ProjectWindow
 from PyQt5 import QtGui, QtCore
@@ -24,13 +26,17 @@ class Wizard(QWizard):
         self.project_window = ProjectWindow()
 
         self.project_files = ProjectFiles()
-        self.equations = Equations(self.filter_backend)
+        self.equations = Equations()
+        self.conditions = Conditions(self.equations)
+        self.method = Method()
         self.graph_files = GraphFiles()
 
         self.setWindowTitle("New Project")
 
         self.addPage(self.project_files)
         self.addPage(self.equations)
+        self.addPage(self.conditions)
+        self.addPage(self.method)
         self.addPage(self.graph_files)
 
         self.setFixedSize(self.width, self.height)
@@ -63,14 +69,14 @@ class Wizard(QWizard):
 
         expression = self.equations.equation.text()
 
-        list_inv_bool_choices = self.equations.dict_inv_bool_choices.items()
+        list_inv_bool_choices = self.conditions.dict_inv_bool_choices.items()
 
         self.filter_backend.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         self.save_project()
 
-        if self.equations.method == 'filter':
+        if self.method.method == 'filter':
             return_run = self.filter_backend.run_filter()
-        elif self.equations.method == 'counterexample':
+        elif self.method.method == 'counterexample':
             return_run = self.filter_backend.run_find_counterexample()
 
         # TODO: Use the percentage returned by filtering
@@ -85,8 +91,8 @@ class Wizard(QWizard):
             "project_name": self.project_files.project_name_input.text(),
             "project_folder": self.project_files.project_location_input.text(),
             "equation": self.equations.equation.text(),
-            "conditions": self.equations.dict_inv_bool_choices,
-            "method": self.equations.method,
+            "conditions": self.conditions.dict_inv_bool_choices,
+            "method": self.method.method,
             "graphs": self.graph_files.files_added
         }
         project_json = json.dumps(project_dictionary)
