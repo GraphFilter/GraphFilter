@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
+import networkx as nx
 
 class Info(QDockWidget):
 
@@ -20,8 +21,8 @@ class Info(QDockWidget):
 
         self.setWidget(table)
 
-    def fill_info_table(self, data):
-        self.model.clear()
+    def update_table(self, data):
+        self.model.removeRows(0, self.model.rowCount())
         for key, value in data.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))

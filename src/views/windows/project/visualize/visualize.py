@@ -3,6 +3,7 @@ from PyQt5 import QtCore
 from src.views.windows.project.visualize.docks.info import Info
 from src.views.windows.project.visualize.docks.graph import Graph
 from src.views.windows.project.visualize.docks.invariants import Invariants
+from src.domain.filter_list import FilterList
 import re
 from PyQt5 import QtGui
 
@@ -17,6 +18,10 @@ class Visualize(QWidget):
 
     def __init__(self, project_window):
         super().__init__()
+
+        #TODO: essa importação deve vir do FilterList do Wizard, acertar isso após refactor do wizard.
+        self.filter_backend: FilterList
+        self.filter_backend = FilterList()
 
         self.graph = None
         self.info = None
@@ -112,7 +117,7 @@ class Visualize(QWidget):
         if self.current_graph is not None:
             self.graph.plot_graph(self.current_graph)
 
-        self.info.fill_info_table({"test": self.combo_graphs.currentText()})
+        self.info.update_table_inv({"test": self.combo_graphs.currentText()})
 
     def move_up(self):
         self.combo_graphs.setCurrentIndex(self.combo_graphs.currentIndex() - 1)

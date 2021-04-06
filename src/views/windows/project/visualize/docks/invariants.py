@@ -1,7 +1,8 @@
 from PyQt5.QtWidgets import *
-
+import networkx as nx
 
 class Invariants(QDockWidget):
+
     def __init__(self, visualize):
         super().__init__()
 
@@ -12,9 +13,17 @@ class Invariants(QDockWidget):
         self.widget = QWidget()
         self.setWidget(self.widget)
 
-        self.invariants = []
+        self.invariants_selected = {}
+
+        self.dic_invariants = {
+            **self.visualize.filter_backend.invariant_num.dic_name_calc,
+            **self.visualize.filter_backend.invariant_bool.dic_name_calc
+        }
 
         self.create_conditions()
+
+
+
 
     def create_conditions(self):
         # TODO: groupbox with scroll bar
@@ -23,8 +32,8 @@ class Invariants(QDockWidget):
         self.widget.setLayout(conditions_layout)
 
         # NOTE: this code generate multiples checkboxes
-        for i in range(1, 80):
-            checkbox = QCheckBox(f"Checkbox {i}")
+        for key in self.dic_invariants.keys():
+            checkbox = QCheckBox(f"{key}")
             checkbox.clicked.connect(self.checked)
             conditions_layout.addWidget(checkbox)
 
@@ -38,9 +47,21 @@ class Invariants(QDockWidget):
 
     def checked(self):
         check = QCheckBox().sender()
-
-        if check.text() not in self.invariants:
-            self.invariants.append(check.text())
+        if self.visualize.current_graph is not None:
+            g = nx.from_graph6_bytes(self.visualize.current_graph.encode('utf-8'))
         else:
-            self.invariants.remove(check.text())
-        print(self.invariants)
+            g = None
+
+        if check.text() not in self.invariants_selected:
+            if g is not None:
+                self.invariants_selected[check.text()] = self.dic_invariants[check.text()](g)
+            else:
+                self.invariants_selected[check.text()] = 'None'
+        else:
+            del self.invariants_selected[check.text()]
+        print(self.invariants_selected)
+
+        self.visualize.info.update_table(self.invariants_selected)
+
+    def change_graph(self):
+        pass

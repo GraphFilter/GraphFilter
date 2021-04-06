@@ -16,6 +16,10 @@ window = ProjectWindow()
 file_dir = os.path.dirname(os.path.realpath('__file__'))
 current_file_dir = os.path.join(file_dir, '../../domain/tests/resources/graphs/graphs1.g6').replace('\\', '/')
 window.visualize.fill_combo([current_file_dir])
+# with open(current_file_dir) as f:
+#     for line in f:
+#         list.append(line[-2])
+# window.visualize.fill_combo(list)
 
 # NOTE:
 #  Do not comment the following code
