@@ -3,6 +3,7 @@ from PyQt5 import QtGui, QtCore
 from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 from src.views.windows.project.visualize.visualize import Visualize
 from src.views.windows.project.dictionary.dictionary import Dictionary
+import src.views.windows.project.about.about as about_data
 
 
 class ProjectWindow(QMainWindow):
@@ -21,6 +22,9 @@ class ProjectWindow(QMainWindow):
         self.about = QDialog()
         self.about.setMinimumWidth(700)
         self.about.setMinimumHeight(200)
+        # self.about.setWindowFlags(QtCore.Qt.WindowFlags(
+        # QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        # )
 
         self._create_actions()
         self.create_menu_bar()
@@ -143,11 +147,18 @@ class ProjectWindow(QMainWindow):
     def on_about(self):
         self.about.setWindowTitle("About")
 
-        about_title = QLabel(r"<h1>Graph Filter<\h1>")
-        about_version = QLabel(r"<h2>Version 1.0<\h2>")
+        about_title = QLabel(about_data.title)
+        about_version = QLabel(about_data.version)
+        about_text = QLabel(about_data.text)
+        about_text.setWordWrap(True)
+        about_page = QLabel(about_data.page)
+        about_github = QLabel(about_data.github)
 
         about_layout = QVBoxLayout()
         about_layout.addWidget(about_title)
+        about_layout.addWidget(about_text)
+        about_layout.addWidget(about_page)
+        about_layout.addWidget(about_github)
         about_layout.addWidget(about_version)
 
         self.about.setLayout(about_layout)
