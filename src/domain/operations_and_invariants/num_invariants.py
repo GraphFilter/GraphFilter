@@ -10,6 +10,7 @@ class InvariantNum:
     code = None
     dic_function = {}
     dic_name_code = {}
+    dic_name_calc = {}
     all = []
     name = None
     code_literal = None
@@ -20,6 +21,7 @@ class InvariantNum:
             inv.code_literal = 'F' + str(i)
             self.dic_function[inv.code_literal] = inv.calculate
             self.dic_name_code[inv.name] = inv.code
+            self.dic_name_calc[inv.name] = inv.calculate
 
     @staticmethod
     def calculate(graph):
@@ -32,7 +34,7 @@ class ChromaticNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.chromatic_number(graph)
+        return len(set(nx.greedy_color(graph).values()))
 
 
 class NumberVertices(InvariantNum):

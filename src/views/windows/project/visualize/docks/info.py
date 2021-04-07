@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
 
+
 class Info(QDockWidget):
 
     def __init__(self, visualize):
@@ -20,9 +21,9 @@ class Info(QDockWidget):
 
         self.setWidget(table)
 
-    def fill_info_table(self, data):
-        self.model.clear()
-        for key, value in data.items():
+    def update_table(self):
+        self.model.removeRows(0, self.model.rowCount())
+        for key, value in self.visualize.invariants_selected.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))
             invariant_name.setEditable(False)

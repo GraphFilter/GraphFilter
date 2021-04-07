@@ -1,7 +1,9 @@
 from PyQt5.QtWidgets import *
+import networkx as nx
 
 
 class Invariants(QDockWidget):
+
     def __init__(self, visualize):
         super().__init__()
 
@@ -12,8 +14,6 @@ class Invariants(QDockWidget):
         self.widget = QWidget()
         self.setWidget(self.widget)
 
-        self.invariants = []
-
         self.create_conditions()
 
     def create_conditions(self):
@@ -23,8 +23,8 @@ class Invariants(QDockWidget):
         self.widget.setLayout(conditions_layout)
 
         # NOTE: this code generate multiples checkboxes
-        for i in range(1, 80):
-            checkbox = QCheckBox(f"Checkbox {i}")
+        for key in self.visualize.dic_invariants.keys():
+            checkbox = QCheckBox(f"{key}")
             checkbox.clicked.connect(self.checked)
             conditions_layout.addWidget(checkbox)
 
@@ -38,9 +38,30 @@ class Invariants(QDockWidget):
 
     def checked(self):
         check = QCheckBox().sender()
-
-        if check.text() not in self.invariants:
-            self.invariants.append(check.text())
+        if self.visualize.current_graph is not None:
+            g = nx.from_graph6_bytes(self.visualize.current_graph.encode('utf-8'))
         else:
-            self.invariants.remove(check.text())
-        print(self.invariants)
+            g = None
+
+        if check.text() not in self.visualize.invariants_selected:
+            if g is not None:
+                self.visualize.invariants_selected[check.text()] = self.visualize.dic_invariants[check.text()](g)
+            else:
+                self.visualize.invariants_selected[check.text()] = 'None'
+        else:
+            del self.visualize.invariants_selected[check.text()]
+
+        self.visualize.info.update_table()
+
+    def update_graph_to_table(self):
+        if self.visualize.current_graph is not None:
+            g = nx.from_graph6_bytes(self.visualize.current_graph.encode('utf-8'))
+        else:
+            g = None
+
+        for key in self.visualize.invariants_selected.keys():
+            if g is not None:
+                self.visualize.invariants_selected[key] = self.visualize.dic_invariants[key](g)
+            else:
+                self.visualize.invariants_selected[key] = 'None'
+        self.visualize.info.update_table()
