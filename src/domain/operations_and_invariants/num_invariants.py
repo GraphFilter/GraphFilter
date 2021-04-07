@@ -28,7 +28,7 @@ class InvariantNum:
 
 class ChromaticNumber(InvariantNum):
     name = "Chromatic number"
-    code = '\u1d61'
+    code = '\u03c7'
 
     @staticmethod
     def calculate(graph):
@@ -82,7 +82,7 @@ class DominationNumber(InvariantNum):
 
 class TotalDominationNumber(InvariantNum):
     name = "Total Domination Number"
-    code = '\u0194<sub>t</sub>'
+    code = '\u0194\u209c'
 
     @staticmethod
     def calculate(graph):
@@ -164,7 +164,7 @@ class NumberComponnents(InvariantNum):
 
 class Valency(InvariantNum):
     name = 'Degree regularity'
-    code = 'd<sub>r</sub>'
+    code = 'd\u1d63'
 
     @staticmethod
     def calculate(graph):
@@ -196,7 +196,7 @@ class DegreeMin(InvariantNum):
 
 class DegreeAverage(InvariantNum):
     name = "Average Degree"
-    code = 'd<sub>a</sub>'
+    code = 'd\u2090'
 
     @staticmethod
     def calculate(graph):
@@ -245,7 +245,7 @@ class Largest1EigenA(InvariantNum):
 
 class Largest1EigenL(InvariantNum):
     name = "Largest L-eigenvalue"
-    code = "\u03bc<sub>1</sub>"
+    code = "\u03bc\u2081"
 
     @staticmethod
     def calculate(graph):
@@ -255,7 +255,7 @@ class Largest1EigenL(InvariantNum):
 
 class Largest1EigenQ(InvariantNum):
     name = "Largest Q-eigenvalue"
-    code = "q<sub>1</sub>"
+    code = "q\u2081"
 
     @staticmethod
     def calculate(graph):
@@ -265,7 +265,7 @@ class Largest1EigenQ(InvariantNum):
 
 class Largest1EigenD(InvariantNum):
     name = "Largest D-eigenvalue"
-    code = "\u0398<sub>1</sub>"
+    code = "\u0398\u2081"
 
     @staticmethod
     def calculate(graph):
