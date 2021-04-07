@@ -8,6 +8,7 @@ import scipy.sparse as ss
 class InvariantBool:
 
     dic_name_inv = {}
+    dic_name_calc = {}
     name = None
     link = None
     implement = None
@@ -17,6 +18,7 @@ class InvariantBool:
         self.all = InvariantBool.__subclasses__()
         for inv in self.all:
             self.dic_name_inv[inv.name] = inv
+            self.dic_name_calc[inv.name] = inv.calculate
 
 
 

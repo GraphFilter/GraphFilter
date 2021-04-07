@@ -45,7 +45,7 @@
     {
       "name": "Total Domination Number",
       "definition" : "The total domination number of a graph is the size of a smallest total dominating set, where a total dominating set is a set of vertices of the graph such that all vertices (including those in the set itself) have a neighbor in the set. Total dominating numbers are defined only for graphs having no isolated vertex",
-      "usage": "For filtering click in '\u0194<sub>t</sub>' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u0194\u209c' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/TotalDominationNumber.html",
       "implementation": "Grinpy Python library"
     },
@@ -87,7 +87,7 @@
     {
       "name": "Degree regularity",
       "definition" : "It's the number of distinct values in the sequence of degrees of the graph.",
-      "usage": "For filtering click in 'd<sub>r</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'd\u1d63' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/VertexDegree.html",
       "implementation": ""
     },
@@ -108,7 +108,7 @@
     {
       "name": "Average Degree",
       "definition" : "It's the average degree per vertex in the graph",
-      "usage": "For filtering click in 'd<sub>a</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'd\u2090' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/VertexDegree.html",
       "implementation": "NetworkX Python Library"
     },
@@ -136,28 +136,28 @@
     {
       "name": "Largest A-eigenvalue",
       "definition" : "It's the largest eigenvalue of adjacency matrix. ",
-      "usage": "For filtering click in '\u03bb<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u03bb\u2081' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Adjacency_matrix",
       "implementation": "Grinpy Python library"
     },
     {
       "name": "Largest L-eigenvalue",
       "definition" : "It's the largest eigenvalue of Laplacian matrix, this is L=D-A, where D is the degree matrix and A is the adjacency matrix of the graph.",
-      "usage": "For filtering click in '\u03bc<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u03bc\u2081' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Largest Q-eigenvalue",
       "definition" : "It's the largest eigenvalue of Signless Laplacian matrix. Given a simple graph G with n vertices, its Signless Laplacian matrix is Q=D+A, where D is the degree matrix and A is the adjacency matrix of the graph.",
-      "usage": "For filtering click in 'q<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in 'q\u2081' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix#Signless_Laplacian",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Largest D-eigenvalue",
       "definition" : "It's the largest eigenvalue of graph distance matrix. This matrix is the square where each entry (i,j) represents the distance between the vertices i and j.",
-      "usage": "For filtering click in '\u0398<sub>1</sub>' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
+      "usage": "For filtering click in '\u0398\u2081' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/GraphDistanceMatrix.html",
       "implementation": "Numpy and NetworkX python Library"
     },
@@ -170,7 +170,7 @@
     },
     {
       "name": "Wiener Index",
-      "definition" : "The Wiener index (or the \"path number\") is a graph index defined for a graph on n nodes by W=\u00bd \u03a3 \u03a3 d(i,j), where d(i,j) is the distance between the vertices i and j.",
+      "definition" : "The Wiener index (or the \"path number\") is a graph index defined for a graph on n nodes by W=\u00bd\u03a3\u03a3 d(i,j), where d(i,j) is the distance between the vertices i and j.",
       "usage": "For filtering click in 'W' code in the equation to use it.  Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/WienerIndex.html",
       "implementation": "NetworkX Python Library"

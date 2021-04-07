@@ -54,7 +54,7 @@ class ExpressionUnitTests(unittest.TestCase):
         ftl.set_inputs([], '', [])
         self.assertEqual(expression_translated, ftl.split_translate_expression(expression1)[0])
         self.assertEqual(expression_translated, ftl.split_translate_expression(expression2)[0])
-        self.assertEqual('error', ftl.split_translate_expression(expression3))
+        self.assertEqual(('', 'error'), ftl.split_translate_expression(expression3))
 
     def test_translate_code_to_code_literal(self):
         i_num.InvariantNum()
