@@ -50,7 +50,6 @@ class Invariants(QDockWidget):
                 self.visualize.invariants_selected[check.text()] = 'None'
         else:
             del self.visualize.invariants_selected[check.text()]
-        print(self.visualize.invariants_selected)
 
         self.visualize.info.update_table()
 
