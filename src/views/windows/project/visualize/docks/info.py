@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
-import networkx as nx
+
 
 class Info(QDockWidget):
 
@@ -21,9 +21,9 @@ class Info(QDockWidget):
 
         self.setWidget(table)
 
-    def update_table(self, data):
+    def update_table(self):
         self.model.removeRows(0, self.model.rowCount())
-        for key, value in data.items():
+        for key, value in self.visualize.invariants_selected.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))
             invariant_name.setEditable(False)

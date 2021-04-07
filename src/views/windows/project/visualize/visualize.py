@@ -15,13 +15,20 @@ def match_graph_code(text):
 
 
 class Visualize(QWidget):
+    invariants_selected = {}
+    dic_invariants = {}
 
     def __init__(self, project_window):
         super().__init__()
 
-        #TODO: essa importação deve vir do FilterList do Wizard, acertar isso após refactor do wizard.
+        # TODO: import should come from the Wizard's FilterList, fix it after the wizard's refactor.
         self.filter_backend: FilterList
         self.filter_backend = FilterList()
+
+        self.dic_invariants = {
+            **self.filter_backend.invariant_num.dic_name_calc,
+            **self.filter_backend.invariant_bool.dic_name_calc
+        }
 
         self.graph = None
         self.info = None
@@ -108,7 +115,7 @@ class Visualize(QWidget):
         else:
             self.left_button.setDisabled(False)
 
-        if self.combo_graphs.currentIndex() == self.combo_graphs.count() -1:
+        if self.combo_graphs.currentIndex() == self.combo_graphs.count() - 1:
             self.right_button.setDisabled(True)
         else:
             self.right_button.setDisabled(False)
@@ -117,7 +124,8 @@ class Visualize(QWidget):
         if self.current_graph is not None:
             self.graph.plot_graph(self.current_graph)
 
-        self.info.update_table_inv({"test": self.combo_graphs.currentText()})
+        self.invariants.update_graph_to_table()
+        # self.info.update_table_inv({"test": self.combo_graphs.currentText()})
 
     def move_up(self):
         self.combo_graphs.setCurrentIndex(self.combo_graphs.currentIndex() - 1)
