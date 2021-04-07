@@ -34,7 +34,7 @@ class ChromaticNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.chromatic_number(graph)
+        return len(set(nx.greedy_color(graph).values()))
 
 
 class NumberVertices(InvariantNum):
