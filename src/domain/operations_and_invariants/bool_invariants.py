@@ -6,21 +6,25 @@ import scipy.sparse as ss
 
 
 class InvariantBool:
-
     dic_name_inv = {}
     dic_name_calc = {}
+    dic_name_inv_structural = {}
+    dic_name_inv_spectral = {}
     name = None
     link = None
     implement = None
     error = 0.00001
+    type = None
 
     def __init__(self):
         self.all = InvariantBool.__subclasses__()
         for inv in self.all:
-            self.dic_name_inv[inv.name] = inv
             self.dic_name_calc[inv.name] = inv.calculate
-
-
+            if inv.type == 'structural':
+                self.dic_name_inv_structural[inv.name] = inv
+            elif inv.type == 'spectral':
+                self.dic_name_inv_spectral[inv.name] = inv
+        self.dic_name_inv = {**self.dic_name_inv_structural, **self.dic_name_inv_spectral}
 
     @staticmethod
     def calculate(**kwargs):
@@ -29,6 +33,7 @@ class InvariantBool:
 
 class Planar(InvariantBool):
     name = "planar"
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -37,6 +42,7 @@ class Planar(InvariantBool):
 
 class Connected(InvariantBool):
     name = "connected"
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -45,6 +51,7 @@ class Connected(InvariantBool):
 
 class Biconnected(InvariantBool):
     name = "biconnected"
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -53,6 +60,7 @@ class Biconnected(InvariantBool):
 
 class Bipartite(InvariantBool):
     name = 'bipartite'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -61,6 +69,7 @@ class Bipartite(InvariantBool):
 
 class Eulerian(InvariantBool):
     name = 'Eulerian'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -69,6 +78,7 @@ class Eulerian(InvariantBool):
 
 class Chordal(InvariantBool):
     name = 'Chordal'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -77,6 +87,7 @@ class Chordal(InvariantBool):
 
 class TriangleFree(InvariantBool):
     name = 'Triangle-free'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -85,6 +96,7 @@ class TriangleFree(InvariantBool):
 
 class Regular(InvariantBool):
     name = 'Regular'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -93,6 +105,7 @@ class Regular(InvariantBool):
 
 class ClawFree(InvariantBool):
     name = 'Claw-free'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
@@ -101,10 +114,12 @@ class ClawFree(InvariantBool):
 
 class Tree(InvariantBool):
     name = 'Tree'
+    type = 'structural'
 
     @staticmethod
     def calculate(graph):
         return nx.is_tree(graph)
+
 
 # TODO: create k-regular in numeric invariant
 
@@ -118,6 +133,7 @@ class Tree(InvariantBool):
 
 class SomeEigenIntegerA(InvariantBool):
     name = 'Some A-eigenvalue integer'
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -127,6 +143,7 @@ class SomeEigenIntegerA(InvariantBool):
 
 class SomeEigenIntegerL(InvariantBool):
     name = "Some L-eigenvalue integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -136,6 +153,7 @@ class SomeEigenIntegerL(InvariantBool):
 
 class SomeEigenIntegerQ(InvariantBool):
     name = "Some Q-eigenvalue integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -145,6 +163,7 @@ class SomeEigenIntegerQ(InvariantBool):
 
 class SomeEigenIntegerD(InvariantBool):
     name = "Some D-eigenvalue integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -153,6 +172,7 @@ class SomeEigenIntegerD(InvariantBool):
 
 class IntegralA(InvariantBool):
     name = "A-integral"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -162,6 +182,7 @@ class IntegralA(InvariantBool):
 
 class IntegralL(InvariantBool):
     name = "L-integral"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -171,6 +192,7 @@ class IntegralL(InvariantBool):
 
 class IntegralQ(InvariantBool):
     name = "Q-integral"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -180,6 +202,7 @@ class IntegralQ(InvariantBool):
 
 class IntegralD(InvariantBool):
     name = "D-integral"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -188,6 +211,7 @@ class IntegralD(InvariantBool):
 
 class LargestEigenIntegerA(InvariantBool):
     name = "Largest A-eigenvalue is integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -197,6 +221,7 @@ class LargestEigenIntegerA(InvariantBool):
 
 class LargestEigenIntegerL(InvariantBool):
     name = "Largest L-eigenvalue is integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -206,6 +231,7 @@ class LargestEigenIntegerL(InvariantBool):
 
 class LargestEigenIntegerQ(InvariantBool):
     name = "Largest Q-eigenvalue is integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):
@@ -215,6 +241,7 @@ class LargestEigenIntegerQ(InvariantBool):
 
 class LargestEigenIntegerD(InvariantBool):
     name = "Largest D-eigenvalue is integer"
+    type = 'spectral'
 
     @staticmethod
     def calculate(graph):

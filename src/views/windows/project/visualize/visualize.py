@@ -3,7 +3,8 @@ from PyQt5 import QtCore
 from src.views.windows.project.visualize.docks.info import Info
 from src.views.windows.project.visualize.docks.graph import Graph
 from src.views.windows.project.visualize.docks.invariants import Invariants
-from src.domain.filter_list import FilterList
+from src.domain.operations_and_invariants.operations_invariants import Invariants as Inv
+
 import re
 from PyQt5 import QtGui
 
@@ -22,13 +23,8 @@ class Visualize(QWidget):
         super().__init__()
 
         # TODO: import should come from the Wizard's FilterList, fix it after the wizard's refactor.
-        self.filter_backend: FilterList
-        self.filter_backend = FilterList()
-
-        self.dic_invariants = {
-            **self.filter_backend.invariant_num.dic_name_calc,
-            **self.filter_backend.invariant_bool.dic_name_calc
-        }
+        inv = Inv()
+        self.dic_invariants = {**inv.numerics.dic_name_calc, **inv.booleans.dic_name_calc}
 
         self.graph = None
         self.info = None
