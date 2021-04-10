@@ -12,6 +12,8 @@ class Equations(QWizardPage):
     def __init__(self):
         super().__init__()
 
+        self.setObjectName("equations")
+
         filter_backend = FilterList()
 
         self.filter_backend = filter_backend

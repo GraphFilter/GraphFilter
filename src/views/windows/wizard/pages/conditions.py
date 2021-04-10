@@ -10,6 +10,8 @@ class Conditions(QWizardPage):
     def __init__(self, previous_page):
         super().__init__()
 
+        self.setObjectName("conditions")
+
         filter_backend = FilterList()
 
         self.previous_page = previous_page

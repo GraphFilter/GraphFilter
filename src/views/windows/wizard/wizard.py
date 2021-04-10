@@ -6,6 +6,7 @@ from src.views.windows.wizard.pages.equations import Equations
 from src.views.windows.wizard.pages.conditions import Conditions
 from src.views.windows.wizard.pages.method import Method
 from src.views.windows.wizard.pages.graph_files import GraphFiles
+from src.views.windows.wizard.pages.review import Review
 from src.views.windows.project.project_window import ProjectWindow
 from PyQt5 import QtGui, QtCore
 import json
@@ -30,6 +31,7 @@ class Wizard(QWizard):
         self.conditions = Conditions(self.equations)
         self.method = Method()
         self.graph_files = GraphFiles()
+        self.review = Review(self)
 
         self.setWindowTitle("New Project")
 
@@ -38,6 +40,7 @@ class Wizard(QWizard):
         self.addPage(self.conditions)
         self.addPage(self.method)
         self.addPage(self.graph_files)
+        self.addPage(self.review)
 
         self.setFixedSize(self.width, self.height)
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
@@ -48,13 +51,20 @@ class Wizard(QWizard):
         pixmap.fill(QtCore.Qt.transparent)
         self.setWindowIcon(QtGui.QIcon(pixmap))
 
-        cancel = self.button(QWizard.CancelButton)
-        cancel.clicked.connect(self.show_main_window)
+        cancel_button = self.button(QWizard.CancelButton)
+        cancel_button.clicked.connect(self.show_main_window)
 
-        finish = self.button(QWizard.FinishButton)
-        finish.clicked.connect(self.start_filter)
+        finish_button = self.button(QWizard.FinishButton)
+        finish_button.clicked.connect(self.start_filter)
+
+        next_button = self.button(QWizard.NextButton)
+        next_button.clicked.connect(self.current_page)
 
         self.setButtonText(QWizard.FinishButton, "Start")
+
+    def current_page(self):
+        if self.currentPage().objectName() == "review":
+            self.review.fill()
 
     def closeEvent(self, event):
         self.main_window.show()

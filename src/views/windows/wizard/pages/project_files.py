@@ -9,6 +9,8 @@ class ProjectFiles(QWizardPage):
     def __init__(self):
         super().__init__()
 
+        self.setObjectName("project_files")
+
         self.project_name_input = QLineEdit()
         self.project_name_input.returnPressed.connect(self.save_project_name)
 

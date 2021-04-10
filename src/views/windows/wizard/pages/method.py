@@ -8,6 +8,8 @@ class Method(QWizardPage):
     def __init__(self):
         super().__init__()
 
+        self.setObjectName("method")
+
         self.method = ''
 
         button_layout = QHBoxLayout()
