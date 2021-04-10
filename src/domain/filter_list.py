@@ -1,9 +1,8 @@
 import networkx as nx
 from simpleeval import simple_eval
 
-from src.domain.operations_and_invariants import bool_invariants as i_bool
-from src.domain.operations_and_invariants import num_invariants as i_num
-from src.domain.operations_and_invariants import operations as op
+from src.domain.operations_and_invariants.operations_invariants import Invariants
+from src.domain.operations_and_invariants.operations_invariants import Operations
 
 
 class FilterList:
@@ -22,10 +21,12 @@ class FilterList:
         # note: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
         #  list_inv_bool_choices: list of couples [invariant_name, 'true' or 'false']
-        self.invariant_bool = i_bool.InvariantBool()
-        self.invariant_num = i_num.InvariantNum()
-        self.operations_math = op.MathOperations()
-        self.operations_graph = op.GraphOperations()
+        invariants = Invariants()
+        operations = Operations()
+        self.invariant_bool = invariants.booleans
+        self.invariant_num = invariants.numerics
+        self.operations_math = operations.math
+        self.operations_graph = operations.graphs
         self.functions_to_eval.update(self.invariant_num.dic_function)
         self.functions_to_eval.update(self.operations_graph.dic_function)
         self.functions_to_eval.update(self.operations_math.dic_function)
