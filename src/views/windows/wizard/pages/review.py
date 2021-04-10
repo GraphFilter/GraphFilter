@@ -61,7 +61,8 @@ class Review(QWizardPage):
         layout.addStretch(1)
         layout.addWidget(QLabel(f"<b>Equation:</b>  {self.equation}"))
         layout.addStretch(1)
-        layout.addWidget(QLabel(f"<b>Method:</b> {self.method}"))
+        layout.addWidget(
+            QLabel(f"<b>Method:</b> {'Filter Graphs' if self.method == 'filter' else 'Find Counter Example'}"))
         layout.addStretch(1)
         layout.addLayout(center_layout)
         layout.setContentsMargins(80, 30, 80, 50)
