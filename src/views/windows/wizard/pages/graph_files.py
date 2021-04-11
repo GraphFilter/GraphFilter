@@ -6,6 +6,8 @@ class GraphFiles(QWizardPage):
     def __init__(self):
         super().__init__()
 
+        self.setObjectName("graph_files")
+
         self.files_added = []
 
         graph_files_input = QLineEdit()
@@ -67,7 +69,6 @@ class GraphFiles(QWizardPage):
 
     def return_files(self):
         return self.files_added
-
 
     def remove_row(self, layout, input_file):
         text = input_file.text()

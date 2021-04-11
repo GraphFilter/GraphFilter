@@ -3,7 +3,10 @@ from PyQt5.QtWidgets import *
 from src.domain.filter_list import FilterList
 from src.views.windows.wizard.pages.project_files import ProjectFiles
 from src.views.windows.wizard.pages.equations import Equations
+from src.views.windows.wizard.pages.conditions import Conditions
+from src.views.windows.wizard.pages.method import Method
 from src.views.windows.wizard.pages.graph_files import GraphFiles
+from src.views.windows.wizard.pages.review import Review
 from src.views.windows.project.project_window import ProjectWindow
 from PyQt5 import QtGui, QtCore
 import json
@@ -24,14 +27,20 @@ class Wizard(QWizard):
         self.project_window = ProjectWindow()
 
         self.project_files = ProjectFiles()
-        self.equations = Equations(self.filter_backend)
+        self.equations = Equations()
+        self.conditions = Conditions(self.equations)
+        self.method = Method()
         self.graph_files = GraphFiles()
+        self.review = Review(self)
 
         self.setWindowTitle("New Project")
 
         self.addPage(self.project_files)
         self.addPage(self.equations)
+        self.addPage(self.conditions)
+        self.addPage(self.method)
         self.addPage(self.graph_files)
+        self.addPage(self.review)
 
         self.setFixedSize(self.width, self.height)
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
@@ -42,13 +51,20 @@ class Wizard(QWizard):
         pixmap.fill(QtCore.Qt.transparent)
         self.setWindowIcon(QtGui.QIcon(pixmap))
 
-        cancel = self.button(QWizard.CancelButton)
-        cancel.clicked.connect(self.show_main_window)
+        cancel_button = self.button(QWizard.CancelButton)
+        cancel_button.clicked.connect(self.show_main_window)
 
-        finish = self.button(QWizard.FinishButton)
-        finish.clicked.connect(self.start_filter)
+        finish_button = self.button(QWizard.FinishButton)
+        finish_button.clicked.connect(self.start_filter)
+
+        next_button = self.button(QWizard.NextButton)
+        next_button.clicked.connect(self.current_page)
 
         self.setButtonText(QWizard.FinishButton, "Start")
+
+    def current_page(self):
+        if self.currentPage().objectName() == "review":
+            self.review.fill()
 
     def closeEvent(self, event):
         self.main_window.show()
@@ -63,30 +79,27 @@ class Wizard(QWizard):
 
         expression = self.equations.equation.text()
 
-        list_inv_bool_choices = self.equations.dict_inv_bool_choices.items()
+        list_inv_bool_choices = self.conditions.dict_inv_bool_choices.items()
 
         self.filter_backend.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         self.save_project()
 
-        if self.equations.method == 'filter':
-            return_run = self.filter_backend.run_filter()
-        elif self.equations.method == 'counterexample':
-            return_run = self.filter_backend.run_find_counterexample()
+        if self.method.method == 'filter':
+            self.filter_backend.run_filter()
+        elif self.method.method == 'counterexample':
+            self.filter_backend.run_find_counterexample()
 
         # TODO: Use the percentage returned by filtering
         self.project_window.visualize.fill_combo(self.filter_backend.list_out)
         self.project_window.show()
-
-    def disable_next(self):
-        self.button(QtGui.QWizard.NextButton).setEnabled(False)
 
     def save_project(self):
         project_dictionary = {
             "project_name": self.project_files.project_name_input.text(),
             "project_folder": self.project_files.project_location_input.text(),
             "equation": self.equations.equation.text(),
-            "conditions": self.equations.dict_inv_bool_choices,
-            "method": self.equations.method,
+            "conditions": self.conditions.dict_inv_bool_choices,
+            "method": self.method.method,
             "graphs": self.graph_files.files_added
         }
         project_json = json.dumps(project_dictionary)

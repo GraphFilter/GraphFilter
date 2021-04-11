@@ -14,6 +14,10 @@ class Invariants(QDockWidget):
         self.widget = QWidget()
         self.setWidget(self.widget)
 
+        self.setMaximumWidth(300)
+
+        self.invariants = []
+
         self.create_conditions()
 
     def create_conditions(self):
