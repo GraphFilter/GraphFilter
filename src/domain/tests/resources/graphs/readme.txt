@@ -47,7 +47,7 @@ AND	Radius >= 3.0
 -----------------------------
 
 graphs7
-All graphs with 7 vertices
+All graphs with 6 vertices
 
 chi<eigen1A+1
 

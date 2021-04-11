@@ -16,10 +16,11 @@ class Conditions(QWizardPage):
 
         self.previous_page = previous_page
 
-        self.dict_bool_invariant = filter_backend.invariant_bool.dic_name_inv
+        self.dict_bool_inv_structural = filter_backend.invariant_bool.dic_name_inv_structural
+        self.dict_bool_inv_spectral = filter_backend.invariant_bool.dic_name_inv_spectral
 
-        self.structural_invariants_group = ComboBoxesGroup("Structural", self.dict_bool_invariant, self)
-        self.spectral_invariants_group = ComboBoxesGroup("Spectral", self.dict_bool_invariant, self)
+        self.structural_invariants_group = ComboBoxesGroup("Structural", self.dict_bool_inv_structural, self)
+        self.spectral_invariants_group = ComboBoxesGroup("Spectral", self.dict_bool_inv_spectral, self)
 
         self.dict_inv_bool_choices = {}
 
