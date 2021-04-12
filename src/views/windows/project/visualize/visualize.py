@@ -104,6 +104,10 @@ class Visualize(QWidget):
         self.current_graph = match_graph_code(self.combo_graphs.currentText())
         if self.current_graph is not None:
             self.graph.plot_graph(self.current_graph)
+        if self.combo_graphs.count() == 1:
+            self.left_button.setDisabled(True)
+            self.right_button.setDisabled(True)
+
 
     def change_graph(self):
         if self.combo_graphs.currentIndex() == 0:
