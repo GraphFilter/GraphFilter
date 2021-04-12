@@ -53,27 +53,27 @@ class FilterList:
 
     def validate_expression(self, expression):
         if len(expression) == 0:
-            return True
+            return ""
         g = nx.trivial_graph()
         names = {"G": g, "g": g}
         expressions, AND_OR = self.split_translate_expression(expression)
         if AND_OR == 'error':
-            return False
+            return "Expression using 'AND' and 'OR' simultaneously is not allowed"
         try:
             if AND_OR == 'SINGLE':
                 if not isinstance(
                         simple_eval(expressions, functions=self.functions_to_eval, names=names),
                         bool):
-                    return False
+                    return "It's neither an equation nor an inequality"
             elif AND_OR == 'AND' or AND_OR == 'OR':
                 for exp in expressions:
                     if not isinstance(
                             simple_eval(exp, functions=self.functions_to_eval, names=names),
                             bool):
-                        return False
+                        return "It's neither an equation nor an inequality"
         except:
-            return False
-        return True
+            return "Unknown terms in the expression"
+        return ""
 
     def run_filter(self):
         self.list_out = []

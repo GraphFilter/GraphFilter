@@ -42,10 +42,14 @@ class Equations(QWizardPage):
         self.equation.textEdited.connect(self.update_line_text)
         self.valid_equation = True
 
+        self.equation_info_validate = QLabel()
+
         layout = QVBoxLayout()
         layout.addWidget(QLabel("<h3>Equations</h3>"))
         layout.addStretch(2)
         layout.addWidget(self.equation)
+        layout.addStretch(0)
+        layout.addWidget(self.equation_info_validate)
         layout.addStretch(5)
         layout.addWidget(math_tab)
         layout.setContentsMargins(80, 30, 80, 30)
@@ -62,8 +66,26 @@ class Equations(QWizardPage):
         for text, symbol in self.dict_text_equation.items():
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
-        self.valid_equation = self.filter_backend.validate_expression(self.equation.text())
+        error_message = self.filter_backend.validate_expression(self.equation.text())
+        if len(error_message) > 0:
+            self.valid_equation = False
+        else:
+            self.valid_equation = True
+        self.update_equation_info_validate(error_message)
         self.completeChanged.emit()
+
+    def update_equation_info_validate(self, error_message):
+        if len(error_message) == 0:
+            self.equation_info_validate.setText("Valid equation")
+            self.equation_info_validate.setFont(QtGui.QFont("Arial", 8))
+            self.equation_info_validate.setStyleSheet("color: green")
+        else:
+            self.equation_info_validate.setText("Invalid Equation: " + str(error_message))
+            self.equation_info_validate.setFont(QtGui.QFont("Arial", 8))
+            self.equation_info_validate.setStyleSheet("color: red")
+
+    def isComplete(self):
+        return self.valid_equation
 
 
 class TabOperations(QWidget):
