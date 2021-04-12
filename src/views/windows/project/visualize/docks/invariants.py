@@ -29,9 +29,11 @@ class Invariants(QDockWidget):
         # NOTE: this code generate multiples checkboxes
         for key in self.visualize.dic_invariants.keys():
             checkbox = QCheckBox(f"{key}")
+            if key in self.visualize.invariants_selected:
+                checkbox.setChecked(True)
             checkbox.clicked.connect(self.checked)
             conditions_layout.addWidget(checkbox)
-
+        self.visualize.info.update_table()
         layout_aux = QVBoxLayout()
         widget_aux = QWidget()
         scroll_area = QScrollArea()
