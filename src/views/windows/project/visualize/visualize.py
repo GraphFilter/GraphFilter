@@ -97,16 +97,18 @@ class Visualize(QWidget):
             self.info = None
             self.invariants = None
 
-    def fill_combo(self, list_graphs):
+    def fill_combo(self, list_graphs: list):
         self.combo_graphs.clear()
-        for i, line in enumerate(list_graphs):
-            self.combo_graphs.addItem(f'Graph {i} - {line}')
-        self.current_graph = match_graph_code(self.combo_graphs.currentText())
-        if self.current_graph is not None:
-            self.graph.plot_graph(self.current_graph)
-        if self.combo_graphs.count() == 1:
+        if list_graphs:
+            for i, line in enumerate(list_graphs):
+                self.combo_graphs.addItem(f'Graph {i} - {line}')
+            self.current_graph = match_graph_code(self.combo_graphs.currentText())
+            if self.current_graph is not None:
+                self.graph.plot_graph(self.current_graph)
+        if self.combo_graphs.count() < 2:
             self.left_button.setDisabled(True)
             self.right_button.setDisabled(True)
+
 
 
     def change_graph(self):
