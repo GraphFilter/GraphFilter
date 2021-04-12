@@ -22,7 +22,7 @@ class GraphFiles(QWizardPage):
         graph_files_button.clicked.connect(self.open_file)
 
         file_line = QHBoxLayout()
-        file_line.addWidget(QLabel("Graph .q6 file:"))
+        file_line.addWidget(QLabel("Graph .g6 file:"))
         file_line.addWidget(graph_files_input)
         file_line.addWidget(graph_files_button)
         file_line.addWidget(self.graph_files_add)
@@ -57,7 +57,7 @@ class GraphFiles(QWizardPage):
             button.clicked.connect(self.open_file)
 
             layout = QHBoxLayout()
-            layout.addWidget(QLabel("Graph .q6 file:"))
+            layout.addWidget(QLabel("Graph .g6 file:"))
             layout.addWidget(input_file)
             layout.addWidget(button)
             layout.addWidget(remove)
