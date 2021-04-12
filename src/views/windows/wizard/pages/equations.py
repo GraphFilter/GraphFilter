@@ -67,10 +67,7 @@ class Equations(QWizardPage):
             text_equation = text_equation.replace(text, symbol)
         self.equation.setText(text_equation)
         error_message = self.filter_backend.validate_expression(self.equation.text())
-        if len(error_message) > 0:
-            self.valid_equation = False
-        else:
-            self.valid_equation = True
+        self.valid_equation = not bool(error_message)
         self.update_equation_info_validate(error_message)
         self.completeChanged.emit()
 
