@@ -32,7 +32,7 @@ class InvariantBool:
 
 
 class Planar(InvariantBool):
-    name = "planar"
+    name = "Planar"
     type = 'structural'
 
     @staticmethod
@@ -41,7 +41,7 @@ class Planar(InvariantBool):
 
 
 class Connected(InvariantBool):
-    name = "connected"
+    name = "Connected"
     type = 'structural'
 
     @staticmethod
@@ -50,7 +50,7 @@ class Connected(InvariantBool):
 
 
 class Biconnected(InvariantBool):
-    name = "biconnected"
+    name = "Biconnected"
     type = 'structural'
 
     @staticmethod
@@ -59,7 +59,7 @@ class Biconnected(InvariantBool):
 
 
 class Bipartite(InvariantBool):
-    name = 'bipartite'
+    name = 'Bipartite'
     type = 'structural'
 
     @staticmethod

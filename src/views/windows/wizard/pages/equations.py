@@ -63,12 +63,17 @@ class Equations(QWizardPage):
 
     def update_line_text(self):
         text_equation = self.equation.text()
+        cursor = self.equation.cursorPosition()
         for text, symbol in self.dict_text_equation.items():
             text_equation = text_equation.replace(text, symbol)
+            text_equation = text_equation.replace(str(text).lower(), symbol)
+            text_equation = text_equation.replace(str(text).replace(" ", ""), symbol)
+            text_equation = text_equation.replace(str(text).lower().replace(" ", ""), symbol)
         self.equation.setText(text_equation)
         error_message = self.filter_backend.validate_expression(self.equation.text())
         self.valid_equation = not bool(error_message)
         self.update_equation_info_validate(error_message)
+        self.equation.setCursorPosition(cursor)
         self.completeChanged.emit()
 
     def update_equation_info_validate(self, error_message):

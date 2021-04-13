@@ -77,16 +77,16 @@ class ExpressionUnitTests(unittest.TestCase):
         chi = str(i_num.ChromaticNumber.code)
         eta = str(i_num.Nullity.code)
         c = str(oper.Complement.code)
-        self.assertFalse(ftl.validate_expression('xx'))
-        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2'))
-        self.assertFalse(ftl.validate_expression(f'{chi}(G)'))
-        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2l'))
-        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))=2'))
-        self.assertFalse(ftl.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))==2 AND {chi}(G)>2'))
-        self.assertFalse(ftl.validate_expression(f'{chi}(G)==2 OR {eta}({c}(G))<2 AND {chi}(G)>=2'))
+        self.failureException(ftl.validate_expression('xx'))
+        self.failureException(ftl.validate_expression(f'{chi}(G)=2'))
+        self.failureException(ftl.validate_expression(f'{chi}(G)'))
+        self.failureException(ftl.validate_expression(f'{chi}(G)=2l'))
+        self.failureException(ftl.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))=2'))
+        self.failureException(ftl.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))==2 AND {chi}(G)>2'))
+        self.failureException(ftl.validate_expression(f'{chi}(G)==2 OR {eta}({c}(G))<2 AND {chi}(G)>=2'))
 
 
-class BackendUnitTests(unittest.TestCase):
+class DomainUnitTests(unittest.TestCase):
 
     def test_AND_logic(self):
         exp1 = str(i_num.EdgeConnectivity.code) + '(G) >=3'
@@ -158,6 +158,13 @@ class BackendUnitTests(unittest.TestCase):
         sqrt = str(oper.Sqrt.code)
         c = str(oper.Complement.code)
         self.assertEqual(1, Helper.run('resources/graphs/single_graph.g6', f'{sqrt}({diam}({c}(G)))>0', []))
+
+    def test_invalid_g6(self):
+        diam = str(i_num.Diameter.code)
+        chi = str(i_num.ChromaticNumber.code)
+        self.assertEqual(1, Helper.run('resources/graphs/graphs14.g6', f'{diam}(G)>0', []))
+        self.assertEqual(4/5, Helper.run('resources/graphs/graphs14.g6', f'{chi}(G)<8', []))
+        self.assertEqual(True, Helper.some_c_exem('resources/graphs/graphs14.g6', f'{chi}(G)<8', [])[0])
 
 
 class MiscellaneousTests(unittest.TestCase):

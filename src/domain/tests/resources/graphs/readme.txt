@@ -94,4 +94,11 @@ AND	Acyclic = false
 1 graph
 And one graph Acyclic = True
 
+-----------------------------
+
+graphs14
+There are some invalid g6 code.
+valid: 5; invalid: 3
+
+
 
