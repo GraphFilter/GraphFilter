@@ -118,7 +118,7 @@ class FilterList:
                     count = count + 1
                 else:
                     continue
-            except:
+            except nx.NetworkXError:
                 self.invalid_lines = self.invalid_lines + 1
                 continue
         return float(count / total)
@@ -163,7 +163,7 @@ class FilterList:
                         if not graph_satisfies:
                             self.list_out.append(g6code)
                             return True
-            except:
+            except nx.NetworkXError:
                 self.invalid_lines = self.invalid_lines + 1
                 continue
         return False
