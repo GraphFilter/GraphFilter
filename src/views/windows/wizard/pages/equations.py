@@ -58,7 +58,18 @@ class Equations(QWizardPage):
 
     def set_line_text(self):
         button_clicked = QPushButton().sender()
-        self.equation.setText(self.equation.text() + self.dict_text_equation[button_clicked.text()])
+        cursor = self.equation.cursorPosition()
+        self.equation.setText(
+            self.equation.text()[:cursor] +
+            self.dict_text_equation[button_clicked.text()] +
+            self.equation.text()[cursor:]
+        )
+        error_message = self.filter_backend.validate_expression(self.equation.text())
+        self.valid_equation = not bool(error_message)
+        self.update_equation_info_validate(error_message)
+        self.equation.setCursorPosition(cursor+len(self.dict_text_equation[button_clicked.text()]))
+        self.equation.cursor()
+        self.equation.setFocus()
         self.completeChanged.emit()
 
     def update_line_text(self):

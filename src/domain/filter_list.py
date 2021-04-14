@@ -1,3 +1,5 @@
+import numpy
+
 import networkx as nx
 from simpleeval import simple_eval
 
@@ -40,10 +42,13 @@ class FilterList:
         self.expressions, self.AND_OR = self.split_translate_expression(expression)
 
     def split_translate_expression(self, expression):
-        for inv in self.invariant_num.all:
-            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
         for inv in self.operations_graph.all:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for inv in self.operations_math.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for inv in self.invariant_num.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+
 
         if "AND" in expression and "OR" in expression:
             return '', 'error'
@@ -64,19 +69,22 @@ class FilterList:
             return "Expression using 'AND' and 'OR' simultaneously is not allowed"
         try:
             if AND_OR == 'SINGLE':
-                if not isinstance(
-                        simple_eval(expressions, functions=self.functions_to_eval, names=names),
-                        bool):
-                    return "It's neither an equation nor an inequality"
+                if not self.valid_bool_simpleval(expressions):
+                    return "It's not a valid equation or inequality"
             elif AND_OR == 'AND' or AND_OR == 'OR':
                 for exp in expressions:
-                    if not isinstance(
-                            simple_eval(exp, functions=self.functions_to_eval, names=names),
-                            bool):
-                        return "It's neither an equation nor an inequality"
+                    if not self.valid_bool_simpleval(exp):
+                        return "It's not a valid equation or inequality"
         except:
             return "Unknown terms in the expression"
         return ""
+
+    def valid_bool_simpleval(self, expression):
+        g = nx.trivial_graph()
+        names = {"G": g, "g": g}
+        type_ex = type(simple_eval(expression, functions=self.functions_to_eval, names=names))
+        return type_ex == numpy.bool or type_ex == numpy.bool_ or type_ex == bool
+
 
     def run_filter(self):
         self.list_out = []

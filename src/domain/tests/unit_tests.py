@@ -129,16 +129,17 @@ class DomainUnitTests(unittest.TestCase):
             j = j + 1
         self.assertTrue(isinstance(is_bool, bool))
 
-    def test_graph_operations(self):
-        alpha = str(i_num.IndependenceNumber.code)
-        for op in oper.GraphOperations.all:
-            self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
-                                       f'{alpha}{str(op.code)}(G)>0', []) >= 1)
-
-    def test_math_operations(self):
-        for op in oper.MathOperations.all:
-            self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
-                                       f'{str(op.code)}(2)>0', []) >= 0)
+    def test_all_operations(self):
+        ftl = FilterList()
+        for opg in oper.GraphOperations.all:
+            for opm in oper.MathOperations.all:
+                for inv in i_num.InvariantNum.all:
+                    self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
+                                               f'{str(opm.code)}({str(inv.code)}{str(opg.code)}(G))>0', []) >= 1
+                                    )
+                    self.assertEqual("",
+                                     ftl.validate_expression(f'{str(opm.code)}({str(inv.code)}{str(opg.code)}(G))>0')
+                                     )
 
     def test_find_counterexample(self):
         diam = str(i_num.Diameter.code)
