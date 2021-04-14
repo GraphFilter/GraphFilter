@@ -49,7 +49,6 @@ class FilterList:
         for inv in self.invariant_num.all:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
 
-
         if "AND" in expression and "OR" in expression:
             return '', 'error'
         elif "AND" in expression:
@@ -62,8 +61,6 @@ class FilterList:
     def validate_expression(self, expression):
         if len(expression) == 0:
             return ""
-        g = nx.trivial_graph()
-        names = {"G": g, "g": g}
         expressions, AND_OR = self.split_translate_expression(expression)
         if AND_OR == 'error':
             return "Expression using 'AND' and 'OR' simultaneously is not allowed"
@@ -84,7 +81,6 @@ class FilterList:
         names = {"G": g, "g": g}
         type_ex = type(simple_eval(expression, functions=self.functions_to_eval, names=names))
         return type_ex == numpy.bool or type_ex == numpy.bool_ or type_ex == bool
-
 
     def run_filter(self):
         self.list_out = []

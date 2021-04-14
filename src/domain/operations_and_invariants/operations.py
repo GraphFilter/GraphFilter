@@ -47,7 +47,7 @@ class GraphOperations:
 
 class Complement(GraphOperations):
     name = "Complement"
-    code = "c"
+    code = "Comp"
 
     @staticmethod
     def calculate(graph):
