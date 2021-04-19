@@ -4,15 +4,16 @@ import numpy as np
 
 class MathOperations:
     code = None
-    code_string = None
+    code_literal = None
     dic_function = {}
     all = []
     dic_name_code = {}
 
     def __init__(self):
         self.all = MathOperations.__subclasses__()
-        for inv in self.all:
-            self.dic_function[inv.code] = inv.calculate
+        for i, inv in enumerate(self.all):
+            inv.code_literal = 'mop'+str(i)
+            self.dic_function[inv.code_literal] = inv.calculate
             self.dic_name_code[inv.name] = inv.code
 
     @staticmethod
@@ -46,7 +47,7 @@ class GraphOperations:
 
 class Complement(GraphOperations):
     name = "Complement"
-    code = "c"
+    code = "Comp"
 
     @staticmethod
     def calculate(graph):

@@ -1,3 +1,5 @@
+import numpy
+
 import networkx as nx
 from simpleeval import simple_eval
 
@@ -10,7 +12,8 @@ class FilterList:
     expressions = None
     list_inv_bool_choices = None
     functions_to_eval = {}
-    list_out = None
+    list_out = []
+    invalid_lines = 0
     invariant_bool = None
     invariant_num = None
     operations_math = None
@@ -32,14 +35,18 @@ class FilterList:
         self.functions_to_eval.update(self.operations_math.dic_function)
 
     def set_inputs(self, list_g6_in, expression, list_inv_bool_choices):
+        self.invalid_lines = 0
+        self.list_out.clear()
         self.list_g6_in = list_g6_in
         self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = self.split_translate_expression(expression)
 
     def split_translate_expression(self, expression):
-        for inv in self.invariant_num.all:
-            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
         for inv in self.operations_graph.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for inv in self.operations_math.all:
+            expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for inv in self.invariant_num.all:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
 
         if "AND" in expression and "OR" in expression:
@@ -54,26 +61,26 @@ class FilterList:
     def validate_expression(self, expression):
         if len(expression) == 0:
             return ""
-        g = nx.trivial_graph()
-        names = {"G": g, "g": g}
         expressions, AND_OR = self.split_translate_expression(expression)
         if AND_OR == 'error':
             return "Expression using 'AND' and 'OR' simultaneously is not allowed"
         try:
             if AND_OR == 'SINGLE':
-                if not isinstance(
-                        simple_eval(expressions, functions=self.functions_to_eval, names=names),
-                        bool):
-                    return "It's neither an equation nor an inequality"
+                if not self.valid_bool_simpleval(expressions):
+                    return "It's not a valid equation or inequality"
             elif AND_OR == 'AND' or AND_OR == 'OR':
                 for exp in expressions:
-                    if not isinstance(
-                            simple_eval(exp, functions=self.functions_to_eval, names=names),
-                            bool):
-                        return "It's neither an equation nor an inequality"
+                    if not self.valid_bool_simpleval(exp):
+                        return "It's not a valid equation or inequality"
         except:
             return "Unknown terms in the expression"
         return ""
+
+    def valid_bool_simpleval(self, expression):
+        g = nx.trivial_graph()
+        names = {"G": g, "g": g}
+        type_ex = type(simple_eval(expression, functions=self.functions_to_eval, names=names))
+        return type_ex == numpy.bool or type_ex == numpy.bool_ or type_ex == bool
 
     def run_filter(self):
         self.list_out = []
@@ -82,37 +89,41 @@ class FilterList:
         for g6code in self.list_g6_in:
             if g6code == '' or g6code == ' ':
                 continue
-            total = total + 1
             graph_satisfies = True
-            g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-            names = {"G": g, "g": g}
-            # Check the expressions
-            if len(self.expressions) > 0:
-                if self.AND_OR == 'SINGLE':
-                    graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
-                elif self.AND_OR == 'AND':
-                    for exp in self.expressions:
-                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
+            try:
+                g = nx.from_graph6_bytes(g6code.encode('utf-8'))
+                total = total + 1
+                names = {"G": g, "g": g}
+                # Check the expressions
+                if len(self.expressions) > 0:
+                    if self.AND_OR == 'SINGLE':
+                        graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
+                    elif self.AND_OR == 'AND':
+                        for exp in self.expressions:
+                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
+                            if not graph_satisfies:
+                                break
+                    elif self.AND_OR == "OR":
+                        for exp in self.expressions:
+                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
+                            if graph_satisfies:
+                                break
+                # Check the boolean invariants
+                if graph_satisfies:
+                    for bool_inv in self.list_inv_bool_choices:
+                        if bool_inv[1] == 'true':
+                            graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
+                        else:
+                            graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
                         if not graph_satisfies:
                             break
-                elif self.AND_OR == "OR":
-                    for exp in self.expressions:
-                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
-                        if graph_satisfies:
-                            break
-            # Check the boolean invariants
-            if graph_satisfies:
-                for bool_inv in self.list_inv_bool_choices:
-                    if bool_inv[1] == 'true':
-                        graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
-                    else:
-                        graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
-                    if not graph_satisfies:
-                        break
-            if graph_satisfies:
-                self.list_out.append(g6code)
-                count = count + 1
-            else:
+                if graph_satisfies:
+                    self.list_out.append(g6code)
+                    count = count + 1
+                else:
+                    continue
+            except nx.NetworkXError:
+                self.invalid_lines = self.invalid_lines + 1
                 continue
         return float(count / total)
 
@@ -122,37 +133,41 @@ class FilterList:
         for g6code in self.list_g6_in:
             if g6code == '' or g6code == ' ':
                 continue
-            g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-            names = {"G": g, "g": g}
-            # Check the expressions
-            if len(self.expressions) > 0:
-                if self.AND_OR == 'SINGLE':
-                    graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
-                elif self.AND_OR == 'AND':
-                    for exp in self.expressions:
-                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
+            try:
+                g = nx.from_graph6_bytes(g6code.encode('utf-8'))
+                names = {"G": g, "g": g}
+                # Check the expressions
+                if len(self.expressions) > 0:
+                    if self.AND_OR == 'SINGLE':
+                        graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
+                    elif self.AND_OR == 'AND':
+                        for exp in self.expressions:
+                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
+                            if not graph_satisfies:
+                                self.list_out.append(g6code)
+                                return True
+                    elif self.AND_OR == "OR":
+                        for exp in self.expressions:
+                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
+                            if graph_satisfies:
+                                break
                         if not graph_satisfies:
                             self.list_out.append(g6code)
                             return True
-                elif self.AND_OR == "OR":
-                    for exp in self.expressions:
-                        graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
-                        if graph_satisfies:
-                            break
+                    # Check the boolean invariants
                     if not graph_satisfies:
                         self.list_out.append(g6code)
                         return True
-                # Check the boolean invariants
-                if not graph_satisfies:
-                    self.list_out.append(g6code)
-                    return True
-            if graph_satisfies:
-                for bool_inv in self.list_inv_bool_choices:
-                    if bool_inv[1] == 'true':
-                        graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
-                    else:
-                        graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
-                    if not graph_satisfies:
-                        self.list_out.append(g6code)
-                        return True
+                if graph_satisfies:
+                    for bool_inv in self.list_inv_bool_choices:
+                        if bool_inv[1] == 'true':
+                            graph_satisfies = self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
+                        else:
+                            graph_satisfies = not self.invariant_bool.dic_name_inv[bool_inv[0]].calculate(g)
+                        if not graph_satisfies:
+                            self.list_out.append(g6code)
+                            return True
+            except nx.NetworkXError:
+                self.invalid_lines = self.invalid_lines + 1
+                continue
         return False

@@ -56,7 +56,7 @@ class NumberEdges(InvariantNum):
 
 
 class CliqueNumber(InvariantNum):
-    name = "Clique Number"
+    name = "Clique number"
     code = '\u03c9'
 
     @staticmethod
@@ -65,7 +65,7 @@ class CliqueNumber(InvariantNum):
 
 
 class IndependenceNumber(InvariantNum):
-    name = "Independence Number"
+    name = "Independence number"
     code = '\u237a'
 
     @staticmethod
@@ -73,17 +73,8 @@ class IndependenceNumber(InvariantNum):
         return gp.independence_number(graph)
 
 
-class DominationNumber(InvariantNum):
-    name = "Domination Number"
-    code = '\u0194'
-
-    @staticmethod
-    def calculate(graph):
-        return gp.domination_number(graph)
-
-
 class TotalDominationNumber(InvariantNum):
-    name = "Total Domination Number"
+    name = "Total domination number"
     code = '\u0194\u209c'
 
     @staticmethod
@@ -91,8 +82,17 @@ class TotalDominationNumber(InvariantNum):
         return gp.total_domination_number(graph)
 
 
+class DominationNumber(InvariantNum):
+    name = "Domination number"
+    code = '\u0194'
+
+    @staticmethod
+    def calculate(graph):
+        return gp.domination_number(graph)
+
+
 class ConnectedDominationNumber(InvariantNum):
-    name = "Connected Domination Number"
+    name = "Connected domination number"
     code = 'd'
 
     @staticmethod
@@ -147,7 +147,7 @@ class ConnectedDominationNumber(InvariantNum):
 
 
 class MatchingNumber(InvariantNum):
-    name = "Matching Number"
+    name = "Matching number"
     code = '\u03bd'
 
     @staticmethod
@@ -179,7 +179,7 @@ class Valency(InvariantNum):
 
 
 class DegreeMax(InvariantNum):
-    name = "Maximum Degree"
+    name = "Maximum degree"
     code = '\u0394'
 
     @staticmethod
@@ -188,7 +188,7 @@ class DegreeMax(InvariantNum):
 
 
 class DegreeMin(InvariantNum):
-    name = "Minimum Degree"
+    name = "Minimum degree"
     code = '\u1e9f'
 
     @staticmethod
@@ -197,7 +197,7 @@ class DegreeMin(InvariantNum):
 
 
 class DegreeAverage(InvariantNum):
-    name = "Average Degree"
+    name = "Average degree"
     code = 'd\u2090'
 
     @staticmethod
@@ -206,7 +206,7 @@ class DegreeAverage(InvariantNum):
 
 
 class VertexCover(InvariantNum):
-    name = "Vertex Cover Number"
+    name = "Vertex cover number"
     code = '\u03c4'
 
     @staticmethod
@@ -275,7 +275,7 @@ class Largest1EigenD(InvariantNum):
 
 
 class AlgebraicConnectivity(InvariantNum):
-    name = 'Algebraic Connectivity'
+    name = 'Algebraic connectivity'
     code = 'ac'
 
     @staticmethod
@@ -285,7 +285,7 @@ class AlgebraicConnectivity(InvariantNum):
 
 
 class VertexConnectivity(InvariantNum):
-    name = "Vertex Connectivity"
+    name = "Vertex connectivity"
     code = '\u03f0'
 
     @staticmethod
@@ -294,7 +294,7 @@ class VertexConnectivity(InvariantNum):
 
 
 class EdgeConnectivity(InvariantNum):
-    name = "Edge Connectivity"
+    name = "Edge connectivity"
     code = '\u03bb'
 
     @staticmethod
@@ -303,7 +303,7 @@ class EdgeConnectivity(InvariantNum):
 
 
 class WienerIndex(InvariantNum):
-    name = 'Wiener Index'
+    name = 'Wiener index'
     code = 'W'
 
     @staticmethod
@@ -330,7 +330,7 @@ class Nullity(InvariantNum):
 
 
 class NumberSpanningTree(InvariantNum):
-    name = 'Number of spanning trees'
+    name = 'Number of spanning rees'
     code = '\u0288'
 
     @staticmethod
