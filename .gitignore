@@ -202,5 +202,5 @@ venv/
 
 project.json
 
-src/plot/data.js
+src/domain/plot/data.js
 src/*.json
