@@ -7,7 +7,6 @@ class GraphFilesPage(QWizardPage):
         super().__init__()
 
         self.graph_files_input = QLineEdit()
-        self.registerField('graph_files*', self.graph_files_input)
 
         self.open_graph_file = QPushButton("...")
         self.add_graph_file = QPushButton("+")

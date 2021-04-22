@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
+from src.view.resources.qicons import Icon
 
 
 class WelcomeWindow(QMainWindow):
@@ -9,7 +9,7 @@ class WelcomeWindow(QMainWindow):
         super().__init__()
 
         self.title_bar = "Graph Filter"
-        self.icon = QIcon("../resources/icons/hexagon.png")
+        self.icon = Icon("hexagon")
 
         self.width = 600
         self.height = 600

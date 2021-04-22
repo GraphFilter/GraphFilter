@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon
+from src.view.resources.qicons import Icon
 
 
 class MethodPage(QWizardPage):
@@ -9,8 +9,8 @@ class MethodPage(QWizardPage):
 
         self.complete = False
 
-        self.filter_button = QPushButton("  Filter Graphs")
-        self.counter_example_button = QPushButton("  Find Counter Example")
+        self.filter_button = QPushButton()
+        self.counter_example_button = QPushButton()
 
         self.set_content_attributes()
         self.set_up_layout()
@@ -18,13 +18,15 @@ class MethodPage(QWizardPage):
     def set_content_attributes(self):
         self.setObjectName("method")
 
-        self.filter_button.setIcon(QIcon("view/resources/icons/filter_filled_tool_symbol.png"))
+        self.filter_button.setText("  Filter Graphs")
+        self.filter_button.setIcon(Icon("filter_filled_tool_symbol"))
         self.filter_button.setMinimumHeight(50)
         self.filter_button.setMinimumWidth(300)
         self.filter_button.setCheckable(True)
         self.filter_button.setObjectName('filter')
 
-        self.counter_example_button.setIcon(QIcon("view/resources/icons/zoom.png"))
+        self.counter_example_button.setText("  Find Counterexample")
+        self.counter_example_button.setIcon(Icon("zoom"))
         self.counter_example_button.setMinimumHeight(50)
         self.counter_example_button.setMinimumWidth(300)
         self.counter_example_button.setCheckable(True)

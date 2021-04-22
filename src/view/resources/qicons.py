@@ -1,7 +1,7 @@
 from PyQt5.QtGui import QIcon
 
-cut_icon = QIcon()
-# cut_icon.addFile("../resources/icons/cut.png")
-# folder_icon = QIcon("../resources/icons/cut.png")
-# hexagon_icon = QIcon("../resources/icons/cut.png")
-plus_icon = QIcon("../../../resources/icons/cut.png")
+
+class Icon(QIcon):
+    def __init__(self, name):
+        super().__init__()
+        self.addFile(f"../resources/icons/{name}.png")

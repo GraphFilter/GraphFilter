@@ -1,72 +1,136 @@
 from PyQt5.QtWidgets import *
+from src.domain.utils import clear_layout
 
 
-class Review(QWizardPage):
+class ReviewPage(QWizardPage):
 
-    def __init__(self, parent):
+    def __init__(self):
         super().__init__()
 
-        self.setObjectName("review")
-
-        self.parent = parent
-
-        self.project_name = ""
-        self.project_location = ""
+        self.project_name = QLabel()
+        self.project_location = QLabel()
         self.conditions = {}
         self.graph_files = []
-        self.method = ""
-        self.equation = ""
+        self.method = QLabel()
+        self.equation = QLabel("<b>Equation:</b>")
 
-    def fill(self):
-        self.project_name = self.parent.project_files.project_name_input.text()
-        self.project_location = self.parent.project_files.project_location_input.text()
-        self.conditions = self.parent.conditions.dict_inv_bool_choices
-        self.graph_files = self.parent.graph_files.files_added
-        self.method = self.parent.method.method
-        self.equation = self.parent.equations.equation.text()
+        self.conditions_and_graphs_layout = QHBoxLayout()
 
-        project_name_layout = QVBoxLayout()
+        self.conditions_layout = ReviewConditionsLayout(self.conditions)
+        self.graph_files_layout = ReviewGraphFilesLayout(self.graph_files)
+
+        self.set_content_attributes()
+        self.set_up_layout()
+
+    def set_content_attributes(self):
+        self.setObjectName("review")
+
+    def set_up_layout(self):
+
+        project_name_layout = QHBoxLayout()
+        project_name_layout.setSpacing(0)
         project_name_layout.addWidget(QLabel("<b>Project Name:</b>"))
-        project_name_layout.addWidget(QLabel(self.project_name))
+        project_name_layout.addWidget(self.project_name)
 
-        project_location_layout = QVBoxLayout()
+        project_location_layout = QHBoxLayout()
         project_location_layout.setSpacing(0)
         project_location_layout.addWidget(QLabel("<b>Project Location:</b>"))
-        project_location_layout.addWidget(QLabel(self.project_location))
+        project_location_layout.addWidget(self.project_location)
 
         project_layout = QHBoxLayout()
         project_layout.addLayout(project_name_layout)
         project_layout.addLayout(project_location_layout)
 
-        conditions_layout = QVBoxLayout()
-        conditions_layout.addWidget(QLabel("<b>Conditions</b>"))
-        self.fill_conditions(conditions_layout)
-
-        graph_files_layout = QVBoxLayout()
-        graph_files_layout.addWidget(QLabel("<b>Graph Files</b>"))
-        self.fill_graph_files(graph_files_layout)
-
-        center_layout = QHBoxLayout()
-        center_layout.addLayout(conditions_layout)
-        center_layout.addStretch(2)
-        center_layout.addLayout(graph_files_layout)
+        self.conditions_and_graphs_layout.addLayout(self.conditions_layout)
+        self.conditions_and_graphs_layout.addLayout(self.graph_files_layout)
 
         layout = QVBoxLayout()
         layout.addWidget(QLabel("<h3>Review</h3>"))
         layout.addStretch(1)
         layout.addLayout(project_layout)
         layout.addStretch(1)
-        layout.addWidget(QLabel(f"<b>Equation:</b>  {self.equation}"))
+        layout.addWidget(self.equation)
         layout.addStretch(1)
-        layout.addWidget(
-            QLabel(f"<b>Method:</b> {'Filter Graphs' if self.method == 'filter' else 'Find Counter Example'}"))
+        layout.addWidget(self.method)
         layout.addStretch(1)
-        layout.addLayout(center_layout)
+        layout.addLayout(self.conditions_and_graphs_layout)
         layout.setContentsMargins(80, 30, 80, 50)
 
         self.setLayout(layout)
 
-    def fill_graph_files(self, layout):
+    def set_project_name(self, project_name):
+        self.project_name.setText(project_name)
+
+    def set_project_location(self, project_location):
+        self.project_location.setText(project_location)
+
+    def set_method(self, method):
+        self.method.setText(f"<b>Method:</b> {'Filter Graphs' if method == 'filter' else 'Find Counter Example'}")
+
+    def set_equation(self, equation):
+        self.equation.setText(f"<b>Equation:</b>  {equation}")
+
+    def set_conditions(self, conditions):
+        self.conditions = conditions
+        self.update_conditions_and_graphs_layout()
+
+    def set_graph_files(self, graph_files):
+        self.graph_files = graph_files
+        self.update_conditions_and_graphs_layout()
+
+    def update_conditions_and_graphs_layout(self):
+
+        clear_layout(self.conditions_layout)
+        clear_layout(self.graph_files_layout)
+        clear_layout(self.conditions_and_graphs_layout)
+
+        self.conditions_layout = ReviewConditionsLayout(self.conditions)
+        self.graph_files_layout = ReviewGraphFilesLayout(self.graph_files)
+
+        self.conditions_and_graphs_layout.addLayout(self.conditions_layout)
+        self.conditions_and_graphs_layout.addStretch(2)
+        self.conditions_and_graphs_layout.addLayout(self.graph_files_layout)
+
+
+class ReviewConditionsLayout(QVBoxLayout):
+    def __init__(self, conditions):
+        super().__init__()
+        self.conditions = conditions
+        self.addWidget(QLabel("<b>Conditions</b>"))
+
+        if len(self.conditions) <= 10:
+            aux_layout = QVBoxLayout()
+            for condition, value in self.conditions.items():
+                aux_layout.addWidget(QLabel(f"{condition}: {value}"))
+            aux_layout.addStretch(1)
+            aux_widget = QWidget()
+            aux_widget.setMinimumHeight(200)
+            aux_widget.setLayout(aux_layout)
+            self.addWidget(aux_widget)
+        else:
+            scroll_area = QScrollArea()
+            scroll_area.setWidgetResizable(True)
+            scroll_area.setFrameShape(QFrame.NoFrame)
+            scroll_area.setMaximumHeight(200)
+            scroll_area.setMinimumWidth(230)
+            scroll_area.setMaximumWidth(230)
+
+            vertical_layout_aux = QVBoxLayout()
+            for condition, value in self.conditions.items():
+                vertical_layout_aux.addWidget(QLabel(f"{condition}: {value}"))
+
+            widget_aux = QWidget()
+            widget_aux.setLayout(vertical_layout_aux)
+            scroll_area.setWidget(widget_aux)
+            self.addWidget(scroll_area)
+
+
+class ReviewGraphFilesLayout(QVBoxLayout):
+    def __init__(self, graph_files):
+        super().__init__()
+        self.graph_files = graph_files
+
+        self.addWidget(QLabel("<b>Graph Files</b>"))
         if len(self.graph_files) <= 10:
             aux_layout = QVBoxLayout()
             for file in self.graph_files:
@@ -75,7 +139,7 @@ class Review(QWizardPage):
             aux_widget = QWidget()
             aux_widget.setMinimumHeight(200)
             aux_widget.setLayout(aux_layout)
-            layout.addWidget(aux_widget)
+            self.addWidget(aux_widget)
         else:
             scroll_area = QScrollArea()
             scroll_area.setWidgetResizable(True)
@@ -90,31 +154,4 @@ class Review(QWizardPage):
             widget_aux = QWidget()
             widget_aux.setLayout(vertical_layout_aux)
             scroll_area.setWidget(widget_aux)
-            layout.addWidget(scroll_area)
-
-    def fill_conditions(self, layout):
-        if len(self.conditions) <= 10:
-            aux_layout = QVBoxLayout()
-            for condition, value in self.conditions.items():
-                aux_layout.addWidget(QLabel(f"{condition}: {value}"))
-            aux_layout.addStretch(1)
-            aux_widget = QWidget()
-            aux_widget.setMinimumHeight(200)
-            aux_widget.setLayout(aux_layout)
-            layout.addWidget(aux_widget)
-        else:
-            scroll_area = QScrollArea()
-            scroll_area.setWidgetResizable(True)
-            scroll_area.setFrameShape(QFrame.NoFrame)
-            scroll_area.setMaximumHeight(200)
-            scroll_area.setMinimumWidth(230)
-
-            vertical_layout_aux = QVBoxLayout()
-            vertical_layout_aux.addWidget(QLabel("true"))
-            for condition, value in self.conditions.items():
-                vertical_layout_aux.addWidget(QLabel(f"{condition}: {value}"))
-
-            widget_aux = QWidget()
-            widget_aux.setLayout(vertical_layout_aux)
-            scroll_area.setWidget(widget_aux)
-            layout.addWidget(scroll_area)
+            self.addWidget(scroll_area)

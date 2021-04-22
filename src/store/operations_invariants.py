@@ -28,6 +28,5 @@ dict_text_equation = {**operations_invariants.numInvariant.dic_name_inv,
                       **operations_invariants.mathOperations.dic_name_inv}
 
 dic_function_to_eval = {**operations_invariants.numInvariant.dic_function,
-                      **operations_invariants.graphOperations.dic_function,
-                      **operations_invariants.mathOperations.dic_function}
-
+                        **operations_invariants.graphOperations.dic_function,
+                        **operations_invariants.mathOperations.dic_function}

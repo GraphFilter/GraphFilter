@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap
+from src.view.resources.qicons import Icon
 from PyQt5 import QtCore
 
 
@@ -29,12 +30,12 @@ class WelcomeContent(QWidget):
         self.logo.setAlignment(QtCore.Qt.AlignCenter)
 
         self.open_button.setText("  Open")
-        self.open_button.setIcon(QIcon("../resources/icons/folder.png"))
+        self.open_button.setIcon(Icon("folder"))
         self.open_button.setMinimumHeight(50)
         self.open_button.setMinimumWidth(100)
 
         self.new_button.setText("  New Project")
-        self.new_button.setIcon(QIcon("../resources/icons/plus.png"))
+        self.new_button.setIcon(Icon("plus"))
         self.new_button.setMinimumHeight(50)
         self.new_button.setMinimumWidth(150)
 
