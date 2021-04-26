@@ -19,7 +19,7 @@ class MethodPage(QWizardPage):
         self.setObjectName("method")
 
         self.filter_button.setText("  Filter Graphs")
-        self.filter_button.setIcon(Icon("filter_filled_tool_symbol"))
+        self.filter_button.setIcon(Icon("filter"))
         self.filter_button.setMinimumHeight(50)
         self.filter_button.setMinimumWidth(300)
         self.filter_button.setCheckable(True)

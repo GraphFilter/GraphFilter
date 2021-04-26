@@ -15,7 +15,7 @@ class EquationsPage(QWizardPage):
         self.equation_validation = QLabel()
         self.math_tab = QTabWidget()
 
-        self.valid_equation = True
+        self.complete = True
 
         self.set_content_attributes()
         self.set_up_layout()
@@ -51,7 +51,7 @@ class EquationsPage(QWizardPage):
             self.equation_validation.setStyleSheet("color: red")
 
     def isComplete(self):
-        return self.valid_equation
+        return self.complete
 
 
 class TabOperations(QWidget):

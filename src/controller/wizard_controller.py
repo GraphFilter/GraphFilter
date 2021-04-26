@@ -48,7 +48,10 @@ class WizardController:
         if self.wizard_window.currentPage().objectName() == "conditions":
             self.update_complete_conditions_page()
         if self.wizard_window.currentPage().objectName() == "method":
-            self.update_complete_conditions_page()
+            self.wizard_window.next_button.setToolTip('Select the filtering method')
+        if self.wizard_window.currentPage().objectName() == "graph_files":
+            self.update_complete_graph_files_page(False)
+
 
     def on_wizard_cancel(self):
         pass
@@ -61,13 +64,14 @@ class WizardController:
             self.conditions_page.complete = True
             self.wizard_window.next_button.setToolTip('')
 
-    def update_complete_graph_files_page(self):
-        if len(project_information_store.graphs) > 0:
+    def update_complete_graph_files_page(self, state):
+        if state:
             self.graph_files_page.complete = True
             self.wizard_window.next_button.setToolTip('')
         else:
             self.graph_files_page.complete = False
-            self.wizard_window.next_button.setToolTip('Select at least one graph file')
+            self.wizard_window.next_button.setToolTip('Invalid graph file')
+        self.graph_files_page.completeChanged.emit()
 
     def update_complete_project_files_page(self, complete_project_name=None, complete_project_location=None):
         if complete_project_name is not None:
@@ -132,7 +136,9 @@ class WizardController:
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
 
         self.graph_files_page.open_graph_file.clicked.connect(self.on_update_graph_file)
-        self.graph_files_page.add_graph_file.clicked.connect(self.on_add_graph_file)
+        self.graph_files_page.add_graph_file.clicked.connect(self.on_add_graph_file_input)
+
+        self.graph_files_page.graph_files_input.textEdited.connect(self.on_insert_graph_file_path)
 
     def verify_and_save_project_name(self):
         if validate_file_name(self.project_files_page.project_name_input.text()):
@@ -214,13 +220,14 @@ class WizardController:
         error_message = Equation.validate_expression(equation)
 
         if len(error_message) == 0:
-            self.equations_page.valid_equation = True
+            self.equations_page.complete = True
             project_information_store.equation = equation
             self.review_page.set_equation(equation)
             if equation == '':
                 self.update_complete_conditions_page()
         else:
-            self.equations_page.valid_equation = False
+            self.equations_page.complete = False
+            self.wizard_window.next_button.setToolTip('Insert a valid (in)equation or none')
 
         self.equations_page.set_label_validation_equation(error_message)
 
@@ -239,12 +246,12 @@ class WizardController:
         radio = QRadioButton().sender()
         groupbox = radio.parentWidget()
         if groupbox.objectName() in project_information_store.conditions.keys():
-            if project_information_store.get_conditions().get(groupbox.objectName()) == radio.objectName():
+            if project_information_store.conditions.get(groupbox.objectName()) == radio.objectName():
                 radio.setAutoExclusive(False)
                 radio.setChecked(False)
                 radio.setAutoExclusive(True)
                 project_information_store.conditions.pop(groupbox.objectName())
-                print(project_information_store.get_conditions())
+                print(project_information_store.conditions)
                 self.update_complete_conditions_page()
                 self.conditions_page.completeChanged.emit()
                 return
@@ -269,6 +276,7 @@ class WizardController:
             self.review_page.set_method('counterexample')
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
+        self.wizard_window.next_button.setToolTip('')
 
     def on_update_graph_file(self):
         button_clicked = QPushButton().sender()
@@ -277,20 +285,36 @@ class WizardController:
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt)", "Graph Filter (*.g6)"])
         file_path = file_dialog.getOpenFileName(filter="Graph Filter (*.g6)")
-        if file_path[0] not in project_information_store.graphs \
-                and file_path[0] != '' and validate_file(file_path[0]):
-            input_file[-1].setText(file_path[0])
-            project_information_store.graphs.append(file_path[0])
-            self.review_page.set_graph_files(project_information_store.graphs)
-            self.graph_files_page.add_graph_file.setEnabled(True)
+        self.save_graph_file_path(file_path[0], input_file[-1])
+
+    def on_insert_graph_file_path(self):
+        line_input = QLineEdit().sender()
+        path = line_input.text()
+        self.save_graph_file_path(path, line_input)
+
+    def save_graph_file_path(self, path, line_input):
+        if validate_file(path):
+            if path not in project_information_store.graphs and path != '':
+                if line_input.text() != '' and line_input.text() in project_information_store.graphs:
+                    project_information_store.graphs.remove(line_input.text())
+                line_input.setText(path)
+                project_information_store.graphs.append(path)
+                self.review_page.set_graph_files(project_information_store.graphs)
+                self.graph_files_page.add_graph_file.setEnabled(True)
+            self.update_complete_graph_files_page(True)
+        else:
+            self.update_complete_graph_files_page(False)
         print(project_information_store.graphs)
 
-    def on_add_graph_file(self):
+    def on_add_graph_file_input(self):
         button_clicked = QPushButton().sender()
         form = button_clicked.parentWidget()
         input_file = form.findChildren(QLineEdit)
         if input_file[-1].text() != '':
+
             input_file = QLineEdit()
+            input_file.textEdited.connect(self.on_insert_graph_file_path)
+
             button = QPushButton("...")
             remove = QPushButton("-")
 
@@ -315,4 +339,5 @@ class WizardController:
         print(project_information_store.graphs)
         self.graph_files_page.form.removeRow(layout)
         self.graph_files_page.add_graph_file.setEnabled(True)
+        self.update_complete_graph_files_page()
 

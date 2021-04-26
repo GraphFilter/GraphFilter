@@ -11,6 +11,8 @@ class GraphFilesPage(QWizardPage):
         self.open_graph_file = QPushButton("...")
         self.add_graph_file = QPushButton("+")
 
+        self.complete = False
+
         self.form = QFormLayout()
 
         self.set_content_attributes()
@@ -31,3 +33,6 @@ class GraphFilesPage(QWizardPage):
         self.form.addRow(file_line)
 
         self.setLayout(self.form)
+
+    def isComplete(self):
+        return self.complete

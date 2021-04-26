@@ -29,12 +29,10 @@ class ReviewPage(QWizardPage):
 
         project_name_layout = QHBoxLayout()
         project_name_layout.setSpacing(0)
-        project_name_layout.addWidget(QLabel("<b>Project Name:</b>"))
         project_name_layout.addWidget(self.project_name)
 
         project_location_layout = QHBoxLayout()
         project_location_layout.setSpacing(0)
-        project_location_layout.addWidget(QLabel("<b>Project Location:</b>"))
         project_location_layout.addWidget(self.project_location)
 
         project_layout = QHBoxLayout()
@@ -59,10 +57,10 @@ class ReviewPage(QWizardPage):
         self.setLayout(layout)
 
     def set_project_name(self, project_name):
-        self.project_name.setText(project_name)
+        self.project_name.setText(f"<b>Project Name:</b> {project_name}")
 
     def set_project_location(self, project_location):
-        self.project_location.setText(project_location)
+        self.project_location.setText(f"<b>Project Location:</b> {project_location}")
 
     def set_method(self, method):
         self.method.setText(f"<b>Method:</b> {'Filter Graphs' if method == 'filter' else 'Find Counter Example'}")
