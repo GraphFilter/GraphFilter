@@ -2,24 +2,27 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtGui
 
 
-class Info(QDockWidget):
+class GraphInformationDock(QDockWidget):
 
-    def __init__(self, visualize):
+    def __init__(self):
         super().__init__()
+        self.model = QtGui.QStandardItemModel()
 
-        self.visualize = visualize
+        self.table = QTableView()
 
+        self.set_content_attributes()
+
+    def set_content_attributes(self):
         self.setWindowTitle("Info")
 
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
-        self.model = QtGui.QStandardItemModel()
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
-        table = QTableView()
-        table.setModel(self.model)
-        table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
-        self.setWidget(table)
+        self.table.setModel(self.model)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        self.setWidget(self.table)
 
     def update_table(self):
         self.model.removeRows(0, self.model.rowCount())

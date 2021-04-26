@@ -4,45 +4,49 @@ from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 
 
-class Dictionary(QWidget):
+class ProjectContentDictionary(QWidget):
 
-    def __init__(self, project_window):
+    def __init__(self):
         super().__init__()
 
-        self.project_window = project_window
-
         self.concepts = QGroupBox("Concepts")
+        self.concepts_list = QListWidget()
+        self.dictionary = []
+        self.title = QLabel()
+        self.definitions = QLabel()
+        self.usages = QLabel()
+        self.implementations = QLabel()
+        self.references = QLabel()
+
+        self.set_content_attributes()
+        self.set_up_layout()
+        self.create_concepts()
+
+    def set_content_attributes(self):
         self.concepts.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.concepts.setMaximumWidth(250)
 
-        self.concepts_list = QListWidget()
-        f = open('view/resources/data_dictionary.json')
+        f = open('src/store/data_dictionary.json')
         data = json.load(f)
 
         self.dictionary = data['dic']
 
-        self.title = QLabel()
         self.title.setFont(QtGui.QFont("Arial", 20))
         self.title.setWordWrap(True)
 
-        self.definitions = QLabel()
         self.definitions.setWordWrap(True)
         self.definitions.setFont(QtGui.QFont("Cambria", 14))
 
-        self.usages = QLabel()
         self.usages.setWordWrap(True)
         self.usages.setFont(QtGui.QFont("Cambria", 14))
 
-        self.implementations = QLabel()
         self.implementations.setWordWrap(True)
         self.implementations.setFont(QtGui.QFont("Arial", 14))
 
-        self.references = QLabel()
         self.references.setWordWrap(True)
         self.references.setFont(QtGui.QFont("Arial", 14))
 
-        self.create_concepts()
-
+    def set_up_layout(self):
         aside_layout = QVBoxLayout()
 
         aside_layout.addWidget(self.title)

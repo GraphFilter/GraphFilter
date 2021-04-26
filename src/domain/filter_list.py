@@ -6,42 +6,46 @@ from src.domain.equation import Equation
 
 
 class FilterList:
-    list_g6_in = None
-    expressions = None
-    list_inv_bool_choices = None
-    functions_to_eval = {}
-    list_out = []
-    invalid_lines = 0
-    invariant_bool = None
-    invariant_num = None
-    operations_math = None
-    operations_graph = None
-    AND_OR = None
 
     def __init__(self):
+        self.list_g6_in = None
+        self.expressions = None
+        self.list_inv_bool_choices = None
+        self.functions_to_eval = {}
+        self.list_out = []
+        self.invalid_lines = 0
+        self.invariant_bool = None
+        self.invariant_num = None
+        self.operations_math = None
+        self.operations_graph = None
+        self.AND_OR = None
+
+        self.update_function = None
+
         # NOTE: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
-        #  list_inv_bool_choices: list of couples [invariant_name, 'true' or 'false']
+        #  list_inv_bool_choices: dict of couples {invariant_name: 'true' or 'false'}
         self.functions_to_eval.update(dic_function_to_eval)
 
-    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices):
+    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices, update):
         self.invalid_lines = 0
         self.list_out.clear()
         self.list_g6_in = list_g6_in
+        self.total = len(self.list_g6_in)
         self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = Equation.split_translate_expression(expression)
+        self.update_function = update
 
     def run_filter(self):
         self.list_out = []
         count = 0
-        total = 0
+        step = 0
         for g6code in self.list_g6_in:
             if g6code == '' or g6code == ' ':
                 continue
             graph_satisfies = True
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                total = total + 1
                 names = {"G": g, "g": g}
                 # Check the expressions
                 if len(self.expressions) > 0:
@@ -59,11 +63,11 @@ class FilterList:
                                 break
                 # Check the boolean invariants
                 if graph_satisfies:
-                    for bool_inv in self.list_inv_bool_choices:
-                        if bool_inv[1] == 'true':
-                            graph_satisfies = dic_bool_invariants_names[bool_inv[0]].calculate(g)
+                    for inv_name in self.list_inv_bool_choices:
+                        if self.list_inv_bool_choices[inv_name] == 'true':
+                            graph_satisfies = dic_bool_invariants_names[inv_name].calculate(g)
                         else:
-                            graph_satisfies = not dic_bool_invariants_names[bool_inv[0]].calculate(g)
+                            graph_satisfies = not dic_bool_invariants_names[inv_name].calculate(g)
                         if not graph_satisfies:
                             break
                 if graph_satisfies:
@@ -71,14 +75,18 @@ class FilterList:
                     count = count + 1
                 else:
                     continue
+                step = step + 1
+                self.update_function(step+self.invalid_lines, self.total)
             except nx.NetworkXError:
                 self.invalid_lines = self.invalid_lines + 1
+                self.update_function(step + self.invalid_lines, self.total)
                 continue
-        return float(count / total)
+        return float(count / self.total)
 
     def run_find_counterexample(self):
         self.list_out = []
         graph_satisfies = True
+        step = 0
         for g6code in self.list_g6_in:
             if g6code == '' or g6code == ' ':
                 continue
@@ -108,15 +116,18 @@ class FilterList:
                         self.list_out.append(g6code)
                         return True
                 if graph_satisfies:
-                    for bool_inv in self.list_inv_bool_choices:
-                        if bool_inv[1] == 'true':
-                            graph_satisfies = dic_bool_invariants_names[bool_inv[0]].calculate(g)
+                    for inv_name in self.list_inv_bool_choices:
+                        if self.list_inv_bool_choices[inv_name] == 'true':
+                            graph_satisfies = dic_bool_invariants_names[inv_name].calculate(g)
                         else:
-                            graph_satisfies = not dic_bool_invariants_names[bool_inv[0]].calculate(g)
+                            graph_satisfies = not dic_bool_invariants_names[inv_name].calculate(g)
                         if not graph_satisfies:
                             self.list_out.append(g6code)
                             return True
+                step = step + 1
+                self.update_function(step+self.invalid_lines, self.total)
             except nx.NetworkXError:
                 self.invalid_lines = self.invalid_lines + 1
+                self.update_function(step+self.invalid_lines, self.total)
                 continue
         return False

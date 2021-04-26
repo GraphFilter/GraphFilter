@@ -4,8 +4,7 @@ from src.view.wizard.pages.conditions_page import ConditionsPage, ComboBoxesGrou
 from src.view.wizard.pages.method_page import MethodPage
 from src.view.wizard.pages.graph_files_page import GraphFilesPage
 from src.view.wizard.pages.review_page import ReviewPage
-from src.view.project.project_window import ProjectWindow
-from src.domain.filter_list import FilterList
+from src.controller.filter_controller import FilterController
 from src.store.project_information_store import project_information_store
 from src.view.wizard.wizard_window import WizardWindow
 from PyQt5.QtWidgets import *
@@ -19,8 +18,6 @@ class WizardController:
     def __init__(self):
         self.wizard_window = WizardWindow()
 
-        self.filter_list = FilterList()
-
         self.project_files_page = ProjectFilesWizardPage()
         self.equations_page = EquationsPage()
         self.conditions_page = ConditionsPage()
@@ -28,7 +25,7 @@ class WizardController:
         self.graph_files_page = GraphFilesPage()
         self.review_page = ReviewPage()
 
-        self.project_window_page = ProjectWindow()
+        self.filter_controller = FilterController()
 
     def set_wizard_pages(self):
         self.wizard_window.addPage(self.project_files_page)
@@ -42,7 +39,7 @@ class WizardController:
         pass
 
     def on_wizard_start(self):
-        pass
+        self.filter_controller.start_filter()
 
     def on_wizard_next_page(self):
         if self.wizard_window.currentPage().objectName() == "conditions":
@@ -51,7 +48,6 @@ class WizardController:
             self.wizard_window.next_button.setToolTip('Select the filtering method')
         if self.wizard_window.currentPage().objectName() == "graph_files":
             self.update_complete_graph_files_page(False)
-
 
     def on_wizard_cancel(self):
         pass
@@ -99,31 +95,9 @@ class WizardController:
         self.set_equations_tabs()
         self.wizard_window.show()
 
-    def start_filter(self):
-        # list_g6_in = []
-        # for file in self.graph_files.files_added:
-        #     list_g6_in.extend(open(file, 'r').read().splitlines())
-        #
-        # expression = self.equations.equation.text()
-        #
-        # list_inv_bool_choices = self.conditions.dict_inv_bool_choices.items()
-        #
-        # self.filter_backend.set_inputs(list_g6_in, expression, list_inv_bool_choices)
-        # self.save_project()
-        #
-        # if self.method.method == 'filter':
-        #     self.filter_backend.run_filter()
-        # elif self.method.method == 'counterexample':
-        #     self.filter_backend.run_find_counterexample()
-        #
-        # # TODO: Use the percentage returned by filtering
-        # self.project_window.visualize.fill_combo(self.filter_backend.list_out)
-        # self.project_window.show()
-        pass
-
     def connect_buttons(self):
-
         self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
+        self.wizard_window.start_button.clicked.connect(self.on_wizard_start)
 
         self.project_files_page.project_location_button.clicked.connect(self.on_open_project_file)
         self.project_files_page.project_location_input.textEdited.connect(self.verify_and_save_project_folder)
@@ -294,17 +268,17 @@ class WizardController:
 
     def save_graph_file_path(self, path, line_input):
         if validate_file(path):
-            if path not in project_information_store.graphs and path != '':
-                if line_input.text() != '' and line_input.text() in project_information_store.graphs:
-                    project_information_store.graphs.remove(line_input.text())
+            if path not in project_information_store.graph_files and path != '':
+                if line_input.text() != '' and line_input.text() in project_information_store.graph_files:
+                    project_information_store.graph_files.remove(line_input.text())
                 line_input.setText(path)
-                project_information_store.graphs.append(path)
-                self.review_page.set_graph_files(project_information_store.graphs)
+                project_information_store.graph_files.append(path)
+                self.review_page.set_graph_files(project_information_store.graph_files)
                 self.graph_files_page.add_graph_file.setEnabled(True)
             self.update_complete_graph_files_page(True)
         else:
             self.update_complete_graph_files_page(False)
-        print(project_information_store.graphs)
+        print(project_information_store.graph_files)
 
     def on_add_graph_file_input(self):
         button_clicked = QPushButton().sender()
@@ -333,10 +307,10 @@ class WizardController:
 
     def on_remove_graph_file(self, layout, input_file):
         text = input_file.text()
-        if text in project_information_store.graphs:
-            project_information_store.graphs.remove(text)
-            self.review_page.set_graph_files(project_information_store.graphs)
-        print(project_information_store.graphs)
+        if text in project_information_store.graph_files:
+            project_information_store.graph_files.remove(text)
+            self.review_page.set_graph_files(project_information_store.graph_files)
+        print(project_information_store.graph_files)
         self.graph_files_page.form.removeRow(layout)
         self.graph_files_page.add_graph_file.setEnabled(True)
         self.update_complete_graph_files_page()

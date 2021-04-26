@@ -9,15 +9,14 @@ import os
 matplotlib.use('Qt5Agg')
 
 
-class Graph(QDockWidget):
+class VisualizeGraphDock(QDockWidget):
 
-    def __init__(self, visualize):
+    def __init__(self):
         super().__init__()
-
-        self.visualize = visualize
-        self.setWindowTitle("Graph")
-
         self.webView = QWebEngineView()
+
+    def set_content_attributes(self):
+        self.setWindowTitle("Graph")
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
         self.setWidget(self.webView)
 

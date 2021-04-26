@@ -15,7 +15,7 @@ class WizardWindow(QWizard):
         self.pixmap = QtGui.QPixmap(1, 1)
 
         self.cancel_button = self.button(QWizard.CancelButton)
-        self.finish_button = self.button(QWizard.FinishButton)
+        self.start_button = self.button(QWizard.FinishButton)
         self.next_button = self.button(QWizard.NextButton)
 
         self.set_content_attributes()

@@ -2,45 +2,45 @@ from PyQt5.QtWidgets import *
 import networkx as nx
 
 
-class Invariants(QDockWidget):
+class InvariantsCheckDock(QDockWidget):
 
-    def __init__(self, visualize):
+    def __init__(self):
         super().__init__()
 
-        self.visualize = visualize
+        self.widget = QWidget()
+        self.invariants = []
+
+        self.set_content_attributes()
+        self.create_conditions()
+
+    def set_content_attributes(self):
         self.setWindowTitle("Invariants")
+
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
-        self.widget = QWidget()
         self.setWidget(self.widget)
 
         self.setMaximumWidth(300)
 
-        self.invariants = []
-
-        self.create_conditions()
-
     def create_conditions(self):
-        # TODO: groupbox with scroll bar
         conditions_layout = QVBoxLayout()
 
         self.widget.setLayout(conditions_layout)
 
-        # NOTE: this code generate multiples checkboxes
-        for key in self.visualize.dic_invariants.keys():
-            checkbox = QCheckBox(f"{key}")
-            if key in self.visualize.invariants_selected:
-                checkbox.setChecked(True)
-            checkbox.clicked.connect(self.checked)
-            conditions_layout.addWidget(checkbox)
-        self.visualize.info.update_table()
-        layout_aux = QVBoxLayout()
-        widget_aux = QWidget()
-        scroll_area = QScrollArea()
-        widget_aux.setLayout(conditions_layout)
-        scroll_area.setWidget(widget_aux)
-        layout_aux.addWidget(scroll_area)
-        self.widget.setLayout(layout_aux)
+        # for key in self.visualize.dic_invariants.keys():
+        #     checkbox = QCheckBox(f"{key}")
+        #     if key in self.visualize.invariants_selected:
+        #         checkbox.setChecked(True)
+        #     checkbox.clicked.connect(self.checked)
+        #     conditions_layout.addWidget(checkbox)
+        # self.visualize.info.update_table()
+        # layout_aux = QVBoxLayout()
+        # widget_aux = QWidget()
+        # scroll_area = QScrollArea()
+        # widget_aux.setLayout(conditions_layout)
+        # scroll_area.setWidget(widget_aux)
+        # layout_aux.addWidget(scroll_area)
+        # self.widget.setLayout(layout_aux)
 
     def checked(self):
         check = QCheckBox().sender()

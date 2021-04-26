@@ -1,4 +1,5 @@
 import os
+import re
 
 
 def validate_path(path):
@@ -19,3 +20,16 @@ def clear_layout(layout):
         child = layout.takeAt(0)
         if child.widget():
             child.widget().deleteLater()
+
+
+def extract_files_to_list(files):
+    list_g6 = []
+    for file in files:
+        list_g6.extend(open(file, 'r').read().splitlines())
+    return list_g6
+
+
+def match_graph_code(text):
+    pattern = re.compile(r'(Graph \d* - )(.*)')
+    match = pattern.match(text)
+    return match.group(2)
