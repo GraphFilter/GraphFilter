@@ -26,7 +26,7 @@ class ProjectContentDictionary(QWidget):
         self.concepts.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.concepts.setMaximumWidth(250)
 
-        f = open('src/store/data_dictionary.json')
+        f = open('store/data_dictionary.json')
         data = json.load(f)
 
         self.dictionary = data['dic']
@@ -84,8 +84,7 @@ class ProjectContentDictionary(QWidget):
         for i, concept in enumerate(self.dictionary):
             self.concepts_list.insertItem(i, concept['name'])
 
-        # TODO: connect with select from keyboard
-        self.concepts_list.clicked.connect(self.on_clicked_concept)
+        self.concepts_list.itemSelectionChanged.connect(self.on_clicked_concept)
 
         concepts_layout.addWidget(self.concepts_list)
         self.concepts.setLayout(concepts_layout)

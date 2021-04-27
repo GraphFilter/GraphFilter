@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 import matplotlib
 import networkx as nx
 from PyQt5.QtCore import QUrl
@@ -15,10 +16,14 @@ class VisualizeGraphDock(QDockWidget):
         super().__init__()
         self.webView = QWebEngineView()
 
+        self.set_content_attributes()
+
     def set_content_attributes(self):
         self.setWindowTitle("Graph")
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
         self.setWidget(self.webView)
+
+        self.webView.setContextMenuPolicy(Qt.NoContextMenu)
 
     def plot_graph(self, graph):
         net = Network()

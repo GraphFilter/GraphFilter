@@ -13,7 +13,6 @@ class LoadingWindow(QDialog):
         self.progressBar = QProgressBar(self)
         self.set_content_attributes()
         self.set_up_layout()
-        self.show()
 
     def set_content_attributes(self):
         self.setWindowTitle("Loading...")

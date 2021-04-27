@@ -21,10 +21,10 @@ class ProjectWindow(QMainWindow):
         # self.print_action = QAction(Icon("print"), "Print")
         self.exit_action = QAction("Exit")
 
-        self.visualize_action = QAction("visualize")
+        self.visualize_action = QAction("Visualize")
         self.restore_default_layout_action = QAction("Restore Default Layout")
 
-        self.dictionary_action = QAction("dictionary")
+        self.dictionary_action = QAction("Dictionary")
         self.about_action = QAction("About...")
 
         self.set_content_attributes()
