@@ -20,7 +20,10 @@ class VisualizeGraphDock(QDockWidget):
 
     def set_content_attributes(self):
         self.setWindowTitle("Visualize")
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+        self.setObjectName("Visualize")
+
+        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
+
         self.setWidget(self.webView)
 
         self.webView.setContextMenuPolicy(Qt.NoContextMenu)

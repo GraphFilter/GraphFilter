@@ -15,8 +15,9 @@ class InvariantsCheckDock(QDockWidget):
 
     def set_content_attributes(self):
         self.setWindowTitle("Invariants")
+        self.setObjectName("Invariants")
 
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 

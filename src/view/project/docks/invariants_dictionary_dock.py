@@ -12,7 +12,10 @@ class InvariantsDictionaryDock(QDockWidget):
 
     def set_content_attributes(self):
         self.setWindowTitle("Dictionary")
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+        self.setObjectName("Dictionary")
+
+        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
+
         self.setWidget(self.invariants_dictionary)
 
 

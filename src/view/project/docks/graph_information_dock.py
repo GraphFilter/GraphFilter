@@ -14,8 +14,9 @@ class GraphInformationDock(QDockWidget):
 
     def set_content_attributes(self):
         self.setWindowTitle("Info")
+        self.setObjectName("Info")
 
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
 

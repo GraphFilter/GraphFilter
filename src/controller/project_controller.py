@@ -25,6 +25,8 @@ class ProjectController:
         self.visualize_graph_dock = VisualizeGraphDock()
         self.invariants_dictionary_dock = InvariantsDictionaryDock()
 
+        self.settings = QtCore.QSettings("project", "GraphFilter")
+
     def show_window(self):
         self.connect_events()
         self.create_docks()
@@ -40,9 +42,17 @@ class ProjectController:
 
         self.project_window.show()
 
+        self.settings.setValue("state", self.project_window.saveState())
+
     def connect_events(self):
         self.project_window.exit_action.triggered.connect(self.on_exit)
+
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
+        self.project_window.invariants_check_action.triggered.connect(self.on_invariants_check)
+        self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
+        self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
+
+        self.project_window.restore_layout.triggered.connect(self.on_restore)
 
         self.project_window.about_action.triggered.connect(self.on_about)
 
@@ -64,16 +74,22 @@ class ProjectController:
         pass
 
     def on_visualize(self):
-        pass
+        self.project_window.restoreDockWidget(self.visualize_graph_dock)
+
+    def on_invariants_check(self):
+        self.project_window.restoreDockWidget(self.invariants_check_dock)
+
+    def on_graph_info(self):
+        self.project_window.restoreDockWidget(self.graph_information_dock)
 
     def on_dictionary(self):
-        pass
+        self.project_window.restoreDockWidget(self.invariants_dictionary_dock)
 
     def on_about(self):
         self.about_window.show()
 
     def on_restore(self):
-        pass
+        self.project_window.restoreState(self.settings.value("state"))
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
