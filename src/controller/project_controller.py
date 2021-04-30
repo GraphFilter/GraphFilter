@@ -74,16 +74,16 @@ class ProjectController:
         pass
 
     def on_visualize(self):
-        self.project_window.restoreDockWidget(self.visualize_graph_dock)
+        self.visualize_graph_dock.setVisible(True)
 
     def on_invariants_check(self):
-        self.project_window.restoreDockWidget(self.invariants_check_dock)
+        self.invariants_check_dock.setVisible(True)
 
     def on_graph_info(self):
-        self.project_window.restoreDockWidget(self.graph_information_dock)
+        self.graph_information_dock.setVisible(True)
 
     def on_dictionary(self):
-        self.project_window.restoreDockWidget(self.invariants_dictionary_dock)
+        self.invariants_dictionary_dock.setVisible(True)
 
     def on_about(self):
         self.about_window.show()
