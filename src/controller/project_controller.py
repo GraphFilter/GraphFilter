@@ -23,10 +23,14 @@ class ProjectController:
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
 
+        self.project_content_dictionary = ProjectContentDictionary()
+
     def show_window(self):
         self.connect_project_window_menu_actions()
         self.create_docks()
         self.project_window.addToolBar(self.project_tool_bar)
+        self.project_window.setCentralWidget(self.project_content_dictionary)
+        self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
         self.project_window.show()
 
     def connect_project_window_menu_actions(self):
@@ -40,7 +44,8 @@ class ProjectController:
         self.project_window.about_action.triggered.connect(self.on_about)
 
         self.project_tool_bar.combo_graphs.activated.connect(self.change_graph)
-        pass
+        self.project_tool_bar.left_button.clicked.connect(self.move_up)
+        self.project_tool_bar.right_button.clicked.connect(self.move_down)
 
     def on_exit(self):
         self.project_window.close()
@@ -54,42 +59,29 @@ class ProjectController:
         pass
 
     def on_visualize(self):
-        self.project_window.setCentralWidget(None)
+        self.project_content_dictionary.setVisible(False)
         self.graph_information_dock.setVisible(True)
         self.invariants_check_dock.setVisible(True)
         self.visualize_graph_dock.setVisible(True)
         self.project_tool_bar.setVisible(True)
-        self.on_restore()
 
     def on_dictionary(self):
         self.graph_information_dock.setVisible(False)
         self.invariants_check_dock.setVisible(False)
         self.visualize_graph_dock.setVisible(False)
         self.project_tool_bar.setVisible(False)
-        self.project_window.setCentralWidget(ProjectContentDictionary())
+        self.project_content_dictionary.setVisible(True)
 
     def on_about(self):
         self.about_window.show()
 
     def on_restore(self):
-        self.project_window.restoreDockWidget(self.visualize_graph_dock)
-        self.project_window.restoreDockWidget(self.graph_information_dock)
-        self.project_window.restoreDockWidget(self.invariants_check_dock)
+        pass
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
-
-    def fill_combo(self):
-        for i, line in enumerate(project_information_store.filtered_graphs):
-            self.project_tool_bar.combo_graphs.addItem(f'Graph {i} - {line}')
-        self.project_tool_bar.current_graph = match_graph_code(self.project_tool_bar.combo_graphs.currentText())
-        if self.project_tool_bar.current_graph is not None:
-            self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
-        if self.project_tool_bar.combo_graphs.count() < 2:
-            self.project_tool_bar.left_button.setDisabled(True)
-            self.project_tool_bar.right_button.setDisabled(True)
 
     def change_graph(self):
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
@@ -101,12 +93,12 @@ class ProjectController:
             self.project_tool_bar.right_button.setDisabled(True)
         else:
             self.project_tool_bar.right_button.setDisabled(False)
+        #
+        # self.project_tool_bar.current_graph = match_graph_code(self.project_tool_bar.combo_graphs.currentText())
+        # if self.project_tool_bar.current_graph is not None:
+        #     self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
-        self.project_tool_bar.current_graph = match_graph_code(self.project_tool_bar.combo_graphs.currentText())
-        if self.project_tool_bar.current_graph is not None:
-            self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
-
-        self.graph_information_dock.update_graph_to_table()
+        # self.graph_information_dock.update_graph_to_table()
         # self.info.update_table_inv({"test": self.combo_graphs.currentText()})
 
     def move_up(self):

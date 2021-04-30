@@ -40,3 +40,10 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.combo_graphs)
         self.addWidget(self.left_button)
         self.addWidget(self.right_button)
+
+    def fill_combo_graphs(self, graphs):
+        for i, line in enumerate(graphs):
+            self.combo_graphs.addItem(f'Graph {i} - {line}')
+        if self.combo_graphs.count() < 2:
+            self.left_button.setDisabled(True)
+            self.right_button.setDisabled(True)

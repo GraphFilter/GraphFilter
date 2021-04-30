@@ -25,6 +25,7 @@ class ProjectContentDictionary(QWidget):
     def set_content_attributes(self):
         self.concepts.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.concepts.setMaximumWidth(250)
+        self.setVisible(False)
 
         f = open('store/data_dictionary.json')
         data = json.load(f)
