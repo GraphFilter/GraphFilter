@@ -1,10 +1,22 @@
 import json
-
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import *
 
 
-class ProjectContentDictionary(QWidget):
+class InvariantsDictionaryDock(QDockWidget):
+    def __init__(self):
+        super().__init__()
+        self.invariants_dictionary = InvariantsDictionary()
+
+        self.set_content_attributes()
+
+    def set_content_attributes(self):
+        self.setWindowTitle("Dictionary")
+        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
+        self.setWidget(self.invariants_dictionary)
+
+
+class InvariantsDictionary(QWidget):
 
     def __init__(self):
         super().__init__()

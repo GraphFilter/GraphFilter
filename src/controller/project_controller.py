@@ -6,7 +6,7 @@ from src.view.project.docks.graph_information_dock import GraphInformationDock
 from src.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from src.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from src.store.project_information_store import project_information_store
-from src.view.project.project_content_dictionary import ProjectContentDictionary
+from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
 # from src.domain.utils import match_graph_code
 from PyQt5 import QtCore
 # from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
@@ -23,30 +23,27 @@ class ProjectController:
         self.graph_information_dock = GraphInformationDock()
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
-
-        self.project_content_dictionary = ProjectContentDictionary()
+        self.invariants_dictionary_dock = InvariantsDictionaryDock()
 
     def show_window(self):
         self.connect_events()
         self.create_docks()
 
         self.project_window.addToolBar(self.project_tool_bar)
-        self.project_window.setCentralWidget(self.project_content_dictionary)
 
-        self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
+        graph = self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
+
+        self.visualize_graph_dock.plot_graph(graph)
 
         # TODO: pass the correct dictionary to method
         self.invariants_check_dock.create_conditions({}, self.on_check_condition)
-
 
         self.project_window.show()
 
     def connect_events(self):
         self.project_window.exit_action.triggered.connect(self.on_exit)
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
-        self.project_window.restore_default_layout_action.triggered.connect(self.on_restore)
 
-        self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
         self.project_window.about_action.triggered.connect(self.on_about)
 
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
@@ -67,18 +64,10 @@ class ProjectController:
         pass
 
     def on_visualize(self):
-        self.project_content_dictionary.setVisible(False)
-        self.graph_information_dock.setVisible(True)
-        self.invariants_check_dock.setVisible(True)
-        self.visualize_graph_dock.setVisible(True)
-        self.project_tool_bar.setVisible(True)
+        pass
 
     def on_dictionary(self):
-        self.graph_information_dock.setVisible(False)
-        self.invariants_check_dock.setVisible(False)
-        self.visualize_graph_dock.setVisible(False)
-        self.project_tool_bar.setVisible(False)
-        self.project_content_dictionary.setVisible(True)
+        pass
 
     def on_about(self):
         self.about_window.show()
@@ -87,9 +76,13 @@ class ProjectController:
         pass
 
     def create_docks(self):
-        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_dictionary_dock)
+
+        self.project_window.tabifyDockWidget(self.invariants_dictionary_dock, self.invariants_check_dock)
+        self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
     def on_change_graph(self):
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:

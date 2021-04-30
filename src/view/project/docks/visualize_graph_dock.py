@@ -19,7 +19,7 @@ class VisualizeGraphDock(QDockWidget):
         self.set_content_attributes()
 
     def set_content_attributes(self):
-        self.setWindowTitle("Graph")
+        self.setWindowTitle("Visualize")
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
         self.setWidget(self.webView)
 

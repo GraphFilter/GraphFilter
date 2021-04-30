@@ -1,3 +1,4 @@
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 import networkx as nx
 
@@ -11,16 +12,15 @@ class InvariantsCheckDock(QDockWidget):
         self.invariants = []
 
         self.set_content_attributes()
-        self.create_conditions()
 
     def set_content_attributes(self):
         self.setWindowTitle("Invariants")
 
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable)
 
-        self.setWidget(self.widget)
+        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
 
-        self.setMaximumWidth(300)
+        self.setWidget(self.widget)
 
     def create_conditions(self, conditions, event):
         conditions_layout = QVBoxLayout()
@@ -31,7 +31,6 @@ class InvariantsCheckDock(QDockWidget):
             checkbox = QCheckBox(f"{key}")
             checkbox.clicked.connect(event)
             conditions_layout.addWidget(checkbox)
-        self.visualize.info.update_table()
         layout_aux = QVBoxLayout()
         widget_aux = QWidget()
         scroll_area = QScrollArea()
