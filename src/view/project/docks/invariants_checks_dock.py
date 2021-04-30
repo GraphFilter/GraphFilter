@@ -22,43 +22,23 @@ class InvariantsCheckDock(QDockWidget):
 
         self.setMaximumWidth(300)
 
-    def create_conditions(self):
+    def create_conditions(self, conditions, event):
         conditions_layout = QVBoxLayout()
 
         self.widget.setLayout(conditions_layout)
 
-        # for key in self.visualize.dic_invariants.keys():
-        #     checkbox = QCheckBox(f"{key}")
-        #     if key in self.visualize.invariants_selected:
-        #         checkbox.setChecked(True)
-        #     checkbox.clicked.connect(self.checked)
-        #     conditions_layout.addWidget(checkbox)
-        # self.visualize.info.update_table()
-        # layout_aux = QVBoxLayout()
-        # widget_aux = QWidget()
-        # scroll_area = QScrollArea()
-        # widget_aux.setLayout(conditions_layout)
-        # scroll_area.setWidget(widget_aux)
-        # layout_aux.addWidget(scroll_area)
-        # self.widget.setLayout(layout_aux)
-
-    def checked(self):
-        check = QCheckBox().sender()
-        if self.visualize.current_graph is not None:
-            g = nx.from_graph6_bytes(self.visualize.current_graph.encode('utf-8'))
-        else:
-            g = None
-
-        if check.text() not in self.visualize.invariants_selected:
-            if g is not None:
-                self.visualize.invariants_selected[check.text()] = \
-                    self.visualize.dic_invariants[check.text()].calculate(g)
-            else:
-                self.visualize.invariants_selected[check.text()] = 'None'
-        else:
-            del self.visualize.invariants_selected[check.text()]
-
+        for key in conditions.keys():
+            checkbox = QCheckBox(f"{key}")
+            checkbox.clicked.connect(event)
+            conditions_layout.addWidget(checkbox)
         self.visualize.info.update_table()
+        layout_aux = QVBoxLayout()
+        widget_aux = QWidget()
+        scroll_area = QScrollArea()
+        widget_aux.setLayout(conditions_layout)
+        scroll_area.setWidget(widget_aux)
+        layout_aux.addWidget(scroll_area)
+        self.widget.setLayout(layout_aux)
 
     def update_graph_to_table(self):
         if self.visualize.current_graph is not None:

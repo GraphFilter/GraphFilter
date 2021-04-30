@@ -88,14 +88,14 @@ class WizardController:
 
     def show_window(self):
         self.set_wizard_pages()
-        self.connect_buttons()
+        self.connect_events()
         self.set_default_project_location()
         self.set_conditions_groups()
         self.conditions_page.set_up_layout()
         self.set_equations_tabs()
         self.wizard_window.show()
 
-    def connect_buttons(self):
+    def connect_events(self):
         self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
         self.wizard_window.start_button.clicked.connect(self.on_wizard_start)
 

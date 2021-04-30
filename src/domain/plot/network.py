@@ -37,7 +37,7 @@ class Network:
         data = {"nodes": self.nodes, "edges": self.edges}
         graph_data = json.dumps(data)
         export = f"data = {graph_data}"
-        filename = "plot/data.js"
+        filename = "/domain/plot/data.js"
 
         with open(filename, "w") as file_json:
             file_json.write(export)

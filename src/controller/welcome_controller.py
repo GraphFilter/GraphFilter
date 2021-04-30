@@ -16,10 +16,10 @@ class WelcomeController:
 
     def show_window(self):
         self.welcome_window.setCentralWidget(self.welcome_content)
-        self.connect_actions()
+        self.connect_events()
         self.welcome_window.show()
 
-    def connect_actions(self):
+    def connect_events(self):
         self.welcome_content.open_button.clicked.connect(self.on_open_project)
         self.welcome_content.new_button.clicked.connect(self.on_open_wizard)
 
