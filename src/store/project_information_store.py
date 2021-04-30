@@ -11,6 +11,15 @@ class ProjectInformationStore:
         self.graph_files = []
         self.filtered_graphs = []
 
+    def fill_data(self, data):
+        self.project_name = data['project_name']
+        self.project_location = data['project_location']
+        self.equation = data['equation']
+        self.conditions = data['conditions']
+        self.method = data['method']
+        self.graph_files = data['graph_files']
+        self.filtered_graphs = data['filtered_graphs']
+
     def save_project(self):
         project_dictionary = {
             "project_name": self.project_name,
