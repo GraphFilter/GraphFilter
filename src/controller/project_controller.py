@@ -7,7 +7,7 @@ from src.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from src.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from src.store.project_information_store import project_information_store
 from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
-# from src.domain.utils import match_graph_code
+from src.domain.utils import match_graph_code
 from PyQt5 import QtCore
 # from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
 
@@ -31,6 +31,7 @@ class ProjectController:
         self.connect_events()
         self.create_docks()
 
+        self.project_window.set_title_bar(project_information_store.project_name)
         self.project_window.addToolBar(self.project_tool_bar)
 
         graph = self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
@@ -62,6 +63,15 @@ class ProjectController:
 
         # self.project_window.print_action.triggered.connect(self.on_print)
 
+    def create_docks(self):
+        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
+        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_dictionary_dock)
+
+        self.project_window.tabifyDockWidget(self.invariants_dictionary_dock, self.invariants_check_dock)
+        self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
+
     def on_exit(self):
         self.project_window.close()
 
@@ -91,15 +101,6 @@ class ProjectController:
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
 
-    def create_docks(self):
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
-        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
-        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_dictionary_dock)
-
-        self.project_window.tabifyDockWidget(self.invariants_dictionary_dock, self.invariants_check_dock)
-        self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
-
     def on_change_graph(self):
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
@@ -110,10 +111,10 @@ class ProjectController:
             self.project_tool_bar.right_button.setDisabled(True)
         else:
             self.project_tool_bar.right_button.setDisabled(False)
-        #
-        # self.project_tool_bar.current_graph = match_graph_code(self.project_tool_bar.combo_graphs.currentText())
-        # if self.project_tool_bar.current_graph is not None:
-        #     self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
+
+        self.project_tool_bar.current_graph = match_graph_code(self.project_tool_bar.combo_graphs.currentText())
+        if self.project_tool_bar.current_graph is not None:
+            self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
         # self.graph_information_dock.update_graph_to_table()
         # self.info.update_table_inv({"test": self.combo_graphs.currentText()})

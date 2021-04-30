@@ -7,8 +7,6 @@ class ProjectWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.title_bar = "Project Name - Visualize"
-
         self.icon = Icon("hexagon")
 
         self.width = 1200
@@ -35,8 +33,11 @@ class ProjectWindow(QMainWindow):
 
     def set_content_attributes(self):
         self.setWindowIcon(self.icon)
-        self.setWindowTitle(self.title_bar)
+
         self.setMinimumSize(self.width, self.height)
+
+    def set_title_bar(self, project_name):
+        self.setWindowTitle(f"Graph Filter - {project_name}")
 
     def create_menu_bar(self):
         menu_bar = self.menuBar()
