@@ -16,7 +16,9 @@ class GraphInformationDock(QDockWidget):
         self.setWindowTitle("Info")
         self.setObjectName("Info")
 
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
+        self.setFeatures(
+            QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable
+        )
 
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
 
@@ -25,9 +27,9 @@ class GraphInformationDock(QDockWidget):
 
         self.setWidget(self.table)
 
-    def update_table(self):
+    def update_table(self, invariants_selected):
         self.model.removeRows(0, self.model.rowCount())
-        for key, value in self.visualize.invariants_selected.items():
+        for key, value in invariants_selected.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))
             invariant_name.setEditable(False)

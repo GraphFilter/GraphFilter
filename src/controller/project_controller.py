@@ -6,10 +6,11 @@ from src.view.project.docks.graph_information_dock import GraphInformationDock
 from src.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from src.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from src.store.project_information_store import project_information_store
+from src.store.operations_invariants import *
 from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
 from src.domain.utils import match_graph_code
 from PyQt5 import QtCore
-# from PyQt5.QtPrintSupport import QPrinter, QPrintDialog
+from src.domain.utils import convert_g6_to_nx
 
 
 class ProjectController:
@@ -25,6 +26,9 @@ class ProjectController:
         self.visualize_graph_dock = VisualizeGraphDock()
         self.invariants_dictionary_dock = InvariantsDictionaryDock()
 
+        self.invariants_selected = {}
+
+
         self.settings = QtCore.QSettings("project", "GraphFilter")
 
     def show_window(self):
@@ -34,12 +38,12 @@ class ProjectController:
         self.project_window.set_title_bar(project_information_store.project_name)
         self.project_window.addToolBar(self.project_tool_bar)
 
-        graph = self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
+        self.project_tool_bar.current_graph = \
+            self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
 
-        self.visualize_graph_dock.plot_graph(graph)
+        self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
-        # TODO: pass the correct dictionary to method
-        self.invariants_check_dock.create_conditions({}, self.on_check_condition)
+        self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
         self.project_window.show()
 
@@ -116,8 +120,9 @@ class ProjectController:
         if self.project_tool_bar.current_graph is not None:
             self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
-        # self.graph_information_dock.update_graph_to_table()
-        # self.info.update_table_inv({"test": self.combo_graphs.currentText()})
+        self.update_graph_to_table()
+        self.graph_information_dock.update_table(self.invariants_selected)
+        #self.info.update_table_inv({"test": self.combo_graphs.currentText()})
 
     def on_click_button_left(self):
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() - 1)
@@ -129,20 +134,27 @@ class ProjectController:
 
     def on_check_condition(self):
         check = QCheckBox().sender()
-        # TODO: this logic does not belongs here
-        # if self.visualize.current_graph is not None:
-        #     g = nx.from_graph6_bytes(self.visualize.current_graph.encode('utf-8'))
-        # else:
-        #     g = None
-        #
-        # if check.text() not in self.visualize.invariants_selected:
-        #     if g is not None:
-        #         self.visualize.invariants_selected[check.text()] = \
-        #             self.visualize.dic_invariants[check.text()].calculate(g)
-        #     else:
-        #         self.visualize.invariants_selected[check.text()] = 'None'
-        # else:
-        #     del self.visualize.invariants_selected[check.text()]
-        #
-        # self.visualize.info.update_table()
-        pass
+        g6code = self.project_tool_bar.current_graph
+
+        if check.text() not in self.invariants_selected:
+            if g6code is not None:
+                self.invariants_selected[check.text()] = \
+                    dic_invariants_to_visualize[check.text()].calculate(convert_g6_to_nx(g6code))
+            else:
+                self.invariants_selected[check.text()] = 'No graph selected'
+        else:
+            del self.invariants_selected[check.text()]
+
+        self.graph_information_dock.update_table(self.invariants_selected)
+
+
+
+    def update_graph_to_table(self):
+        g6code = self.project_tool_bar.current_graph
+
+        for key in self.invariants_selected.keys():
+            if g6code is not None:
+                self.invariants_selected[key] = dic_invariants_to_visualize[key].calculate(convert_g6_to_nx(g6code))
+            else:
+                self.invariants_selected[key] = 'No graph selected'
+        self.graph_information_dock.update_table(self.invariants_selected)

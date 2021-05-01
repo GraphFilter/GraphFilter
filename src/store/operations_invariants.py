@@ -30,3 +30,5 @@ dict_text_equation = {**operations_invariants.numInvariant.dic_name_inv,
 dic_function_to_eval = {**operations_invariants.numInvariant.dic_function,
                         **operations_invariants.graphOperations.dic_function,
                         **operations_invariants.mathOperations.dic_function}
+
+dic_invariants_to_visualize = {**dic_bool_invariants_names, **dic_num_invariants_names}

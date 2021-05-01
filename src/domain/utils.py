@@ -1,5 +1,6 @@
 import os
 import re
+import networkx as nx
 
 
 def validate_path(path):
@@ -33,3 +34,7 @@ def match_graph_code(text):
     pattern = re.compile(r'(Graph \d* - )(.*)')
     match = pattern.match(text)
     return match.group(2)
+
+
+def convert_g6_to_nx(g6code):
+    return nx.from_graph6_bytes(g6code.encode('utf-8'))
