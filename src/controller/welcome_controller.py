@@ -23,6 +23,10 @@ class WelcomeController:
         self.welcome_content.open_button.clicked.connect(self.on_open_project)
         self.welcome_content.new_button.clicked.connect(self.on_open_wizard)
 
+        self.wizard_controller.wizard_window.close_signal.connect(self.show_window)
+
+        self.wizard_controller.wizard_window.cancel_button.clicked.connect(self.show_window)
+
     def on_open_wizard(self):
         self.welcome_window.close()
         self.wizard_controller.show_window()

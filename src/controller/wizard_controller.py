@@ -27,6 +27,8 @@ class WizardController:
 
         self.filter_controller = FilterController()
 
+        self.set_up_window()
+
     def set_wizard_pages(self):
         self.wizard_window.addPage(self.project_files_page)
         self.wizard_window.addPage(self.equations_page)
@@ -35,8 +37,13 @@ class WizardController:
         self.wizard_window.addPage(self.graph_files_page)
         self.wizard_window.addPage(self.review_page)
 
-    def on_wizard_close(self):
-        pass
+    def set_up_window(self):
+        self.set_wizard_pages()
+        self.connect_events()
+        self.set_default_project_location()
+        self.set_conditions_groups()
+        self.conditions_page.set_up_layout()
+        self.set_equations_tabs()
 
     def on_wizard_start(self):
         self.filter_controller.start_filter()
@@ -49,8 +56,6 @@ class WizardController:
         if self.wizard_window.currentPage().objectName() == "graph_files":
             self.update_complete_graph_files_page(False)
 
-    def on_wizard_cancel(self):
-        pass
 
     def update_complete_conditions_page(self):
         if len(project_information_store.conditions) < 1 and self.equations_page.equation.text() == "":
@@ -87,22 +92,15 @@ class WizardController:
         self.project_files_page.completeChanged.emit()
 
     def show_window(self):
-        self.set_wizard_pages()
-        self.connect_events()
-        self.set_default_project_location()
-        self.set_conditions_groups()
-        self.conditions_page.set_up_layout()
-        self.set_equations_tabs()
         self.wizard_window.show()
 
     def connect_events(self):
         self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
         self.wizard_window.start_button.clicked.connect(self.on_wizard_start)
 
+        self.project_files_page.project_name_input.textEdited.connect(self.verify_and_save_project_name)
         self.project_files_page.project_location_button.clicked.connect(self.on_open_project_file)
         self.project_files_page.project_location_input.textEdited.connect(self.verify_and_save_project_folder)
-
-        self.project_files_page.project_name_input.textEdited.connect(self.verify_and_save_project_name)
 
         self.equations_page.equation.textEdited.connect(self.on_insert_equation_input)
 

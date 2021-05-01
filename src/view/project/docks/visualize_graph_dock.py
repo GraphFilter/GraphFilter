@@ -29,6 +29,8 @@ class VisualizeGraphDock(QDockWidget):
         self.webView.setContextMenuPolicy(Qt.NoContextMenu)
 
     def plot_graph(self, graph):
+        if graph is None:
+            return
         net = Network()
         g = nx.from_graph6_bytes(graph.encode('utf-8'))
         net.create_vis_data(g)

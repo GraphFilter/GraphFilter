@@ -47,5 +47,7 @@ class ProjectToolBar(QToolBar):
         if self.combo_graphs.count() < 2:
             self.left_button.setDisabled(True)
             self.right_button.setDisabled(True)
+        if len(graphs) == 0:
+            return None
 
         return graphs[0]

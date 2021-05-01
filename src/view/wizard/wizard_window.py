@@ -4,6 +4,8 @@ from PyQt5 import QtGui, QtCore
 
 class WizardWindow(QWizard):
 
+    close_signal = QtCore.pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
 
@@ -32,3 +34,7 @@ class WizardWindow(QWizard):
         self.setWindowIcon(QtGui.QIcon(self.pixmap))
 
         self.setButtonText(QWizard.FinishButton, "Start")
+
+    def closeEvent(self, event):
+        self.close_signal.emit(1)
+        event.accept()
