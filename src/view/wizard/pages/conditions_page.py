@@ -1,7 +1,8 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-
+from src.view.resources.qicons import Icon
+from src.view.resources.help_buttons_text import tip_conditions
 
 class ConditionsPage(QWizardPage):
 
@@ -12,11 +13,18 @@ class ConditionsPage(QWizardPage):
 
         self.structural_invariants_group: ComboBoxesGroup
         self.spectral_invariants_group: ComboBoxesGroup
+        self.help_button = QPushButton()
 
         self.set_content_attributes()
 
     def set_content_attributes(self):
         self.setObjectName("conditions")
+
+        self.help_button.setFixedHeight(80)
+        self.help_button.setFixedWidth(80)
+        self.help_button.setToolTip(tip_conditions)
+        self.help_button.setIcon(Icon('help'))
+        self.help_button.setStyleSheet("background: transparent")
 
     def set_up_layout(self):
         center_layout = QHBoxLayout()
@@ -24,11 +32,16 @@ class ConditionsPage(QWizardPage):
         center_layout.addStretch(2)
         center_layout.addWidget(self.spectral_invariants_group)
 
+        title_layout = QHBoxLayout()
+        title_layout.addWidget(QLabel("<h3>Conditions</h3>"))
+        title_layout.addWidget(self.help_button, alignment=Qt.AlignRight)
+
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("<h3>Conditions</h3>"))
-        layout.addStretch(5)
+        layout.addLayout(title_layout)
+        #layout.addWidget(QLabel("<h3>Conditions</h3>"))
+        #layout.addStretch(5)
         layout.addLayout(center_layout)
-        layout.setContentsMargins(80, 30, 80, 50)
+        layout.setContentsMargins(80, 10, 80, 50)
 
         self.setLayout(layout)
 

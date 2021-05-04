@@ -1,5 +1,7 @@
 from PyQt5.QtWidgets import *
 from src.view.resources.qicons import Icon
+from PyQt5 import QtCore
+from src.view.resources.help_buttons_text import tip_method
 
 
 class MethodPage(QWizardPage):
@@ -11,6 +13,7 @@ class MethodPage(QWizardPage):
 
         self.filter_button = QPushButton()
         self.counter_example_button = QPushButton()
+        self.help_button = QPushButton()
 
         self.set_content_attributes()
         self.set_up_layout()
@@ -25,6 +28,12 @@ class MethodPage(QWizardPage):
         self.filter_button.setCheckable(True)
         self.filter_button.setObjectName('filter')
 
+        self.help_button.setFixedHeight(80)
+        self.help_button.setFixedWidth(80)
+        self.help_button.setToolTip(tip_method)
+        self.help_button.setIcon(Icon('help'))
+        self.help_button.setStyleSheet("background: transparent")
+
         self.counter_example_button.setText("  Find Counterexample")
         self.counter_example_button.setIcon(Icon("zoom"))
         self.counter_example_button.setMinimumHeight(50)
@@ -34,14 +43,18 @@ class MethodPage(QWizardPage):
 
     def set_up_layout(self):
         button_layout = QHBoxLayout()
-
         button_layout.addWidget(self.filter_button)
         button_layout.addStretch(1)
         button_layout.addWidget(self.counter_example_button)
 
+        title_layout = QHBoxLayout()
+        title_layout.addWidget(QLabel("<h3>Method</h3>"))
+        title_layout.addWidget(self.help_button, alignment=QtCore.Qt.AlignRight)
+
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("<h3>Method</h3>"))
-        layout.addStretch(2)
+        layout.addLayout(title_layout)
+        # layout.addWidget(QLabel("<h3>Method</h3>"))
+        # layout.addStretch(2)
         layout.addLayout(button_layout)
         layout.addStretch(6)
         layout.setContentsMargins(80, 30, 80, 30)

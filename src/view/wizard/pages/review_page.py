@@ -1,5 +1,8 @@
 from PyQt5.QtWidgets import *
 from src.domain.utils import clear_layout
+from PyQt5 import QtCore
+from src.view.resources.qicons import Icon
+from src.view.resources.help_buttons_text import tip_review
 
 
 class ReviewPage(QWizardPage):
@@ -14,6 +17,8 @@ class ReviewPage(QWizardPage):
         self.method = QLabel()
         self.equation = QLabel("<b>Equation:</b>")
 
+        self.help_button = QPushButton()
+
         self.conditions_and_graphs_layout = QHBoxLayout()
 
         self.conditions_layout = ReviewConditionsLayout(self.conditions)
@@ -25,7 +30,16 @@ class ReviewPage(QWizardPage):
     def set_content_attributes(self):
         self.setObjectName("review")
 
+        self.help_button.setFixedHeight(80)
+        self.help_button.setFixedWidth(80)
+        self.help_button.setToolTip(tip_review)
+        self.help_button.setIcon(Icon('help'))
+        self.help_button.setStyleSheet("background: transparent")
+
     def set_up_layout(self):
+        title_layout = QHBoxLayout()
+        title_layout.addWidget(QLabel("<h3>Review</h3>"))
+        title_layout.addWidget(self.help_button, alignment=QtCore.Qt.AlignRight)
 
         project_name_layout = QHBoxLayout()
         project_name_layout.setSpacing(0)
@@ -43,7 +57,8 @@ class ReviewPage(QWizardPage):
         self.conditions_and_graphs_layout.addLayout(self.graph_files_layout)
 
         layout = QVBoxLayout()
-        layout.addWidget(QLabel("<h3>Review</h3>"))
+        layout.addLayout(title_layout)
+        # layout.addWidget(QLabel("<h3>Review</h3>"))
         layout.addStretch(1)
         layout.addLayout(project_layout)
         layout.addStretch(1)
@@ -52,7 +67,7 @@ class ReviewPage(QWizardPage):
         layout.addWidget(self.method)
         layout.addStretch(1)
         layout.addLayout(self.conditions_and_graphs_layout)
-        layout.setContentsMargins(80, 30, 80, 50)
+        layout.setContentsMargins(80, 10, 80, 50)
 
         self.setLayout(layout)
 
@@ -77,7 +92,6 @@ class ReviewPage(QWizardPage):
         self.update_conditions_and_graphs_layout()
 
     def update_conditions_and_graphs_layout(self):
-
         clear_layout(self.conditions_layout)
         clear_layout(self.graph_files_layout)
         clear_layout(self.conditions_and_graphs_layout)
