@@ -2,8 +2,8 @@ from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from src.view.resources.qicons import Icon
-from src.view.resources.help_buttons_text import tip_equation
+from src.store.help_buttons_text import tip_equation
+from src.view.resources.help_button import HelpButton
 
 
 class EquationsPage(QWizardPage):
@@ -16,7 +16,7 @@ class EquationsPage(QWizardPage):
         self.equation = QLineEdit()
         self.equation_validation = QLabel()
         self.math_tab = QTabWidget()
-        self.help_button = QPushButton()
+        self.help_button = HelpButton(tip_equation)
 
         self.complete = True
 
@@ -31,12 +31,6 @@ class EquationsPage(QWizardPage):
         self.math_tab.setMinimumWidth(500)
         self.math_tab.setMaximumHeight(300)
 
-        self.help_button.setFixedHeight(80)
-        self.help_button.setFixedWidth(80)
-        self.help_button.setToolTip(tip_equation)
-        self.help_button.setIcon(Icon('help'))
-        self.help_button.setStyleSheet("background: transparent")
-
     def set_up_layout(self):
         title_layout = QHBoxLayout()
         title_layout.addWidget(QLabel("<h3>Equations</h3>"))
@@ -44,14 +38,10 @@ class EquationsPage(QWizardPage):
 
         layout = QVBoxLayout()
         layout.addLayout(title_layout)
-        # layout.addWidget(self.help_button)
-        # layout.addStretch(0)
-        # layout.addWidget(QLabel("<h3>Equations</h3>"))
-        # layout.addStretch(2)
+        layout.addStretch(3)
         layout.addWidget(self.equation)
-        layout.addStretch(0)
         layout.addWidget(self.equation_validation)
-        layout.addStretch(5)
+        layout.addStretch(4)
         layout.addWidget(self.math_tab)
         layout.setContentsMargins(80, 10, 80, 30)
         self.setLayout(layout)

@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import *
 from src.domain.utils import clear_layout
 from PyQt5 import QtCore
-from src.view.resources.qicons import Icon
-from src.view.resources.help_buttons_text import tip_review
+from src.view.resources.icon import Icon
+from src.store.help_buttons_text import tip_review
 
 
 class ReviewPage(QWizardPage):

@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
-from src.view.resources.qicons import Icon
+from src.view.resources.icon import Icon
 
 
 class WelcomeWindow(QMainWindow):
