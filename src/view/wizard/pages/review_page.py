@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import *
 from src.domain.utils import clear_layout
 from PyQt5 import QtCore
-from src.view.resources.icon import Icon
 from src.store.help_buttons_text import tip_review
+from src.view.resources.help_button import HelpButton
 
 
 class ReviewPage(QWizardPage):
@@ -17,7 +17,7 @@ class ReviewPage(QWizardPage):
         self.method = QLabel()
         self.equation = QLabel("<b>Equation:</b>")
 
-        self.help_button = QPushButton()
+        self.help_button = HelpButton(tip_review)
 
         self.conditions_and_graphs_layout = QHBoxLayout()
 
@@ -29,12 +29,6 @@ class ReviewPage(QWizardPage):
 
     def set_content_attributes(self):
         self.setObjectName("review")
-
-        self.help_button.setFixedHeight(80)
-        self.help_button.setFixedWidth(80)
-        self.help_button.setToolTip(tip_review)
-        self.help_button.setIcon(Icon('help'))
-        self.help_button.setStyleSheet("background: transparent")
 
     def set_up_layout(self):
         title_layout = QHBoxLayout()
@@ -58,8 +52,7 @@ class ReviewPage(QWizardPage):
 
         layout = QVBoxLayout()
         layout.addLayout(title_layout)
-        # layout.addWidget(QLabel("<h3>Review</h3>"))
-        layout.addStretch(1)
+        layout.addStretch(2)
         layout.addLayout(project_layout)
         layout.addStretch(1)
         layout.addWidget(self.equation)

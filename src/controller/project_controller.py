@@ -28,7 +28,6 @@ class ProjectController:
 
         self.invariants_selected = {}
 
-
         self.settings = QtCore.QSettings("project", "GraphFilter")
 
     def show_window(self):
@@ -50,6 +49,8 @@ class ProjectController:
         self.settings.setValue("state", self.project_window.saveState())
 
     def connect_events(self):
+        self.project_window.new_action.triggered.connect(self.on_new)
+
         self.project_window.exit_action.triggered.connect(self.on_exit)
 
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
@@ -75,6 +76,9 @@ class ProjectController:
 
         self.project_window.tabifyDockWidget(self.invariants_dictionary_dock, self.invariants_check_dock)
         self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
+
+    def on_new(self):
+        pass
 
     def on_exit(self):
         self.project_window.close()
@@ -122,7 +126,6 @@ class ProjectController:
 
         self.update_graph_to_table()
         self.graph_information_dock.update_table(self.invariants_selected)
-        #self.info.update_table_inv({"test": self.combo_graphs.currentText()})
 
     def on_click_button_left(self):
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() - 1)
@@ -146,8 +149,6 @@ class ProjectController:
             del self.invariants_selected[check.text()]
 
         self.graph_information_dock.update_table(self.invariants_selected)
-
-
 
     def update_graph_to_table(self):
         g6code = self.project_tool_bar.current_graph

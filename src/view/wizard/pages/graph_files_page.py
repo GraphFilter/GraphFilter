@@ -43,8 +43,9 @@ class GraphFilesPage(QWizardPage):
 
         layout = QVBoxLayout()
         layout.addLayout(title_layout)
-        layout.addStretch(3)
+        layout.addStretch(1)
         layout.addLayout(self.form)
+        layout.addStretch(10)
         layout.setContentsMargins(80, 10, 80, 30)
 
         self.setLayout(layout)

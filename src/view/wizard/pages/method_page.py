@@ -48,10 +48,10 @@ class MethodPage(QWizardPage):
 
         layout = QVBoxLayout()
         layout.addLayout(title_layout)
-        layout.addStretch(2)
+        layout.addStretch(4)
         layout.addLayout(button_layout)
-        layout.addStretch(7)
-        layout.setContentsMargins(80, 30, 80, 30)
+        layout.addStretch(6)
+        layout.setContentsMargins(80, 11, 80, 30)
 
         self.setLayout(layout)
 

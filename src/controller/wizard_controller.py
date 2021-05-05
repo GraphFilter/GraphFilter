@@ -54,8 +54,7 @@ class WizardController:
         if self.wizard_window.currentPage().objectName() == "method":
             self.wizard_window.next_button.setToolTip('Select the filtering method')
         if self.wizard_window.currentPage().objectName() == "graph_files":
-            self.update_complete_graph_files_page(False)
-
+            self.update_complete_graph_files_page()
 
     def update_complete_conditions_page(self):
         if len(project_information_store.conditions) < 1 and self.equations_page.equation.text() == "":
@@ -65,12 +64,10 @@ class WizardController:
             self.conditions_page.complete = True
             self.wizard_window.next_button.setToolTip('')
 
-    def update_complete_graph_files_page(self, state):
-        if state:
-            self.graph_files_page.complete = True
+    def update_complete_graph_files_page(self):
+        if self.graph_files_page.complete:
             self.wizard_window.next_button.setToolTip('')
         else:
-            self.graph_files_page.complete = False
             self.wizard_window.next_button.setToolTip('Invalid graph file')
         self.graph_files_page.completeChanged.emit()
 
@@ -109,7 +106,6 @@ class WizardController:
 
         self.graph_files_page.open_graph_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_graph_file.clicked.connect(self.on_add_graph_file_input)
-
         self.graph_files_page.graph_files_input.textEdited.connect(self.on_insert_graph_file_path)
 
     def verify_and_save_project_name(self):
@@ -273,10 +269,13 @@ class WizardController:
                 project_information_store.graph_files.append(path)
                 self.review_page.set_graph_files(project_information_store.graph_files)
                 self.graph_files_page.add_graph_file.setEnabled(True)
-            self.update_complete_graph_files_page(True)
+            elif path == '':
+                self.graph_files_page.complete = False
+            self.graph_files_page.complete = True
         else:
-            self.update_complete_graph_files_page(False)
+            self.graph_files_page.complete = False
         print(project_information_store.graph_files)
+        self.update_complete_graph_files_page()
 
     def on_add_graph_file_input(self):
         button_clicked = QPushButton().sender()
@@ -311,5 +310,9 @@ class WizardController:
         print(project_information_store.graph_files)
         self.graph_files_page.form.removeRow(layout)
         self.graph_files_page.add_graph_file.setEnabled(True)
+
+        if len(project_information_store.graph_files) == 0:
+            self.graph_files_page.complete = False
+
         self.update_complete_graph_files_page()
 
