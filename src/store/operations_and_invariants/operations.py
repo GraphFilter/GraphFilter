@@ -20,6 +20,17 @@ class MathOperations:
     def calculate(graph):
         pass
 
+class BasicMathOperations:
+    code = None
+    name = None
+    dic_name_inv = {}
+    all = []
+
+    def __init__(self):
+        self.all = BasicMathOperations.__subclasses__()
+        for inv in self.all:
+            self.dic_name_inv[inv.name] = inv
+
 
 class GraphOperations:
     code = None
@@ -124,3 +135,47 @@ class Absolute(MathOperations):
     @staticmethod
     def calculate(x):
         return np.abs(x)
+
+class Plus(BasicMathOperations):
+    name = "Sum"
+    code = "+"
+
+class Subtraction(BasicMathOperations):
+    name = "Subtraction"
+    code = "-"
+
+class Division(BasicMathOperations):
+    name = "Division"
+    code = "/"
+
+class Product(BasicMathOperations):
+    name = "Product"
+    code = "*"
+
+class Power(BasicMathOperations):
+    name = "Power"
+    code = "**"
+
+class Modulus(BasicMathOperations):
+    name = "Modulus"
+    code = "%"
+
+class LessThan(BasicMathOperations):
+    name = "Less than"
+    code = "<"
+
+class GreaterThan(BasicMathOperations):
+    name = "Greater than"
+    code = ">"
+
+class LessThanEqual(BasicMathOperations):
+    name = "Less than or equal"
+    code = "<="
+
+class GreaterThanEqual(BasicMathOperations):
+    name = "Greater than or equal"
+    code = ">="
+
+
+
+

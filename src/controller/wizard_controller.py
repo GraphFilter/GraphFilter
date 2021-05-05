@@ -142,7 +142,7 @@ class WizardController:
     def set_equations_tabs(self):
         tab_numeric_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_invariants_names)
         tab_graph_operations = TabOperations(self.add_button_input_to_equation_text, dic_graph_operations_names)
-        tab_math_operations = TabOperations(self.add_button_input_to_equation_text, dic_math_operations_names)
+        tab_math_operations = TabOperations(self.add_button_input_to_equation_text, dic_math_and_basic_operations_names)
 
         self.equations_page.math_tab.addTab(tab_numeric_invariants, "Numeric Invariants")
         self.equations_page.math_tab.addTab(tab_graph_operations, "Graph Operations")
