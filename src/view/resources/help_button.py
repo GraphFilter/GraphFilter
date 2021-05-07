@@ -14,3 +14,4 @@ class HelpButton(QPushButton):
         self.setIcon(Icon('help'))
         self.setIconSize(QSize(30, 30))
         self.setStyleSheet("background: transparent")
+        self.setCursor(Qt.WhatsThisCursor)
