@@ -1,5 +1,4 @@
 from src.domain.filter_list import FilterList
-from src.controller.project_controller import ProjectController
 from src.domain.utils import *
 from src.store.project_information_store import project_information_store
 from src.view.loading.loading_window import LoadingWindow
@@ -11,10 +10,9 @@ class FilterController():
     def __init__(self):
 
         self.filter_list = FilterList()
-        self.project_controller = ProjectController()
         self.loading_window = LoadingWindow()
 
-    def start_loading(self):
+    def show_window(self):
         self.loading_window.progressBar.setMaximum(self.filter_list.total)
         self.loading_window.show()
 
@@ -22,7 +20,7 @@ class FilterController():
         g6_list = extract_files_to_list(project_information_store.graph_files)
         self.filter_list.set_inputs(g6_list, project_information_store.equation, project_information_store.conditions,
                                     self.update)
-        self.start_loading()
+        self.show_window()
         if project_information_store.method == 'filter':
             self.filter_list.run_filter()
         else:
@@ -33,7 +31,6 @@ class FilterController():
         project_information_store.save_project()
 
         self.loading_window.close()
-        self.project_controller.show_window()
 
     def update(self, step):
         self.loading_window.increase_step(step)

@@ -37,6 +37,8 @@ class ProjectController:
         self.project_window.set_title_bar(project_information_store.project_name)
         self.project_window.addToolBar(self.project_tool_bar)
 
+        self.project_tool_bar.reset_combo_graphs()
+
         self.project_tool_bar.current_graph = \
             self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
 
@@ -49,7 +51,6 @@ class ProjectController:
         self.settings.setValue("state", self.project_window.saveState())
 
     def connect_events(self):
-        self.project_window.new_action.triggered.connect(self.on_new)
 
         self.project_window.exit_action.triggered.connect(self.on_exit)
 
@@ -76,9 +77,6 @@ class ProjectController:
 
         self.project_window.tabifyDockWidget(self.invariants_dictionary_dock, self.invariants_check_dock)
         self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
-
-    def on_new(self):
-        pass
 
     def on_exit(self):
         self.project_window.close()

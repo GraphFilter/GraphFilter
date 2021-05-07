@@ -1,13 +1,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from src.view.welcome.welcome_window import WelcomeWindow
-from src.controller.welcome_controller import WelcomeController
+from src.controller.controller import Controller
 
 
 app = QApplication(sys.argv)
-welcome_window = WelcomeWindow()
-welcome_controller = WelcomeController(welcome_window)
+controller = Controller()
 
-welcome_controller.show_window()
+controller.show_welcome_window()
 
 app.exec_()

@@ -4,7 +4,6 @@ from src.view.wizard.pages.conditions_page import ConditionsPage, ComboBoxesGrou
 from src.view.wizard.pages.method_page import MethodPage
 from src.view.wizard.pages.graph_files_page import GraphFilesPage
 from src.view.wizard.pages.review_page import ReviewPage
-from src.controller.filter_controller import FilterController
 from src.store.project_information_store import project_information_store
 from src.view.wizard.wizard_window import WizardWindow
 from PyQt5.QtWidgets import *
@@ -17,15 +16,12 @@ import pathlib
 class WizardController:
     def __init__(self):
         self.wizard_window = WizardWindow()
-
         self.project_files_page = ProjectFilesWizardPage()
         self.equations_page = EquationsPage()
         self.conditions_page = ConditionsPage()
         self.method_page = MethodPage()
         self.graph_files_page = GraphFilesPage()
         self.review_page = ReviewPage()
-
-        self.filter_controller = FilterController()
 
         self.set_up_window()
 
@@ -44,9 +40,6 @@ class WizardController:
         self.set_conditions_groups()
         self.conditions_page.set_up_layout()
         self.set_equations_tabs()
-
-    def on_wizard_start(self):
-        self.filter_controller.start_filter()
 
     def on_wizard_next_page(self):
         if self.wizard_window.currentPage().objectName() == "conditions":
@@ -91,9 +84,11 @@ class WizardController:
     def show_window(self):
         self.wizard_window.show()
 
+    def close_window(self):
+        self.wizard_window.close()
+
     def connect_events(self):
         self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
-        self.wizard_window.start_button.clicked.connect(self.on_wizard_start)
 
         self.project_files_page.project_name_input.textEdited.connect(self.verify_and_save_project_name)
         self.project_files_page.project_location_button.clicked.connect(self.on_open_project_file)

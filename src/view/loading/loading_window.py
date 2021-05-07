@@ -7,6 +7,8 @@ class External(QThread):
 
 
 class LoadingWindow(QDialog):
+    filter_complete_signal = pyqtSignal(int)
+
     def __init__(self):
         super().__init__()
 
@@ -26,3 +28,7 @@ class LoadingWindow(QDialog):
 
     def increase_step(self, value):
         self.progressBar.setValue(value)
+
+    def closeEvent(self, event):
+        self.filter_complete_signal.emit(1)
+        event.accept()

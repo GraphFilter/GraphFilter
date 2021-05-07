@@ -26,6 +26,7 @@ class ProjectToolBar(QToolBar):
 
         self.combo_graphs.adjustSize()
         self.combo_graphs.setMaximumWidth(200)
+        self.combo_graphs.setMinimumWidth(200)
 
         self.right_button.setIcon(Icon("right_arrow_key"))
         self.right_button.setIconSize(QtCore.QSize(20, 20))
@@ -34,6 +35,9 @@ class ProjectToolBar(QToolBar):
         self.left_button.setIcon(Icon("left_arrow_key"))
         self.left_button.setIconSize(QtCore.QSize(20, 20))
         self.left_button.setDisabled(True)
+
+    def reset_combo_graphs(self):
+        self.combo_graphs.clear()
 
     def set_up_layout(self):
         self.addWidget(self.filtered_graphs_label)
@@ -47,6 +51,8 @@ class ProjectToolBar(QToolBar):
         if self.combo_graphs.count() < 2:
             self.left_button.setDisabled(True)
             self.right_button.setDisabled(True)
+        else:
+            self.right_button.setDisabled(False)
         if len(graphs) == 0:
             return None
 
