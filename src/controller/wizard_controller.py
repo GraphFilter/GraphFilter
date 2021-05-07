@@ -87,21 +87,30 @@ class WizardController:
     def close_window(self):
         self.wizard_window.close()
 
-    def connect_events(self):
-        self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
-
+    def connect_project_files_page_events(self):
         self.project_files_page.project_name_input.textEdited.connect(self.verify_and_save_project_name)
         self.project_files_page.project_location_button.clicked.connect(self.on_open_project_file)
         self.project_files_page.project_location_input.textEdited.connect(self.verify_and_save_project_folder)
 
+    def connect_equations_page_events(self):
         self.equations_page.equation.textEdited.connect(self.on_insert_equation_input)
 
+    def connect_method_page_events(self):
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
 
+    def connect_graph_files_page_events(self):
         self.graph_files_page.open_graph_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_graph_file.clicked.connect(self.on_add_graph_file_input)
         self.graph_files_page.graph_files_input.textEdited.connect(self.on_insert_graph_file_path)
+
+    def connect_events(self):
+        self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
+
+        self.connect_project_files_page_events()
+        self.connect_equations_page_events()
+        self.connect_method_page_events()
+        self.connect_graph_files_page_events()
 
     def verify_and_save_project_name(self):
         if validate_file_name(self.project_files_page.project_name_input.text()):
