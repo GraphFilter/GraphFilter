@@ -11,6 +11,15 @@ class ProjectInformationStore:
         self.graph_files = []
         self.filtered_graphs = []
 
+    def reset_store(self):
+        self.project_name = ""
+        self.project_location = ""
+        self.equation = ""
+        self.conditions = {}
+        self.method = ""
+        self.graph_files = []
+        self.filtered_graphs = []
+
     def fill_data(self, data):
         self.project_name = data['project_name']
         self.project_location = data['project_location']
@@ -41,4 +50,21 @@ class ProjectInformationStore:
             file_json.close()
 
 
+def update_project_store():
+    global project_information_store
+    project_information_store.fill_data({
+        'project_name': wizard_information_store.project_name,
+        'project_location': wizard_information_store.project_location,
+        'equation': wizard_information_store.equation,
+        'conditions': wizard_information_store.conditions.copy(),
+        'method': wizard_information_store.method,
+        'graph_files': wizard_information_store.graph_files.copy(),
+        'filtered_graphs': []
+
+    })
+    wizard_information_store.reset_store()
+    pass
+
+
 project_information_store = ProjectInformationStore()
+wizard_information_store = ProjectInformationStore()

@@ -2,6 +2,7 @@ from src.controller.welcome_controller import WelcomeController
 from src.controller.wizard_controller import WizardController
 from src.controller.filter_controller import FilterController
 from src.controller.project_controller import ProjectController
+from src.store.project_information_store import update_project_store
 from PyQt5.QtWidgets import *
 from src.store.project_information_store import project_information_store
 import json
@@ -75,6 +76,7 @@ class Controller:
         self.close_loading_window()
 
     def start_filter(self):
+        update_project_store()
         self.filter_controller.start_filter()
 
     def show_project_window(self):
@@ -85,6 +87,8 @@ class Controller:
         self.welcome_controller.close_window()
 
     def close_wizard_window(self):
+        update_project_store()
+
         if self.current_open_window == "welcome":
             self.wizard_controller.close_window()
             self.welcome_controller.show_window()

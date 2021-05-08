@@ -4,7 +4,7 @@ from src.view.wizard.pages.conditions_page import ConditionsPage, ComboBoxesGrou
 from src.view.wizard.pages.method_page import MethodPage
 from src.view.wizard.pages.graph_files_page import GraphFilesPage
 from src.view.wizard.pages.review_page import ReviewPage
-from src.store.project_information_store import project_information_store
+from src.store.project_information_store import wizard_information_store
 from src.view.wizard.wizard_window import WizardWindow
 from PyQt5.QtWidgets import *
 from src.store.operations_invariants import *
@@ -50,7 +50,7 @@ class WizardController:
             self.update_complete_graph_files_page()
 
     def update_complete_conditions_page(self):
-        if len(project_information_store.conditions) < 1 and self.equations_page.equation.text() == "":
+        if len(wizard_information_store.conditions) < 1 and self.equations_page.equation.text() == "":
             self.conditions_page.complete = False
             self.wizard_window.next_button.setToolTip('Equation or conditions must be filled')
         else:
@@ -116,7 +116,7 @@ class WizardController:
         if validate_file_name(self.project_files_page.project_name_input.text()):
             self.update_complete_project_files_page(complete_project_name=True)
             project_name = self.project_files_page.project_name_input.text()
-            project_information_store.project_name = project_name
+            wizard_information_store.project_name = project_name
             self.review_page.set_project_name(project_name)
         else:
             self.update_complete_project_files_page(complete_project_name=False)
@@ -125,7 +125,7 @@ class WizardController:
         if validate_path(self.project_files_page.project_location_input.text()):
             self.update_complete_project_files_page(complete_project_location=True)
             project_location = self.project_files_page.project_location_input.text()
-            project_information_store.project_location = project_location
+            wizard_information_store.project_location = project_location
             self.review_page.set_project_location(project_location)
         else:
             self.update_complete_project_files_page(complete_project_location=False)
@@ -139,7 +139,7 @@ class WizardController:
     def set_default_project_location(self):
         default_path = str(pathlib.Path().absolute())
         self.project_files_page.project_location_input.setText(default_path)
-        project_information_store.project_location = default_path
+        wizard_information_store.project_location = default_path
         self.review_page.set_project_location(default_path)
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 
@@ -193,7 +193,7 @@ class WizardController:
 
         if len(error_message) == 0:
             self.equations_page.complete = True
-            project_information_store.equation = equation
+            wizard_information_store.equation = equation
             self.review_page.set_equation(equation)
             if equation == '':
                 self.update_complete_conditions_page()
@@ -217,23 +217,23 @@ class WizardController:
     def update_chosen_invariants_conditions(self):
         radio = QRadioButton().sender()
         groupbox = radio.parentWidget()
-        if groupbox.objectName() in project_information_store.conditions.keys():
-            if project_information_store.conditions.get(groupbox.objectName()) == radio.objectName():
+        if groupbox.objectName() in wizard_information_store.conditions.keys():
+            if wizard_information_store.conditions.get(groupbox.objectName()) == radio.objectName():
                 radio.setAutoExclusive(False)
                 radio.setChecked(False)
                 radio.setAutoExclusive(True)
-                project_information_store.conditions.pop(groupbox.objectName())
-                print(project_information_store.conditions)
+                wizard_information_store.conditions.pop(groupbox.objectName())
+                print(wizard_information_store.conditions)
                 self.update_complete_conditions_page()
                 self.conditions_page.completeChanged.emit()
                 return
 
-        project_information_store.conditions[groupbox.objectName()] = radio.objectName()
-        self.review_page.set_conditions(project_information_store.conditions)
+        wizard_information_store.conditions[groupbox.objectName()] = radio.objectName()
+        self.review_page.set_conditions(wizard_information_store.conditions)
         self.update_complete_conditions_page()
         self.conditions_page.completeChanged.emit()
 
-        print(project_information_store.conditions)
+        print(wizard_information_store.conditions)
 
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
@@ -241,10 +241,10 @@ class WizardController:
         button = QPushButton().sender()
         button.setChecked(True)
         if 'filter' in button.objectName():
-            project_information_store.method = 'filter'
+            wizard_information_store.method = 'filter'
             self.review_page.set_method('filter')
         else:
-            project_information_store.method = 'counterexample'
+            wizard_information_store.method = 'counterexample'
             self.review_page.set_method('counterexample')
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
@@ -266,19 +266,19 @@ class WizardController:
 
     def save_graph_file_path(self, path, line_input):
         if validate_file(path):
-            if path not in project_information_store.graph_files and path != '':
-                if line_input.text() != '' and line_input.text() in project_information_store.graph_files:
-                    project_information_store.graph_files.remove(line_input.text())
+            if path not in wizard_information_store.graph_files and path != '':
+                if line_input.text() != '' and line_input.text() in wizard_information_store.graph_files:
+                    wizard_information_store.graph_files.remove(line_input.text())
                 line_input.setText(path)
-                project_information_store.graph_files.append(path)
-                self.review_page.set_graph_files(project_information_store.graph_files)
+                wizard_information_store.graph_files.append(path)
+                self.review_page.set_graph_files(wizard_information_store.graph_files)
                 self.graph_files_page.add_graph_file.setEnabled(True)
             elif path == '':
                 self.graph_files_page.complete = False
             self.graph_files_page.complete = True
         else:
             self.graph_files_page.complete = False
-        print(project_information_store.graph_files)
+        print(wizard_information_store.graph_files)
         self.update_complete_graph_files_page()
 
     def on_add_graph_file_input(self):
@@ -308,14 +308,14 @@ class WizardController:
 
     def on_remove_graph_file(self, layout, input_file):
         text = input_file.text()
-        if text in project_information_store.graph_files:
-            project_information_store.graph_files.remove(text)
-            self.review_page.set_graph_files(project_information_store.graph_files)
-        print(project_information_store.graph_files)
+        if text in wizard_information_store.graph_files:
+            wizard_information_store.graph_files.remove(text)
+            self.review_page.set_graph_files(wizard_information_store.graph_files)
+        print(wizard_information_store.graph_files)
         self.graph_files_page.form.removeRow(layout)
         self.graph_files_page.add_graph_file.setEnabled(True)
 
-        if len(project_information_store.graph_files) == 0:
+        if len(wizard_information_store.graph_files) == 0:
             self.graph_files_page.complete = False
 
         self.update_complete_graph_files_page()
