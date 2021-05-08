@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from src.view.resources.icon import Icon
+from src.view.resources.components.icon import Icon
 
 
 class HelpButton(QPushButton):

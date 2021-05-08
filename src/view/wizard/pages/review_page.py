@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 from src.domain.utils import clear_layout
 from PyQt5 import QtCore
 from src.store.help_buttons_text import tip_review
-from src.view.resources.help_button import HelpButton
+from src.view.resources.components.help_button import HelpButton
 
 
 class ReviewPage(QWizardPage):

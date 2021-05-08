@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
-from src.view.resources.icon import Icon
+from src.view.resources.components.icon import Icon
 from PyQt5 import QtCore
 
 

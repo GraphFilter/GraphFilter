@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from src.store.help_buttons_text import tip_files
-from src.view.resources.help_button import HelpButton
+from src.view.resources.components.help_button import HelpButton
 from PyQt5 import QtCore
 
 
