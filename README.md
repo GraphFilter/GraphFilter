@@ -1,4 +1,4 @@
-# ⬠ GraphFilter
+# ⬡ GraphFilter
 
 ## About
 
