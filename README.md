@@ -11,7 +11,7 @@ providing for visualization a filtered list of graphs according to the propertie
 This program is the result of the Scientific Initiation project of Lavínia Beghini, supervised by professor Átila A. Jones, financed by the [Instituto Federal Sudeste de Minas Gerais - Juiz de Fora](https://www.ifsudestemg.edu.br/juizdefora).
 
 ## Installation
-From the [release](https://github.com/GraphFilter/GraphFilter/releases) page, download the program of the latest version to your specific Operation System:
+From the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
 
 ### Windows
 - [GraphFilter.exe]()
