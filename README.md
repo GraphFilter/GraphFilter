@@ -1,8 +1,8 @@
-# GraphFilter
+# ⬠ GraphFilter
 
 ## About
 
-> This project is a reimplementation in python of [GraphFilter](https://github.com/atilaajones/GraphFilter) project that provides more functionalities to the software.  
+> This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
 
 The main goal of this software is to give assistance to Graph Theory and Spectral Graph Theory researchers to establish or refute conjectures quickly and simply,
 providing for visualization a filtered list of graphs according to the properties given by the user. 
@@ -10,7 +10,6 @@ providing for visualization a filtered list of graphs according to the propertie
 ## Technologies
 
 - [Python](https://www.python.org)
-
 
 ## Requirements
 
@@ -22,7 +21,7 @@ To run and edit the project, be sure to have installed in your computer the foll
 After that, you'll need to clone this repo:
 
 ```
-git clone https://github.com/GraphFilter/GraphFilter.py.git
+git clone https://github.com/GraphFilter/GraphFilter.git
 ```
 
 ## Setup
