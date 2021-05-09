@@ -67,7 +67,15 @@ class ProjectController:
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
 
+        self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
+
         # self.project_window.print_action.triggered.connect(self.on_print)
+
+    def change_dock_size(self, visible):
+        if visible:
+            self.invariants_dictionary_dock.setMinimumWidth(800)
+        else:
+            self.invariants_dictionary_dock.setFixedWidth(300)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)

@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5.Qt import *
 from PyQt5 import QtGui
 
 
@@ -16,9 +17,10 @@ class GraphInformationDock(QDockWidget):
         self.setWindowTitle("Info")
         self.setObjectName("Info")
 
-        self.setFeatures(
-            QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable
-        )
+        self.setFixedHeight(23)
+        self.setMinimumWidth(23)
+
+        self.setFeatures(QDockWidget.DockWidgetClosable)
 
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
 
@@ -29,6 +31,10 @@ class GraphInformationDock(QDockWidget):
 
     def update_table(self, invariants_selected):
         self.model.removeRows(0, self.model.rowCount())
+        if len(invariants_selected) > 0:
+            self.setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX))
+        else:
+            self.setFixedHeight(23)
         for key, value in invariants_selected.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))

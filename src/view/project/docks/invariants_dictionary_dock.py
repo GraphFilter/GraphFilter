@@ -18,6 +18,8 @@ class InvariantsDictionaryDock(QDockWidget):
 
         self.setWidget(self.invariants_dictionary)
 
+        self.setMinimumHeight(800)
+
 
 class InvariantsDictionary(QWidget):
 
