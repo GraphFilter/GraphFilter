@@ -24,5 +24,6 @@ From the [Releases](https://github.com/GraphFilter/GraphFilter/releases), downlo
 ### Mac
 - [GraphFilter]()
 
-## User guide
+## Getting started
+Here's a quick guide to start to using Graph Filter.
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
