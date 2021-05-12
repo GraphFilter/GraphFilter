@@ -26,4 +26,6 @@ From the [Releases](https://github.com/GraphFilter/GraphFilter/releases), downlo
 
 ## Getting started
 Here's a quick guide to start to using Graph Filter.
+
+## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
