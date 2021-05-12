@@ -11,8 +11,10 @@ class AboutWindow(QDialog):
         self.data_text = "The welcome goal of this software is to give assistance to Graph Theory and Spectral Graph " \
                          "Theory researchers to establish or refute conjectures quickly and simply, providing for " \
                          "visualization a filtered list of graphs according to the properties given by the user."
-        self.data_page = r'<h3> Page: <\h3> \n <a href={0}>{0}</a>'.format('sistemas.jf.ifsudestemg.edu.br/graphfilter')
-        self.data_github = r'<h3> GitHub: <\h3>  \n <a href={0}>{0}</a>'.format('github.com/GraphFilter/GraphFilter.py')
+        self.data_page = \
+            r'<h3> Page <\h3> <br> <a href={0}>{0}</a>'.format('sistemas.jf.ifsudestemg.edu.br/graphfilter')
+        self.data_github = \
+            r'<h3> GitHub <\h3>  <br> <a href={0}>{0}</a>'.format('github.com/GraphFilter/GraphFilter.py')
 
         self.set_content_attributes()
         self.set_up_layout()

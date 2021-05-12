@@ -4,7 +4,7 @@ import numpy.linalg as la
 import numpy as np
 import scipy.sparse as ss
 from src.store.operations_and_invariants.invariants import Invariant
-from src.store.operations_and_invariants.invariants import Utils
+from src.store.operations_and_invariants.invariants import UtilsToInvariants
 
 
 class InvariantBool(Invariant):
@@ -20,10 +20,10 @@ class InvariantBool(Invariant):
     def __init__(self):
         self.all = InvariantBool.__subclasses__()
         for inv in self.all:
-            #self.dic_name_calc[inv.name] = inv.calculate
-            if inv.type == 'structural':
+            # self.dic_name_calc[inv.name] = inv.calculate
+            if inv.type == 'bool_structural':
                 self.dic_name_inv_structural[inv.name] = inv
-            elif inv.type == 'spectral':
+            elif inv.type == 'bool_spectral':
                 self.dic_name_inv_spectral[inv.name] = inv
         self.dic_name_inv = {**self.dic_name_inv_structural, **self.dic_name_inv_spectral}
 
@@ -34,7 +34,7 @@ class InvariantBool(Invariant):
 
 class Planar(InvariantBool):
     name = "Planar"
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -43,7 +43,7 @@ class Planar(InvariantBool):
 
 class Connected(InvariantBool):
     name = "Connected"
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -52,7 +52,7 @@ class Connected(InvariantBool):
 
 class Biconnected(InvariantBool):
     name = "Biconnected"
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -61,7 +61,7 @@ class Biconnected(InvariantBool):
 
 class Bipartite(InvariantBool):
     name = 'Bipartite'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -70,7 +70,7 @@ class Bipartite(InvariantBool):
 
 class Eulerian(InvariantBool):
     name = 'Eulerian'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -79,7 +79,7 @@ class Eulerian(InvariantBool):
 
 class Chordal(InvariantBool):
     name = 'Chordal'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -88,7 +88,7 @@ class Chordal(InvariantBool):
 
 class TriangleFree(InvariantBool):
     name = 'Triangle-free'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -97,7 +97,7 @@ class TriangleFree(InvariantBool):
 
 class Regular(InvariantBool):
     name = 'Regular'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -106,7 +106,7 @@ class Regular(InvariantBool):
 
 class ClawFree(InvariantBool):
     name = 'Claw-free'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -115,7 +115,7 @@ class ClawFree(InvariantBool):
 
 class Tree(InvariantBool):
     name = 'Tree'
-    type = 'structural'
+    type = 'bool_structural'
 
     @staticmethod
     def calculate(graph):
@@ -134,117 +134,126 @@ class Tree(InvariantBool):
 
 class SomeEigenIntegerA(InvariantBool):
     name = 'Some A-eigenvalue integer'
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.is_there_integer(la.eigvalsh(matrix))
+        return UtilsToInvariants.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerL(InvariantBool):
     name = "Some L-eigenvalue integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.is_there_integer(la.eigvalsh(matrix))
+        return UtilsToInvariants.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerQ(InvariantBool):
     name = "Some Q-eigenvalue integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.is_there_integer(la.eigvalsh(matrix))
+        return UtilsToInvariants.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerD(InvariantBool):
     name = "Some D-eigenvalue integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        return Utils.is_there_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        if nx.is_connected(graph):
+            return UtilsToInvariants.is_there_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        else:
+            return False
 
 
 class IntegralA(InvariantBool):
     name = "A-integral"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.integral(la.eigvalsh(matrix))
+        return UtilsToInvariants.integral(la.eigvalsh(matrix))
 
 
 class IntegralL(InvariantBool):
     name = "L-integral"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.integral(la.eigvalsh(matrix))
+        return UtilsToInvariants.integral(la.eigvalsh(matrix))
 
 
 class IntegralQ(InvariantBool):
     name = "Q-integral"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.integral(la.eigvalsh(matrix))
+        return UtilsToInvariants.integral(la.eigvalsh(matrix))
 
 
 class IntegralD(InvariantBool):
     name = "D-integral"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        return Utils.integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        if nx.is_connected(graph):
+            return UtilsToInvariants.integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+        else:
+            return False
 
 
 class LargestEigenIntegerA(InvariantBool):
     name = "Largest A-eigenvalue is integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return UtilsToInvariants.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerL(InvariantBool):
     name = "Largest L-eigenvalue is integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return UtilsToInvariants.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerQ(InvariantBool):
     name = "Largest Q-eigenvalue is integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return UtilsToInvariants.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerD(InvariantBool):
     name = "Largest D-eigenvalue is integer"
-    type = 'spectral'
+    type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        return Utils.is_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
-
+        if nx.is_connected(graph):
+            return UtilsToInvariants.is_integer(
+                la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+        else:
+            return False

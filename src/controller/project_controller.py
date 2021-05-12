@@ -75,7 +75,7 @@ class ProjectController:
         if visible:
             self.invariants_dictionary_dock.setMinimumWidth(800)
         else:
-            self.invariants_dictionary_dock.setFixedWidth(300)
+            self.invariants_dictionary_dock.setFixedWidth(240)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)

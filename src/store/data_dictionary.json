@@ -51,7 +51,7 @@
     },
     {
       "name": "Connected Domination Number",
-      "definition" : "The connected domination number of a connected graph G, denoted $d(G)$, is the size of a minimum connected dominating set of a graph G. A connected dominating set in a connected graph G is a dominating set in G whose vertices induce a connected subgraph",
+      "definition" : "The connected domination number of a connected graph G, denoted d(G), is the size of a minimum connected dominating set of a graph G. A connected dominating set in a connected graph G is a dominating set in G whose vertices induce a connected subgraph",
       "usage": "For filtering click in 'd' code in the equation to use it. Or in Visualization you can mark it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/ConnectedDominatingSet.html",
       "implementation": "Grinpy Python library"

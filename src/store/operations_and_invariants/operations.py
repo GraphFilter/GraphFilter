@@ -8,17 +8,19 @@ class MathOperations:
     dic_function = {}
     all = []
     dic_name_inv = {}
+    name = None
 
     def __init__(self):
         self.all = MathOperations.__subclasses__()
         for i, inv in enumerate(self.all):
-            inv.code_literal = 'mop'+str(i)
+            inv.code_literal = 'mop' + str(i)
             self.dic_function[inv.code_literal] = inv.calculate
             self.dic_name_inv[inv.name] = inv
 
     @staticmethod
     def calculate(graph):
         pass
+
 
 class BasicMathOperations:
     code = None
@@ -136,46 +138,67 @@ class Absolute(MathOperations):
     def calculate(x):
         return np.abs(x)
 
+
 class Plus(BasicMathOperations):
     name = "Sum"
     code = "+"
+
 
 class Subtraction(BasicMathOperations):
     name = "Subtraction"
     code = "-"
 
+
 class Division(BasicMathOperations):
     name = "Division"
     code = "/"
+
 
 class Product(BasicMathOperations):
     name = "Product"
     code = "*"
 
+
 class Power(BasicMathOperations):
     name = "Power"
     code = "**"
+
 
 class Modulus(BasicMathOperations):
     name = "Modulus"
     code = "%"
 
+
+class Equal(BasicMathOperations):
+    name = "Equal"
+    code = "=="
+
+
+class LogicAND(BasicMathOperations):
+    name = "Logic AND"
+    code = " AND "
+
+
+class LogicOR(BasicMathOperations):
+    name = "Logic OR"
+    code = " OR "
+
+
 class LessThan(BasicMathOperations):
     name = "Less than"
     code = "<"
+
 
 class GreaterThan(BasicMathOperations):
     name = "Greater than"
     code = ">"
 
+
 class LessThanEqual(BasicMathOperations):
     name = "Less than or equal"
     code = "<="
 
+
 class GreaterThanEqual(BasicMathOperations):
     name = "Greater than or equal"
     code = ">="
-
-
-
-

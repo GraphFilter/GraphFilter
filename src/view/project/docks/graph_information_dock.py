@@ -1,6 +1,8 @@
-from PyQt5.QtWidgets import *
-from PyQt5.Qt import *
 from PyQt5 import QtGui
+from PyQt5.Qt import *
+from PyQt5.QtWidgets import *
+
+from src.store.operations_and_invariants.invariants import UtilsToInvariants
 
 
 class GraphInformationDock(QDockWidget):
@@ -24,9 +26,13 @@ class GraphInformationDock(QDockWidget):
 
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
 
+        self.table.setWordWrap(False)
         self.table.setModel(self.model)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-
+        # self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        # self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+        self.table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.setWidget(self.table)
 
     def update_table(self, invariants_selected):
@@ -39,11 +45,12 @@ class GraphInformationDock(QDockWidget):
             row = []
             invariant_name = QtGui.QStandardItem(str(key))
             invariant_name.setEditable(False)
-
-            invariant_value = QtGui.QStandardItem(str(value))
+            invariant_value = QtGui.QStandardItem(UtilsToInvariants.print(value))
             invariant_value.setEditable(False)
 
             row.append(invariant_name)
             row.append(invariant_value)
 
             self.model.appendRow(row)
+        self.table.resizeRowsToContents()
+        self.table.resizeColumnsToContents()
