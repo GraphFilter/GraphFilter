@@ -1,0 +1,79 @@
+import numpy
+import numpy as np
+
+
+class Invariant:
+    dic_name_inv = {}
+    name = None
+
+    @staticmethod
+    def calculate(**kwargs):
+        pass
+
+
+class UtilsToInvariants:
+
+    @staticmethod
+    def approx_to_int(number, error=0.00001):
+        if abs(round(number) - number) <= error:
+            return float(round(number, ndigits=5))
+        else:
+            return round(number, ndigits=5)
+
+    @staticmethod
+    def approx_array_to_int(array):
+        if isinstance(array, list):
+            for index, x in enumerate(array):
+                array[index] = UtilsToInvariants.approx_to_int(x)
+        if isinstance(array, np.ndarray):
+            for index, x in np.ndenumerate(array):
+                array[index] = UtilsToInvariants.approx_to_int(x)
+        return array
+
+    @staticmethod
+    def is_there_integer(group):
+        for number in group:
+            if UtilsToInvariants.approx_to_int(number).is_integer():
+                return True
+        return False
+
+    @staticmethod
+    def is_integer(number):
+        return UtilsToInvariants.approx_to_int(number).is_integer()
+
+    @staticmethod
+    def integral(group):
+        for number in group:
+            if not UtilsToInvariants.approx_to_int(number).is_integer():
+                return False
+        return True
+
+    @staticmethod
+    def print(value):
+        precision = 5
+        if isinstance(value, tuple):
+            vectors = value[1]
+            spectrum = ''
+            for i, x in enumerate(value[0]):
+                if UtilsToInvariants.is_integer(x):
+                    spectrum = spectrum + f'{int(x)} \u2192 v{i}={vectors[:][i].tolist()} \n'
+                else:
+                    spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 v{i}={vectors[:][i].tolist()} \n'
+            return spectrum
+        if isinstance(value, list):
+            values = []
+            for x in value:
+                if UtilsToInvariants.is_integer(x):
+                    values.append(int(x))
+                else:
+                    values.append(np.around(x, decimals=precision))
+            return str(values)
+        if isinstance(value, numpy.ndarray):
+            return np.array2string(value, precision=precision)
+        if isinstance(value, (bool, str)):
+            return str(value)
+        if isinstance(value, (float, int)):
+            if value == 10 ^ 10:
+                return 'infinite'
+            else:
+                return str(np.around(value, precision))
