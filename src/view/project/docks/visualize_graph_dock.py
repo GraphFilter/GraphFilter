@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
 import matplotlib
 import networkx as nx
 import numpy as np
