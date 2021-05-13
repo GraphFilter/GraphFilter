@@ -1,5 +1,6 @@
-from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 
 class External(QThread):
@@ -11,7 +12,6 @@ class LoadingWindow(QDialog):
 
     def __init__(self):
         super().__init__()
-
         self.progressBar = QProgressBar(self)
         self.set_content_attributes()
         self.set_up_layout()
@@ -19,7 +19,8 @@ class LoadingWindow(QDialog):
     def set_content_attributes(self):
         self.setWindowTitle("Loading...")
         self.progressBar.setGeometry(25, 25, 300, 40)
-        self.resize(500, 100)
+        self.setFixedSize(500, 100)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowContextHelpButtonHint)
 
     def set_up_layout(self):
         layout = QVBoxLayout()

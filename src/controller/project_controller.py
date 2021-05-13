@@ -1,16 +1,18 @@
 from PyQt5.QtWidgets import *
+from PyQt5 import QtCore
+
 from src.view.project.project_window import ProjectWindow
-from src.view.project.about_window import AboutWindow
 from src.view.project.project_tool_bar import ProjectToolBar
+from src.view.project.about_window import AboutWindow
 from src.view.project.docks.graph_information_dock import GraphInformationDock
 from src.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from src.view.project.docks.invariants_checks_dock import InvariantsCheckDock
+from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
+from src.view.loading.loading_window import LoadingWindow
 from src.store.project_information_store import project_information_store
 from src.store.operations_invariants import *
-from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
-from src.domain.utils import match_graph_code
-from PyQt5 import QtCore
-from src.domain.utils import convert_g6_to_nx
+from src.domain.utils import match_graph_code, convert_g6_to_nx
+from src.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf
 
 
 class ProjectController:
@@ -20,6 +22,8 @@ class ProjectController:
         self.about_window = AboutWindow()
 
         self.project_tool_bar = ProjectToolBar()
+
+        self.loading_window = LoadingWindow()
 
         self.graph_information_dock = GraphInformationDock()
         self.invariants_check_dock = InvariantsCheckDock()
@@ -66,6 +70,11 @@ class ProjectController:
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
+
+        self.project_window.export_png_action.triggered.connect(self.export_to_png)
+        self.project_window.export_g6_action.triggered.connect(self.export_to_g6)
+        self.project_window.export_tikz_action.triggered.connect(self.export_to_tikz)
+        self.project_window.export_pdf_action.triggered.connect(self.export_to_pdf)
 
         self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
 
@@ -165,3 +174,61 @@ class ProjectController:
             else:
                 self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)
+
+    def get_name_from_save_dialog(self, formatFile):
+        fileName = QFileDialog.getSaveFileName(parent=self.project_window,
+                                               caption=self.project_window.tr(f"Export graphs to {formatFile} file"),
+                                               filter=self.project_window.tr(f"Text files (*.{formatFile})"),
+                                               directory=f"{project_information_store.project_name}.{formatFile}"
+                                               )[0]
+        if fileName:
+            if not QtCore.QFileInfo(fileName).suffix():
+                fileName += f".{formatFile}"
+        return fileName
+
+    def export_to_png(self):
+        fileDir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
+        if fileDir:
+            self.show_loading_window(len(project_information_store.filtered_graphs))
+            for step, graph in enumerate(project_information_store.filtered_graphs):
+                export_g6_to_png(graph, fileDir, step)
+                self.update_loading_window(step)
+            self.loading_window.close()
+
+    def export_to_tikz(self):
+        fileDir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
+        if fileDir:
+            self.show_loading_window(len(project_information_store.filtered_graphs))
+            for step, graph in enumerate(project_information_store.filtered_graphs):
+                export_g6_to_tikz(graph, fileDir, step)
+                self.update_loading_window(step)
+            self.loading_window.close()
+
+    def export_to_pdf(self):
+        fileDir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
+        if fileDir:
+            self.show_loading_window(len(project_information_store.filtered_graphs))
+            for step, graph in enumerate(project_information_store.filtered_graphs):
+                export_g6_to_pdf(graph, fileDir, step)
+                self.update_loading_window(step)
+            self.loading_window.close()
+
+    def export_to_g6(self):
+        fileName = self.get_name_from_save_dialog('g6')
+        if fileName:
+            self.show_loading_window(len(project_information_store.filtered_graphs))
+            file = open(fileName, 'w')
+            for step, graph in enumerate(project_information_store.filtered_graphs):
+                file.write(graph)
+                self.update_loading_window(step)
+            file.close()
+            self.loading_window.close()
+
+    def show_loading_window(self, setTotal):
+        self.loading_window.progressBar.setMaximum(setTotal)
+        self.loading_window.progressBar.setValue(0)
+        self.loading_window.show()
+
+    def update_loading_window(self, step):
+        self.loading_window.increase_step(step)
+        QApplication.processEvents()
