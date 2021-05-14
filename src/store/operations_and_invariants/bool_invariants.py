@@ -8,19 +8,16 @@ from src.store.operations_and_invariants.invariants import UtilsToInvariants
 
 
 class InvariantBool(Invariant):
-    dic_name_inv = {}
-    dic_name_inv_structural = {}
-    dic_name_inv_spectral = {}
     name = None
-    link = None
-    implement = None
-    error = 0.00001
     type = None
 
     def __init__(self):
         self.all = InvariantBool.__subclasses__()
+        self.dic_name_inv: {str: InvariantBool}
+        self.dic_name_inv_structural: {str: InvariantBool} = {}
+        self.dic_name_inv_spectral: {str: InvariantBool} = {}
         for inv in self.all:
-            # self.dic_name_calc[inv.name] = inv.calculate
+            inv.is_a_function = False
             if inv.type == 'bool_structural':
                 self.dic_name_inv_structural[inv.name] = inv
             elif inv.type == 'bool_spectral':
@@ -122,14 +119,22 @@ class Tree(InvariantBool):
         return nx.is_tree(graph)
 
 
-# TODO: create k-regular in numeric invariant
+class SelfComplementary(InvariantBool):
+    name = 'Self-complementary'
+    type = 'bool_structural'
 
-# class KRegular(InvariantBool):
-#     name = 'k-regular'
-#
-#     @staticmethod
-#     def calculate(graph, k):
-#         return gp.is_k_regular(graph, k=k)
+    @staticmethod
+    def calculate(graph):
+        return nx.is_isomorphic(graph, nx.complement(graph))
+
+
+class Cubic(InvariantBool):
+    name = 'Cubic'
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        return gp.is_k_regular(graph, k=3)
 
 
 class SomeEigenIntegerA(InvariantBool):

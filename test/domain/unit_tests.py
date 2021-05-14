@@ -4,12 +4,16 @@ import unittest
 import networkx as nx
 import numpy
 
-import src.store.operations_and_invariants.bool_invariants as i_bool
+import src.store.operations_and_invariants.bool_invariants as inv_bool
+import src.store.operations_and_invariants.num_invariants as inv_num
+import src.store.operations_and_invariants.other_invariants as inv_other
+import src.store.operations_and_invariants.operations as oper
+
 from src.domain.equation import Equation
 from src.domain.filter_list import FilterList
-from src.store.operations_and_invariants import num_invariants as i_num, operations as oper
+from src.store.operations_invariants import operations_invariants
 from src.store.operations_and_invariants.bool_invariants import UtilsToInvariants
-from src.store.operations_and_invariants.other_invariants import InvariantOther as i_other
+
 
 
 class Helper:
@@ -41,19 +45,18 @@ class Helper:
 
 class ExpressionUnitTests(unittest.TestCase):
 
+
     def test_split_and_translate_expression(self):
-        i_num.InvariantNum()
-        oper.GraphOperations()
-        chi = str(i_num.ChromaticNumber.code)
+        chi = str(inv_num.ChromaticNumber.code)
         line = str(oper.Line.code)
-        omega = str(i_num.CliqueNumber.code)
-        lambda1 = str(i_num.Largest1EigenA.code)
-        n = str(i_num.NumberVertices.code)
-        chi_str = str(i_num.ChromaticNumber.code_literal)
+        omega = str(inv_num.CliqueNumber.code)
+        lambda1 = str(inv_num.Largest1EigenA.code)
+        n = str(inv_num.NumberVertices.code)
+        chi_str = str(inv_num.ChromaticNumber.code_literal)
         line_str = str(oper.Line.code_literal)
-        omega_str = str(i_num.CliqueNumber.code_literal)
-        lambda1_str = str(i_num.Largest1EigenA.code_literal)
-        n_str = str(i_num.NumberVertices.code_literal)
+        omega_str = str(inv_num.CliqueNumber.code_literal)
+        lambda1_str = str(inv_num.Largest1EigenA.code_literal)
+        n_str = str(inv_num.NumberVertices.code_literal)
         expression1 = f'{chi}(G)==5 AND {omega}({line}(G))>=1 AND {n}(G)<={lambda1}(G)'
         expression_translated = [f'{chi_str}(G)==5', f'{omega_str}({line_str}(G))>=1', f'{n_str}(G)<={lambda1_str}(G)']
         expression2 = f'{chi}(G)==5 OR {omega}({line}(G))>=1 OR {n}(G)<={lambda1}(G)'
@@ -63,23 +66,23 @@ class ExpressionUnitTests(unittest.TestCase):
         self.assertEqual(('', 'error'), Equation.split_translate_expression(expression3))
 
     def test_translate_code_to_code_literal(self):
-        i_num.InvariantNum()
+        inv_num.InvariantNum()
         oper.GraphOperations()
-        for inv in i_num.InvariantNum().all:
+        for inv in inv_num.InvariantNum().all:
             expression = f'{inv.code}(G)==1'
             expression_translated = f'{inv.code_literal}(G)==1'
             self.assertEqual(expression_translated, Equation.split_translate_expression(expression)[0])
 
     def test_name_of_all_num_invariant(self):
-        i_num.InvariantNum()
+        inv_num.InvariantNum()
         oper.GraphOperations()
-        for inv in i_num.InvariantNum().all:
+        for inv in inv_num.InvariantNum().all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', f'{inv.code}(G)==1', []) >= 0)
 
     def test_validate_expression(self):
 
-        chi = str(i_num.ChromaticNumber.code)
-        eta = str(i_num.Nullity.code)
+        chi = str(inv_num.ChromaticNumber.code)
+        eta = str(inv_num.Nullity.code)
         c = str(oper.Complement.code)
         self.failureException(Equation.validate_expression('xx'))
         self.failureException(Equation.validate_expression(f'{chi}(G)=2'))
@@ -93,21 +96,21 @@ class ExpressionUnitTests(unittest.TestCase):
 class DomainUnitTests(unittest.TestCase):
 
     def test_AND_logic(self):
-        exp1 = str(i_num.EdgeConnectivity.code) + '(G) >=3'
-        exp2 = str(i_num.VertexConnectivity.code) + '(G) >=5'
-        exp3 = str(i_num.CliqueNumber.code) + '(G) ==4'
-        exp4 = str(i_num.Largest1EigenL.code) + '(G) > 10'
-        exp4_n = str(i_num.Largest1EigenL.code) + '(G) <= 10'
+        exp1 = str(inv_num.EdgeConnectivity.code) + '(G) >=3'
+        exp2 = str(inv_num.VertexConnectivity.code) + '(G) >=5'
+        exp3 = str(inv_num.CliqueNumber.code) + '(G) ==4'
+        exp4 = str(inv_num.Largest1EigenL.code) + '(G) > 10'
+        exp4_n = str(inv_num.Largest1EigenL.code) + '(G) <= 10'
         self.assertEqual(1, Helper.run('resources/graphs/graphs11.g6',
                                        f'{exp1} AND {exp2} AND {exp3} AND {exp4}', []))
         self.assertEqual(0, Helper.run('resources/graphs/graphs11.g6',
                                        f'{exp1} AND {exp2} AND {exp3} AND {exp4_n}', []))
 
     def test_OR_logic(self):
-        exp1 = str(i_num.EdgeConnectivity.code) + '(G) >=3'
-        exp2 = str(i_num.IndependenceNumber.code) + '(G) >= 7'
-        exp1_n = str(i_num.EdgeConnectivity.code) + '(G) <3'
-        exp2_n = str(i_num.IndependenceNumber.code) + '(G) < 7'
+        exp1 = str(inv_num.EdgeConnectivity.code) + '(G) >=3'
+        exp2 = str(inv_num.IndependenceNumber.code) + '(G) >= 7'
+        exp1_n = str(inv_num.EdgeConnectivity.code) + '(G) <3'
+        exp2_n = str(inv_num.IndependenceNumber.code) + '(G) < 7'
 
         self.assertEqual(1, Helper.run('resources/graphs/graphs12.g6', f'{exp1} OR {exp2}', []))
         self.assertTrue(Helper.run('resources/graphs/graphs12.g6', f'{exp1_n} OR {exp2_n}', []) < 1)
@@ -116,17 +119,17 @@ class DomainUnitTests(unittest.TestCase):
         self.assertTrue(UtilsToInvariants.is_integer(1))
         self.assertTrue(UtilsToInvariants.is_integer(1.000001))
         self.assertTrue(UtilsToInvariants.is_integer(0.999998))
-        L_integral = {i_bool.IntegralL.name: 'true'}
+        L_integral = {inv_bool.IntegralL.name: 'true'}
         self.assertEqual(1, Helper.run('resources/graphs/graphs2.g6', '', L_integral))
 
     def test_inv_boolean_false(self):
-        no_tree = {i_bool.Tree.name: 'false'}
+        no_tree = {inv_bool.Tree.name: 'false'}
         self.assertEqual(1, Helper.run('resources/graphs/graphs2.g6', '', no_tree))
 
     def test_name_of_all_bool_invariant(self):
         j = 0
         is_bool = True
-        for inv in i_bool.InvariantBool().all:
+        for inv in inv_bool.InvariantBool().all:
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', {inv.name: 'true'}) >= 0)
             self.assertTrue(Helper.run('resources/graphs/single_graph.g6', '', {inv.name: 'false'}) >= 0)
             is_bool = is_bool and inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
@@ -134,15 +137,14 @@ class DomainUnitTests(unittest.TestCase):
         self.assertTrue(isinstance(is_bool, bool))
 
     def test_calculate_other_invariants(self):
-        other_invs = i_other()
         g = nx.generators.complete_graph(10)
-        for inv in other_invs.all:
+        for inv in inv_other.InvariantOther.all:
             self.assertTrue(isinstance(inv.calculate(g), (numpy.ndarray, list, tuple)))
 
     def test_all_operations(self):
         for opg in oper.GraphOperations.all:
             for opm in oper.MathOperations.all:
-                for inv in i_num.InvariantNum.all:
+                for inv in inv_num.InvariantNum.all:
                     self.assertTrue(Helper.run('resources/graphs/single_graph.g6',
                                                f'{str(opm.code)}({str(inv.code)}{str(opg.code)}(G))>0', {}) >= 1
                                     )
@@ -152,27 +154,27 @@ class DomainUnitTests(unittest.TestCase):
                     )
 
     def test_find_counterexample(self):
-        diam = str(i_num.Diameter.code)
-        l_integral = {i_bool.IntegralL.name: 'true'}
-        tree = {i_bool.Tree.name: 'true'}
+        diam = str(inv_num.Diameter.code)
+        l_integral = {inv_bool.IntegralL.name: 'true'}
+        tree = {inv_bool.Tree.name: 'true'}
         self.assertFalse(Helper.some_c_exem('resources/graphs/graphs2.g6', '', l_integral)[0])
         self.assertTrue(Helper.some_c_exem('resources/graphs/graphs9.g6', f'{diam}(G)<=4', {})[0])
         graph_no_tree = 'ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?'
         self.assertEqual(Helper.some_c_exem('resources/graphs/graphs1.g6', '', tree)[1][0], graph_no_tree)
 
     def test_not_100percent_filter(self):
-        diam = str(i_num.Diameter.code)
+        diam = str(inv_num.Diameter.code)
         self.assertEqual(1 / 3, Helper.run('resources/graphs/graphs9.g6', f'{diam}(G)==3', {}))
 
     def test_interpret_composition_functions(self):
-        diam = str(i_num.Diameter.code)
+        diam = str(inv_num.Diameter.code)
         sqrt = str(oper.Sqrt.code)
         c = str(oper.Complement.code)
         self.assertEqual(1, Helper.run('resources/graphs/single_graph.g6', f'{sqrt}({diam}({c}(G)))>0', {}))
 
     def test_invalid_g6(self):
-        diam = str(i_num.Diameter.code)
-        chi = str(i_num.ChromaticNumber.code)
+        diam = str(inv_num.Diameter.code)
+        chi = str(inv_num.ChromaticNumber.code)
         self.assertEqual(5 / 8, Helper.run('resources/graphs/graphs14.g6', f'{diam}(G)>0', {}))
         self.assertEqual(4 / 8, Helper.run('resources/graphs/graphs14.g6', f'{chi}(G)<8', {}))
         self.assertEqual(True, Helper.some_c_exem('resources/graphs/graphs14.g6', f'{chi}(G)<8', {})[0])
@@ -181,15 +183,15 @@ class DomainUnitTests(unittest.TestCase):
 class MiscellaneousTests(unittest.TestCase):
 
     def test_expression_with_choices(self):
-        a = str(i_num.AlgebraicConnectivity.code)
-        diam = str(i_num.Diameter.code)
-        alpha = str(i_num.IndependenceNumber.code)
-        gamma = str(i_num.DominationNumber.code)
-        eigen1_a = str(i_num.Largest1EigenA.code)
-        eigen1_q = str(i_num.Largest1EigenQ.code)
-        planar = {i_bool.Planar.name: 'true'}
-        chordal = {i_bool.Chordal.name: 'true'}
-        regular_clawfree = {i_bool.Regular.name: 'true', i_bool.ClawFree.name: 'true'}
+        a = str(inv_num.AlgebraicConnectivity.code)
+        diam = str(inv_num.Diameter.code)
+        alpha = str(inv_num.IndependenceNumber.code)
+        gamma = str(inv_num.DominationNumber.code)
+        eigen1_a = str(inv_num.Largest1EigenA.code)
+        eigen1_q = str(inv_num.Largest1EigenQ.code)
+        planar = {inv_bool.Planar.name: 'true'}
+        chordal = {inv_bool.Chordal.name: 'true'}
+        regular_clawfree = {inv_bool.Regular.name: 'true', inv_bool.ClawFree.name: 'true'}
         self.assertEqual(
             1, Helper.run('resources/graphs/graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
                           regular_clawfree))
@@ -201,37 +203,39 @@ class MiscellaneousTests(unittest.TestCase):
         self.assertEqual(1, Helper.run('resources/graphs/graphs10.g6', f'{eigen1_q}(G)>2 OR {eigen1_q}(G)<=2', chordal))
 
     def test_largest_eigen_L(self):
-        eigen1_l = str(i_num.Largest1EigenL.code)
-        tree_NoBiconnected = {i_bool.Tree.name: 'true', i_bool.Biconnected.name: 'false'}
+        eigen1_l = str(inv_num.Largest1EigenL.code)
+        tree_NoBiconnected = {inv_bool.Tree.name: 'true', inv_bool.Biconnected.name: 'false'}
         self.assertEqual(1, Helper.run('resources/graphs/graphs5.g6', f'{eigen1_l}(G)>5', tree_NoBiconnected))
 
     def test_wilf_result(self):
-        chi = str(i_num.ChromaticNumber.code)
-        eigen1 = str(i_num.Largest1EigenA.code)
+        chi = str(inv_num.ChromaticNumber.code)
+        eigen1 = str(inv_num.Largest1EigenA.code)
         self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
 
     def test_independence_and_matching(self):
-        alpha = str(i_num.IndependenceNumber.code)
-        match = str(i_num.MatchingNumber.code)
+        alpha = str(inv_num.IndependenceNumber.code)
+        match = str(inv_num.MatchingNumber.code)
         line = str(oper.Line.code)
         self.assertEqual(1, Helper.run('resources/graphs/graphs7.g6', f'{match}(G)=={alpha}({line}(G))', {}))
 
     def test_perfect_graphs(self):
-        chi = str(i_num.ChromaticNumber.code)
-        omega = str(i_num.CliqueNumber.code)
+        chi = str(inv_num.ChromaticNumber.code)
+        omega = str(inv_num.CliqueNumber.code)
         self.assertEqual(1, Helper.run('resources/graphs/graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
 
     def test_random_with_boolean_false(self):
-        avg_degree = str(i_num.DegreeAverage.code)
-        no_regular_no_tree_connected = {i_bool.Regular.name: 'false',
-                                        i_bool.Tree.name: 'false',
-                                        i_bool.Connected.name: 'true'
+        avg_degree = str(inv_num.DegreeAverage.code)
+        no_regular_no_tree_connected = {inv_bool.Regular.name: 'false',
+                                        inv_bool.Tree.name: 'false',
+                                        inv_bool.Connected.name: 'true'
                                         }
-        tree = {i_bool.Tree.name: 'true'}
+        tree = {inv_bool.Tree.name: 'true'}
         self.assertEqual(0.99, Helper.run('resources/graphs/graphs13.g6',
                                           f'{avg_degree}(G)<5', no_regular_no_tree_connected))
 
         self.assertEqual(0.01, Helper.run('resources/graphs/graphs13.g6', '', tree))
+
+
 
 
 if __name__ == '__main__':
