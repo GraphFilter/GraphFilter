@@ -155,13 +155,23 @@ class WizardController:
     def add_button_input_to_equation_text(self):
         button_clicked = QPushButton().sender()
         cursor = self.equations_page.equation.cursorPosition()
-        self.equations_page.equation.setText(
-            self.equations_page.equation.text()[:cursor] +
-            dict_text_equation[button_clicked.text()].code +
-            self.equations_page.equation.text()[cursor:]
-        )
 
-        self.equations_page.equation.setCursorPosition(cursor + len(dict_text_equation[button_clicked.text()].code))
+        if dict_text_equation[button_clicked.text()].is_a_function:
+            self.equations_page.equation.setText(
+                self.equations_page.equation.text()[:cursor] +
+                dict_text_equation[button_clicked.text()].code + "()" +
+                self.equations_page.equation.text()[cursor:]
+            )
+            self.equations_page.equation.setCursorPosition(
+                cursor + len(dict_text_equation[button_clicked.text()].code) + 1)
+        else:
+            self.equations_page.equation.setText(
+                self.equations_page.equation.text()[:cursor] +
+                dict_text_equation[button_clicked.text()].code +
+                self.equations_page.equation.text()[cursor:]
+            )
+            self.equations_page.equation.setCursorPosition(cursor + len(dict_text_equation[button_clicked.text()].code))
+
         self.equations_page.equation.setFocus()
         self.validate_and_save_equation()
         self.equations_page.completeChanged.emit()
@@ -319,4 +329,3 @@ class WizardController:
             self.graph_files_page.complete = False
 
         self.update_complete_graph_files_page()
-

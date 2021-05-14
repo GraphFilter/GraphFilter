@@ -1,3 +1,4 @@
+#TODO: we can delete it?
 class InvariantsStore:
     def __init__(self):
         self.bool_invariants = []

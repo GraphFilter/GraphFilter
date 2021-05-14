@@ -9,16 +9,15 @@ from src.store.operations_and_invariants.invariants import Invariant
 
 class InvariantNum(Invariant):
     code = None
-    dic_function = {}
-    dic_name_inv = {}
-    dic_name_calc = {}
-    all = []
     name = None
     code_literal = None
 
     def __init__(self):
         self.all = InvariantNum.__subclasses__()
+        self.dic_function: {str: staticmethod} = {}
+        self.dic_name_inv: {str: InvariantNum} = {}
         for i, inv in enumerate(self.all):
+            inv.is_a_function = True
             inv.code_literal = 'F' + str(i)
             self.dic_function[inv.code_literal] = inv.calculate
             self.dic_name_inv[inv.name] = inv
