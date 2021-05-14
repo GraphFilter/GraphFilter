@@ -5,6 +5,8 @@ import numpy as np
 class Invariant:
     dic_name_inv = {}
     name = None
+    code = None
+    is_a_function = None
 
     @staticmethod
     def calculate(**kwargs):
