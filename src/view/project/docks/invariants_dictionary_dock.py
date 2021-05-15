@@ -40,7 +40,6 @@ class InvariantsDictionary(QWidget):
         self.create_concepts()
 
     def set_content_attributes(self):
-        self.concepts.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.concepts.setMaximumWidth(250)
         self.setVisible(False)
 
