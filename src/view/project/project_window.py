@@ -29,7 +29,7 @@ class ProjectWindow(QMainWindow):
 
         self.about_action = QAction("About...")
 
-        self.restore_layout = QAction("Restore default layout")
+        self.restore_layout_action = QAction("Restore default layout")
 
         self.set_content_attributes()
         self.create_menu_bar()
@@ -67,7 +67,7 @@ class ProjectWindow(QMainWindow):
         view_menu.addAction(self.dictionary_action)
 
         window_menu = menu_bar.addMenu("Window")
-        window_menu.addAction(self.restore_layout)
+        window_menu.addAction(self.restore_layout_action)
 
         help_menu = menu_bar.addMenu("Help")
         help_menu.addAction(self.about_action)

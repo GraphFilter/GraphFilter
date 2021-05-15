@@ -33,9 +33,9 @@ class ProjectController:
         self.invariants_selected = {}
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
+        self.connect_events()
 
     def show_window(self):
-        self.connect_events()
         self.create_docks()
 
         self.project_window.set_title_bar(project_information_store.project_name)
@@ -63,22 +63,27 @@ class ProjectController:
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
-        self.project_window.restore_layout.triggered.connect(self.on_restore)
+        self.project_window.restore_layout_action.triggered.connect(self.on_restore)
 
         self.project_window.about_action.triggered.connect(self.on_about)
 
+        self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
+
+        self.connect_tool_bar_events()
+        self.connect_export_events()
+
+        # self.project_window.print_action.triggered.connect(self.on_print)
+
+    def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
 
+    def connect_export_events(self):
         self.project_window.export_png_action.triggered.connect(self.export_to_png)
         self.project_window.export_g6_action.triggered.connect(self.export_to_g6)
         self.project_window.export_tikz_action.triggered.connect(self.export_to_tikz)
         self.project_window.export_pdf_action.triggered.connect(self.export_to_pdf)
-
-        self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
-
-        # self.project_window.print_action.triggered.connect(self.on_print)
 
     def change_dock_size(self, visible):
         if visible:
@@ -175,57 +180,57 @@ class ProjectController:
                 self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    def get_name_from_save_dialog(self, formatFile):
-        fileName = QFileDialog.getSaveFileName(parent=self.project_window,
-                                               caption=self.project_window.tr(f"Export graphs to {formatFile} file"),
-                                               filter=self.project_window.tr(f"Text files (*.{formatFile})"),
-                                               directory=f"{project_information_store.project_name}.{formatFile}"
-                                               )[0]
-        if fileName:
-            if not QtCore.QFileInfo(fileName).suffix():
-                fileName += f".{formatFile}"
-        return fileName
+    def get_name_from_save_dialog(self, format_file):
+        file_name = QFileDialog.getSaveFileName(parent=self.project_window,
+                                                caption=self.project_window.tr(f"Export graphs to {format_file} file"),
+                                                filter=self.project_window.tr(f"Text files (*.{format_file})"),
+                                                directory=f"{project_information_store.project_name}.{format_file}"
+                                                )[0]
+        if file_name:
+            if not QtCore.QFileInfo(file_name).suffix():
+                file_name += f".{format_file}"
+        return file_name
 
     def export_to_png(self):
-        fileDir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
-        if fileDir:
+        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
+        if file_dir:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
-                export_g6_to_png(graph, fileDir, step)
+                export_g6_to_png(graph, file_dir, step)
                 self.update_loading_window(step)
             self.loading_window.close()
 
     def export_to_tikz(self):
-        fileDir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
-        if fileDir:
+        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
+        if file_dir:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
-                export_g6_to_tikz(graph, fileDir, step)
+                export_g6_to_tikz(graph, file_dir, step)
                 self.update_loading_window(step)
             self.loading_window.close()
 
     def export_to_pdf(self):
-        fileDir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
-        if fileDir:
+        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_window, caption="Select Directory"))
+        if file_dir:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
-                export_g6_to_pdf(graph, fileDir, step)
+                export_g6_to_pdf(graph, file_dir, step)
                 self.update_loading_window(step)
             self.loading_window.close()
 
     def export_to_g6(self):
-        fileName = self.get_name_from_save_dialog('g6')
-        if fileName:
+        file_name = self.get_name_from_save_dialog('g6')
+        if file_name:
             self.show_loading_window(len(project_information_store.filtered_graphs))
-            file = open(fileName, 'w')
+            file = open(file_name, 'w')
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 file.write(graph)
                 self.update_loading_window(step)
             file.close()
             self.loading_window.close()
 
-    def show_loading_window(self, setTotal):
-        self.loading_window.progressBar.setMaximum(setTotal)
+    def show_loading_window(self, set_total):
+        self.loading_window.progressBar.setMaximum(set_total)
         self.loading_window.progressBar.setValue(0)
         self.loading_window.show()
 
