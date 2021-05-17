@@ -19,10 +19,13 @@ class GraphInformationDock(QDockWidget):
         self.setWindowTitle("Info")
         self.setObjectName("Info")
 
-        self.setFixedHeight(23)
-        self.setMinimumWidth(23)
+        self.setMinimumHeight(50)
+        self.setMinimumWidth(200)
 
-        self.setFeatures(QDockWidget.DockWidgetClosable)
+        self.setFeatures(QDockWidget.DockWidgetClosable |
+                         QDockWidget.DockWidgetMovable |
+                         QDockWidget.DockWidgetFloatable
+                         )
 
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
 
@@ -31,16 +34,19 @@ class GraphInformationDock(QDockWidget):
         # self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         # self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.table.setColumnWidth(0, 200)
+        self.table.setColumnWidth(1, 800)
+        # self.table.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.setWidget(self.table)
+
 
     def update_table(self, invariants_selected):
         self.model.removeRows(0, self.model.rowCount())
-        if len(invariants_selected) > 0:
-            self.setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX))
-        else:
-            self.setFixedHeight(23)
+        # if len(invariants_selected) > 0:
+        #     self.setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX))
+        # else:
+        #     self.setFixedHeight(23)
         for key, value in invariants_selected.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))
@@ -53,4 +59,5 @@ class GraphInformationDock(QDockWidget):
 
             self.model.appendRow(row)
         self.table.resizeRowsToContents()
-        self.table.resizeColumnsToContents()
+        # self.table.resizeColumnToContents(1)
+
