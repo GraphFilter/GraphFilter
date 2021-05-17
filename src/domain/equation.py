@@ -1,6 +1,6 @@
-import networkx as nx
-from simpleeval import simple_eval
 import numpy
+from simpleeval import simple_eval
+
 from src.store.operations_invariants import *
 
 

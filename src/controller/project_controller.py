@@ -168,5 +168,3 @@ class ProjectController:
             else:
                 self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)
-
-
