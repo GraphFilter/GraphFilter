@@ -14,6 +14,8 @@ class Equation:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
         for inv in operations_invariants.numInvariant.all:
             expression = str(expression).replace(inv.code + "(", inv.code_literal + "(")
+        for key, value in dic_math_symbols.items():
+            expression = str(expression).replace(value, key)
 
         if "AND" in expression and "OR" in expression:
             return '', 'error'
@@ -46,6 +48,6 @@ class Equation:
     @staticmethod
     def valid_bool_simple_eval(expression):
         g = nx.trivial_graph()
-        names = {"G": g, "g": g}
+        names = {**{"G": g, "g": g}, **dic_math_const}
         type_ex = type(simple_eval(expression, functions=dic_function_to_eval, names=names))
         return type_ex == numpy.bool or type_ex == numpy.bool_ or type_ex == bool

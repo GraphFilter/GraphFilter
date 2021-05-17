@@ -1,6 +1,4 @@
-import networkx as nx
 from simpleeval import simple_eval
-
 from src.store.operations_invariants import *
 from src.domain.equation import Equation
 
@@ -46,7 +44,7 @@ class FilterList():
             graph_satisfies = True
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                names = {"G": g, "g": g}
+                names = {**{"G": g, "g": g}, **dic_math_const}
                 # Check the expressions
                 if len(self.expressions) > 0:
                     if self.AND_OR == 'SINGLE':
@@ -90,7 +88,7 @@ class FilterList():
                 continue
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                names = {"G": g, "g": g}
+                names = {**{"G": g, "g": g}, **dic_math_const}
                 # Check the expressions
                 if len(self.expressions) > 0:
                     if self.AND_OR == 'SINGLE':
@@ -128,3 +126,7 @@ class FilterList():
                 self.update_to_progress_bar(step)
                 continue
         return False
+
+
+if __name__ == "__main__":
+    print("teste")

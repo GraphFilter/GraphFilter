@@ -32,8 +32,11 @@ class BasicMathOperations:
     def __init__(self):
         self.all = BasicMathOperations.__subclasses__()
         self.dic_name_inv: {str: BasicMathOperations} = {}
+        self.dic_math_symbols: {str: str} = {"<=": "\u2264", ">=": "\u2265", "!=": "\u2260", "**": "^", "pi": "\u03c0"}
+        self.dic_math_const = {"pi": np.pi}
         for inv in self.all:
             self.dic_name_inv[inv.name] = inv
+            inv.is_a_function = False
 
 
 class GraphOperations:
@@ -153,79 +156,96 @@ class Absolute(MathOperations):
         return np.abs(x)
 
 
+class Floor(MathOperations):
+    name = "Floor"
+    code = "floor"
+    is_a_function = True
+
+    @staticmethod
+    def calculate(x):
+        return np.floor(x)
+
+
+class Ceiling(MathOperations):
+    name = "Ceiling"
+    code = "ceiling"
+    is_a_function = True
+
+    @staticmethod
+    def calculate(x):
+        return np.ceil(x)
+
+
 class Plus(BasicMathOperations):
     name = "Sum"
     code = "+"
-    is_a_function = False
 
 
 class Subtraction(BasicMathOperations):
     name = "Subtraction"
     code = "-"
-    is_a_function = False
 
 
 class Division(BasicMathOperations):
     name = "Division"
     code = "/"
-    is_a_function = False
 
 
 class Product(BasicMathOperations):
     name = "Product"
     code = "*"
-    is_a_function = False
 
 
 class Power(BasicMathOperations):
     name = "Power"
     code = "**"
-    is_a_function = False
 
 
 class Modulus(BasicMathOperations):
     name = "Modulus"
     code = "%"
-    is_a_function = False
 
 
 class Equal(BasicMathOperations):
     name = "Equal"
     code = "=="
-    is_a_function = False
 
 
 class LogicAND(BasicMathOperations):
     name = "Logic AND"
     code = " AND "
-    is_a_function = False
 
 
 class LogicOR(BasicMathOperations):
     name = "Logic OR"
     code = " OR "
-    is_a_function = False
 
 
 class LessThan(BasicMathOperations):
     name = "Less than"
     code = "<"
-    is_a_function = False
 
 
 class GreaterThan(BasicMathOperations):
     name = "Greater than"
     code = ">"
-    is_a_function = False
 
 
 class LessThanEqual(BasicMathOperations):
     name = "Less than or equal"
-    code = "<="
-    is_a_function = False
+    code = "\u2264"
 
 
 class GreaterThanEqual(BasicMathOperations):
     name = "Greater than or equal"
-    code = ">="
-    is_a_function = False
+    code = "\u2265"
+
+
+class Different(BasicMathOperations):
+    name = "Different"
+    code = "\u2260"
+
+
+class PInumber(BasicMathOperations):
+    name = "\u03c0"
+    code = "\u03c0"
