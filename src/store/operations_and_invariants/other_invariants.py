@@ -14,14 +14,15 @@ class InvariantOther(Invariant):
 
     def __init__(self):
         self.all = InvariantOther.__subclasses__()
-        for inv in self.all:
-            self.dic_name_inv[inv.name] = inv
+        for invariant in self.all:
+            self.dic_name_inv[invariant.name] = invariant
 
     @staticmethod
     def calculate(graph):
         pass
 
-#NOTE: matrix: numpy array; list: python list
+
+# NOTE: matrix: numpy array; list: python list
 
 
 class AdjacencyMatrix(InvariantOther):
@@ -135,6 +136,7 @@ class AdjacencyEigenvectors(InvariantOther):
         values, vectors = la.eigh(AdjacencyMatrix.calculate(graph))
         return values, Utils.approx_array_to_int(vectors)
 
+
 class LaplacianEigenvectors(InvariantOther):
     name = 'Laplacian Eigenvectors'
     type = 'list_and_matrix'
@@ -144,6 +146,7 @@ class LaplacianEigenvectors(InvariantOther):
         values, vectors = la.eigh(LaplacianMatrix.calculate(graph))
         return values, Utils.approx_array_to_int(vectors)
 
+
 class SignlessLaplacianEigenvectors(InvariantOther):
     name = 'Signless Laplacian Eigenvectors'
     type = 'list_and_matrix'
@@ -152,6 +155,7 @@ class SignlessLaplacianEigenvectors(InvariantOther):
     def calculate(graph):
         values, vectors = la.eigh(SignlessLaplacianMatrix.calculate(graph))
         return values, Utils.approx_array_to_int(vectors)
+
 
 class DistanceEigenvectors(InvariantOther):
     name = 'Distance Eigenvectors'
@@ -180,5 +184,3 @@ if __name__ == '__main__':
     inv = InvariantOther()
     print(DistanceEigenvectors.calculate(nx.generators.complete_graph(5)))
     print(AdjacencySpectrum.calculate(nx.generators.complete_graph(5)))
-
-
