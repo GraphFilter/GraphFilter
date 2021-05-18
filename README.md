@@ -44,7 +44,7 @@ First, install the project from the [Releases](https://github.com/GraphFilter/Gr
 #### Mac
 
 ## Used libraries 
-* [Networkx](https://networkx.org/) and [Grinpy](https://github.com/somacdivad/grinpy) for the calculation of invariants in graphs. 
+* [Networkx](https://networkx.org/), [Grinpy](https://github.com/somacdivad/grinpy), [Numpy](https://numpy.org/) for the calculation of invariants in graphs. 
 * [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) and [PyQtGraph](http://www.pyqtgraph.org/) for GUI development. 
 * [Matplotlib](https://matplotlib.org/), [network2tikz](https://github.com/hackl/network2tikz) and [simpleval](https://github.com/danthedeckie/simpleeval) for utilities
 
