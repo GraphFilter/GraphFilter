@@ -1,4 +1,5 @@
-# ⬡ Graph Filter 2.0
+# Graph Filter 2.0 <img src="/resources/icons/logo_graphFilter.png" width="70"> 
+
 
 ## About
 
@@ -18,12 +19,23 @@ When starting a new project, the user will be guided by a wizard to feed the pro
 
 ### "Equations" page
 You can insert the (in)equations involving the invariants of your choice, using the buttons to assist in the insertion.
+
+![](/resources/images_readme/equation.PNG)
+
 ### "Conditions" page
 You can check the Boolean conditions you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
+
+![](/resources/images_readme/conditions.PNG)
+
 ### "Method" page
 The user decides which filtering method: if he wants to filter all the graphs, among his input list, that satisfy the imposed conditions. Or if you prefer, just look if there is a graph that does not satisfy those conditions, useful for trying to refute conjectures.
+
+![](/resources/images_readme/method.PNG)
+
 ### "Input Graphs" page
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
+
+![](/resources/images_readme/graph_files.PNG)
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But knowledge is not required suffers this format, you can find files in this format for different classes of graphs on the pages: [House of graphs](https://hog.grinvin.org/MetaDirectory.action) or [Database from Brendan D. McKay](http://users.cecs.anu.edu.au/~bdm/data/graphs.html)
 
@@ -35,6 +47,8 @@ This window contains the visualization of the graph, allowing the movement in th
 To navigate between the graphs returned from the filtering, you can use the combo box or navigation arrows at the top of the window.
 
 In the "File> Export to" menu, you can export the graphs returned in the filtering to other formats: PDF, PNG, TikZ or graph6.
+
+![](/resources/images_readme/main_window.PNG)
 
 ### Installation
 First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
