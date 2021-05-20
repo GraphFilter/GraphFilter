@@ -48,7 +48,7 @@ class Controller:
 
     def show_open_project_window(self):
         file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Text files (*.txt)", "Json (*.json)"])
+        file_dialog.setNameFilters(["Json (*.json)"])
         file_path = file_dialog.getOpenFileName(filter="Json (*.json)")
         if file_path[0] == '':
             return
