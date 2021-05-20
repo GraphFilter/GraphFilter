@@ -1,16 +1,13 @@
-# Graph Filter 2.0 <img src="/resources/icons/logo_graphFilter.png" width="70"> 
+# <img src="/resources/icons/hexagon.png" width="35px">  Graph Filter 2.0 
 
 
 ## About
-
-> This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
-
-* Graph Filter v1.1 was published in Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional ([link to paper](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf)), on ISBN: 978-65-5623-103-7.
-
-* Graph Filter v2.0 was submitted to the Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição (SBPO-21) and is under analysis.
-
 The main goal of this software is to give assistance to Graph Theory and Spectral Graph Theory researchers to establish or refute conjectures quickly and simply,
 providing for visualization a filtered list of graphs according to the properties given by the user. 
+
+> This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
+> * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional, ISBN: 978-65-5623-103-7](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
+> * Graph Filter v2.0 was submitted to the Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição (SBPO-21) and is under analysis.
 
 ## Getting started
 The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
