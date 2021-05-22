@@ -16,7 +16,6 @@
   <a href="#%EF%B8%8F-license">License</a>
 </p>
 
-![screenshot](/resources/gif/main_window.gif)
 ## About
 The main goal of this software is to give assistance to Graph Theory and Spectral Graph Theory researchers to establish or refute conjectures quickly and simply,
 providing for visualization a filtered list of graphs according to the properties given by the user. 
