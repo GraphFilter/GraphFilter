@@ -9,13 +9,14 @@
 
 <p align="center">
   <a href="#about">About</a> •
-  <a href="#getting-started">Getting Started</a> •
+  <a href="#used-libraries">Used Libraries</a> •
   <a href="#installation">Installation</a> •
+  <a href="#getting-started">Getting Started</a> •
   <a href="#more">More</a> •
   <a href="#license">License</a>
 </p>
 
-
+![screenshot](/resources/gif/main_window.gif)
 ## About
 The main goal of this software is to give assistance to Graph Theory and Spectral Graph Theory researchers to establish or refute conjectures quickly and simply,
 providing for visualization a filtered list of graphs according to the properties given by the user. 
@@ -23,6 +24,28 @@ providing for visualization a filtered list of graphs according to the propertie
 > This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional, ISBN: 978-65-5623-103-7](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
 > * Graph Filter v2.0 was submitted to the Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição (SBPO-21) and is under analysis.
+
+## Used libraries 
+For the calculations of invariants in graphs:
+* [Networkx](https://networkx.org/)
+* [Grinpy](https://github.com/somacdivad/grinpy)
+* [Numpy](https://numpy.org/)
+
+For the GUI development:
+* [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) 
+* [PyQtGraph](http://www.pyqtgraph.org/)
+
+For utilities:
+* [Matplotlib](https://matplotlib.org/)
+* [network2tikz](https://github.com/hackl/network2tikz)
+* [simpleval](https://github.com/danthedeckie/simpleeval)
+
+### Installation
+First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
+
+#### Windows
+#### Linux
+#### Mac
 
 ## Getting started
 The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
@@ -62,17 +85,8 @@ In the "File> Export to" menu, you can export the graphs returned in the filteri
 
 ![](/resources/images_readme/main_window.PNG)
 
-### Installation
-First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
-
-#### Windows
-#### Linux
-#### Mac
-
-## Used libraries 
-* [Networkx](https://networkx.org/), [Grinpy](https://github.com/somacdivad/grinpy), [Numpy](https://numpy.org/) for the calculation of invariants in graphs. 
-* [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) and [PyQtGraph](http://www.pyqtgraph.org/) for GUI development. 
-* [Matplotlib](https://matplotlib.org/), [network2tikz](https://github.com/hackl/network2tikz) and [simpleval](https://github.com/danthedeckie/simpleeval) for utilities
-
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
+
+## ⚖️ License
+[GNU General Public License v3.0](https://github.com/GraphFilter/GraphFilter/blob/main/LICENSE)
