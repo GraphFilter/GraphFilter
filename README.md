@@ -26,19 +26,12 @@ providing for visualization a filtered list of graphs according to the propertie
 > * Graph Filter v2.0 was submitted to the Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição (SBPO-21) and is under analysis.
 
 ## Used libraries 
-For the calculations of invariants in graphs:
-* [Networkx](https://networkx.org/)
-* [Grinpy](https://github.com/somacdivad/grinpy)
-* [Numpy](https://numpy.org/)
 
-For the GUI development:
-* [PyQt5](https://www.riverbankcomputing.com/software/pyqt/) 
-* [PyQtGraph](http://www.pyqtgraph.org/)
-
-For utilities:
-* [Matplotlib](https://matplotlib.org/)
-* [network2tikz](https://github.com/hackl/network2tikz)
-* [simpleval](https://github.com/danthedeckie/simpleeval)
+|    Calculations of invariants                   |   GUI development                                           |  Utilities                                               |
+| :------------:                                  | :---------:                                                 | :---------:                                              |
+| [Networkx](https://networkx.org/)               | [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
+| [Grinpy](https://github.com/somacdivad/grinpy)  |  [PyQtGraph](http://www.pyqtgraph.org/)                     | [network2tikz](https://github.com/hackl/network2tikz)    |
+| [Numpy](https://numpy.org/)                     |                                                             | [simpleval](https://github.com/danthedeckie/simpleeval)  |
 
 ### Installation
 First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
