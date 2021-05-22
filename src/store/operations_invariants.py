@@ -43,4 +43,3 @@ dic_function_to_eval = {**operations_invariants.numInvariant.dic_function,
 
 # Note: Dictionary used for visualize in graph_information_dock
 dic_invariants_to_visualize = {**dic_bool_invariants_names, **dic_num_invariants_names, **dic_other_invariants_names}
-largest_name_invariant = len(max(dic_invariants_to_visualize.keys()))
