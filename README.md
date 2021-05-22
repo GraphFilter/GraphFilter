@@ -34,12 +34,12 @@ The software has the purpose of filtering a list of graphs through conditions cu
 | [Grinpy](https://github.com/somacdivad/grinpy)  |  [PyQtGraph](http://www.pyqtgraph.org/)                     | [network2tikz](https://github.com/hackl/network2tikz)    |
 | [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval)  |
 
-### Installation
+## Installation
 First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
 
-#### Windows
-#### Linux
-#### Mac
+### Windows
+### Linux
+### Mac
 
 ## Getting started
 
