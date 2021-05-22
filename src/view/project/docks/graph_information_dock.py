@@ -53,15 +53,16 @@ class GraphInformationDock(QDockWidget):
             if current_column_max_width > column_max_width:
                 column_max_width = current_column_max_width
 
-            if 5.1 * column_max_width > self.table.columnWidth(1):
-                self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
-                self.table.setColumnWidth(0, 300)
-
             row.append(invariant_name)
             row.append(invariant_value)
             self.model.appendRow(row)
             self.table.resizeColumnToContents(1)
 
         if 5.1 * column_max_width < self.table.columnWidth(1):
-            self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
-            self.table.setColumnWidth(1, 400)
+            self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+            self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
+            self.table.setColumnWidth(0, 200)
+        elif 5.1 * column_max_width > self.table.columnWidth(1):
+            self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
+            self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
+            self.table.setColumnWidth(0, 200)
