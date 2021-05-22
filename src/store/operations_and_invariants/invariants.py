@@ -74,7 +74,7 @@ class UtilsToInvariants:
             return np.array2string(value, precision=precision)
         if isinstance(value, (bool, str)):
             return str(value)
-        if isinstance(value, (float, int)):
+        else:
             if value == 10 ^ 10:
                 return 'infinite'
             else:
@@ -82,5 +82,5 @@ class UtilsToInvariants:
 
     @staticmethod
     def max_line_of_string(text: str):
-        list_text = text.split("\n")
+        list_text = str(text).split("\n")
         return len(max(list_text, key=len))
