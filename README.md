@@ -13,7 +13,7 @@
   <a href="#installation">Installation</a> •
   <a href="#getting-started">Getting Started</a> •
   <a href="#more">More</a> •
-  <a href="#license">License</a>
+  <a href="#%EF%B8%8F-license">License</a>
 </p>
 
 ![screenshot](/resources/gif/main_window.gif)
