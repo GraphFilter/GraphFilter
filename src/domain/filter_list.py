@@ -2,7 +2,8 @@ from simpleeval import simple_eval
 from src.store.operations_invariants import *
 from src.domain.equation import Equation
 
-class FilterList():
+
+class FilterList:
 
     def __init__(self):
         self.list_g6_in = None

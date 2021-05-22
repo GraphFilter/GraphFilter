@@ -5,7 +5,7 @@ from src.view.loading.loading_window import LoadingWindow
 from PyQt5.QtWidgets import QApplication
 
 
-class FilterController():
+class FilterController:
 
     def __init__(self):
 

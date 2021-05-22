@@ -268,7 +268,7 @@ class WizardController:
         input_file = form.findChildren(QLineEdit)
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt)", "Graph Filter (*.g6)"])
-        file_path = file_dialog.getOpenFileName(filter="Graph Filter (*.g6)")
+        file_path = file_dialog.getOpenFileName(filter="Graph Filter (*.g6), Text files (*.txt)")
         self.save_graph_file_path(file_path[0], input_file[-1])
 
     def on_insert_graph_file_path(self):

@@ -19,38 +19,50 @@ class GraphInformationDock(QDockWidget):
         self.setWindowTitle("Info")
         self.setObjectName("Info")
 
-        self.setFixedHeight(23)
-        self.setMinimumWidth(23)
-
-        self.setFeatures(QDockWidget.DockWidgetClosable)
+        self.setFeatures(QDockWidget.DockWidgetClosable |
+                         QDockWidget.DockWidgetMovable |
+                         QDockWidget.DockWidgetFloatable
+                         )
 
         self.model.setHorizontalHeaderLabels(['Invariants', 'Results'])
+        self.table.setModel(self.model)
 
         self.table.setWordWrap(False)
-        self.table.setModel(self.model)
-        # self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
-        # self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.table.verticalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         self.table.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
-        self.table.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
+        self.table.setColumnWidth(1, 400)
         self.setWidget(self.table)
 
     def update_table(self, invariants_selected):
         self.model.removeRows(0, self.model.rowCount())
-        if len(invariants_selected) > 0:
-            self.setMaximumSize(QSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX))
-        else:
-            self.setFixedHeight(23)
+        column_max_width = 0
         for key, value in invariants_selected.items():
             row = []
             invariant_name = QtGui.QStandardItem(str(key))
             invariant_name.setEditable(False)
-            invariant_value = QtGui.QStandardItem(UtilsToInvariants.print(value))
+
+            value_formatted = UtilsToInvariants.print(value)
+            invariant_value = QtGui.QStandardItem(value_formatted)
             invariant_value.setEditable(False)
+
+            current_column_max_width = 0
+            current_column_max_width = max(UtilsToInvariants.max_line_of_string(value_formatted), current_column_max_width)
+            if current_column_max_width > column_max_width:
+                column_max_width = current_column_max_width
 
             row.append(invariant_name)
             row.append(invariant_value)
-
             self.model.appendRow(row)
-        self.table.resizeRowsToContents()
-        self.table.resizeColumnsToContents()
+            self.table.resizeColumnToContents(1)
+
+        if 5.1 * column_max_width < self.table.columnWidth(1):
+            self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+            self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
+            self.table.setColumnWidth(0, 200)
+        elif 5.1 * column_max_width > self.table.columnWidth(1):
+            self.table.horizontalHeader().setSectionResizeMode(0, QHeaderView.Interactive)
+            self.table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Interactive)
+            self.table.setColumnWidth(0, 200)

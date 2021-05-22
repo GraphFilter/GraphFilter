@@ -58,7 +58,7 @@ class UtilsToInvariants:
             spectrum = ''
             for i, x in enumerate(value[0]):
                 if UtilsToInvariants.is_integer(x):
-                    spectrum = spectrum + f'{int(x)} \u2192 v{i}={vectors[:][i].tolist()} \n'
+                    spectrum = spectrum + f'{int(x)} \u2192 V{i}={vectors[:][i].tolist()} \n'
                 else:
                     spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 v{i}={vectors[:][i].tolist()} \n'
             return spectrum
@@ -74,8 +74,13 @@ class UtilsToInvariants:
             return np.array2string(value, precision=precision)
         if isinstance(value, (bool, str)):
             return str(value)
-        if isinstance(value, (float, int)):
+        else:
             if value == 10 ^ 10:
                 return 'infinite'
             else:
                 return str(np.around(value, precision))
+
+    @staticmethod
+    def max_line_of_string(text: str):
+        list_text = str(text).split("\n")
+        return len(max(list_text, key=len))
