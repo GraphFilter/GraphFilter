@@ -1,16 +1,16 @@
 from PyQt5.QtWidgets import *
+from PyQt5 import QtCore
+
 from src.view.project.project_window import ProjectWindow
-from src.view.project.about_window import AboutWindow
 from src.view.project.project_tool_bar import ProjectToolBar
+from src.view.project.about_window import AboutWindow
 from src.view.project.docks.graph_information_dock import GraphInformationDock
 from src.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from src.view.project.docks.invariants_checks_dock import InvariantsCheckDock
+from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
 from src.store.project_information_store import project_information_store
 from src.store.operations_invariants import *
-from src.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
-from src.domain.utils import match_graph_code
-from PyQt5 import QtCore
-from src.domain.utils import convert_g6_to_nx
+from src.domain.utils import match_graph_code, convert_g6_to_nx
 
 
 class ProjectController:
@@ -29,9 +29,9 @@ class ProjectController:
         self.invariants_selected = {}
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
+        self.connect_events()
 
     def show_window(self):
-        self.connect_events()
         self.create_docks()
 
         self.project_window.set_title_bar(project_information_store.project_name)
@@ -59,17 +59,20 @@ class ProjectController:
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
-        self.project_window.restore_layout.triggered.connect(self.on_restore)
+        self.project_window.restore_layout_action.triggered.connect(self.on_restore)
 
         self.project_window.about_action.triggered.connect(self.on_about)
 
+        self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
+
+        self.connect_tool_bar_events()
+
+        # self.project_window.print_action.triggered.connect(self.on_print)
+
+    def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
-
-        self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
-
-        # self.project_window.print_action.triggered.connect(self.on_print)
 
     def change_dock_size(self, visible):
         if visible:

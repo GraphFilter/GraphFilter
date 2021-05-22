@@ -190,6 +190,8 @@ class WizardController:
             text_equation = text_equation.replace(str(text).lower(), symbol.code)
             text_equation = text_equation.replace(str(text).replace(" ", ""), symbol.code)
             text_equation = text_equation.replace(str(text).lower().replace(" ", ""), symbol.code)
+        for text, symbol in dic_math_symbols.items():
+            text_equation = text_equation.replace(text, symbol)
         self.equations_page.equation.setText(text_equation)
 
         self.validate_and_save_equation()

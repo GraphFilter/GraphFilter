@@ -35,6 +35,7 @@ dict_text_equation = {**operations_invariants.numInvariant.dic_name_inv,
                       **operations_invariants.graphOperations.dic_name_inv,
                       **operations_invariants.mathOperations.dic_name_inv,
                       **operations_invariants.basicMathOperations.dic_name_inv}
+dic_math_symbols = operations_invariants.basicMathOperations.dic_math_symbols
 
 # Note: Dictionary used for translation by simpleeval
 dic_function_to_eval = {**operations_invariants.numInvariant.dic_function,
@@ -43,3 +44,6 @@ dic_function_to_eval = {**operations_invariants.numInvariant.dic_function,
 
 # Note: Dictionary used for visualize in graph_information_dock
 dic_invariants_to_visualize = {**dic_bool_invariants_names, **dic_num_invariants_names, **dic_other_invariants_names}
+
+#Note: Dictionary used for number constants
+dic_math_const = operations_invariants.basicMathOperations.dic_math_const
