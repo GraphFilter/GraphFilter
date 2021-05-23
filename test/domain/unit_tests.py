@@ -4,14 +4,14 @@ import unittest
 import networkx as nx
 import numpy
 
-import src.store.operations_and_invariants.bool_invariants as inv_bool
-import src.store.operations_and_invariants.num_invariants as inv_num
-import src.store.operations_and_invariants.other_invariants as inv_other
-import src.store.operations_and_invariants.operations as oper
+import source.store.operations_and_invariants.bool_invariants as inv_bool
+import source.store.operations_and_invariants.num_invariants as inv_num
+import source.store.operations_and_invariants.other_invariants as inv_other
+import source.store.operations_and_invariants.operations as oper
 
-from src.domain.equation import Equation
-from src.domain.filter_list import FilterList
-from src.store.operations_and_invariants.bool_invariants import UtilsToInvariants
+from source.domain.equation import Equation
+from source.domain.filter_list import FilterList
+from source.store.operations_and_invariants.bool_invariants import UtilsToInvariants
 
 
 

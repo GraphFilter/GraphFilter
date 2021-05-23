@@ -4,13 +4,13 @@ import os
 
 # NOTE:
 #  This code opens project from Wizard
-# from src.view.windows.welcome.index import Index
+# from source.view.windows.welcome.index import Index
 # app = QApplication(sys.argv)
 # window = Index()
 
 # NOTE:
 #  This code opens project from Visualize
-from src.view.project.project_window import ProjectWindow
+from source.view.project.project_window import ProjectWindow
 app = QApplication(sys.argv)
 window = ProjectWindow()
 file_dir = os.path.dirname(os.path.realpath('__file__'))

@@ -1,6 +1,6 @@
 import os
-from src.domain.filter_list import FilterList
-from src.store.operations_and_invariants import bool_invariants as i_bool
+from source.domain.filter_list import FilterList
+from source.store.operations_and_invariants import bool_invariants as i_bool
 
 file_in = open(os.path.abspath('resources/graphs/graphs7.g6'), 'r')
 group = file_in.read().splitlines()
