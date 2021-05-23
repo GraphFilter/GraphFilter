@@ -9,6 +9,7 @@
 
 <p align="center">
   <a href="#about">About</a> •
+  <a href="#features">Features</a> •
   <a href="#used-libraries">Used Libraries</a> •
   <a href="#installation">Installation</a> •
   <a href="#getting-started">Getting Started</a> •
@@ -25,6 +26,15 @@ providing for visualization a filtered list of graphs according to the propertie
 > * Graph Filter v2.0 was submitted to the [Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição](https://sbpo2021.galoa.com.br) and is under analysis.
 
 The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
+
+
+## Features
++ Filter graphs with conditions customizable by the user;
++ Visualization of filtered graphs, with calculation of invariants.
++ The filtered graphs can be exported to different file formats.
++ Intuitive layout, does not require programming knowledge;
++ Support for several graph invariants;
++ Assists the researcher in Graphs to test conjectures and results.
 
 ## Used libraries 
 
