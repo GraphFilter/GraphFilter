@@ -34,7 +34,7 @@ The software has the purpose of filtering a list of graphs through conditions cu
 + The filtered graphs can be exported to different file formats.
 + Intuitive layout, does not require programming knowledge;
 + Support for several graph invariants;
-+ Assists the researcher in Graphs to test conjectures and results.
++ It helps the researcher in Graphs to test conjectures and results.
 
 ## Used libraries 
 
