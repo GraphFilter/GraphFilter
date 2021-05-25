@@ -44,7 +44,7 @@ class InvariantsDictionary(QWidget):
     def set_content_attributes(self):
         self.concepts.setMaximumWidth(250)
         self.setVisible(False)
-        f = open('source/store/data_dictionary.json')
+        f = open('resources/data/data_dictionary.json')
         data = json.load(f)
 
         self.dictionary = data['dic']
