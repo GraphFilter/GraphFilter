@@ -72,7 +72,9 @@ class UtilsToInvariants:
             return str(values)
         if isinstance(value, numpy.ndarray):
             return np.array2string(value, precision=precision)
-        if isinstance(value, (bool, str)):
+        if isinstance(value, dict):
+            return ' | '.join(f'{x}: {np.around(y, decimals=precision)}' for x, y in value.items())
+        if isinstance(value, (bool, str, set)):
             return str(value)
         else:
             if value == 10 ^ 10:

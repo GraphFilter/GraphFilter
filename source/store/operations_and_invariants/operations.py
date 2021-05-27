@@ -79,6 +79,15 @@ class Line(GraphOperations):
     def calculate(graph):
         return nx.line_graph(graph)
 
+class CliqueGraph(GraphOperations):
+    name = "Clique Operator (maximal)"
+    code = "\u0198"
+    is_a_function = True
+
+    @staticmethod
+    def calculate(graph):
+        return nx.make_max_clique_graph(graph)
+
 
 class Graph(GraphOperations):
     name = "Graph"
