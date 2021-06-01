@@ -7,10 +7,12 @@ from source.view.wizard.pages.review_page import ReviewPage
 from source.store.project_information_store import wizard_information_store
 from source.view.wizard.wizard_window import WizardWindow
 from PyQt5.QtWidgets import *
+from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
 import pathlib
+
 
 
 class WizardController:
@@ -103,6 +105,11 @@ class WizardController:
         self.graph_files_page.open_graph_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_graph_file.clicked.connect(self.on_add_graph_file_input)
         self.graph_files_page.graph_files_input.textEdited.connect(self.on_insert_graph_file_path)
+        self.graph_files_page.hog_page.clicked.connect(self.open_HoG_url)
+
+    def open_HoG_url(self):
+        QDesktopServices.openUrl(QUrl("https://hog.grinvin.org/MetaDirectory.action"))
+
 
     def connect_events(self):
         self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)

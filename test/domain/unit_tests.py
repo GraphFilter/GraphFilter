@@ -216,8 +216,11 @@ class MiscellaneousTests(unittest.TestCase):
 
     def test_wilf_result(self):
         chi = str(inv_num.ChromaticNumber.code)
+        chiline = str(inv_num.ChromaticIndex.code)
+        maxdeg = str(inv_num.DegreeMax.code)
         eigen1 = str(inv_num.Largest1EigenA.code)
         self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
+        self.assertEqual(1, Helper.run('graphs7.g6', f'{chiline}(G)>={maxdeg}(G) AND {chiline}(G)<={maxdeg}(G)+1 ', {}))
 
     def test_independence_and_matching(self):
         alpha = str(inv_num.IndependenceNumber.code)
@@ -243,6 +246,9 @@ class MiscellaneousTests(unittest.TestCase):
         self.assertEqual(0.01, Helper.run('graphs13.g6', '', tree))
 
 
+    def test_main_eigenvalues(self):
+        mainA = str(inv_num.MainEigenvalueAdjacency.code)
+        self.assertEqual(1, Helper.run('graphs3.g6', f'{mainA}(G)==1', {}))
 
 
 if __name__ == '__main__':

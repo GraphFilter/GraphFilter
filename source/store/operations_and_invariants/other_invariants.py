@@ -215,6 +215,20 @@ class MaximumIndependentSet(InvariantOther):
     def calculate(graph):
         return set(nx.max_weight_clique(nx.complement(graph), weight=None)[0])
 
+
+class MinimumEdgeCover(InvariantOther):
+    name = "Minimum edge cover (set)"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.number_of_isolates(graph) < 1:
+            return nx.algorithms.covering.min_edge_cover(graph)
+        else:
+            return "Graph has isolate vertice."
+
+
+
 class DegreeSequence(InvariantOther):
     name = "Degree Sequence"
     type = 'list'
@@ -282,6 +296,36 @@ class Transmission(InvariantOther):
             return trans
         else:
             return 'Disconnected graph'
+
+
+class MainEigenvalueAdjacency(InvariantOther):
+    name = 'Main A-eigenvalues (set)'
+    type = "set"
+
+    @staticmethod
+    def calculate(graph):
+        return list(Utils.MainEigenvalue(AdjacencyMatrix.calculate(graph)))
+
+
+class MainEigenvalueDistance(InvariantOther):
+    name = 'Main D-eigenvalues (set)'
+    type = "set"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return list(Utils.MainEigenvalue(DistanceMatrix.calculate(graph)))
+        else:
+            return 'Disconnected graph'
+
+
+class MainEigenvalueSignlessLaplacian(InvariantOther):
+    name = 'Main Q-eigenvalues (set)'
+    type = "set"
+
+    @staticmethod
+    def calculate(graph):
+        return list(Utils.MainEigenvalue(SignlessLaplacianMatrix.calculate(graph)))
 
 
 

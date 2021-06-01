@@ -425,6 +425,37 @@ class EdgeConnectivity(InvariantNum):
         return nx.edge_connectivity(graph)
 
 
+class ChromaticIndex(InvariantNum):
+    name = "Chromatic Index"
+    code = "\u03c7'"
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        return len(set(nx.greedy_color(nx.line_graph(graph)).values()))
+
+
+class MinimumEdgeCover(InvariantNum):
+    name = "Minimum edge cover number"
+    code = 'mec'
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.isolates(graph) < 1:
+            return len(nx.algorithms.covering.min_edge_cover(graph))
+        else:
+            return 10 ^ 10
+
+class NumberOfTriangles(InvariantNum):
+    name = "Number of triangles"
+    code = '\u03A4'
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        return nx.algorithms.cluster.triangles(graph)
+
 class WienerIndex(InvariantNum):
     name = 'Wiener index'
     code = 'W'
@@ -432,7 +463,10 @@ class WienerIndex(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return UtilsToInvariants.approx_to_int(nx.wiener_index(graph))
+        if nx.is_connected(graph):
+            return UtilsToInvariants.approx_to_int(nx.wiener_index(graph))
+        else:
+            return 10^10
 
 
 class EstradaIndex(InvariantNum):
@@ -523,3 +557,34 @@ class DistanceEnergy(InvariantNum):
             return 10 ^ 10
 
 
+class MainEigenvalueAdjacency(InvariantNum):
+    name = 'Number of main A-eigenvalues'
+    code = 'mainA'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return len(UtilsToInvariants.MainEigenvalue(inv_other.AdjacencyMatrix.calculate(graph)))
+
+
+class MainEigenvalueDistance(InvariantNum):
+    name = 'Number of main D-eigenvalues'
+    code = 'mainD'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return len(UtilsToInvariants.MainEigenvalue(inv_other.DistanceMatrix.calculate(graph)))
+        else:
+            return 0
+
+
+class MainEigenvalueSignlessLaplacian(InvariantNum):
+    name = 'Number of main Q-eigenvalues'
+    code = 'mainQ'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return len(UtilsToInvariants.MainEigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)))

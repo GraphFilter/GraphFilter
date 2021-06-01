@@ -145,6 +145,13 @@ class Cubic(InvariantBool):
         return gp.is_k_regular(graph, k=3)
 
 
+class HasBridge(InvariantBool):
+    name = 'Has bridge'
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        return nx.has_bridges(graph)
 
 
 class SomeEigenIntegerA(InvariantBool):

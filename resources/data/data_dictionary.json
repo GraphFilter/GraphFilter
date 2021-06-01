@@ -2,10 +2,17 @@
   "dic": [
     {
       "name": "Chromatic Number",
-      "definition" : "The chromatic number of a graph G is the smallest number of colors needed to color the vertices of G so that no two adjacent vertices share the same color",
+      "definition" : "It's the smallest number of colors needed to color the vertices of G so that no two adjacent vertices share the same color",
       "usage": "For filtering click on the respective button in the equation to use it. Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://mathworld.wolfram.com/ChromaticNumber.html",
-      "implementation": "Grinpy Python library"
+      "implementation": "Networkx Python library"
+    },
+    {
+      "name": "Chromatic Index (edge)",
+      "definition" : "It's the smallest number of colors needed to color the edges of G so that no two adjacent edges share the same color",
+      "usage": "For filtering click on the respective button in the equation to use it. Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
+      "link": "https://en.wikipedia.org/wiki/Edge_coloring",
+      "implementation": "Networkx Python library"
     },
     {
       "name": "Number of vertices",
@@ -117,6 +124,13 @@
       "definition" : "It's the length of a shortest cycle contained in the graph.",
       "usage": "For filtering click on the respective button in the equation to use it.  Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Girth_(graph_theory)",
+      "implementation": "NetworkX Python Library"
+    },
+    {
+      "name": "Edge Cover",
+      "definition" : "An edge cover of a graph is a set of edges such that every vertex of the graph is incident to at least one edge of the set. The <b>minimum edge cover (set)</b> is an edge covering of smallest cardinality.",
+      "usage": "For filtering click on the respective button in the equation to use <b>minimum edge cover number</b>.  Or in Visualization you can check <b>minimum edge cover number</b> or <b>edge cover</b>  in the invariants menu to calculate in the plotted graph",
+      "link": "https://en.wikipedia.org/wiki/Edge_cover",
       "implementation": "NetworkX Python Library"
     },
     {
@@ -239,6 +253,13 @@
       "implementation": "own implementation"
     },
     {
+      "name": "Main M-eigenvalue (number of)",
+      "definition" : "The eigenvalue x of a matrix M is said to be a main eigenvalue of G, if the eigenspace E(x) is not orthogonal to the all-1 vector. Where M is A, L, Q or D matrix.",
+      "usage": "For filtering click on the respective button in the equation to use it and get the number of main eigenvalues.  Or in Visualization you can check '<b>number of main M-eigenvalues</b>' or '<b>main M-eigenvalues (set)</b>' in the invariants menu to calculate in the plotted graph",
+      "link": "http://pefmath.etf.rs/vol1num2/AADM-Vol1-No2-455-471.pdf",
+      "implementation": "Numpy and own implementation"
+    },
+    {
       "name": "Wiener Index",
       "definition" : "The Wiener index (or the \"path number\") is a graph index defined for a graph on n nodes by W=\u00bd\u03a3\u03a3 d(i,j), where d(i,j) is the distance between the vertices i and j.",
       "usage": "For filtering click on the respective button in the equation to use it.  Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
@@ -299,6 +320,13 @@
       "definition" : "It's a graph whose vertices can be divided into two disjoint and independent sets U and V such that every edge connects a vertex in U to one in V.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can check it in the invariants menu to calculate in the plotted graph.",
       "link": "https://en.wikipedia.org/wiki/Bipartite_graph",
+      "implementation": "NetworkX Python Library"
+    },
+    {
+      "name": "Has bridge",
+      "definition" : "A bridge is an edge of a graph whose deletion increases the graph's number of connected components.",
+      "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can check it in the invariants menu to calculate in the plotted graph.",
+      "link": "https://en.wikipedia.org/wiki/Bridge_(graph_theory)",
       "implementation": "NetworkX Python Library"
     },
     {
