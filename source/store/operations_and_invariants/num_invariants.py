@@ -5,6 +5,7 @@ import numpy.linalg as la
 import scipy.sparse as ss
 from source.store.operations_and_invariants.bool_invariants import UtilsToInvariants
 from source.store.operations_and_invariants.invariants import Invariant
+import source.store.operations_and_invariants.other_invariants as inv_other
 
 
 class InvariantNum(Invariant):
@@ -15,12 +16,17 @@ class InvariantNum(Invariant):
     def __init__(self):
         self.all = InvariantNum.__subclasses__()
         self.dic_function: {str: staticmethod} = {}
-        self.dic_name_inv: {str: InvariantNum} = {}
+        self.dic_name_inv_structural: {str: InvariantNum} = {}
+        self.dic_name_inv_spectral: {str: InvariantNum} = {}
         for i, inv in enumerate(self.all):
             inv.is_a_function = True
             inv.code_literal = 'F' + str(i)
             self.dic_function[inv.code_literal] = inv.calculate
-            self.dic_name_inv[inv.name] = inv
+            if inv.type == 'number_structural':
+                self.dic_name_inv_structural[inv.name] = inv
+            elif inv.type == 'number_spectral':
+                self.dic_name_inv_spectral[inv.name] = inv
+        self.dic_name_inv = {**self.dic_name_inv_structural, **self.dic_name_inv_spectral}
 
     @staticmethod
     def calculate(graph):
@@ -30,7 +36,7 @@ class InvariantNum(Invariant):
 class ChromaticNumber(InvariantNum):
     name = "Chromatic number"
     code = '\u03c7'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -40,7 +46,7 @@ class ChromaticNumber(InvariantNum):
 class NumberVertices(InvariantNum):
     name = "Number of vertices"
     code = 'n'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -50,7 +56,7 @@ class NumberVertices(InvariantNum):
 class NumberEdges(InvariantNum):
     name = "Number of edges"
     code = '\u0415'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -60,7 +66,7 @@ class NumberEdges(InvariantNum):
 class CliqueNumber(InvariantNum):
     name = "Clique number"
     code = '\u03c9'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -70,7 +76,7 @@ class CliqueNumber(InvariantNum):
 class IndependenceNumber(InvariantNum):
     name = "Independence number"
     code = '\u237a'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -80,7 +86,7 @@ class IndependenceNumber(InvariantNum):
 class TotalDominationNumber(InvariantNum):
     name = "Total domination number"
     code = '\u0194\u209c'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -90,7 +96,7 @@ class TotalDominationNumber(InvariantNum):
 class DominationNumber(InvariantNum):
     name = "Domination number"
     code = '\u0194'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -99,12 +105,25 @@ class DominationNumber(InvariantNum):
 
 class ConnectedDominationNumber(InvariantNum):
     name = "Connected domination number"
-    code = 'd'
-    type = "number"
+    code = '\u0194c'
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
         return gp.connected_domination_number(graph)
+
+
+class GirthNumber(InvariantNum):
+    name = "Girth"
+    code = '\u0261'
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return nx.minimum_cycle_basis(graph)
+        else:
+            return 10 ^ 10
 
 
 # class IndependentDominationNumber(InvariantNum):
@@ -160,7 +179,7 @@ class ConnectedDominationNumber(InvariantNum):
 class MatchingNumber(InvariantNum):
     name = "Matching number"
     code = '\u03bd'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -170,7 +189,7 @@ class MatchingNumber(InvariantNum):
 class NumberComponnents(InvariantNum):
     name = "Number of components"
     code = 'w'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -180,7 +199,7 @@ class NumberComponnents(InvariantNum):
 class Valency(InvariantNum):
     name = 'Degree regularity'
     code = 'd\u1d63'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -195,7 +214,7 @@ class Valency(InvariantNum):
 class DegreeMax(InvariantNum):
     name = "Maximum degree"
     code = '\u0394'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -205,7 +224,7 @@ class DegreeMax(InvariantNum):
 class DegreeMin(InvariantNum):
     name = "Minimum degree"
     code = '\u1e9f'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -215,7 +234,7 @@ class DegreeMin(InvariantNum):
 class DegreeAverage(InvariantNum):
     name = "Average degree"
     code = 'd\u2090'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -225,7 +244,7 @@ class DegreeAverage(InvariantNum):
 class VertexCover(InvariantNum):
     name = "Vertex cover number"
     code = '\u03c4'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -235,7 +254,7 @@ class VertexCover(InvariantNum):
 class Diameter(InvariantNum):
     name = "Diameter"
     code = "diam"
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -248,7 +267,7 @@ class Diameter(InvariantNum):
 class Radius(InvariantNum):
     name = "Radius"
     code = "r"
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -261,7 +280,7 @@ class Radius(InvariantNum):
 class Largest1EigenA(InvariantNum):
     name = "Largest A-eigenvalue"
     code = "\u03bb\u2081"
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -272,7 +291,7 @@ class Largest1EigenA(InvariantNum):
 class Largest1EigenL(InvariantNum):
     name = "Largest L-eigenvalue"
     code = "\u03bc\u2081"
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -283,7 +302,7 @@ class Largest1EigenL(InvariantNum):
 class Largest1EigenQ(InvariantNum):
     name = "Largest Q-eigenvalue"
     code = "q\u2081"
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -291,10 +310,21 @@ class Largest1EigenQ(InvariantNum):
         return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
 
 
+class Largest1EigenN(InvariantNum):
+    name = "Largest N-eigenvalue"
+    code = "\u03bc\u207f\u2081"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        m = ss.csc_matrix.toarray(nx.normalized_laplacian_matrix(graph))
+        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
+
+
 class Largest1EigenD(InvariantNum):
     name = "Largest D-eigenvalue"
     code = "\u0398\u2081"
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -305,10 +335,68 @@ class Largest1EigenD(InvariantNum):
             return 10 ^ 10
 
 
+class Largest2EigenA(InvariantNum):
+    name = "Second Largest A-eigenvalue"
+    code = "\u03bb\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        m = ss.csc_matrix.toarray(nx.adj_matrix(graph))
+        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
+
+
+class Largest2EigenL(InvariantNum):
+    name = "Second Largest L-eigenvalue"
+    code = "\u03bc\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
+        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
+
+
+class Largest2EigenQ(InvariantNum):
+    name = "Second Largest Q-eigenvalue"
+    code = "q\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
+        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
+
+
+class Largest2EigenN(InvariantNum):
+    name = "Second Largest N-eigenvalue"
+    code = "\u03bc\u207f\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        m = ss.csc_matrix.toarray(nx.normalized_laplacian_matrix(graph))
+        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
+
+
+class Largest2EigenD(InvariantNum):
+    name = "Second Largest D-eigenvalue"
+    code = "\u0398\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return UtilsToInvariants.approx_to_int(
+                la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 2])
+        else:
+            return 10 ^ 10
+
+
 class AlgebraicConnectivity(InvariantNum):
     name = 'Algebraic connectivity'
     code = 'ac'
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -319,7 +407,7 @@ class AlgebraicConnectivity(InvariantNum):
 class VertexConnectivity(InvariantNum):
     name = "Vertex connectivity"
     code = '\u03f0'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
@@ -329,27 +417,63 @@ class VertexConnectivity(InvariantNum):
 class EdgeConnectivity(InvariantNum):
     name = "Edge connectivity"
     code = '\u03bb'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
         return nx.edge_connectivity(graph)
 
 
-class WienerIndex(InvariantNum):
-    name = 'Wiener index'
-    code = 'W'
-    type = "number"
+# class ChromaticIndex(InvariantNum):
+#     name = "Chromatic Index"
+#     code = "\u03c7'"
+#     type = "number_structural"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return len(set(nx.greedy_color(nx.line_graph(graph)).values()))
+
+
+class MinimumEdgeCover(InvariantNum):
+    name = "Minimum edge cover number"
+    code = 'mec'
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
-        return UtilsToInvariants.approx_to_int(nx.wiener_index(graph))
+        if nx.isolates(graph) < 1:
+            return len(nx.algorithms.covering.min_edge_cover(graph))
+        else:
+            return 10 ^ 10
+
+
+class NumberOfTriangles(InvariantNum):
+    name = "Number of triangles"
+    code = '\u03A4'
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        return nx.algorithms.cluster.triangles(graph)
+
+
+class WienerIndex(InvariantNum):
+    name = 'Wiener index'
+    code = 'W'
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return UtilsToInvariants.approx_to_int(nx.wiener_index(graph))
+        else:
+            return 10 ^ 10
 
 
 class EstradaIndex(InvariantNum):
     name = 'Estrada index'
     code = 'EE'
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -359,7 +483,7 @@ class EstradaIndex(InvariantNum):
 class Nullity(InvariantNum):
     name = 'Nullity'
     code = '\u03b7'
-    type = "number"
+    type = "number_spectral"
 
     @staticmethod
     def calculate(graph):
@@ -369,7 +493,7 @@ class Nullity(InvariantNum):
 class NumberSpanningTree(InvariantNum):
     name = 'Number of spanning rees'
     code = '\u0288'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def submatrix(m):
@@ -388,8 +512,84 @@ class NumberSpanningTree(InvariantNum):
 class Density(InvariantNum):
     name = 'Density'
     code = '\u018a'
-    type = "number"
+    type = "number_structural"
 
     @staticmethod
     def calculate(graph):
         return nx.density(graph)
+
+
+class AdjacencyEnergy(InvariantNum):
+    name = 'Adjacency Energy'
+    code = 'Ea'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return sum(np.absolute(inv_other.AdjacencySpectrum.calculate(graph)))
+
+
+class LaplacianEnergy(InvariantNum):
+    name = 'Laplacian Energy'
+    code = 'El'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return sum(np.absolute(inv_other.LaplacianSpectrum.calculate(graph)))
+
+
+class SignlessLaplacianEnergy(InvariantNum):
+    name = 'Signless Laplacian Energy'
+    code = 'Eq'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return sum(np.absolute(inv_other.SignlessLaplacianSpectrum.calculate(graph)))
+
+
+class DistanceEnergy(InvariantNum):
+    name = 'Distance Energy'
+    code = 'Ed'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return sum(np.absolute(inv_other.DistanceSpectrum.calculate(graph)))
+        else:
+            return 10 ^ 10
+
+
+class MainEigenvalueAdjacency(InvariantNum):
+    name = 'Number of main A-eigenvalues'
+    code = 'mainA'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return len(UtilsToInvariants.MainEigenvalue(inv_other.AdjacencyMatrix.calculate(graph)))
+
+
+class MainEigenvalueDistance(InvariantNum):
+    name = 'Number of main D-eigenvalues'
+    code = 'mainD'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return len(UtilsToInvariants.MainEigenvalue(inv_other.DistanceMatrix.calculate(graph)))
+        else:
+            return 0
+
+
+class MainEigenvalueSignlessLaplacian(InvariantNum):
+    name = 'Number of main Q-eigenvalues'
+    code = 'mainQ'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return len(UtilsToInvariants.MainEigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)))

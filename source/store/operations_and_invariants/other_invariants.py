@@ -2,6 +2,7 @@ import networkx as nx
 import numpy as np
 import numpy.linalg as la
 import scipy.sparse as ss
+import grinpy as gp
 from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 from source.store.operations_and_invariants.invariants import Invariant
 
@@ -180,7 +181,158 @@ class NormalizedLaplacianEigenvectors(InvariantOther):
         return values, Utils.approx_array_to_int(vectors)
 
 
-if __name__ == '__main__':
-    inv = InvariantOther()
-    print(DistanceEigenvectors.calculate(nx.generators.complete_graph(5)))
-    print(AdjacencySpectrum.calculate(nx.generators.complete_graph(5)))
+class DominatingSet(InvariantOther):
+    name = "Dominating Set"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        return nx.dominating_set(graph)
+
+
+class MaximumMatching(InvariantOther):
+    name = "Maximum Matching"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        return set(nx.max_weight_matching(graph, weight=None))
+
+
+class MaximumClique(InvariantOther):
+    name = "Maximum Clique"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        return set(nx.max_weight_clique(graph, weight=None)[0])
+
+
+class MaximumIndependentSet(InvariantOther):
+    name = "Maximum Independent Set"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        return set(nx.max_weight_clique(nx.complement(graph), weight=None)[0])
+
+
+class MinimumEdgeCover(InvariantOther):
+    name = "Minimum edge cover (set)"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.number_of_isolates(graph) < 1:
+            return nx.algorithms.covering.min_edge_cover(graph)
+        else:
+            return "Graph has isolate vertice."
+
+
+class DegreeSequence(InvariantOther):
+    name = "Degree Sequence"
+    type = 'list'
+
+    @staticmethod
+    def calculate(graph):
+        return gp.degree_sequence(graph)
+
+
+class DegreeCentrality(InvariantOther):
+    name = "Degree Centrality"
+    type = 'dict'
+
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.degree_centrality(graph).items(), key=lambda x: x[1]))
+
+
+class EigenvectorCentrality(InvariantOther):
+    name = "Eigenvector Centrality"
+    type = 'dict'
+
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.eigenvector_centrality(graph).items(), key=lambda x: x[1]))
+
+
+class ClosenessCentrality(InvariantOther):
+    name = "Closeness Centrality"
+    type = 'dict'
+
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.closeness_centrality(graph).items(), key=lambda x: x[1]))
+
+
+class BetweennessCentrality(InvariantOther):
+    name = "Betweenness Centrality"
+    type = 'dict'
+
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.betweenness_centrality(graph).items(), key=lambda x: x[1]))
+
+
+class HarmonicCentrality(InvariantOther):
+    name = "Harmonic Centrality"
+    type = 'dict'
+
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.harmonic_centrality(graph).items(), key=lambda x: x[1]))
+
+
+class Transmission(InvariantOther):
+    name = "Transmission"
+    type = "dict"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            dist_matrix = DistanceMatrix.calculate(graph)
+            trans = {}
+            for i in range(0, dist_matrix.shape[0]):
+                trans[i] = sum(dist_matrix[:, i])
+            return trans
+        else:
+            return 'Disconnected graph'
+
+
+class MainEigenvalueAdjacency(InvariantOther):
+    name = 'Main A-eigenvalues (set)'
+    type = "set"
+
+    @staticmethod
+    def calculate(graph):
+        return list(Utils.MainEigenvalue(AdjacencyMatrix.calculate(graph)))
+
+
+class MainEigenvalueDistance(InvariantOther):
+    name = 'Main D-eigenvalues (set)'
+    type = "set"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return list(Utils.MainEigenvalue(DistanceMatrix.calculate(graph)))
+        else:
+            return 'Disconnected graph'
+
+
+class MainEigenvalueSignlessLaplacian(InvariantOther):
+    name = 'Main Q-eigenvalues (set)'
+    type = "set"
+
+    @staticmethod
+    def calculate(graph):
+        return list(Utils.MainEigenvalue(SignlessLaplacianMatrix.calculate(graph)))
+
+
+class MinimumGraphColoring(InvariantOther):
+    name = "Minimum graph coloring"
+    type = "dict"
+
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.greedy_color(graph).items()))

@@ -91,6 +91,14 @@ class TriangleFree(InvariantBool):
     def calculate(graph):
         return gp.is_triangle_free(graph)
 
+class BullFree(InvariantBool):
+    name = 'Bull-free'
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        return gp.is_bull_free(graph)
+
 
 class Regular(InvariantBool):
     name = 'Regular'
@@ -135,6 +143,15 @@ class Cubic(InvariantBool):
     @staticmethod
     def calculate(graph):
         return gp.is_k_regular(graph, k=3)
+
+
+class HasBridge(InvariantBool):
+    name = 'Has bridge'
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        return nx.has_bridges(graph)
 
 
 class SomeEigenIntegerA(InvariantBool):
@@ -260,5 +277,19 @@ class LargestEigenIntegerD(InvariantBool):
         if nx.is_connected(graph):
             return UtilsToInvariants.is_integer(
                 la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+        else:
+            return False
+
+
+class RegularTransmission(InvariantBool):
+    name = "Regular Transmission"
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            dist_matrix = nx.algorithms.shortest_paths.floyd_warshall_numpy(graph)
+            transmission = [sum(dist_matrix[:, i]) for i in range(0, dist_matrix.shape[0])]
+            return bool(max(transmission) == min(transmission))
         else:
             return False

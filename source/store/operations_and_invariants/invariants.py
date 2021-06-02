@@ -1,5 +1,6 @@
 import numpy
 import numpy as np
+import numpy.linalg as la
 
 
 class Invariant:
@@ -72,7 +73,9 @@ class UtilsToInvariants:
             return str(values)
         if isinstance(value, numpy.ndarray):
             return np.array2string(value, precision=precision)
-        if isinstance(value, (bool, str)):
+        if isinstance(value, dict):
+            return ' | '.join(f'{x}: {np.around(y, decimals=precision)}' for x, y in value.items())
+        if isinstance(value, (bool, str, set)):
             return str(value)
         else:
             if value == 10 ^ 10:
@@ -84,3 +87,20 @@ class UtilsToInvariants:
     def max_line_of_string(text: str):
         list_text = str(text).split("\n")
         return len(max(list_text, key=len))
+
+
+    @staticmethod
+    def MainEigenvalue(matrix: np.ndarray):
+        eigenvalues, vectors = la.eigh(matrix)
+        one = np.ones(matrix.shape[0])
+        mains = set()
+        for i, value in enumerate(eigenvalues):
+            if UtilsToInvariants.approx_to_int(np.dot(one, vectors[:, i])) != 0:
+                mains.add(value)
+        return mains
+
+
+
+
+
+

@@ -18,16 +18,18 @@ class OperationsInvariantsStore:
 operations_invariants = OperationsInvariantsStore()
 
 dic_num_invariants_names = operations_invariants.numInvariant.dic_name_inv
-dic_graph_operations_names = operations_invariants.graphOperations.dic_name_inv
-dic_math_operations_names = operations_invariants.mathOperations.dic_name_inv
-dic_math_and_basic_operations_names = {**operations_invariants.mathOperations.dic_name_inv,
-                                       **operations_invariants.basicMathOperations.dic_name_inv}
-dic_other_invariants_names = operations_invariants.otherInvariant.dic_name_inv
+dic_num_inv_spectral_names = operations_invariants.numInvariant.dic_name_inv_spectral
+dic_num_inv_structural_names = operations_invariants.numInvariant.dic_name_inv_structural
 
 dic_bool_invariants_names = operations_invariants.boolInvariant.dic_name_inv
 dic_bool_inv_spectral_names = operations_invariants.boolInvariant.dic_name_inv_spectral
 dic_bool_inv_structural_names = operations_invariants.boolInvariant.dic_name_inv_structural
 
+dic_graph_operations_names = operations_invariants.graphOperations.dic_name_inv
+dic_math_operations_names = operations_invariants.mathOperations.dic_name_inv
+dic_math_and_basic_operations_names = {**operations_invariants.mathOperations.dic_name_inv,
+                                       **operations_invariants.basicMathOperations.dic_name_inv}
+dic_other_invariants_names = operations_invariants.otherInvariant.dic_name_inv
 
 
 # Note: Dictionary used in equation box

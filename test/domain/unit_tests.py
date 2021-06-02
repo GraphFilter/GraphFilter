@@ -14,7 +14,6 @@ from source.domain.filter_list import FilterList
 from source.store.operations_and_invariants.bool_invariants import UtilsToInvariants
 
 
-
 class Helper:
 
     @staticmethod
@@ -27,13 +26,13 @@ class Helper:
     @staticmethod
     def run(file, expression, choices):
         ftl = FilterList()
-        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/'+file), expression, choices, Helper.fake_update)
+        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/' + file), expression, choices, Helper.fake_update)
         return ftl.run_filter()
 
     @staticmethod
     def some_c_exem(file, expression, choices):
         ftl = FilterList()
-        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/'+file), expression, choices, Helper.fake_update)
+        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/' + file), expression, choices, Helper.fake_update)
         boolean = ftl.run_find_counterexample()
         return boolean, ftl.list_out
 
@@ -43,7 +42,6 @@ class Helper:
 
 
 class ExpressionUnitTests(unittest.TestCase):
-
 
     def test_split_and_translate_expression(self):
         chi = str(inv_num.ChromaticNumber.code)
@@ -79,12 +77,11 @@ class ExpressionUnitTests(unittest.TestCase):
             self.assertTrue(Helper.run('single_graph.g6', f'{inv.code}(G)==1', {}) >= 0)
 
     def test_math_symbol(self):
-        #{"<=": "\u2264", ">=": "\u2265", "!=": "\u2260", "**": "^", "pi": "\u03c0"}
+        # {"<=": "\u2264", ">=": "\u2265", "!=": "\u2260", "**": "^", "pi": "\u03c0"}
         self.assertEqual(1, Helper.run('graphs1.g6', 'floor(2.3) \u2264 floor(2.1) ', {}))
         self.assertEqual(1, Helper.run('graphs1.g6', 'ceiling(1.01) \u2265 1.9 ', {}))
         self.assertEqual(0, Helper.run('graphs1.g6', '2 \u2260 2 ', {}))
         self.assertEqual(1, Helper.run('graphs1.g6', '2^4 \u2265 pi ', {}))
-
 
     def test_validate_expression(self):
 
@@ -242,7 +239,9 @@ class MiscellaneousTests(unittest.TestCase):
 
         self.assertEqual(0.01, Helper.run('graphs13.g6', '', tree))
 
-
+    def test_main_eigenvalues(self):
+        mainA = str(inv_num.MainEigenvalueAdjacency.code)
+        self.assertEqual(1, Helper.run('graphs3.g6', f'{mainA}(G)==1', {}))
 
 
 if __name__ == '__main__':

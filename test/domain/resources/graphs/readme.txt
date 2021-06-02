@@ -100,5 +100,9 @@ graphs14
 There are some invalid g6 code.
 valid: 5; invalid: 3
 
+-----------------------------
+
+graphs15
+Disconnected graphs.
 
 

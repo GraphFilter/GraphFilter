@@ -75,7 +75,7 @@ class FilterList:
                     count = count + 1
                 else:
                     continue
-            except nx.NetworkXError:
+            except Exception:
                 self.update_to_progress_bar(step)
                 continue
         return float(count / self.total)

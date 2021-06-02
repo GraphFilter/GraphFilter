@@ -7,10 +7,12 @@ from source.view.wizard.pages.review_page import ReviewPage
 from source.store.project_information_store import wizard_information_store
 from source.view.wizard.wizard_window import WizardWindow
 from PyQt5.QtWidgets import *
+from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
 import pathlib
+
 
 
 class WizardController:
@@ -103,6 +105,11 @@ class WizardController:
         self.graph_files_page.open_graph_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_graph_file.clicked.connect(self.on_add_graph_file_input)
         self.graph_files_page.graph_files_input.textEdited.connect(self.on_insert_graph_file_path)
+        self.graph_files_page.hog_page.clicked.connect(self.open_HoG_url)
+
+    def open_HoG_url(self):
+        QDesktopServices.openUrl(QUrl("https://hog.grinvin.org/MetaDirectory.action"))
+
 
     def connect_events(self):
         self.wizard_window.next_button.clicked.connect(self.on_wizard_next_page)
@@ -144,11 +151,13 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 
     def set_equations_tabs(self):
-        tab_numeric_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_invariants_names)
+        tab_num_structural_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_inv_structural_names)
+        tab_num_spectral_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_inv_spectral_names)
         tab_graph_operations = TabOperations(self.add_button_input_to_equation_text, dic_graph_operations_names)
         tab_math_operations = TabOperations(self.add_button_input_to_equation_text, dic_math_and_basic_operations_names)
 
-        self.equations_page.math_tab.addTab(tab_numeric_invariants, "Numeric Invariants")
+        self.equations_page.math_tab.addTab(tab_num_structural_invariants, "Numeric Structural Invariants")
+        self.equations_page.math_tab.addTab(tab_num_spectral_invariants, "Numeric Spectral Invariants")
         self.equations_page.math_tab.addTab(tab_graph_operations, "Graph Operations")
         self.equations_page.math_tab.addTab(tab_math_operations, "Math Operations")
 
