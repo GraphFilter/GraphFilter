@@ -28,7 +28,6 @@ class InvariantNum(Invariant):
                 self.dic_name_inv_spectral[inv.name] = inv
         self.dic_name_inv = {**self.dic_name_inv_structural, **self.dic_name_inv_spectral}
 
-
     @staticmethod
     def calculate(graph):
         pass
@@ -113,20 +112,18 @@ class ConnectedDominationNumber(InvariantNum):
     def calculate(graph):
         return gp.connected_domination_number(graph)
 
-    class GirthNumber(InvariantNum):
-        name = "Girth"
-        code = '\u0261'
-        type = "number_structural"
 
-        @staticmethod
-        def calculate(graph):
-            if nx.is_connected(graph):
-                return nx.minimum_cycle_basis(graph)
-            else:
-                return 10 ^ 10
+class GirthNumber(InvariantNum):
+    name = "Girth"
+    code = '\u0261'
+    type = "number_structural"
 
-
-
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return nx.minimum_cycle_basis(graph)
+        else:
+            return 10 ^ 10
 
 
 # class IndependentDominationNumber(InvariantNum):
@@ -312,6 +309,7 @@ class Largest1EigenQ(InvariantNum):
         m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
         return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
 
+
 class Largest1EigenN(InvariantNum):
     name = "Largest N-eigenvalue"
     code = "\u03bc\u207f\u2081"
@@ -369,6 +367,7 @@ class Largest2EigenQ(InvariantNum):
         m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
         return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
 
+
 class Largest2EigenN(InvariantNum):
     name = "Second Largest N-eigenvalue"
     code = "\u03bc\u207f\u2082"
@@ -425,14 +424,14 @@ class EdgeConnectivity(InvariantNum):
         return nx.edge_connectivity(graph)
 
 
-class ChromaticIndex(InvariantNum):
-    name = "Chromatic Index"
-    code = "\u03c7'"
-    type = "number_structural"
-
-    @staticmethod
-    def calculate(graph):
-        return len(set(nx.greedy_color(nx.line_graph(graph)).values()))
+# class ChromaticIndex(InvariantNum):
+#     name = "Chromatic Index"
+#     code = "\u03c7'"
+#     type = "number_structural"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return len(set(nx.greedy_color(nx.line_graph(graph)).values()))
 
 
 class MinimumEdgeCover(InvariantNum):
@@ -447,6 +446,7 @@ class MinimumEdgeCover(InvariantNum):
         else:
             return 10 ^ 10
 
+
 class NumberOfTriangles(InvariantNum):
     name = "Number of triangles"
     code = '\u03A4'
@@ -455,6 +455,7 @@ class NumberOfTriangles(InvariantNum):
     @staticmethod
     def calculate(graph):
         return nx.algorithms.cluster.triangles(graph)
+
 
 class WienerIndex(InvariantNum):
     name = 'Wiener index'
@@ -466,7 +467,7 @@ class WienerIndex(InvariantNum):
         if nx.is_connected(graph):
             return UtilsToInvariants.approx_to_int(nx.wiener_index(graph))
         else:
-            return 10^10
+            return 10 ^ 10
 
 
 class EstradaIndex(InvariantNum):
@@ -517,6 +518,7 @@ class Density(InvariantNum):
     def calculate(graph):
         return nx.density(graph)
 
+
 class AdjacencyEnergy(InvariantNum):
     name = 'Adjacency Energy'
     code = 'Ea'
@@ -525,6 +527,7 @@ class AdjacencyEnergy(InvariantNum):
     @staticmethod
     def calculate(graph):
         return sum(np.absolute(inv_other.AdjacencySpectrum.calculate(graph)))
+
 
 class LaplacianEnergy(InvariantNum):
     name = 'Laplacian Energy'
@@ -535,6 +538,7 @@ class LaplacianEnergy(InvariantNum):
     def calculate(graph):
         return sum(np.absolute(inv_other.LaplacianSpectrum.calculate(graph)))
 
+
 class SignlessLaplacianEnergy(InvariantNum):
     name = 'Signless Laplacian Energy'
     code = 'Eq'
@@ -543,6 +547,7 @@ class SignlessLaplacianEnergy(InvariantNum):
     @staticmethod
     def calculate(graph):
         return sum(np.absolute(inv_other.SignlessLaplacianSpectrum.calculate(graph)))
+
 
 class DistanceEnergy(InvariantNum):
     name = 'Distance Energy'

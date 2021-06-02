@@ -198,6 +198,7 @@ class MaximumMatching(InvariantOther):
     def calculate(graph):
         return set(nx.max_weight_matching(graph, weight=None))
 
+
 class MaximumClique(InvariantOther):
     name = "Maximum Clique"
     type = 'set'
@@ -226,7 +227,6 @@ class MinimumEdgeCover(InvariantOther):
             return nx.algorithms.covering.min_edge_cover(graph)
         else:
             return "Graph has isolate vertice."
-
 
 
 class DegreeSequence(InvariantOther):
@@ -272,6 +272,7 @@ class BetweennessCentrality(InvariantOther):
     @staticmethod
     def calculate(graph):
         return dict(sorted(nx.betweenness_centrality(graph).items(), key=lambda x: x[1]))
+
 
 class HarmonicCentrality(InvariantOther):
     name = "Harmonic Centrality"
@@ -328,5 +329,10 @@ class MainEigenvalueSignlessLaplacian(InvariantOther):
         return list(Utils.MainEigenvalue(SignlessLaplacianMatrix.calculate(graph)))
 
 
+class MinimumGraphColoring(InvariantOther):
+    name = "Minimum graph coloring"
+    type = "dict"
 
-
+    @staticmethod
+    def calculate(graph):
+        return dict(sorted(nx.greedy_color(graph).items()))
