@@ -4,7 +4,8 @@ import numpy.linalg as la
 import numpy as np
 import scipy.sparse as ss
 from source.store.operations_and_invariants.invariants import Invariant
-from source.store.operations_and_invariants.invariants import UtilsToInvariants
+from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
+import source.store.operations_and_invariants.other_invariants as inv_other
 
 
 class InvariantBool(Invariant):
@@ -91,6 +92,7 @@ class TriangleFree(InvariantBool):
     def calculate(graph):
         return gp.is_triangle_free(graph)
 
+
 class BullFree(InvariantBool):
     name = 'Bull-free'
     type = 'bool_structural'
@@ -161,7 +163,7 @@ class SomeEigenIntegerA(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return UtilsToInvariants.is_there_integer(la.eigvalsh(matrix))
+        return Utils.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerL(InvariantBool):
@@ -171,7 +173,7 @@ class SomeEigenIntegerL(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return UtilsToInvariants.is_there_integer(la.eigvalsh(matrix))
+        return Utils.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerQ(InvariantBool):
@@ -181,7 +183,7 @@ class SomeEigenIntegerQ(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return UtilsToInvariants.is_there_integer(la.eigvalsh(matrix))
+        return Utils.is_there_integer(la.eigvalsh(matrix))
 
 
 class SomeEigenIntegerD(InvariantBool):
@@ -191,7 +193,7 @@ class SomeEigenIntegerD(InvariantBool):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return UtilsToInvariants.is_there_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+            return Utils.is_there_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
         else:
             return False
 
@@ -203,7 +205,7 @@ class IntegralA(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return UtilsToInvariants.integral(la.eigvalsh(matrix))
+        return Utils.integral(la.eigvalsh(matrix))
 
 
 class IntegralL(InvariantBool):
@@ -213,7 +215,7 @@ class IntegralL(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return UtilsToInvariants.integral(la.eigvalsh(matrix))
+        return Utils.integral(la.eigvalsh(matrix))
 
 
 class IntegralQ(InvariantBool):
@@ -223,7 +225,7 @@ class IntegralQ(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return UtilsToInvariants.integral(la.eigvalsh(matrix))
+        return Utils.integral(la.eigvalsh(matrix))
 
 
 class IntegralD(InvariantBool):
@@ -233,7 +235,7 @@ class IntegralD(InvariantBool):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return UtilsToInvariants.integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+            return Utils.integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
         else:
             return False
 
@@ -245,7 +247,7 @@ class LargestEigenIntegerA(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return UtilsToInvariants.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerL(InvariantBool):
@@ -255,7 +257,7 @@ class LargestEigenIntegerL(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return UtilsToInvariants.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerQ(InvariantBool):
@@ -265,7 +267,7 @@ class LargestEigenIntegerQ(InvariantBool):
     @staticmethod
     def calculate(graph):
         matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return UtilsToInvariants.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerD(InvariantBool):
@@ -275,8 +277,7 @@ class LargestEigenIntegerD(InvariantBool):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return UtilsToInvariants.is_integer(
-                la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+            return Utils.is_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
         else:
             return False
 
@@ -291,5 +292,53 @@ class RegularTransmission(InvariantBool):
             dist_matrix = nx.algorithms.shortest_paths.floyd_warshall_numpy(graph)
             transmission = [sum(dist_matrix[:, i]) for i in range(0, dist_matrix.shape[0])]
             return bool(max(transmission) == min(transmission))
+        else:
+            return False
+
+
+class InvertibleMatrixA(InvariantBool):
+    name = "Adjacency matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.AdjacencyMatrix.calculate(graph))) != 0)
+
+
+class InvertibleMatrixL(InvariantBool):
+    name = "Laplacian matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.LaplacianMatrix.calculate(graph))) != 0)
+
+
+class InvertibleMatrixQ(InvariantBool):
+    name = "Signless Lap matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.SignlessLaplacianMatrix.calculate(graph))) != 0)
+
+
+class InvertibleMatrixN(InvariantBool):
+    name = "Normalized lap matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.NormalizedLaplacianMatrix.calculate(graph))) != 0)
+
+
+class InvertibleMatrixD(InvariantBool):
+    name = "Distance matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return bool(Utils.approx_to_int(la.det(inv_other.DistanceMatrix.calculate(graph))) != 0)
         else:
             return False

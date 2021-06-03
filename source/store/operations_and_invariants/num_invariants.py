@@ -3,7 +3,7 @@ import networkx as nx
 import numpy as np
 import numpy.linalg as la
 import scipy.sparse as ss
-from source.store.operations_and_invariants.bool_invariants import UtilsToInvariants
+from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 from source.store.operations_and_invariants.invariants import Invariant
 import source.store.operations_and_invariants.other_invariants as inv_other
 
@@ -123,7 +123,7 @@ class GirthNumber(InvariantNum):
         if nx.is_connected(graph):
             return nx.minimum_cycle_basis(graph)
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 # class IndependentDominationNumber(InvariantNum):
@@ -261,7 +261,7 @@ class Diameter(InvariantNum):
         if nx.is_connected(graph):
             return nx.diameter(graph)
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class Radius(InvariantNum):
@@ -274,7 +274,7 @@ class Radius(InvariantNum):
         if nx.is_connected(graph):
             return nx.radius(graph)
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class Largest1EigenA(InvariantNum):
@@ -285,7 +285,7 @@ class Largest1EigenA(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenL(InvariantNum):
@@ -296,7 +296,7 @@ class Largest1EigenL(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenQ(InvariantNum):
@@ -307,7 +307,7 @@ class Largest1EigenQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenN(InvariantNum):
@@ -318,7 +318,7 @@ class Largest1EigenN(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.normalized_laplacian_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenD(InvariantNum):
@@ -329,10 +329,10 @@ class Largest1EigenD(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return UtilsToInvariants.approx_to_int(
+            return Utils.approx_to_int(
                 la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class Largest2EigenA(InvariantNum):
@@ -343,7 +343,7 @@ class Largest2EigenA(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
+        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
 
 
 class Largest2EigenL(InvariantNum):
@@ -354,7 +354,7 @@ class Largest2EigenL(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
+        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
 
 
 class Largest2EigenQ(InvariantNum):
@@ -365,7 +365,7 @@ class Largest2EigenQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
+        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
 
 
 class Largest2EigenN(InvariantNum):
@@ -376,7 +376,7 @@ class Largest2EigenN(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.normalized_laplacian_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
+        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
 
 
 class Largest2EigenD(InvariantNum):
@@ -387,10 +387,10 @@ class Largest2EigenD(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return UtilsToInvariants.approx_to_int(
+            return Utils.approx_to_int(
                 la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 2])
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class AlgebraicConnectivity(InvariantNum):
@@ -401,7 +401,7 @@ class AlgebraicConnectivity(InvariantNum):
     @staticmethod
     def calculate(graph):
         m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return UtilsToInvariants.approx_to_int(la.eigvalsh(m)[1])
+        return Utils.approx_to_int(la.eigvalsh(m)[1])
 
 
 class VertexConnectivity(InvariantNum):
@@ -444,7 +444,7 @@ class MinimumEdgeCover(InvariantNum):
         if nx.isolates(graph) < 1:
             return len(nx.algorithms.covering.min_edge_cover(graph))
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class NumberOfTriangles(InvariantNum):
@@ -465,9 +465,9 @@ class WienerIndex(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return UtilsToInvariants.approx_to_int(nx.wiener_index(graph))
+            return Utils.approx_to_int(nx.wiener_index(graph))
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class EstradaIndex(InvariantNum):
@@ -477,7 +477,7 @@ class EstradaIndex(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return UtilsToInvariants.approx_to_int(nx.estrada_index(graph))
+        return Utils.approx_to_int(nx.estrada_index(graph))
 
 
 class Nullity(InvariantNum):
@@ -487,7 +487,7 @@ class Nullity(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return nx.number_of_nodes(graph) - la.matrix_rank(nx.adj_matrix(graph))
+        return nx.number_of_nodes(graph) - la.matrix_rank(nx.adj_matrix(graph), hermitian=True)
 
 
 class NumberSpanningTree(InvariantNum):
@@ -559,7 +559,7 @@ class DistanceEnergy(InvariantNum):
         if nx.is_connected(graph):
             return sum(np.absolute(inv_other.DistanceSpectrum.calculate(graph)))
         else:
-            return 10 ^ 10
+            return 10**10
 
 
 class MainEigenvalueAdjacency(InvariantNum):
@@ -569,7 +569,7 @@ class MainEigenvalueAdjacency(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(UtilsToInvariants.MainEigenvalue(inv_other.AdjacencyMatrix.calculate(graph)))
+        return len(Utils.MainEigenvalue(inv_other.AdjacencyMatrix.calculate(graph)))
 
 
 class MainEigenvalueDistance(InvariantNum):
@@ -580,7 +580,7 @@ class MainEigenvalueDistance(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return len(UtilsToInvariants.MainEigenvalue(inv_other.DistanceMatrix.calculate(graph)))
+            return len(Utils.MainEigenvalue(inv_other.DistanceMatrix.calculate(graph)))
         else:
             return 0
 
@@ -592,4 +592,110 @@ class MainEigenvalueSignlessLaplacian(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(UtilsToInvariants.MainEigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)))
+        return len(Utils.MainEigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)))
+
+
+class RankAdjacency(InvariantNum):
+    name = 'Rank of Adjacency matrix'
+    code = 'rankA'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return la.matrix_rank(inv_other.AdjacencyMatrix.calculate(graph), hermitian=True)
+
+
+class RankLaplacian(InvariantNum):
+    name = 'Rank of Laplacian Matrix'
+    code = 'rankL'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return la.matrix_rank(inv_other.LaplacianMatrix.calculate(graph), hermitian=True)
+
+
+class RankSignlessLaplacian(InvariantNum):
+    name = 'Rank of Signless Laplacian'
+    code = 'rankQ'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return la.matrix_rank(inv_other.SignlessLaplacianMatrix.calculate(graph), hermitian=True)
+
+
+class RankDistance(InvariantNum):
+    name = 'Rank of Distance matrix'
+    code = 'rankD'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return la.matrix_rank(inv_other.DistanceMatrix.calculate(graph), hermitian=True)
+        else:
+            return 10**10
+
+
+class RankNormalizedLaplacian(InvariantNum):
+    name = 'Rank of Normalized Laplacian matrix'
+    code = 'rankN'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return la.matrix_rank(inv_other.NormalizedLaplacianMatrix.calculate(graph), hermitian=True)
+
+
+class DeterminantAdjacency(InvariantNum):
+    name = 'Determinant of Adjacency matrix'
+    code = 'detA'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.approx_to_int(la.det(inv_other.AdjacencyMatrix.calculate(graph)))
+
+
+class DeterminantLaplacian(InvariantNum):
+    name = 'Determinant of Laplacian matrix'
+    code = 'detL'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.approx_to_int(la.det(inv_other.LaplacianMatrix.calculate(graph)))
+
+
+class DeterminantSignlessLaplacianMatrix(InvariantNum):
+    name = 'Determinant of Signless Lap matrix'
+    code = 'detQ'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.approx_to_int(la.det(inv_other.SignlessLaplacianMatrix.calculate(graph)))
+
+
+class DeterminantDistance(InvariantNum):
+    name = 'Determinant of Distance matrix'
+    code = 'detD'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.approx_to_int(la.det(inv_other.DistanceMatrix.calculate(graph)))
+        else:
+            return 10**10
+
+
+class DeterminantNormalizedLaplacian(InvariantNum):
+    name = 'Determinant of Normalized Lap matrix'
+    code = 'detN'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.approx_to_int(la.det(inv_other.NormalizedLaplacianMatrix.calculate(graph)))

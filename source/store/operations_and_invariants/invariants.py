@@ -78,7 +78,7 @@ class UtilsToInvariants:
         if isinstance(value, (bool, str, set)):
             return str(value)
         else:
-            if value == 10 ^ 10:
+            if value == 10**10:
                 return 'infinite'
             else:
                 return str(np.around(value, precision))
