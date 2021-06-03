@@ -148,12 +148,10 @@ class DomainUnitTests(unittest.TestCase):
         for op in oper.GraphOperations().all:
             self.assertTrue(isinstance(op.calculate(trivial), nx.Graph))
 
-
     def test_calculate_other_invariants(self):
         g = nx.generators.complete_graph(10)
         for inv in inv_other.InvariantOther().all:
             self.assertTrue(isinstance(inv.calculate(g), (numpy.ndarray, list, tuple, dict, str, set)))
-
 
     def test_all_operations(self):
         for opg in oper.GraphOperations().all:
@@ -167,7 +165,6 @@ class DomainUnitTests(unittest.TestCase):
                     self.assertEqual(
                         "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
                     )
-
 
     def test_find_counterexample(self):
         diam = str(inv_num.Diameter.code)
