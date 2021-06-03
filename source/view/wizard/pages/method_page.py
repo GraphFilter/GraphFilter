@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import *
-from source.view.resources.components.icon import Icon
+from source.view.components.icon import Icon
 from PyQt5 import QtCore
 from source.store.help_buttons_text import tip_method
-from source.view.resources.components.help_button import HelpButton
+from source.view.components.help_button import HelpButton
 
 
 class MethodPage(QWizardPage):

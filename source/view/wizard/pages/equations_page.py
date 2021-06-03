@@ -3,7 +3,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from source.store.help_buttons_text import tip_equation
-from source.view.resources.components.help_button import HelpButton
+from source.view.components.help_button import HelpButton
 
 
 class EquationsPage(QWizardPage):

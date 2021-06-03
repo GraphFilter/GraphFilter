@@ -1,8 +1,7 @@
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from source.store.help_buttons_text import tip_conditions
-from source.view.resources.components.help_button import HelpButton
+from source.view.components.help_button import HelpButton
 
 
 class ConditionsPage(QWizardPage):
