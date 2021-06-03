@@ -587,7 +587,7 @@ class DistanceEnergy(InvariantNum):
 
 
 class MainEigenvalueAdjacency(InvariantNum):
-    name = 'Number of main A-eigenvalues'
+    name = 'Number main A-eigenvalues'
     code = 'mainA'
     type = "number_spectral"
 
@@ -597,7 +597,7 @@ class MainEigenvalueAdjacency(InvariantNum):
 
 
 class MainEigenvalueDistance(InvariantNum):
-    name = 'Number of main D-eigenvalues'
+    name = 'Number main D-eigenvalues'
     code = 'mainD'
     type = "number_spectral"
 
@@ -610,7 +610,7 @@ class MainEigenvalueDistance(InvariantNum):
 
 
 class MainEigenvalueSignlessLaplacian(InvariantNum):
-    name = 'Number of main Q-eigenvalues'
+    name = 'Number main Q-eigenvalues'
     code = 'mainQ'
     type = "number_spectral"
 
@@ -620,7 +620,7 @@ class MainEigenvalueSignlessLaplacian(InvariantNum):
 
 
 class RankAdjacency(InvariantNum):
-    name = 'Rank of Adjacency matrix'
+    name = 'Rank Adjacency matrix'
     code = 'rankA'
     type = "number_spectral"
 
@@ -633,7 +633,7 @@ class RankAdjacency(InvariantNum):
 
 
 class RankLaplacian(InvariantNum):
-    name = 'Rank of Laplacian Matrix'
+    name = 'Rank Laplacian Matrix'
     code = 'rankL'
     type = "number_spectral"
 
@@ -646,7 +646,7 @@ class RankLaplacian(InvariantNum):
 
 
 class RankSignlessLaplacian(InvariantNum):
-    name = 'Rank of Signless Laplacian'
+    name = 'Rank Signless Laplacian'
     code = 'rankQ'
     type = "number_spectral"
 
@@ -659,7 +659,7 @@ class RankSignlessLaplacian(InvariantNum):
 
 
 class RankDistance(InvariantNum):
-    name = 'Rank of Distance matrix'
+    name = 'Rank Distance matrix'
     code = 'rankD'
     type = "number_spectral"
 
@@ -674,7 +674,7 @@ class RankDistance(InvariantNum):
 
 
 class RankNormalizedLaplacian(InvariantNum):
-    name = 'Rank of Normalized Laplacian matrix'
+    name = 'Rank Normalized Lap matrix'
     code = 'rankN'
     type = "number_spectral"
 
@@ -687,7 +687,7 @@ class RankNormalizedLaplacian(InvariantNum):
 
 
 class DeterminantAdjacency(InvariantNum):
-    name = 'Determinant of Adjacency matrix'
+    name = 'Determinant Adjacency'
     code = 'detA'
     type = "number_spectral"
 
@@ -697,7 +697,7 @@ class DeterminantAdjacency(InvariantNum):
 
 
 class DeterminantLaplacian(InvariantNum):
-    name = 'Determinant of Laplacian matrix'
+    name = 'Determinant Laplacian matrix'
     code = 'detL'
     type = "number_spectral"
 
@@ -707,7 +707,7 @@ class DeterminantLaplacian(InvariantNum):
 
 
 class DeterminantSignlessLaplacianMatrix(InvariantNum):
-    name = 'Determinant of Signless Lap matrix'
+    name = 'Determinant Signless Laplacian'
     code = 'detQ'
     type = "number_spectral"
 
@@ -717,7 +717,7 @@ class DeterminantSignlessLaplacianMatrix(InvariantNum):
 
 
 class DeterminantDistance(InvariantNum):
-    name = 'Determinant of Distance matrix'
+    name = 'Determinant Distance matrix'
     code = 'detD'
     type = "number_spectral"
 
@@ -730,7 +730,7 @@ class DeterminantDistance(InvariantNum):
 
 
 class DeterminantNormalizedLaplacian(InvariantNum):
-    name = 'Determinant of Normalized Lap matrix'
+    name = 'Determinant Normalized Laplacian'
     code = 'detN'
     type = "number_spectral"
 
