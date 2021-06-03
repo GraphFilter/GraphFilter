@@ -275,7 +275,7 @@
     },
     {
       "name": "Main M-eigenvalue (number of)",
-      "definition" : "The eigenvalue x of a matrix M is said to be a main eigenvalue of G, if the eigenspace E(x) is not orthogonal to the all-1 vector. Where M is A, L, Q or D matrix.",
+      "definition" : "The eigenvalue x of a matrix M is said to be a main eigenvalue of G, if the eigenspace E(x) is not orthogonal to the all-1 vector. Where M is A, Q or D matrix.",
       "usage": "For filtering click on the respective button in the equation to use it and get the number of main eigenvalues.  Or in Visualization you can check '<b>number of main M-eigenvalues</b>' or '<b>main M-eigenvalues (set)</b>' in the invariants menu to calculate in the plotted graph",
       "link": "http://pefmath.etf.rs/vol1num2/AADM-Vol1-No2-455-471.pdf",
       "implementation": "Numpy and own implementation"

@@ -11,7 +11,7 @@ import source.store.operations_and_invariants.operations as oper
 
 from source.domain.equation import Equation
 from source.domain.filter_list import FilterList
-from source.store.operations_and_invariants.bool_invariants import UtilsToInvariants
+from source.store.operations_and_invariants.invariants import UtilsToInvariants
 
 
 class Helper:
@@ -75,6 +75,7 @@ class ExpressionUnitTests(unittest.TestCase):
         oper.GraphOperations()
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(Helper.run('single_graph.g6', f'{inv.code}(G)==1', {}) >= 0)
+            print(inv.name)
 
     def test_math_symbol(self):
         # {"<=": "\u2264", ">=": "\u2265", "!=": "\u2260", "**": "^", "pi": "\u03c0"}
@@ -131,30 +132,38 @@ class DomainUnitTests(unittest.TestCase):
         self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
 
     def test_name_of_all_bool_invariant(self):
-        j = 0
-        is_bool = True
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(Helper.run('single_graph.g6', '', {inv.name: 'true'}) >= 0)
             self.assertTrue(Helper.run('single_graph.g6', '', {inv.name: 'false'}) >= 0)
-            is_bool = is_bool and inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8')))
-            j = j + 1
-        self.assertTrue(isinstance(is_bool, bool))
+            self.assertTrue(isinstance(inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8'))), bool))
+
+    def test_all_invariants_with_trivial_graph(self):
+        trivial = nx.trivial_graph()
+        for inv in inv_num.InvariantNum().all:
+            self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32)))
+        for inv in inv_bool.InvariantBool().all:
+            self.assertTrue(isinstance(inv.calculate(trivial), bool))
+        for inv in inv_other.InvariantOther().all:
+            self.assertTrue(isinstance(inv.calculate(trivial), (numpy.ndarray, list, tuple, dict, str, set)))
+        for op in oper.GraphOperations().all:
+            self.assertTrue(isinstance(op.calculate(trivial), nx.Graph))
 
     def test_calculate_other_invariants(self):
         g = nx.generators.complete_graph(10)
-        for inv in inv_other.InvariantOther.all:
-            self.assertTrue(isinstance(inv.calculate(g), (numpy.ndarray, list, tuple)))
+        for inv in inv_other.InvariantOther().all:
+            self.assertTrue(isinstance(inv.calculate(g), (numpy.ndarray, list, tuple, dict, str, set)))
 
     def test_all_operations(self):
-        for opg in oper.GraphOperations.all:
-            for opm in oper.MathOperations.all:
-                for inv in inv_num.InvariantNum.all:
+        for opg in oper.GraphOperations().all:
+            for opm in oper.MathOperations().all:
+                for inv in inv_num.InvariantNum().all:
+                    print(f'{opm.name}-{str(inv.name)}-{str(opg.name)}')
                     self.assertTrue(Helper.run('single_graph.g6',
-                                               f'{str(opm.code)}({str(inv.code)}{str(opg.code)}(G))>0', {}) >= 1
+                                               f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0', {}) >= 0
                                     )
 
                     self.assertEqual(
-                        "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}{str(opg.code)}(G))>0')
+                        "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
                     )
 
     def test_find_counterexample(self):

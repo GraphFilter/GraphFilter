@@ -95,6 +95,10 @@ class Graph(GraphOperations):
     code = "G"
     is_a_function = False
 
+    @staticmethod
+    def calculate(graph):
+        return graph
+
 
 class Sin(MathOperations):
     name = "sin"
