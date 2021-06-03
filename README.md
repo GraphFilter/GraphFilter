@@ -55,14 +55,14 @@ First, install the project from the [Releases](https://github.com/GraphFilter/Gr
 
 When opening the program, at the first page start a new project clicking on the New Project button.
 <h4 align="center">
-<image src="https://user-images.githubusercontent.com/37659479/119238661-20470080-bb1a-11eb-9965-a96171490aaf.png" width="500">
+<image src="/resources/images/welcome_window.png" width="500">
 </h4>
 
 When starting a new project, you will be guided through a wizard to select the filtering conditions.
 
 ### First, choose the Project Name and the Project Location.
 <h4 align="center">
-<image src="https://user-images.githubusercontent.com/37659479/119238764-f3471d80-bb1a-11eb-97ee-b2ed3722da71.png">
+<image src="/resources/images/wizard_project_info.png">
 </h4>
 
 ### At the Equations page, insert the equation you want to use to filter graphs.
@@ -73,20 +73,20 @@ You can insert the (in)equations involving the invariants of your choice, using 
 ### Choose a condition to the filter
 You can check the Boolean conditions you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
 <h4 align="center">
-<image src="https://user-images.githubusercontent.com/37659479/119239270-571f1580-bb1e-11eb-93b1-507674fd7b64.png">
+<image src="/resources/images/wizard_conditions.png">
 </h4>
 
 ### Choose the method to filter
 The user decides which filtering method: if he wants to filter all the graphs, among his input list, that satisfy the imposed conditions. Or if you prefer, just look if there is a graph that does not satisfy those conditions, useful for trying to refute conjectures.
 <h4 align="center">
-<image src="https://user-images.githubusercontent.com/37659479/119239299-90578580-bb1e-11eb-9acd-e868e3955e7b.png">
+<image src="/resources/images/wizard_method.png">
 </h4>
 
 
 ### Input the files with the graphs you want to filter
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
 <h4 align="center">
-<image src="https://user-images.githubusercontent.com/37659479/119239332-bf6df700-bb1e-11eb-87d1-807825643f14.png">
+<image src="/resources/images/wizard_input_graphs.png">
 </h4>
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But you do not have to understand how this fortat works. You can find files in this format for different classes of graphs on the pages: 
