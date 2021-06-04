@@ -2,7 +2,6 @@ import grinpy as gp
 import networkx as nx
 import numpy as np
 import numpy.linalg as la
-import scipy.sparse as ss
 from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 from source.store.operations_and_invariants.invariants import Invariant
 import source.store.operations_and_invariants.other_invariants as inv_other
@@ -504,7 +503,7 @@ class Nullity(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return nx.number_of_nodes(graph) - la.matrix_rank(nx.adj_matrix(graph), hermitian=True)
+        return nx.number_of_nodes(graph) - la.matrix_rank(inv_other.AdjacencyMatrix.calculate(graph), hermitian=True)
 
 
 class NumberSpanningTree(InvariantNum):
