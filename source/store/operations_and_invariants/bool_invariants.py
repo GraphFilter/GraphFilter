@@ -1,11 +1,10 @@
-import networkx as nx
 import grinpy as gp
+import networkx as nx
 import numpy.linalg as la
-import numpy as np
-import scipy.sparse as ss
+
+import source.store.operations_and_invariants.other_invariants as inv_other
 from source.store.operations_and_invariants.invariants import Invariant
 from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
-import source.store.operations_and_invariants.other_invariants as inv_other
 
 
 class InvariantBool(Invariant):
@@ -157,129 +156,150 @@ class HasBridge(InvariantBool):
 
 
 class SomeEigenIntegerA(InvariantBool):
-    name = 'Some A-eigenvalue integer'
+    name = 'Some A-eigenvalue integer\n(Adjacency)'
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.is_there_integer(la.eigvalsh(matrix))
+        return Utils.is_there_integer(inv_other.AdjacencySpectrum.calculate(graph))
 
 
 class SomeEigenIntegerL(InvariantBool):
-    name = "Some L-eigenvalue integer"
+    name = "Some L-eigenvalue integer\n(Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.is_there_integer(la.eigvalsh(matrix))
+        return Utils.is_there_integer(inv_other.LaplacianSpectrum.calculate(graph))
 
 
 class SomeEigenIntegerQ(InvariantBool):
-    name = "Some Q-eigenvalue integer"
+    name = "Some Q-eigenvalue integer\n(Signless Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.is_there_integer(la.eigvalsh(matrix))
+        return Utils.is_there_integer(inv_other.SignlessLaplacianSpectrum.calculate(graph))
 
 
-class SomeEigenIntegerD(InvariantBool):
-    name = "Some D-eigenvalue integer"
+
+class SomeEigenIntegerN(InvariantBool):
+    name = "Some N-eigenvalue integer\n(Normalized Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.is_there_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
-        else:
-            return False
+        return Utils.is_there_integer(inv_other.NormalizedLaplacianSpectrum.calculate(graph))
+
+
+
+    class SomeEigenIntegerD(InvariantBool):
+        name = "Some D-eigenvalue integer\n(Distance)"
+        type = 'bool_spectral'
+
+        @staticmethod
+        def calculate(graph):
+            if nx.is_connected(graph):
+                return Utils.is_there_integer(inv_other.DistanceSpectrum.calculate(graph))
+            else:
+                return False
 
 
 class IntegralA(InvariantBool):
-    name = "A-integral"
+    name = "A-integral (Adjacency)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.integral(la.eigvalsh(matrix))
+        return Utils.integral(inv_other.AdjacencySpectrum.calculate(graph))
 
 
 class IntegralL(InvariantBool):
-    name = "L-integral"
+    name = "L-integral (Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.integral(la.eigvalsh(matrix))
+        return Utils.integral(inv_other.LaplacianSpectrum.calculate(graph))
 
 
 class IntegralQ(InvariantBool):
-    name = "Q-integral"
+    name = "Q-integral (Signless Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.integral(la.eigvalsh(matrix))
+        return Utils.integral(inv_other.SignlessLaplacianSpectrum.calculate(graph))
 
 
 class IntegralD(InvariantBool):
-    name = "D-integral"
+    name = "D-integral (Distance)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.integral(la.eigvalsh(nx.floyd_warshall_numpy(graph)))
+            return Utils.integral(inv_other.DistanceSpectrum.calculate(graph))
+        else:
+            return False
+
+class IntegralN(InvariantBool):
+    name = "N-integral (Normalized Laplacian)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.integral(inv_other.NormalizedLaplacianSpectrum.calculate(graph))
         else:
             return False
 
 
 class LargestEigenIntegerA(InvariantBool):
-    name = "Largest A-eigenvalue is integer"
+    name = "Largest A-eigenvalue is integer\n(Adjacency)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(inv_other.AdjacencySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerL(InvariantBool):
-    name = "Largest L-eigenvalue is integer"
+    name = "Largest L-eigenvalue is integer\n(Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(inv_other.LaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerQ(InvariantBool):
-    name = "Largest Q-eigenvalue is integer"
+    name = "Largest Q-eigenvalue is integer\n(Signless Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
-        matrix = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.is_integer(la.eigvalsh(matrix)[nx.number_of_nodes(graph) - 1])
+        return Utils.is_integer(inv_other.SignlessLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class LargestEigenIntegerD(InvariantBool):
-    name = "Largest D-eigenvalue is integer"
+    name = "Largest D-eigenvalue is integer\n(Distance Matrix)"
     type = 'bool_spectral'
 
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.is_integer(la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+            return Utils.is_integer(inv_other.DistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
         else:
             return False
+
+class LargestEigenIntegerN(InvariantBool):
+    name = "Largest N-eigenvalue is integer\n(Normalized Laplacian)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_integer(inv_other.NormalizedLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class RegularTransmission(InvariantBool):
@@ -297,7 +317,7 @@ class RegularTransmission(InvariantBool):
 
 
 class InvertibleMatrixA(InvariantBool):
-    name = "Adjacency matrix is invertible"
+    name = "A is invertible\n(Adjacency)"
     type = 'bool_spectral'
 
     @staticmethod
@@ -306,7 +326,7 @@ class InvertibleMatrixA(InvariantBool):
 
 
 class InvertibleMatrixL(InvariantBool):
-    name = "Laplacian matrix is invertible"
+    name = "L is invertible\n(Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
@@ -315,7 +335,7 @@ class InvertibleMatrixL(InvariantBool):
 
 
 class InvertibleMatrixQ(InvariantBool):
-    name = "Signless Lap matrix is invertible"
+    name = "Q is invertible\n(Signless Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
@@ -324,7 +344,7 @@ class InvertibleMatrixQ(InvariantBool):
 
 
 class InvertibleMatrixN(InvariantBool):
-    name = "Normalized lap matrix is invertible"
+    name = "N is invertible\n(Normalized Laplacian)"
     type = 'bool_spectral'
 
     @staticmethod
@@ -333,7 +353,7 @@ class InvertibleMatrixN(InvariantBool):
 
 
 class InvertibleMatrixD(InvariantBool):
-    name = "Distance matrix is invertible"
+    name = "D is invertible\n(Distance)"
     type = 'bool_spectral'
 
     @staticmethod

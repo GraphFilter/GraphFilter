@@ -276,9 +276,11 @@ class WizardController:
         form = button_clicked.parentWidget()
         input_file = form.findChildren(QLineEdit)
         file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Text files (*.txt)", "Graph Filter (*.g6)"])
+        file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
         # self.graph_files_page.tr("Text files (*.g6)")
-        file_path = file_dialog.getOpenFileName(filter="Graph6 Files (*.g6 *.txt);;Text files (*.txt);;Graph6 files (*.g6)")
+        file_path = file_dialog.getOpenFileName(
+            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;Text files (*.txt *.txt.gz);;Graph6 files (*.g6 *.g6.gz)"
+        )
         self.save_graph_file_path(file_path[0], input_file[-1])
 
     def on_insert_graph_file_path(self):

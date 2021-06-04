@@ -1,6 +1,7 @@
 import os
 import re
 import networkx as nx
+import gzip
 
 
 def validate_path(path):
@@ -26,7 +27,11 @@ def clear_layout(layout):
 def extract_files_to_list(files):
     list_g6 = []
     for file in files:
-        list_g6.extend(open(file, 'r').read().splitlines())
+        if file.endswith('.gz'):
+            file_ungzipped = gzip.open(file, 'r')
+            list_g6.extend(file_ungzipped.read().decode('utf-8').splitlines())
+        else:
+            list_g6.extend(open(file, 'r').read().splitlines())
     return list_g6
 
 

@@ -3,6 +3,11 @@ a generic single graph
 
 -----------------------------
 
+disconnect_graph
+a disconnected graph with at least one isolated vertice
+
+-----------------------------
+
 graphs1
 Some trees and only one no-tree in line 264
 
@@ -67,6 +72,7 @@ graphs9
 
 graphs10
 Chordal with 7 vertices
+Gzip format
 
 -----------------------------
 

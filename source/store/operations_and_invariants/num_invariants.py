@@ -285,8 +285,7 @@ class Largest1EigenA(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        m = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(inv_other.AdjacencySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenL(InvariantNum):
@@ -296,8 +295,7 @@ class Largest1EigenL(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-        return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(inv_other.LaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenQ(InvariantNum):
@@ -307,8 +305,7 @@ class Largest1EigenQ(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
+        return Utils.approx_to_int(inv_other.SignlessLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenN(InvariantNum):
@@ -318,8 +315,8 @@ class Largest1EigenN(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        m = ss.csc_matrix.toarray(nx.normalized_laplacian_matrix(graph))
-        return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 1])
+        return \
+            Utils.approx_to_int(inv_other.NormalizedLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
 
 
 class Largest1EigenD(InvariantNum):
@@ -330,8 +327,7 @@ class Largest1EigenD(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.approx_to_int(
-                la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 1])
+            return Utils.approx_to_int(inv_other.DistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
         else:
             return 10 ** 10
 
@@ -344,8 +340,7 @@ class Largest2EigenA(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph):
-            m = ss.csc_matrix.toarray(nx.adj_matrix(graph))
-            return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
+            return Utils.approx_to_int(inv_other.AdjacencySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
         else:
             return 0
 
@@ -358,8 +353,7 @@ class Largest2EigenL(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-            return Utils.approx_to_int(la.eigvalsh(m)[nx.number_of_nodes(graph) - 2])
+            return Utils.approx_to_int(inv_other.LaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
         else:
             return 0
 
@@ -372,8 +366,8 @@ class Largest2EigenQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            m = ss.csc_matrix.toarray(np.abs(nx.laplacian_matrix(graph)))
-            return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
+            return \
+                Utils.approx_to_int(inv_other.SignlessLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
         else:
             return 0
 
@@ -386,8 +380,9 @@ class Largest2EigenN(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            m = ss.csc_matrix.toarray(nx.normalized_laplacian_matrix(graph))
-            return Utils.approx_to_int(la.eigvalsh(np.abs(m))[nx.number_of_nodes(graph) - 2])
+            return Utils.approx_to_int(
+                inv_other.NormalizedLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2]
+            )
         else:
             return 0
 
@@ -402,8 +397,7 @@ class Largest2EigenD(InvariantNum):
         if nx.number_of_nodes(graph) < 2:
             return 0
         elif nx.is_connected(graph):
-            return Utils.approx_to_int(
-                la.eigvalsh(nx.floyd_warshall_numpy(graph))[nx.number_of_nodes(graph) - 2])
+            return Utils.approx_to_int(inv_other.DistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
         else:
             return 10 ** 10
 
@@ -416,8 +410,7 @@ class AlgebraicConnectivity(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            m = ss.csc_matrix.toarray(nx.laplacian_matrix(graph))
-            return Utils.approx_to_int(la.eigvalsh(m)[1])
+            return Utils.approx_to_int(inv_other.LaplacianSpectrum.calculate(graph)[1])
         else:
             return 0
 
@@ -476,7 +469,7 @@ class NumberOfTriangles(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1 and nx.number_of_edges(graph) > 1:
-            return nx.algorithms.cluster.triangles(graph)
+            return int(sum(nx.algorithms.cluster.triangles(graph).values())/3)
         else:
             return 0
 
@@ -515,7 +508,7 @@ class Nullity(InvariantNum):
 
 
 class NumberSpanningTree(InvariantNum):
-    name = 'Number of spanning rees'
+    name = 'Number of spanning trees'
     code = '\u0288'
     type = "number_structural"
 
