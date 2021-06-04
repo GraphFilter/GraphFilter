@@ -1,5 +1,6 @@
 import os
 import unittest
+import gzip
 
 import networkx as nx
 import numpy
@@ -17,11 +18,14 @@ from source.store.operations_and_invariants.invariants import UtilsToInvariants
 class Helper:
 
     @staticmethod
-    def list_graphs_from(name_file):
-        file = open(os.path.abspath(name_file), 'r')
-        group = file.read().splitlines()
-        file.close()
-        return group
+    def list_graphs_from(file):
+        list_g6 = []
+        if file.endswith('.gz'):
+            file_ungzipped = gzip.open(os.path.abspath(file), 'r')
+            list_g6.extend(file_ungzipped.read().decode('utf-8').splitlines())
+        else:
+            list_g6.extend(open(os.path.abspath(file), 'r').read().splitlines())
+        return list_g6
 
     @staticmethod
     def run(file, expression, choices):
@@ -140,13 +144,25 @@ class DomainUnitTests(unittest.TestCase):
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
         for inv in inv_num.InvariantNum().all:
-            self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32)))
+            self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32, numpy.int64)))
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(trivial), bool))
         for inv in inv_other.InvariantOther().all:
             self.assertTrue(isinstance(inv.calculate(trivial), (numpy.ndarray, list, tuple, dict, str, set)))
         for op in oper.GraphOperations().all:
             self.assertTrue(isinstance(op.calculate(trivial), nx.Graph))
+
+    def test_all_invariants_with_disconnected_graph(self):
+        # NOTE: disconnected graph with isolate vertice
+        discon_graph = nx.from_graph6_bytes('J????OC?wF_'.encode('utf-8'))
+        for inv in inv_num.InvariantNum().all:
+            self.assertTrue(isinstance(inv.calculate(discon_graph), (float, int, numpy.int32, numpy.int64)))
+        for inv in inv_bool.InvariantBool().all:
+            self.assertTrue(isinstance(inv.calculate(discon_graph), bool))
+        for inv in inv_other.InvariantOther().all:
+            self.assertTrue(isinstance(inv.calculate(discon_graph), (numpy.ndarray, list, tuple, dict, str, set)))
+        for op in oper.GraphOperations().all:
+            self.assertTrue(isinstance(op.calculate(discon_graph), nx.Graph))
 
     def test_calculate_other_invariants(self):
         g = nx.generators.complete_graph(10)
@@ -213,7 +229,7 @@ class MiscellaneousTests(unittest.TestCase):
                          Helper.run('graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1_a}(G)',
                                     planar))
 
-        self.assertEqual(1, Helper.run('graphs10.g6', f'{eigen1_q}(G)>2 OR {eigen1_q}(G)<=2', chordal))
+        self.assertEqual(1, Helper.run('graphs10.g6.gz', f'{eigen1_q}(G)>2 OR {eigen1_q}(G)<=2', chordal))
 
     def test_largest_eigen_L(self):
         eigen1_l = str(inv_num.Largest1EigenL.code)

@@ -14,7 +14,8 @@ tip_conditions = "<p> In this screen you will enter the conditions of the true/f
 
 tip_files = "<p> In this screen you must insert the files containing the lists of the graphs to be analyzed. The " \
             "files must be in the .g6 format and can contain several graphs. If you want to insert more than one " \
-            "file, just click '+', to remove a file click '-'. </p>"
+            "file, just click '+', to remove a file click '-'. <br> " \
+            "Accepted file formats: .g6, .txt, .g6.gz and .txt.gz</p>"
 
 tip_review = "<p> This is the last screen before starting to filter. Here you can review all the parameters " \
              "inserted. </p>"
