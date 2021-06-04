@@ -66,38 +66,43 @@ First, install the project from the [Releases](https://github.com/GraphFilter/Gr
 
 When opening the program, at the first page start a new project clicking on the New Project button.
 <br/>
-<br/>
+<h4 align="center">
 <image src="/resources/images/welcome_window.png" width="500">
-
+</h4> 
 When starting a new project, you will be guided through a wizard to select the filtering conditions.
 
 ### First, choose the Project Name and the Project Location.
-<image src="/resources/images/wizard_project_info.png">
+<h4 align="center">
+<image src="/resources/images/wizard_project_info.png" width="800">
+</h4> 
 
-### At the Equations page, insert the equation you want to use to filter graphs.
+  ### At the Equations page, insert the equation you want to use to filter graphs.
 You can insert the (in)equations involving the invariants of your choice, using either the keyboard or the buttons to assist in the insertion. You can also leave it empty, but then you will have to choose a least one Condition to filter.
-<br/>
-<br/>
-![](/resources/gifs/equation_page.gif)
+
+<h4 align="center">
+<image src="/resources/gifs/wizard_equations.gif" width="800">
+</h4> 
   
 ### Choose a condition to the filter
 You can check the Boolean conditions you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
-<br/>
-<br/>
-<image src="/resources/images/wizard_conditions.png">
+
+<h4 align="center">
+<image src="/resources/images/wizard_conditions.png" width="800">
+</h4> 
 
 ### Choose the method to filter
 The user decides which filtering method: if he wants to filter all the graphs, among his input list, that satisfy the imposed conditions. Or if you prefer, just look if there is a graph that does not satisfy those conditions, useful for trying to refute conjectures.
-<br/>
-<br/>
-<image src="/resources/images/wizard_method.png">
 
+<h4 align="center">
+<image src="/resources/images/wizard_method.png" width="800">
+</h4>
 
 ### Input the files with the graphs you want to filter
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
-<br/>
-<br/>
-<image src="/resources/images/wizard_input_graphs.png">
+
+<h4 align="center">
+<image src="/resources/images/wizard_input_graphs.png" width="800">
+</h4>
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But you do not have to understand how this fortat works. You can find files in this format for different classes of graphs on the pages: 
 > * [House of graphs](https://hog.grinvin.org/MetaDirectory.action)
@@ -112,11 +117,16 @@ After these steps, the program will analyze all the conditions and the filtering
 ### Project Main Window
 Here you can see a visualization of the graph, allowing the movement in the vertices with the mouse cursor. There is also a List of invariants to be calculated in the displayed graph, just mark the desired invariants and they will appear in the Info dock, which can be resized or even seen as a separate window, for a better visualization. In the dictionary tab you can see a short definition of each invariant implemented in the program.
 
+<h4 align="center">
+<image src="/resources/gifs/project_window.gif" width="1280">
+</h4>
 To navigate between the graphs returned from the filtering, you can use the combo box or navigation arrows at the top of the window.
 
-In the "File> Export to" menu, you can export the graphs returned in the filtering to other formats: PDF, PNG, TikZ or graph6.
-
-![](/resources/gifs/project_window.gif)
+In the `File > Export to` menu, you can export the graphs returned in the filtering to other formats: 
+- PDF
+- PNG
+- TikZ
+- graph6
 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
