@@ -144,9 +144,8 @@ class DomainUnitTests(unittest.TestCase):
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
         for inv in inv_num.InvariantNum().all:
-            self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32)))
+            self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32, numpy.int64)))
         for inv in inv_bool.InvariantBool().all:
-            print(inv.name)
             self.assertTrue(isinstance(inv.calculate(trivial), bool))
         for inv in inv_other.InvariantOther().all:
             self.assertTrue(isinstance(inv.calculate(trivial), (numpy.ndarray, list, tuple, dict, str, set)))
