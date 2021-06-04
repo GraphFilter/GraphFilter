@@ -116,7 +116,7 @@ To navigate between the graphs returned from the filtering, you can use the comb
 
 In the "File> Export to" menu, you can export the graphs returned in the filtering to other formats: PDF, PNG, TikZ or graph6.
 
-![](/resources/gifs/complete_main_window.gif)
+![](/resources/gifs/project_window.gif)
 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
