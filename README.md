@@ -67,7 +67,7 @@ When starting a new project, you will be guided through a wizard to select the f
 You can insert the (in)equations involving the invariants of your choice, using either the keyboard or the buttons to assist in the insertion. You can also leave it empty, but then you will have to choose a least one Condition to filter.
 <br/>
 <br/>
-![](/resources/gif/equation_page.gif)
+![](/resources/gifs/equation_page.gif)
   
 ### Choose a condition to the filter
 You can check the Boolean conditions you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
@@ -105,7 +105,7 @@ To navigate between the graphs returned from the filtering, you can use the comb
 
 In the "File> Export to" menu, you can export the graphs returned in the filtering to other formats: PDF, PNG, TikZ or graph6.
 
-![](/resources/gif/complete_main_window.gif)
+![](/resources/gifs/complete_main_window.gif)
 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
