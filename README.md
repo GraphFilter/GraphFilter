@@ -54,7 +54,7 @@ To from the source code, you have to:
 - [Clone this project using git](https://github.com/GraphFilter/GraphFilter/wiki/Setup#cloning) or [Download the source code from the release](https://github.com/GraphFilter/GraphFilter/wiki/Setup#downloading)
 - Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/Setup#virtual-environment) (optional)
 - [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/Setup#install-required-libraries)
-- Then, [```run the app.py```](https://github.com/GraphFilter/GraphFilter/wiki/Setup#running) from the project's source folder
+- Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/Setup#running) from the project's source folder
 
 First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
 
