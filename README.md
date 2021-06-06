@@ -56,8 +56,6 @@ To from the source code, you have to:
 - [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#install-required-libraries)
 - Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#running) from the project's source folder
 
-First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
-
 ### Release
 Download the compact file from the release that matches your Operatonal System.
 
