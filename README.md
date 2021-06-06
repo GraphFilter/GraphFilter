@@ -58,8 +58,21 @@ To from the source code, you have to:
 
 First, install the project from the [Releases](https://github.com/GraphFilter/GraphFilter/releases), download the program of the latest version to your specific Operation System:
 
-### Windows
-### Linux
+### Release
+Download the compact file from the release that matches your Operatonal System.
+
+#### Windows
+- Using an [extracting tool](https://winrar.en.softonic.com/), extract the file to any location folder you want
+- Run the installer
+- Follow the steps
+- Lanch the program
+
+#### Linux
+- Using the terminal, go to the file location
+- Extract the file
+- Enter the extracted GraphFilter directory
+- Launch the program
+
 ### Mac
 
 ## Getting started
