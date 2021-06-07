@@ -93,14 +93,14 @@ When starting a new project, you will be guided through a wizard to select the f
 </h4> 
 
   ### At the Equations page, insert the equation you want to use to filter graphs.
-You can insert the (in)equations involving the invariants of your choice, using either the keyboard or the buttons to assist in the insertion. You can also leave it empty, but then you will have to choose a least one Condition to filter.
+You can insert the (in)equations involving the [invariants](https://github.com/GraphFilter/GraphFilter/wiki/Invariants-and-Operations#numeric-invariants) and [operations](https://github.com/GraphFilter/GraphFilter/wiki/Invariants-and-Operations#operations)of your choice, using either the keyboard or the buttons to assist in the insertion. You can also leave it empty, but in the next step you will have to choose a least one Condition to filter.
 
 <h4 align="center">
 <image src="/resources/gifs/wizard_equations.gif" width="800">
 </h4> 
   
 ### Choose a condition to the filter
-You can check the Boolean conditions you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
+You can check the [Boolean conditions](https://github.com/GraphFilter/GraphFilter/wiki/Invariants-and-Operations#boolean-invariants) you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
 
 <h4 align="center">
 <image src="/resources/images/wizard_conditions.png" width="800">
