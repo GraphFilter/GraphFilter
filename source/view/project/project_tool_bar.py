@@ -7,7 +7,7 @@ class ProjectToolBar(QToolBar):
     def __init__(self):
         super().__init__()
 
-        self.filtered_graphs_label = QLabel("List of graphs filtered")
+        self.filtered_graphs_label = QLabel("  List of graphs filtered")
 
         self.left_button = QPushButton()
         self.right_button = QPushButton()
@@ -22,6 +22,7 @@ class ProjectToolBar(QToolBar):
     def set_content_attributes(self):
         self.layout().setSpacing(30)
         self.layout().setContentsMargins(15, 10, 20, 20)
+        self.setMinimumHeight(45)
         self.setMovable(False)
 
         self.combo_graphs.adjustSize()

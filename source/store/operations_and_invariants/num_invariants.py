@@ -2,6 +2,7 @@ import grinpy as gp
 import networkx as nx
 import numpy as np
 import numpy.linalg as la
+import itertools
 from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 from source.store.operations_and_invariants.invariants import Invariant
 import source.store.operations_and_invariants.other_invariants as inv_other
@@ -552,7 +553,9 @@ class LaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return sum(np.absolute(inv_other.LaplacianSpectrum.calculate(graph)))
+        eigenvalues = inv_other.LaplacianSpectrum.calculate(graph)
+        avg_degree = DegreeAverage.calculate(graph)
+        return sum([np.absolute(x - avg_degree) for x in eigenvalues])
 
 
 class SignlessLaplacianEnergy(InvariantNum):
@@ -562,7 +565,9 @@ class SignlessLaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return sum(np.absolute(inv_other.SignlessLaplacianSpectrum.calculate(graph)))
+        eigenvalues = inv_other.SignlessLaplacianSpectrum.calculate(graph)
+        avg_degree = DegreeAverage.calculate(graph)
+        return sum([np.absolute(x-avg_degree) for x in eigenvalues])
 
 
 class DistanceEnergy(InvariantNum):
