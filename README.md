@@ -62,7 +62,7 @@ To from the source code, you have to:
 - Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#running) from the project's source folder
 
 ### Release
-Download the compact file from the release that matches your Operatonal System.
+Download the compact file from the release that matches your Operational System.
 
 #### Windows
 - Using an [extracting tool](https://winrar.en.softonic.com/), extract the file to any location folder you want
@@ -76,8 +76,8 @@ Download the compact file from the release that matches your Operatonal System.
 - Enter the extracted GraphFilter directory
 - Launch the program
 
-### Mac
-Unfortunately, to generate an executable file to Mac OS systems an developer account is needed. However, you can stil run Graph Filter by following the [Source Code](#source-code) installation method.
+#### Mac
+Unfortunately, to generate an executable file to Mac OS a developer account is needed. However, you can stil run Graph Filter by following the [Source Code](#source-code) installation method.
 
 ## Getting started
 
