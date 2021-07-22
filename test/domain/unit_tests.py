@@ -24,7 +24,10 @@ class Helper:
             file_ungzipped = gzip.open(os.path.abspath(file), 'r')
             list_g6.extend(file_ungzipped.read().decode('utf-8').splitlines())
         else:
-            list_g6.extend(open(os.path.abspath(file), 'r').read().splitlines())
+            file = open(os.path.abspath(file), 'r')
+            list_g6.extend(file.read().splitlines())
+            file.close()
+
         return list_g6
 
     @staticmethod

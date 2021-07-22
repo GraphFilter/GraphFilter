@@ -35,96 +35,72 @@ class FilterList:
         self.expressions, self.AND_OR = Equation.split_translate_expression(expression)
         self.update_to_progress_bar = update
 
+    def graph_satisfies_equation(self, g):
+        names = {**{"G": g, "g": g}, **dic_math_const}
+        # Check the expressions
+        if len(self.expressions) > 0:
+            if self.AND_OR == 'SINGLE':
+                return simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
+            elif self.AND_OR == 'AND':
+                for exp in self.expressions:
+                    if not simple_eval(exp, functions=self.functions_to_eval, names=names):
+                        return False
+                return True
+            elif self.AND_OR == "OR":
+                for exp in self.expressions:
+                    if simple_eval(exp, functions=self.functions_to_eval, names=names):
+                        return True
+                return False
+        return True
+
+    def graph_satisfies_conditions(self, g):
+        for inv_name in self.list_inv_bool_choices:
+            if self.list_inv_bool_choices[inv_name] == 'true':
+                graph_satisfies = dic_bool_invariants_names[inv_name].calculate(g)
+            else:
+                graph_satisfies = not dic_bool_invariants_names[inv_name].calculate(g)
+            if not graph_satisfies:
+                return False
+        return True
+
+
     def run_filter(self):
         self.list_out = []
         count = 0
         for step, g6code in enumerate(self.list_g6_in):
+            self.update_to_progress_bar(step)
             if g6code == '' or g6code == ' ':
-                self.update_to_progress_bar(step)
                 continue
-            graph_satisfies = True
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                names = {**{"G": g, "g": g}, **dic_math_const}
-                # Check the expressions
-                if len(self.expressions) > 0:
-                    if self.AND_OR == 'SINGLE':
-                        graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
-                    elif self.AND_OR == 'AND':
-                        for exp in self.expressions:
-                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
-                            if not graph_satisfies:
-                                break
-                    elif self.AND_OR == "OR":
-                        for exp in self.expressions:
-                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
-                            if graph_satisfies:
-                                break
-                # Check the boolean invariants
-                if graph_satisfies:
-                    for inv_name in self.list_inv_bool_choices:
-                        if self.list_inv_bool_choices[inv_name] == 'true':
-                            graph_satisfies = dic_bool_invariants_names[inv_name].calculate(g)
-                        else:
-                            graph_satisfies = not dic_bool_invariants_names[inv_name].calculate(g)
-                        if not graph_satisfies:
-                            break
+                if self.graph_satisfies_equation(g):
+                    if self.graph_satisfies_conditions(g):
+                        self.list_out.append(g6code)
+                        count = count + 1
                 self.update_to_progress_bar(step)
-                if graph_satisfies:
-                    self.list_out.append(g6code)
-                    count = count + 1
-                else:
-                    continue
             except Exception:
-                self.update_to_progress_bar(step)
+                self.invalid_lines = self.invalid_lines + 1
                 continue
         return float(count / self.total)
 
     def run_find_counterexample(self):
         self.list_out = []
-        graph_satisfies = True
         for step, g6code in enumerate(self.list_g6_in):
+            self.update_to_progress_bar(step)
             if g6code == '' or g6code == ' ':
-                self.update_to_progress_bar(step)
                 continue
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                names = {**{"G": g, "g": g}, **dic_math_const}
-                # Check the expressions
-                if len(self.expressions) > 0:
-                    if self.AND_OR == 'SINGLE':
-                        graph_satisfies = simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
-                    elif self.AND_OR == 'AND':
-                        for exp in self.expressions:
-                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
-                            if not graph_satisfies:
-                                self.list_out.append(g6code)
-                                return True
-                    elif self.AND_OR == "OR":
-                        for exp in self.expressions:
-                            graph_satisfies = simple_eval(exp, functions=self.functions_to_eval, names=names)
-                            if graph_satisfies:
-                                break
-                        if not graph_satisfies:
-                            self.list_out.append(g6code)
-                            return True
-                    # Check the boolean invariants
-                    if not graph_satisfies:
+                if self.graph_satisfies_equation(g):
+                    if not self.graph_satisfies_conditions(g):
                         self.list_out.append(g6code)
                         return True
-                if graph_satisfies:
-                    for inv_name in self.list_inv_bool_choices:
-                        if self.list_inv_bool_choices[inv_name] == 'true':
-                            graph_satisfies = dic_bool_invariants_names[inv_name].calculate(g)
-                        else:
-                            graph_satisfies = not dic_bool_invariants_names[inv_name].calculate(g)
-                        if not graph_satisfies:
-                            self.list_out.append(g6code)
-                            return True
+                else:
+                    self.list_out.append(g6code)
+                    return True
                 self.update_to_progress_bar(step)
-            except nx.NetworkXError:
+            except Exception:
                 self.invalid_lines = self.invalid_lines + 1
-                self.update_to_progress_bar(step)
                 continue
         return False
 
