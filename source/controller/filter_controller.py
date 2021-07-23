@@ -10,10 +10,10 @@ class FilterController:
     def __init__(self):
 
         self.filter_list = FilterList()
-        self.loading_window = LoadingWindow()
+        self.loading_window = LoadingWindow(self.filter_list.total)
 
     def show_window(self):
-        self.loading_window.progressBar.setMaximum(self.filter_list.total)
+        #self.loading_window.progressBar.setMaximum(self.filter_list.total)
         self.loading_window.show()
 
     def start_filter(self):
@@ -32,6 +32,6 @@ class FilterController:
 
         self.loading_window.close()
 
-    def update(self, step):
-        self.loading_window.increase_step(step)
+    def update(self):
+        self.loading_window.increase_step()
         QApplication.processEvents()

@@ -1,7 +1,10 @@
+import os
+
 from simpleeval import simple_eval
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
-
+import numpy as np
+import multiprocessing as mp
 
 class FilterList:
 
@@ -11,7 +14,6 @@ class FilterList:
         self.list_inv_bool_choices = None
         self.functions_to_eval = {}
         self.list_out = []
-        self.invalid_lines = 0
         self.invariant_bool = None
         self.invariant_num = None
         self.operations_math = None
@@ -28,12 +30,80 @@ class FilterList:
 
     def set_inputs(self, list_g6_in, expression, list_inv_bool_choices, update):
         self.invalid_lines = 0
+        self.satisfied_graphs = 0
         self.list_out.clear()
         self.list_g6_in = list_g6_in
         self.total = len(self.list_g6_in)
         self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = Equation.split_translate_expression(expression)
         self.update_to_progress_bar = update
+
+    # TODO: organizar a variável que armazena linhas inválidas, organizar os métodos filter e findcounterexample.
+    def run_filter(self):
+        if self.total > 100:
+            manager = mp.Manager()
+            cores=os.cpu_count()
+            list_breaked_in = self.subdivide_input_list(cores)
+            list_breaked_out = manager.list(range(cores))
+            list_process=[]
+            for i, list in enumerate(list_breaked_in):
+                list_process.append(mp.Process(target=self.filter_multi, args=(list, i, list_breaked_out)))
+            for process in list_process:
+                process.start()
+            for process in list_process:
+                process.join()
+            for list in list_breaked_out:
+                self.list_out+=list
+            return float(len(self.list_out) / self.total)
+        else:
+            self.filter(self.list_g6_in)
+            return float(len(self.list_out) / self.total)
+
+
+    def filter_multi(self, list_g6_in, i, list_out):
+        list_out_temp = []
+        for g6code in list_g6_in:
+            self.update_to_progress_bar
+            if g6code == '' or g6code == ' ':
+                continue
+            try:
+                g = nx.from_graph6_bytes(g6code.encode('utf-8'))
+                if self.graph_satisfies_equation(g):
+                    if self.graph_satisfies_conditions(g):
+                        list_out_temp.append(g6code)
+            except Exception:
+                self.invalid_lines += 1
+        # self.satisfied_graphs = self.satisfied_graphs + len(list_out)
+        list_out[i] = list_out_temp
+
+
+    def filter(self, list_g6_in):
+        for g6code in list_g6_in:
+            self.update_to_progress_bar
+            if g6code == '' or g6code == ' ':
+                continue
+            try:
+                g = nx.from_graph6_bytes(g6code.encode('utf-8'))
+                if self.graph_satisfies_equation(g):
+                    if self.graph_satisfies_conditions(g):
+                        self.list_out.append(g6code)
+            except Exception:
+                self.invalid_lines += 1
+        # self.satisfied_graphs = self.satisfied_graphs + len(list_out)
+
+
+    def subdivide_input_list(self, parts):
+        n_sub = int(np.ceil(self.total / parts))
+        return [self.list_g6_in[i:i + n_sub] for i in range(0, self.total, n_sub)]
+
+
+    def run_find_counterexample(self):
+        self.list_out = []
+        for g6code in self.list_g6_in:
+            if self.filter_list(g6code) ==False:
+                self.list_out = [g6code]
+                return True
+        return False
 
     def graph_satisfies_equation(self, g):
         names = {**{"G": g, "g": g}, **dic_math_const}
@@ -62,47 +132,6 @@ class FilterList:
             if not graph_satisfies:
                 return False
         return True
-
-
-    def run_filter(self):
-        self.list_out = []
-        count = 0
-        for step, g6code in enumerate(self.list_g6_in):
-            self.update_to_progress_bar(step)
-            if g6code == '' or g6code == ' ':
-                continue
-            try:
-                g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                if self.graph_satisfies_equation(g):
-                    if self.graph_satisfies_conditions(g):
-                        self.list_out.append(g6code)
-                        count = count + 1
-                self.update_to_progress_bar(step)
-            except Exception:
-                self.invalid_lines = self.invalid_lines + 1
-                continue
-        return float(count / self.total)
-
-    def run_find_counterexample(self):
-        self.list_out = []
-        for step, g6code in enumerate(self.list_g6_in):
-            self.update_to_progress_bar(step)
-            if g6code == '' or g6code == ' ':
-                continue
-            try:
-                g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                if self.graph_satisfies_equation(g):
-                    if not self.graph_satisfies_conditions(g):
-                        self.list_out.append(g6code)
-                        return True
-                else:
-                    self.list_out.append(g6code)
-                    return True
-                self.update_to_progress_bar(step)
-            except Exception:
-                self.invalid_lines = self.invalid_lines + 1
-                continue
-        return False
 
 
 if __name__ == "__main__":

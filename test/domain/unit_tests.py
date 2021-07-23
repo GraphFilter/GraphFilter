@@ -44,7 +44,7 @@ class Helper:
         return boolean, ftl.list_out
 
     @staticmethod
-    def fake_update(value):
+    def fake_update():
         pass
 
 
@@ -210,6 +210,13 @@ class DomainUnitTests(unittest.TestCase):
         self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{diam}(G)>0', {}))
         self.assertEqual(4 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
         self.assertEqual(True, Helper.some_c_exem('graphs14.g6', f'{chi}(G)<8', {})[0])
+
+    def test_multiprocess_filter(self):
+        ec = str(inv_num.EdgeConnectivity.code)
+        planar_and_regular = {inv_bool.Planar.name: 'true', inv_bool.Regular.name: 'true'}
+        self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
+        #self.assertEqual(1, Helper.run('graphs4.g6', "0==0", {}))
+
 
 
 class MiscellaneousTests(unittest.TestCase):

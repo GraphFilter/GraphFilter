@@ -168,5 +168,5 @@ class Controller:
         self.loading_window.show()
 
     def update_loading_window(self, step):
-        self.loading_window.increase_step(step)
+        self.loading_window.increase_step()
         QApplication.processEvents()
