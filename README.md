@@ -77,7 +77,7 @@ Download the compact file from the release that matches your Operational System.
 - Launch the program
 
 #### Mac
-Unfortunately, to generate an executable file to Mac OS a developer account is needed. However, you can stil run Graph Filter by following the [Source Code](#source-code) installation method.
+Unfortunately, to generate an executable file to Mac OS an Apple computer is needed, wich wasn't available during the development of this project. However, you can stil run Graph Filter by following the [Source Code](#source-code) installation method.
 
 ## Getting started
 
