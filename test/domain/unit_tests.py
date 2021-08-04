@@ -33,14 +33,18 @@ class Helper:
     @staticmethod
     def run(file, expression, choices):
         ftl = FilterList()
-        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/' + file), expression, choices, Helper.fake_update)
-        return ftl.run_filter()
+        return ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file),
+                                expression,
+                                choices,
+                                Helper.fake_update)
 
     @staticmethod
     def some_c_exem(file, expression, choices):
         ftl = FilterList()
-        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/' + file), expression, choices, Helper.fake_update)
-        boolean = ftl.run_find_counterexample()
+        boolean = ftl.start_find_counterexample(Helper.list_graphs_from('resources/graphs/' + file),
+                                                expression,
+                                                choices,
+                                                Helper.fake_update)
         return boolean, ftl.list_out
 
     @staticmethod
@@ -214,8 +218,10 @@ class DomainUnitTests(unittest.TestCase):
     def test_multiprocess_filter(self):
         ec = str(inv_num.EdgeConnectivity.code)
         planar_and_regular = {inv_bool.Planar.name: 'true', inv_bool.Regular.name: 'true'}
-        self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
-        #self.assertEqual(1, Helper.run('graphs4.g6', "0==0", {}))
+        n = str(inv_num.NumberVertices.code)
+        # self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
+        graph_conterexample = 'I@`CJcnFw'
+        self.assertEqual(Helper.some_c_exem('graphs4.g6', f'{n}(G)==9',{})[1][0], graph_conterexample)
 
 
 

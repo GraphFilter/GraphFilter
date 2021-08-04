@@ -130,7 +130,7 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_png(graph, file_dir, step)
-                self.update_loading_window(step)
+                self.update_loading_window()
             self.loading_window.close()
 
     def export_to_tikz(self):
@@ -139,7 +139,7 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_tikz(graph, file_dir, step)
-                self.update_loading_window(step)
+                self.update_loading_window()
             self.loading_window.close()
 
     def export_to_pdf(self):
@@ -148,7 +148,7 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_pdf(graph, file_dir, step)
-                self.update_loading_window(step)
+                self.update_loading_window()
             self.loading_window.close()
 
     def export_to_g6(self):
@@ -158,15 +158,14 @@ class Controller:
             file = open(file_name, 'w')
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 file.write(graph)
-                self.update_loading_window(step)
+                self.update_loading_window()
             file.close()
             self.loading_window.close()
 
     def show_loading_window(self, set_total):
-        self.loading_window.progressBar.setMaximum(set_total)
-        self.loading_window.progressBar.setValue(0)
+        self.loading_window.set_maximum(set_total)
         self.loading_window.show()
 
-    def update_loading_window(self, step):
+    def update_loading_window(self):
         self.loading_window.increase_step()
         QApplication.processEvents()

@@ -28,7 +28,8 @@ AND	Claw-Free = true
 -----------------------------
 
 graphs4
-all graphs connected with 4 vertices
+all graphs connected with 9 vertices
+and one graph with 10 vertices on line 261080
 
 -----------------------------
 

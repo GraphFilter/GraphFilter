@@ -10,7 +10,7 @@ class FilterController:
     def __init__(self):
 
         self.filter_list = FilterList()
-        self.loading_window = LoadingWindow(self.filter_list.total)
+        self.loading_window = LoadingWindow()
 
     def show_window(self):
         #self.loading_window.progressBar.setMaximum(self.filter_list.total)
@@ -18,13 +18,16 @@ class FilterController:
 
     def start_filter(self):
         g6_list = extract_files_to_list(project_information_store.graph_files)
-        self.filter_list.set_inputs(g6_list, project_information_store.equation, project_information_store.conditions,
-                                    self.update)
+        self.loading_window.set_maximum(self.filter_list.total)
         self.show_window()
         if project_information_store.method == 'filter':
-            self.filter_list.run_filter()
+            self.filter_list.start_filter(g6_list, project_information_store.equation,
+                                          project_information_store.conditions,
+                                          self.update)
         else:
-            self.filter_list.run_find_counterexample()
+            self.filter_list.start_find_counterexample(g6_list, project_information_store.equation,
+                                          project_information_store.conditions,
+                                          self.update)
 
         # TODO: Use the percentage returned by filtering
         project_information_store.filtered_graphs = self.filter_list.list_out

@@ -9,17 +9,20 @@ class External(QThread):
 class LoadingWindow(QDialog):
     filter_complete_signal = pyqtSignal(int)
 
-    def __init__(self, maximum):
+    def __init__(self):
         super().__init__()
         self.progressBar = QProgressBar(self)
-        self.set_content_attributes(maximum)
+        self.set_content_attributes()
         self.set_up_layout()
 
-    def set_content_attributes(self, maximum):
+    def set_content_attributes(self):
         self.setWindowTitle("Loading...")
         self.progressBar.setGeometry(25, 25, 300, 40)
         self.setFixedSize(500, 100)
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowContextHelpButtonHint)
+
+    def set_maximum(self, maximum):
+        self.progressBar.setValue(0)
         self.progressBar.setMaximum(maximum)
 
     def set_up_layout(self):
