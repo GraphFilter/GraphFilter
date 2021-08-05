@@ -13,6 +13,10 @@ class Invariant:
     def calculate(**kwargs):
         pass
 
+    @staticmethod
+    def print(**kwargs):
+        pass
+
 
 class UtilsToInvariants:
 
@@ -53,7 +57,7 @@ class UtilsToInvariants:
 
     @staticmethod
     def print(value):
-        precision = 5
+        precision=5
         if isinstance(value, tuple):
             vectors = value[1]
             spectrum = ''
@@ -82,6 +86,50 @@ class UtilsToInvariants:
                 return 'infinite'
             else:
                 return str(np.around(value, precision))
+
+    @staticmethod
+    def print_matrix(value, precision):
+        return np.array2string(value, precision=precision)
+
+    @staticmethod
+    def print_dict(value, precision):
+        return ' | '.join(f'{x}: {np.around(y, decimals=precision)}' for x, y in value.items())
+
+    @staticmethod
+    def print_eigenvectors_and_eigenvalues(value, precision):
+        vectors = value[1]
+        spectrum = ''
+        for i, x in enumerate(value[0]):
+            if UtilsToInvariants.is_integer(x):
+                spectrum = spectrum + f'{int(x)} \u2192 V{i}={vectors[:][i].tolist()} \n'
+            else:
+                spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 v{i}={vectors[:][i].tolist()} \n'
+        return spectrum
+
+    @staticmethod
+    def print_list(value, precision):
+        values = []
+        for x in value:
+            if UtilsToInvariants.is_integer(x):
+                values.append(int(x))
+            else:
+                values.append(np.around(x, decimals=precision))
+        return str(values)
+
+    @staticmethod
+    def print_numeric(value, precision):
+        if value == 10 ** 10:
+            return 'infinite'
+        else:
+            return str(np.around(value, precision))
+
+    @staticmethod
+    def print_boolean(value, precision):
+        return str(value)
+
+    @staticmethod
+    def print_set(value, precision):
+        return str(value)
 
     @staticmethod
     def max_line_of_string(text: str):

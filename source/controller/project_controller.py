@@ -151,7 +151,7 @@ class ProjectController:
         if check.text() not in self.invariants_selected:
             if g6code is not None:
                 self.invariants_selected[check.text()] = \
-                    dic_invariants_to_visualize[check.text()].calculate(convert_g6_to_nx(g6code))
+                    dic_invariants_to_visualize[check.text()].print(convert_g6_to_nx(g6code), precision=5)
             else:
                 self.invariants_selected[check.text()] = 'No graph selected'
         else:
@@ -164,7 +164,8 @@ class ProjectController:
 
         for key in self.invariants_selected.keys():
             if g6code is not None:
-                self.invariants_selected[key] = dic_invariants_to_visualize[key].calculate(convert_g6_to_nx(g6code))
+                self.invariants_selected[key] = \
+                    dic_invariants_to_visualize[key].print(convert_g6_to_nx(g6code), precision=5)
             else:
                 self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)

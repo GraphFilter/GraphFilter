@@ -168,6 +168,7 @@ class DomainUnitTests(unittest.TestCase):
         g = nx.generators.complete_graph(10)
         for inv in inv_other.InvariantOther().all:
             self.assertTrue(isinstance(inv.calculate(g), (numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.print(g, precision=5), str))
 
     def test_all_operations(self):
         for opg in oper.GraphOperations().all:
