@@ -32,6 +32,7 @@ class LoadingWindow(QDialog):
 
     def increase_step(self):
         self.progressBar.setValue(self.progressBar.value()+1)
+        # QApplication.processEvents()
 
     def closeEvent(self, event):
         self.filter_complete_signal.emit(1)

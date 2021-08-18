@@ -20,7 +20,6 @@ class FilterList:
         self.operations_math = None
         self.operations_graph = None
         self.AND_OR = None
-        self.total = 0
 
         self.update_to_progress_bar = None
 
@@ -42,8 +41,9 @@ class FilterList:
     def start_filter(self, list_g6_in, expression, list_inv_bool_choices, update):
         # counterexample
         # filter
+        mp.freeze_support()
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
-        if self.total > 1000:
+        if self.total > 100:
             manager = mp.Manager()
             cores=os.cpu_count()
             list_breaked_in = self.subdivide_input_list(cores)
@@ -54,7 +54,8 @@ class FilterList:
                 list_process.append(process)
                 process.start()
             for process in list_process:
-                process.join()
+                # process.join()
+                process.close()
             for list in list_breaked_out:
                 self.list_out+=list
             return float(len(self.list_out) / self.total)
@@ -68,7 +69,7 @@ class FilterList:
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []
         for g6code in list_g6_in:
-            self.update_to_progress_bar
+            # self.update_to_progress_bar()
             if g6code == '' or g6code == ' ':
                 continue
             try:
@@ -85,7 +86,7 @@ class FilterList:
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
         manager = mp.Manager()
         graph_out = manager.Value(c_char_p, '')
-        if self.total > 1000:
+        if self.total > 100:
             cores=4
             list_breaked_in = self.subdivide_input_list(cores)
             list_process=[]
@@ -107,7 +108,7 @@ class FilterList:
         for g6code in list_g6_in:
             if graph_out.value != '':
                 return True
-            self.update_to_progress_bar
+            self.update_to_progress_bar()
             if g6code == '' or g6code == ' ':
                 continue
             try:

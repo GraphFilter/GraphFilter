@@ -18,7 +18,7 @@ class FilterController:
 
     def start_filter(self):
         g6_list = extract_files_to_list(project_information_store.graph_files)
-        self.loading_window.set_maximum(self.filter_list.total)
+        self.loading_window.set_maximum(len(g6_list))
         self.show_window()
         if project_information_store.method == 'filter':
             self.filter_list.start_filter(g6_list, project_information_store.equation,
@@ -37,4 +37,4 @@ class FilterController:
 
     def update(self):
         self.loading_window.increase_step()
-        QApplication.processEvents()
+        # QApplication.processEvents()
