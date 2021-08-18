@@ -56,38 +56,6 @@ class UtilsToInvariants:
         return True
 
     @staticmethod
-    def print(value):
-        precision=5
-        if isinstance(value, tuple):
-            vectors = value[1]
-            spectrum = ''
-            for i, x in enumerate(value[0]):
-                if UtilsToInvariants.is_integer(x):
-                    spectrum = spectrum + f'{int(x)} \u2192 V{i}={vectors[:][i].tolist()} \n'
-                else:
-                    spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 v{i}={vectors[:][i].tolist()} \n'
-            return spectrum
-        if isinstance(value, list):
-            values = []
-            for x in value:
-                if UtilsToInvariants.is_integer(x):
-                    values.append(int(x))
-                else:
-                    values.append(np.around(x, decimals=precision))
-            return str(values)
-        if isinstance(value, numpy.ndarray):
-            return np.array2string(value, precision=precision)
-        if isinstance(value, dict):
-            return ' | '.join(f'{x}: {np.around(y, decimals=precision)}' for x, y in value.items())
-        if isinstance(value, (bool, str, set)):
-            return str(value)
-        else:
-            if value == 10**10:
-                return 'infinite'
-            else:
-                return str(np.around(value, precision))
-
-    @staticmethod
     def print_matrix(value, precision):
         return np.array2string(value, precision=precision)
 
