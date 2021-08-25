@@ -87,7 +87,8 @@ class Controller:
 
     def start_filter(self):
         update_project_store()
-        self.filter_controller.start_filter()
+        # self.filter_controller.start_filter()
+        self.filter_controller.run_worker()
 
     def show_project_window(self):
         self.project_controller.show_window()
