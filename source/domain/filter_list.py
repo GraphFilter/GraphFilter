@@ -105,7 +105,7 @@ class FilterList():
 def filter_multiprocess(list_g6_in, i, list_out, filter_class):
     list_out_temp = []
     for g6code in list_g6_in:
-        filter_class.update_to_progress_bar()
+        # filter_class.update_to_progress_bar()
         if g6code == '' or g6code == ' ':
             continue
         try:
@@ -122,7 +122,7 @@ def find_counterexample_multiprocess(list_g6_in, graph_out, filter_class):
     for g6code in list_g6_in:
         if graph_out.value != '':
             return True
-        filter_class.update_to_progress_bar()
+        # filter_class.update_to_progress_bar()
         if g6code == '' or g6code == ' ':
             continue
         try:
