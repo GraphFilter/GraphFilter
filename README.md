@@ -28,7 +28,7 @@ providing for visualization a filtered list of graphs according to the propertie
 
 > This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
-> * Graph Filter v2.0 was approved for [Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição](https://sbpo2021.galoa.com.br).
+> * Graph Filter v2.0 was approved for the [Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição](https://sbpo2021.galoa.com.br).
 
 The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
 
