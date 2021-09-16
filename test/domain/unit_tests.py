@@ -219,9 +219,9 @@ class DomainUnitTests(unittest.TestCase):
         ec = str(inv_num.EdgeConnectivity.code)
         planar_and_regular = {inv_bool.Planar.name: 'true', inv_bool.Regular.name: 'true'}
         n = str(inv_num.NumberVertices.code)
-        self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
+        # self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
         graph_conterexample = 'I@`CJcnFw'
-        # self.assertEqual(Helper.some_c_exem('graphs4.g6', f'{n}(G)==9',{})[1][0], graph_conterexample)
+        self.assertEqual(Helper.some_c_exem('graphs4.g6', f'{n}(G)==9',{})[1][0], graph_conterexample)
 
 
 

@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import *
 from source.store.project_information_store import project_information_store
 import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf
-from source.view.loading.loading_window import LoadingWindow
+from source.view.loading.progress_window import ProgressWindow
 from PyQt5 import QtCore
 
 
@@ -19,8 +19,7 @@ class Controller:
         self.filter_controller = FilterController()
         self.project_controller = ProjectController()
 
-        self.loading_window = LoadingWindow()
-
+        self.progress_window = ProgressWindow()
         self.current_open_window = ""
 
         self.connect_events()
@@ -34,8 +33,8 @@ class Controller:
         self.wizard_controller.wizard_window.close_signal.connect(self.close_wizard_window)
         self.wizard_controller.wizard_window.start_button.clicked.connect(self.start_filter)
 
-    def connect_filter_events(self):
-        self.filter_controller.loading_window.filter_complete_signal.connect(self.show_project_window)
+    # def connect_filter_events(self):
+    #     self.filter_controller.progress_window.filter_complete_signal.connect(self.show_project_window)
 
     def connect_project_events(self):
         self.project_controller.project_window.new_action.triggered.connect(self.show_wizard_window)
@@ -49,7 +48,7 @@ class Controller:
     def connect_events(self):
         self.connect_welcome_events()
         self.connect_wizard_events()
-        self.connect_filter_events()
+        # self.connect_filter_events()
         self.connect_project_events()
 
     def show_welcome_window(self):
@@ -83,12 +82,13 @@ class Controller:
 
     def finish_filter(self):
         self.show_project_window()
-        self.close_loading_window()
+        # self.close_loading_window()
 
     def start_filter(self):
         update_project_store()
-        # self.filter_controller.start_filter()
-        self.filter_controller.run_worker()
+        self.filter_controller.start_filter()
+        self.finish_filter()
+
 
     def show_project_window(self):
         self.project_controller.show_window()
@@ -132,7 +132,7 @@ class Controller:
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_png(graph, file_dir, step)
                 self.update_loading_window()
-            self.loading_window.close()
+            self.progress_window.close()
 
     def export_to_tikz(self):
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
@@ -141,7 +141,7 @@ class Controller:
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_tikz(graph, file_dir, step)
                 self.update_loading_window()
-            self.loading_window.close()
+            self.progress_window.close()
 
     def export_to_pdf(self):
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
@@ -150,7 +150,7 @@ class Controller:
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_pdf(graph, file_dir, step)
                 self.update_loading_window()
-            self.loading_window.close()
+            self.progress_window.close()
 
     def export_to_g6(self):
         file_name = self.get_name_from_save_dialog('g6')
@@ -161,12 +161,12 @@ class Controller:
                 file.write(graph)
                 self.update_loading_window()
             file.close()
-            self.loading_window.close()
+            self.progress_window.close()
 
     def show_loading_window(self, set_total):
-        self.loading_window.set_maximum(set_total)
-        self.loading_window.show()
+        self.progress_window.set_maximum(set_total)
+        self.progress_window.show()
 
     def update_loading_window(self):
-        self.loading_window.increase_step()
+        self.progress_window.increase_step()
         QApplication.processEvents()
