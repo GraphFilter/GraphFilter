@@ -14,9 +14,9 @@ network2tikz==0.1.8
 networkx==2.5.1
 numpy==1.20.3
 pefile==2021.5.13
-Pillow==8.2.0
+Pillow==8.3.2
 PuLP==2.4
-pyinstaller==4.3
+git+https://github.com/rokm/pyinstaller
 pyinstaller-hooks-contrib==2021.1
 pyparsing==2.4.7
 PyQt5==5.15.4
@@ -27,6 +27,6 @@ pyqtgraph==0.12.1
 python-dateutil==2.8.1
 pywin32-ctypes==0.2.0
 rectangle-packer==2.0.1
-scipy==1.6.3
+scipy==1.7.1
 git+https://github.com/danthedeckie/simpleeval#egg=simpleeval
 six==1.16.0
