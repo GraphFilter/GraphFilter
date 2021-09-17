@@ -1,7 +1,12 @@
+import os
 import sys
 from PyQt5.QtWidgets import QApplication
 from source.controller.controller import Controller
 
+try:
+    os.chdir(sys._MEIPASS)
+except (OSError, AttributeError) as e:
+    pass
 
 app = QApplication(sys.argv)
 controller = Controller()
