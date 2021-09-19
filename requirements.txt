@@ -16,7 +16,7 @@ numpy==1.20.3
 pefile==2021.5.13
 Pillow==8.3.2
 PuLP==2.4
-git+https://github.com/rokm/pyinstaller
+pyinstaller==4.5.1
 pyinstaller-hooks-contrib==2021.1
 pyparsing==2.4.7
 PyQt5==5.15.4
