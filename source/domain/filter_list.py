@@ -6,6 +6,9 @@ from source.domain.equation import Equation
 import numpy as np
 import multiprocessing as mp
 from ctypes import c_char_p
+import time
+import random
+
 
 class FilterList:
 
@@ -29,26 +32,23 @@ class FilterList:
         #  list_inv_bool_choices: dict of couples {invariant_name: 'true' or 'false'}
         self.functions_to_eval.update(dic_function_to_eval)
 
-    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices):
+    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices, update):
         self.satisfied_graphs = 0
         self.list_out.clear()
         self.list_g6_in = list_g6_in
         self.total = len(self.list_g6_in)
         self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = Equation.split_translate_expression(expression)
-        # self.update_to_progress_bar = update
+        self.update_to_progress_bar = update
 
-    # TODO: organizar a variável que armazena linhas inválidas, organizar os métodos filter e findcounterexample.
-    def start_filter(self, list_g6_in, expression, list_inv_bool_choices):
-        # counterexample
-        # filter
-        self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
-        if self.total > 10:
+    def start_filter(self, list_g6_in, expression, list_inv_bool_choices, update):
+        self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
+        if self.need_multiprocess(list_g6_in):
             manager = mp.Manager()
-            cores=2
+            cores = int(np.ceil((1 / 3) * os.cpu_count()))
             list_breaked_in = self.subdivide_input_list(cores)
             list_breaked_out = manager.list(range(cores))
-            list_process=[]
+            list_process = []
             for i, list in enumerate(list_breaked_in):
                 process = mp.Process(target=self.filter_multiprocess, args=(list, i, list_breaked_out,))
                 list_process.append(process)
@@ -56,13 +56,12 @@ class FilterList:
             for process in list_process:
                 process.join()
             for list in list_breaked_out:
-                self.list_out+=list
+                self.list_out += list
             return float(len(self.list_out) / self.total)
         else:
-            # self.filter_singleprocess(self.list_g6_in)
-            list_out = [None]*1
+            list_out = [None] * 1
             self.filter_multiprocess(self.list_g6_in, 0, list_out)
-            self.list_out=list_out[0]
+            self.list_out = list_out[0]
             return float(len(self.list_out) / self.total)
 
     def filter_multiprocess(self, list_g6_in, i, list_out):
@@ -78,17 +77,16 @@ class FilterList:
                         list_out_temp.append(g6code)
             except Exception:
                 continue
-        # self.satisfied_graphs = self.satisfied_graphs + len(list_out)
         list_out[i] = list_out_temp
 
-    def start_find_counterexample(self, list_g6_in, expression, list_inv_bool_choices):
-        self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
+    def start_find_counterexample(self, list_g6_in, expression, list_inv_bool_choices, update):
+        self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
         manager = mp.Manager()
         graph_out = manager.Value(c_char_p, '')
-        if self.total > 1000:
-            cores=4
+        if self.need_multiprocess(list_g6_in):
+            cores = int(np.ceil((1 / 3) * os.cpu_count()))
             list_breaked_in = self.subdivide_input_list(cores)
-            list_process=[]
+            list_process = []
             for i, list in enumerate(list_breaked_in):
                 process = mp.Process(target=self.find_counterexample_multiprocess, args=(list, graph_out))
                 list_process.append(process)
@@ -113,16 +111,15 @@ class FilterList:
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
                 if not self.graph_satisfies_equation(g):
-                    graph_out.value=g6code
+                    graph_out.value = g6code
                     return True
                 else:
                     if not self.graph_satisfies_conditions(g):
-                        graph_out.value=g6code
+                        graph_out.value = g6code
                         return True
             except Exception:
                 continue
         return ''
-        # self.satisfied_graphs = self.satisfied_graphs + len(list_out)
 
     def subdivide_input_list(self, parts):
         n_sub = int(np.ceil(self.total / parts))
@@ -130,7 +127,6 @@ class FilterList:
 
     def graph_satisfies_equation(self, g):
         names = {**{"G": g, "g": g}, **dic_math_const}
-        # Check the expressions
         if len(self.expressions) > 0:
             if self.AND_OR == 'SINGLE':
                 return simple_eval(self.expressions, functions=self.functions_to_eval, names=names)
@@ -156,6 +152,37 @@ class FilterList:
                 return False
         return True
 
+    def need_multiprocess(self, list_g6_in):
+        graph_is_valid = False
+        while not graph_is_valid:
+            choices = random.choices(population=list_g6_in, k=2)
+            try:
+                g1 = nx.from_graph6_bytes(choices[0].encode('utf-8'))
+                g2 = nx.from_graph6_bytes(choices[1].encode('utf-8'))
+                graph_is_valid = True
+            except Exception:
+                graph_is_valid = False
+
+        start = time.time()
+        self.graph_satisfies_equation(g1)
+        self.graph_satisfies_conditions(g2)
+        end = time.time()
+        if (end - start) * len(list_g6_in) > 60:
+            return True
+        else:
+            return False
+
 
 if __name__ == "__main__":
-    print("teste")
+    start = time.time()
+    manager = mp.Manager()
+    cores = int(np.ceil((1 / 3) * os.cpu_count()))
+    list_process = []
+    for i in range(cores):
+        process = mp.Process()
+        list_process.append(process)
+        process.start()
+    for process in list_process:
+        process.join()
+    end = time.time()
+    print(end - start)
