@@ -46,7 +46,7 @@ The software has the purpose of filtering a list of graphs through conditions cu
 |    Calculations of invariants                   |   GUI development                                           |  Utilities                                               |
 | :------------:                                  | :---------:                                                 | :---------:                                              |
 | [Networkx](https://networkx.org/)               | [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
-| [Grinpy](https://github.com/somacdivad/grinpy)  |  [PyQtGraph](http://www.pyqtgraph.org/)                     | [network2tikz](https://github.com/hackl/network2tikz)    |
+| [Grinpy](https://github.com/somacdivad/grinpy)  | [PyQtGraph](http://www.pyqtgraph.org/)                      | [network2tikz](https://github.com/hackl/network2tikz)    |
 | [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval)  |
 
 ## Installation
@@ -56,28 +56,17 @@ You can run the program from the source code or from an executable file.
 To from the source code, you have to:
 
 - Install [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.io/en/stable/installing/).  
-- [Clone this project using git](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#cloning) or [Download the source code from the release](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#downloading)
-- Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#virtual-environment) (optional)
-- [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#install-required-libraries)
-- Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#running) from the project's source folder
+- [Clone this project using git](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#cloning) or [Download the source code from the release](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#downloading)
+- Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#virtual-environment) (optional)
+- [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#install-required-libraries)
+- Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#running) from the project's source folder
 
 ### Release
 Download the compact file from the release that matches your Operational System.
 
-#### Windows
-- Using an [extracting tool](https://winrar.en.softonic.com/), extract the file to any location folder you want
-- Run the installer
-- Follow the steps
-- Lanch the program
-
-#### Linux
-- Using the terminal, go to the file location
-- Extract the file
-- Enter the extracted GraphFilter directory
-- Launch the program
-
-#### Mac
-Unfortunately, to generate an executable file to Mac OS an Apple computer is needed, wich wasn't available during the development of this project. However, you can still run Graph Filter by following the [Source Code](#source-code) installation method.
+- [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
+- [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
+- [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ## Getting started
 
