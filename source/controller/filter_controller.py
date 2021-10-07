@@ -11,7 +11,7 @@ class FilterController:
     def __init__(self):
 
         self.filter_list = FilterList()
-        # self.progress_window = ProgressWindow()
+        #self.progress_window = ProgressWindow()
     #
 
     def start_filter(self):

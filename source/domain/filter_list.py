@@ -1,5 +1,6 @@
 import os
 
+import networkx as nx
 from simpleeval import simple_eval
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
@@ -44,23 +45,23 @@ class FilterList:
     def start_filter(self, list_g6_in, expression, list_inv_bool_choices, update):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
         if self.need_multiprocess(list_g6_in):
-            manager = mp.Manager()
-            cores = int(np.ceil((1 / 3) * os.cpu_count()))
-            list_breaked_in = self.subdivide_input_list(cores)
-            list_breaked_out = manager.list(range(cores))
-            list_process = []
-            for i, list in enumerate(list_breaked_in):
-                process = mp.Process(target=self.filter_multiprocess, args=(list, i, list_breaked_out,))
-                list_process.append(process)
-                process.start()
-            for process in list_process:
-                process.join()
-            for list in list_breaked_out:
-                self.list_out += list
+            manager_class = mp.Manager()
+            number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
+            list_broken_in = self.subdivide_input_list(number_cores)
+            list_broken_out = manager_class.list(range(number_cores))
+            list_of_process = []
+            for k, list_in in enumerate(list_broken_in):
+                single_process = mp.Process(target=self.filter_multiprocess, args=(list_in, k, list_broken_out,))
+                list_of_process.append(single_process)
+                single_process.start()
+            for single_process in list_of_process:
+                single_process.join()
+            for list_in in list_broken_out:
+                self.list_out += list_in
             return float(len(self.list_out) / self.total)
         else:
             list_out = [None] * 1
-            self.filter_multiprocess(self.list_g6_in, 0, list_out)
+            self.filter_multiprocess(self.list_g6_in, 0, list_out) #criar outro filter para single_process
             self.list_out = list_out[0]
             return float(len(self.list_out) / self.total)
 
@@ -152,7 +153,7 @@ class FilterList:
                 return False
         return True
 
-    def need_multiprocess(self, list_g6_in):
+    def need_multiprocess(self, list_g6_in): #inicia a filtragem normalmente, se estiver levando mais do que 5s então chama os processos.
         graph_is_valid = False
         while not graph_is_valid:
             choices = random.choices(population=list_g6_in, k=2)
@@ -165,9 +166,11 @@ class FilterList:
 
         start = time.time()
         self.graph_satisfies_equation(g1)
+        self.graph_satisfies_conditions(g1)
+        self.graph_satisfies_equation(g2)
         self.graph_satisfies_conditions(g2)
         end = time.time()
-        if (end - start) * len(list_g6_in) > 60:
+        if (end - start) * len(list_g6_in) > 30:
             return True
         else:
             return False
