@@ -26,7 +26,8 @@ class WelcomeContent(QWidget):
         self.version.setText("<h2>version 2.0</h2>")
         self.version.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.logo.setPixmap(QPixmap("resources/icons/hexagon.png").scaled(92, 92, QtCore.Qt.KeepAspectRatio))
+        self.logo.setPixmap(QPixmap("resources/icons/hexagon.png").scaled(120, 120, QtCore.Qt.KeepAspectRatio,
+                                                                          QtCore.Qt.SmoothTransformation))
         self.logo.setAlignment(QtCore.Qt.AlignCenter)
 
         self.open_button.setText("  Open")
