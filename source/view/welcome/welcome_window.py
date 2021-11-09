@@ -25,7 +25,7 @@ class WelcomeWindow(QMainWindow):
         self.setWindowFlags(QtCore.Qt.CustomizeWindowHint
                             | QtCore.Qt.WindowTitleHint
                             | QtCore.Qt.WindowCloseButtonHint
-                            | QtCore.Qt.WindowStaysOnTopHint)
+                            )
 
     def set_screen_position(self):
         rectangle = self.frameGeometry()
