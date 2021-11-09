@@ -1,14 +1,17 @@
 from PyQt5.QtWidgets import *
 from source.domain.utils import clear_layout
-from PyQt5 import QtCore
-from source.store.help_buttons_text import tip_review
-from source.view.components.help_button import HelpButton
+from source.store import help_button_text
 
 
 class ReviewPage(QWizardPage):
 
     def __init__(self):
         super().__init__()
+
+        self.complete = False
+
+        self.incomplete_message = "Fill all required information"
+        self.alert_text = help_button_text.review
 
         self.project_name = QLabel()
         self.project_location = QLabel()
@@ -17,23 +20,15 @@ class ReviewPage(QWizardPage):
         self.method = QLabel()
         self.equation = QLabel("<b>Equation:</b>")
 
-        self.help_button = HelpButton(tip_review)
-
         self.conditions_and_graphs_layout = QHBoxLayout()
 
         self.conditions_layout = ReviewConditionsLayout(self.conditions)
         self.graph_files_layout = ReviewGraphFilesLayout(self.graph_files)
 
-        self.set_content_attributes()
         self.set_up_layout()
 
-    def set_content_attributes(self):
-        self.setObjectName("review")
-
     def set_up_layout(self):
-        title_layout = QHBoxLayout()
-        title_layout.addWidget(QLabel("<h3>Review</h3>"))
-        title_layout.addWidget(self.help_button, alignment=QtCore.Qt.AlignRight)
+        self.setTitle("Review")
 
         project_name_layout = QHBoxLayout()
         project_name_layout.setSpacing(0)
@@ -51,8 +46,6 @@ class ReviewPage(QWizardPage):
         self.conditions_and_graphs_layout.addLayout(self.graph_files_layout)
 
         layout = QVBoxLayout()
-        layout.addLayout(title_layout)
-        layout.addStretch(2)
         layout.addLayout(project_layout)
         layout.addStretch(1)
         layout.addWidget(self.equation)
@@ -60,7 +53,6 @@ class ReviewPage(QWizardPage):
         layout.addWidget(self.method)
         layout.addStretch(1)
         layout.addLayout(self.conditions_and_graphs_layout)
-        layout.setContentsMargins(80, 10, 80, 50)
 
         self.setLayout(layout)
 

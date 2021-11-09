@@ -1,9 +1,8 @@
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtGui
 from PyQt5.QtGui import QFont
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from source.store.help_buttons_text import tip_equation
-from source.view.components.help_button import HelpButton
+from source.store import help_button_text
 
 
 class EquationsPage(QWizardPage):
@@ -11,14 +10,14 @@ class EquationsPage(QWizardPage):
     def __init__(self):
         super().__init__()
 
-        self.setObjectName("equations")
+        self.complete = True
+
+        self.incomplete_message = "Equation or conditions must be filled"
+        self.alert_text = help_button_text.equation
 
         self.equation = QLineEdit()
         self.equation_validation = QLabel()
         self.math_tab = QTabWidget()
-        self.help_button = HelpButton(tip_equation)
-
-        self.complete = True
 
         self.set_content_attributes()
         self.set_up_layout()
@@ -32,18 +31,16 @@ class EquationsPage(QWizardPage):
         self.math_tab.setMaximumHeight(300)
 
     def set_up_layout(self):
-        title_layout = QHBoxLayout()
-        title_layout.addWidget(QLabel("<h3>Equations</h3>"))
-        title_layout.addWidget(self.help_button, alignment=QtCore.Qt.AlignRight)
+        self.setTitle("Equation")
 
         layout = QVBoxLayout()
-        layout.addLayout(title_layout)
-        layout.addStretch(3)
+
+        layout.addStretch(1)
         layout.addWidget(self.equation)
         layout.addWidget(self.equation_validation)
-        layout.addStretch(4)
+        layout.addStretch(1)
         layout.addWidget(self.math_tab)
-        layout.setContentsMargins(80, 10, 80, 30)
+        layout.addStretch(1)
         self.setLayout(layout)
 
     def set_label_validation_equation(self, error_message):

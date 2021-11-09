@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
-from source.store.help_buttons_text import tip_conditions
-from source.view.components.help_button import HelpButton
+from source.store import help_button_text
 
 
 class ConditionsPage(QWizardPage):
@@ -11,29 +10,19 @@ class ConditionsPage(QWizardPage):
 
         self.complete = False
 
+        self.incomplete_message = "Equation or conditions must be filled"
+        self.alert_text = help_button_text.conditions
+
         self.structural_invariants_group: ComboBoxesGroup
         self.spectral_invariants_group: ComboBoxesGroup
-        self.help_button = HelpButton(tip_conditions)
-
-        self.set_content_attributes()
-
-    def set_content_attributes(self):
-        self.setObjectName("conditions")
 
     def set_up_layout(self):
-        center_layout = QHBoxLayout()
-        center_layout.addWidget(self.structural_invariants_group)
-        center_layout.addStretch(2)
-        center_layout.addWidget(self.spectral_invariants_group)
+        self.setTitle("Conditions")
 
-        title_layout = QHBoxLayout()
-        title_layout.addWidget(QLabel("<h3>Conditions</h3>"))
-        title_layout.addWidget(self.help_button, alignment=Qt.AlignRight)
-
-        layout = QVBoxLayout()
-        layout.addLayout(title_layout)
-        layout.addLayout(center_layout)
-        layout.setContentsMargins(80, 10, 80, 50)
+        layout = QHBoxLayout()
+        layout.addWidget(self.structural_invariants_group)
+        layout.addStretch(2)
+        layout.addWidget(self.spectral_invariants_group)
 
         self.setLayout(layout)
 
