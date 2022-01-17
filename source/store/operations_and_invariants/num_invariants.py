@@ -587,10 +587,9 @@ class MinimumEdgeCover(InvariantNum):
     @staticmethod
     def print(graph, precision):
         if nx.number_of_isolates(graph) < 1:
-            return Utils.print_set(nx.algorithms.covering.min_edge_cover(graph),precision)
+            return Utils.print_set(nx.algorithms.covering.min_edge_cover(graph), precision)
         else:
             return "Graph has isolate vertice."
-
 
 
 class NumberOfTriangles(InvariantNum):

@@ -262,7 +262,6 @@ class NormalizedLaplacianEigenvectors(InvariantOther):
         return Utils.print_eigenvectors_and_eigenvalues(NormalizedLaplacianEigenvectors.calculate(graph), precision)
 
 
-
 class MaximumClique(InvariantOther):
     name = "Maximum Clique"
     type = 'set'
