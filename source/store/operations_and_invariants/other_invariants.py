@@ -114,7 +114,7 @@ class AdjacencySpectrum(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_array_to_int(la.eigvalsh(AdjacencyMatrix.calculate(graph)).tolist())
+        return Utils.Spectrum(AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -127,7 +127,7 @@ class LaplacianSpectrum(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_array_to_int(la.eigvalsh(LaplacianMatrix.calculate(graph)).tolist())
+        return Utils.Spectrum(LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -140,7 +140,7 @@ class SignlessLaplacianSpectrum(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_array_to_int(la.eigvalsh(SignlessLaplacianMatrix.calculate(graph)).tolist())
+        return Utils.Spectrum(SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -153,7 +153,8 @@ class NormalizedLaplacianSpectrum(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_array_to_int(nx.linalg.spectrum.normalized_laplacian_spectrum(graph).tolist())
+        return Utils.Spectrum(NormalizedLaplacianMatrix.calculate(graph))
+        #return Utils.approx_array_to_int(nx.linalg.spectrum.normalized_laplacian_spectrum(graph).tolist())
 
     @staticmethod
     def print(graph, precision):
@@ -167,7 +168,7 @@ class DistanceSpectrum(InvariantOther):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.approx_array_to_int(la.eigvalsh(nx.floyd_warshall_numpy(graph)).tolist())
+            return Utils.Spectrum(nx.floyd_warshall_numpy(graph))
         else:
             return 'Disconnected graph'
 
@@ -195,8 +196,7 @@ class AdjacencyEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        values, vectors = la.eigh(AdjacencyMatrix.calculate(graph))
-        return values, Utils.approx_array_to_int(vectors)
+        return Utils.Eigenvectors(AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -209,8 +209,7 @@ class LaplacianEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        values, vectors = la.eigh(LaplacianMatrix.calculate(graph))
-        return values, Utils.approx_array_to_int(vectors)
+        return Utils.Eigenvectors(LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -223,8 +222,7 @@ class SignlessLaplacianEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        values, vectors = la.eigh(SignlessLaplacianMatrix.calculate(graph))
-        return values, Utils.approx_array_to_int(vectors)
+        return Utils.Eigenvectors(SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -238,8 +236,7 @@ class DistanceEigenvectors(InvariantOther):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            values, vectors = la.eigh(DistanceMatrix.calculate(graph))
-            return values, Utils.approx_array_to_int(vectors)
+            return Utils.Eigenvectors(DistanceMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
@@ -254,8 +251,7 @@ class NormalizedLaplacianEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        values, vectors = la.eigh(NormalizedLaplacianMatrix.calculate(graph))
-        return values, Utils.approx_array_to_int(vectors)
+        return Utils.Eigenvectors(NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):

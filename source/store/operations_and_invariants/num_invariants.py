@@ -357,7 +357,7 @@ class Largest1EigenA(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_to_int(inv_other.AdjacencySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        return Utils.LargestEigen(inv_other.AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -371,7 +371,7 @@ class Largest1EigenL(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_to_int(inv_other.LaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        return Utils.LargestEigen(inv_other.LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -385,7 +385,7 @@ class Largest1EigenQ(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.approx_to_int(inv_other.SignlessLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        return Utils.LargestEigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -399,8 +399,7 @@ class Largest1EigenN(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return \
-            Utils.approx_to_int(inv_other.NormalizedLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        return Utils.LargestEigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -415,7 +414,7 @@ class Largest1EigenD(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.approx_to_int(inv_other.DistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+            return Utils.LargestEigen(inv_other.DistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -431,8 +430,8 @@ class Largest2EigenA(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.number_of_nodes(graph):
-            return Utils.approx_to_int(inv_other.AdjacencySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
+        if nx.number_of_nodes(graph) > 1:
+            return Utils.LargestEigen(inv_other.AdjacencyMatrix.calculate(graph))
         else:
             return 0
 
@@ -449,7 +448,7 @@ class Largest2EigenL(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.approx_to_int(inv_other.LaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
+            return Utils.SecondLargestEigen(inv_other.LaplacianMatrix.calculate(graph))
         else:
             return 0
 
@@ -466,8 +465,7 @@ class Largest2EigenQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return \
-                Utils.approx_to_int(inv_other.SignlessLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
+            return Utils.SecondLargestEigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
         else:
             return 0
 
@@ -484,9 +482,7 @@ class Largest2EigenN(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.approx_to_int(
-                inv_other.NormalizedLaplacianSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2]
-            )
+            return Utils.SecondLargestEigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
         else:
             return 0
 
@@ -505,7 +501,7 @@ class Largest2EigenD(InvariantNum):
         if nx.number_of_nodes(graph) < 2:
             return 0
         elif nx.is_connected(graph):
-            return Utils.approx_to_int(inv_other.DistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 2])
+            return Utils.SecondLargestEigen(inv_other.DistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -587,10 +583,9 @@ class MinimumEdgeCover(InvariantNum):
     @staticmethod
     def print(graph, precision):
         if nx.number_of_isolates(graph) < 1:
-            return Utils.print_set(nx.algorithms.covering.min_edge_cover(graph),precision)
+            return Utils.print_set(nx.algorithms.covering.min_edge_cover(graph), precision)
         else:
             return "Graph has isolate vertice."
-
 
 
 class NumberOfTriangles(InvariantNum):
@@ -713,9 +708,7 @@ class LaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        eigenvalues = inv_other.LaplacianSpectrum.calculate(graph)
-        avg_degree = DegreeAverage.calculate(graph)
-        return sum([np.absolute(x - avg_degree) for x in eigenvalues])
+        return Utils.Energy(inv_other.LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -729,9 +722,7 @@ class SignlessLaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        eigenvalues = inv_other.SignlessLaplacianSpectrum.calculate(graph)
-        avg_degree = DegreeAverage.calculate(graph)
-        return sum([np.absolute(x - avg_degree) for x in eigenvalues])
+        return Utils.Energy(inv_other.SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -746,7 +737,7 @@ class DistanceEnergy(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return sum(np.absolute(inv_other.DistanceSpectrum.calculate(graph)))
+            return Utils.Energy(inv_other.DistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
