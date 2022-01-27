@@ -104,7 +104,6 @@ class UtilsToInvariants:
         list_text = str(text).split("\n")
         return len(max(list_text, key=len))
 
-
     @staticmethod
     def MainEigenvalue(matrix: np.ndarray):
         eigenvalues, vectors = la.eigh(matrix)
@@ -114,9 +113,3 @@ class UtilsToInvariants:
             if UtilsToInvariants.approx_to_int(np.dot(one, vectors[:, i])) != 0:
                 mains.add(value)
         return mains
-
-
-
-
-
-
