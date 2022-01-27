@@ -104,7 +104,6 @@ class UtilsToInvariants:
         list_text = str(text).split("\n")
         return len(max(list_text, key=len))
 
-
     @staticmethod
     def MainEigenvalue(matrix: np.ndarray):
         eigenvalues, vectors = la.eigh(matrix)
@@ -114,6 +113,7 @@ class UtilsToInvariants:
             if UtilsToInvariants.approx_to_int(np.dot(one, vectors[:, i])) != 0:
                 mains.add(value)
         return mains
+
 
     @staticmethod
     def Spectrum(matrix: np.ndarray):
@@ -137,5 +137,4 @@ class UtilsToInvariants:
         trace = matrix.trace()
         eig = UtilsToInvariants.Spectrum(matrix)
         return sum([np.absolute(x-(float(trace)/float(matrix.shape[0]))) for x in eig])
-
 

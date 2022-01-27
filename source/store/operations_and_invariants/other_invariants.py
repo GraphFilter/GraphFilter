@@ -397,7 +397,6 @@ class SignlessLaplacianDistanceEigenvectors(InvariantOther):
     def print(graph, precision):
         return Utils.print_eigenvectors_and_eigenvalues(SignlessLaplacianEigenvectors.calculate(graph), precision)
 
-
 class MaximumClique(InvariantOther):
     name = "Maximum Clique"
     type = 'set'
