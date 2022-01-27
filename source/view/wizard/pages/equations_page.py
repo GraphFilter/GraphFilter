@@ -29,7 +29,7 @@ class EquationsPage(QWizardPage):
         self.equation.setMaximumHeight(30)
 
         self.math_tab.setMinimumWidth(500)
-        self.math_tab.setMaximumHeight(300)
+        self.math_tab.setMaximumHeight(380)
 
     def set_up_layout(self):
         title_layout = QHBoxLayout()
