@@ -155,28 +155,28 @@
       "implementation": "NetworkX Python Library"
     },
     {
-      "name": "Adjacency Matrix",
+      "name": "Adjacency Matrix - A",
       "definition" : "It's a square (0,1)-matrix whose elements indicate whether pairs of vertices are adjacent, with the value 1, or not, with the value 0.",
       "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Adjacency_matrix",
       "implementation": "Networkx Python library"
     },
     {
-      "name": "Laplacian Matrix",
+      "name": "Laplacian Matrix - L",
       "definition" : "It's L=D-A, where D is the diagonal matrix of node degrees and A is the adjacency matrix of the graph.",
       "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix",
       "implementation": "Networkx Python library"
     },
     {
-      "name": "Signless Laplacian Matrix",
+      "name": "Signless Laplacian Matrix - Q",
       "definition" : "It's L=D+A, where D is the diagonal matrix of node degrees and A is the adjacency matrix of the graph.",
       "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix#Signless_Laplacian",
       "implementation": "Networkx Python library"
     },
     {
-      "name": "Normalized Laplacian Matrix",
+      "name": "Normalized Laplacian Matrix - N",
       "definition" : "It's the matrix N=D<sup>\u00bd</sup>LD<sup>\u00bd</sup>, where L is the Laplacian matrix and D is the diagonal matrix of node degrees.",
       "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Laplacian_matrix#Symmetric_normalized_Laplacian",
@@ -190,11 +190,32 @@
       "implementation": "Networkx Python library"
     },
     {
-      "name": "Distance Matrix",
+      "name": "Distance Matrix - D",
       "definition" : "It's square matrix containing the distances, taken pairwise, between the vertices.",
       "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Distance_matrix",
       "implementation": "Networkx Python library"
+    },
+    {
+      "name": "Seidel Matrix - S",
+      "definition" : "It's square matrix S=J-I-2A, where J is the matrix formed by 1, A is the adjacency matrix and I the identity matrix",
+      "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
+      "link": "https://en.wikipedia.org/wiki/Seidel_adjacency_matrix",
+      "implementation": "own implementation"
+    },
+    {
+      "name": "Laplacian Distance Matrix - DL",
+      "definition" : "It's square matrix DL=Diag(Tr)−D, where Diag(Tr) is the diagonal matrix of the vertex transmissions and D is the distance matrix.",
+      "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
+      "link": "https://doi.org/10.1016/j.laa.2013.02.030",
+      "implementation": "own implementation"
+    },
+        {
+      "name": "Signless Laplacian Distance Matrix - DQ",
+      "definition" : "It's square matrix DL=Diag(Tr)+D, where Diag(Tr) is the diagonal matrix of the vertex transmissions and D is the distance matrix.",
+      "usage": "In Visualization you can check it in the invariants menu to calculate in the plotted graph",
+      "link": "https://doi.org/10.1016/j.laa.2013.02.030",
+      "implementation": "own implementation"
     },
     {
       "name": "Largest M-eigenvalue",
@@ -212,14 +233,14 @@
     },
     {
       "name": "Energy [matrix M]",
-      "definition" : "Energy of a graph is the sum of the absolute values of the eigenvalues of the M matrix.",
+      "definition" : "Energy of a graph is E= \u03a3 |\u03bb - Tr(M)/n|, where \u03a3 are the eigenvalues of M, Tr(M) is the trace of matrix and n the order.",
       "usage": "For filtering click on the respective button in the equation to use it.  Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Graph_energy",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Some M-eigenvalue integer",
-      "definition" : "Checks if there is an integer M-eigenvalue, where M is A, L, Q or D.",
+      "definition" : "Checks if there is an integer M-eigenvalue",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can check it in the invariants menu to calculate in the plotted graph.",
       "link": "none",
       "implementation": "own implementation"
@@ -240,42 +261,42 @@
     },
     {
       "name": "M-integral",
-      "definition" : "Checks if all M-eigenvalues are integer, where M is A, L, Q or D.",
+      "definition" : "Checks if all M-eigenvalues are integer.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can check it in the invariants menu to calculate in the plotted graph.",
       "link": "none",
       "implementation": "own implementation"
     },
     {
       "name": "Rank of matrix M",
-      "definition" : "This corresponds to the maximal number of linearly independent columns of matrix M, where M is A, L, Q or D.",
+      "definition" : "This corresponds to the maximal number of linearly independent columns of matrix M.",
       "usage": "For filtering click on the respective button in the equation to use it.  Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Rank_(linear_algebra)",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Invertible matrix M",
-      "definition" : "Check if matrix M is invertible, where M is A, L, Q or D.",
+      "definition" : "Check if matrix M is invertible.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can check it in the invariants menu to calculate in the plotted graph.",
       "link": "https://en.wikipedia.org/wiki/Invertible_matrix",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Determinant of matrix M",
-      "definition" : "Calculates the determinant of matrix M, where M is A, L, Q or D.",
+      "definition" : "Calculates the determinant of matrix M.",
       "usage": "For filtering click on the respective button in the equation to use it.  Or in Visualization you can check it in the invariants menu to calculate in the plotted graph",
       "link": "https://en.wikipedia.org/wiki/Determinant",
       "implementation": "Numpy Python Library"
     },
     {
       "name": "Largest M-eigenvalue is integer",
-      "definition" : "Checks whether the largest M-eigenvalue is an integer, where M is A, L, Q or D.",
+      "definition" : "Checks whether the largest M-eigenvalue is an integer.",
       "usage": "For filtering, you can check True (or False) in the respective line, if you want the condition to be satisfied (or not) in the graphs to be filtered. No checks so that filtering does not use this invariant. In Visualization, you can check it in the invariants menu to calculate in the plotted graph.",
       "link": "none",
       "implementation": "own implementation"
     },
     {
       "name": "Main M-eigenvalue (number of)",
-      "definition" : "The eigenvalue x of a matrix M is said to be a main eigenvalue of G, if the eigenspace E(x) is not orthogonal to the all-1 vector. Where M is A, Q or D matrix.",
+      "definition" : "The eigenvalue x of a matrix M is said to be a main eigenvalue of G, if the eigenspace E(x) is not orthogonal to the all-1 vector.",
       "usage": "For filtering click on the respective button in the equation to use it and get the number of main eigenvalues.  Or in Visualization you can check '<b>number of main M-eigenvalues</b>' or '<b>main M-eigenvalues (set)</b>' in the invariants menu to calculate in the plotted graph",
       "link": "http://pefmath.etf.rs/vol1num2/AADM-Vol1-No2-455-471.pdf",
       "implementation": "Numpy and own implementation"
