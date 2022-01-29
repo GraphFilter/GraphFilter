@@ -41,7 +41,8 @@ class Equation:
                 for exp in expressions:
                     if not Equation.valid_bool_simple_eval(exp):
                         return "It's not a valid equation or inequality"
-        except:
+        except Exception as e:
+            print(e)
             return "Unknown terms in the expression"
         return ""
 
