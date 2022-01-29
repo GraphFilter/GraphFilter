@@ -12,9 +12,9 @@ matplotlib==3.4.2
 modulegraph==0.18
 network2tikz==0.1.8
 networkx==2.5.1
-numpy==1.20.3
+numpy>=1.21
 pefile==2021.5.13
-Pillow==8.3.2
+Pillow>=9.0.0
 git+https://github.com/coin-or/pulp@master#egg=PulP
 git+git://github.com/pyinstaller/pyinstaller@develop#egg=pyinstaller
 pyinstaller-hooks-contrib==2021.1
