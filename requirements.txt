@@ -15,7 +15,7 @@ networkx==2.5.1
 numpy==1.20.3
 pefile==2021.5.13
 Pillow==8.3.2
-PuLP==2.5.1
+git+https://github.com/coin-or/pulp@master#egg=PulP
 git+git://github.com/pyinstaller/pyinstaller@develop#egg=pyinstaller
 pyinstaller-hooks-contrib==2021.1
 pyparsing==2.4.7
