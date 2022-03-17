@@ -216,7 +216,7 @@ class HasBridge(InvariantBool):
 
 
 class SomeEigenIntegerA(InvariantBool):
-    name = 'Some A-eigenvalue integer\n(Adjacency)'
+    name = 'Some A-eigenvalue integer'
     type = 'bool_spectral'
 
     @staticmethod
@@ -229,7 +229,7 @@ class SomeEigenIntegerA(InvariantBool):
 
 
 class SomeEigenIntegerL(InvariantBool):
-    name = "Some L-eigenvalue integer\n(Laplacian)"
+    name = "Some L-eigenvalue integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -242,7 +242,7 @@ class SomeEigenIntegerL(InvariantBool):
 
 
 class SomeEigenIntegerQ(InvariantBool):
-    name = "Some Q-eigenvalue integer\n(Signless Laplacian)"
+    name = "Some Q-eigenvalue integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -254,8 +254,21 @@ class SomeEigenIntegerQ(InvariantBool):
         return Utils.print_boolean(SomeEigenIntegerQ.calculate(graph), precision)
 
 
+class SomeEigenIntegerS(InvariantBool):
+    name = "Some S-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_there_integer(inv_other.SeidelSpectrum.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerS.calculate(graph), precision)
+
+
 class SomeEigenIntegerN(InvariantBool):
-    name = "Some N-eigenvalue integer\n(Normalized Laplacian)"
+    name = "Some N-eigenvalue integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -268,7 +281,7 @@ class SomeEigenIntegerN(InvariantBool):
 
 
 class SomeEigenIntegerD(InvariantBool):
-    name = "Some D-eigenvalue integer\n(Distance)"
+    name = "Some D-eigenvalue integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -281,6 +294,38 @@ class SomeEigenIntegerD(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(SomeEigenIntegerD.calculate(graph), precision)
+
+
+class SomeEigenIntegerDL(InvariantBool):
+    name = "Some DL-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.is_there_integer(inv_other.LaplacianDistanceSpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerDL.calculate(graph), precision)
+
+
+class SomeEigenIntegerDQ(InvariantBool):
+    name = "Some DQ-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.is_there_integer(inv_other.SignlessLaplacianDistanceSpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerDQ.calculate(graph), precision)
 
 
 class IntegralA(InvariantBool):
@@ -322,22 +367,6 @@ class IntegralQ(InvariantBool):
         return Utils.print_boolean(IntegralQ.calculate(graph), precision)
 
 
-class IntegralD(InvariantBool):
-    name = "D-integral (Distance)"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.integral(inv_other.DistanceSpectrum.calculate(graph))
-        else:
-            return False
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(IntegralD.calculate(graph), precision)
-
-
 class IntegralN(InvariantBool):
     name = "N-integral (Normalized Laplacian)"
     type = 'bool_spectral'
@@ -354,8 +383,69 @@ class IntegralN(InvariantBool):
         return Utils.print_boolean(IntegralN.calculate(graph), precision)
 
 
+class IntegralS(InvariantBool):
+    name = "S-integral (Signless Laplacian)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.integral(inv_other.SeidelSpectrum.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(IntegralS.calculate(graph), precision)
+
+
+class IntegralD(InvariantBool):
+    name = "D-integral (Distance)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.integral(inv_other.DistanceSpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(IntegralD.calculate(graph), precision)
+
+
+class IntegralDL(InvariantBool):
+    name = "DL-integral (Distance)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.integral(inv_other.LaplacianDistanceSpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(IntegralDL.calculate(graph), precision)
+
+
+class IntegralDQ(InvariantBool):
+    name = "DQ-integral (Distance)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.integral(inv_other.SignlessLaplacianDistanceSpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(IntegralDQ.calculate(graph), precision)
+
+
 class LargestEigenIntegerA(InvariantBool):
-    name = "Largest A-eigenvalue is integer\n(Adjacency)"
+    name = "Largest A-eigen is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -368,7 +458,7 @@ class LargestEigenIntegerA(InvariantBool):
 
 
 class LargestEigenIntegerL(InvariantBool):
-    name = "Largest L-eigenvalue is integer\n(Laplacian)"
+    name = "Largest L-eigen is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -381,7 +471,7 @@ class LargestEigenIntegerL(InvariantBool):
 
 
 class LargestEigenIntegerQ(InvariantBool):
-    name = "Largest Q-eigenvalue is integer\n(Signless Laplacian)"
+    name = "Largest Q-eigen is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -393,8 +483,21 @@ class LargestEigenIntegerQ(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerQ.calculate(graph), precision)
 
 
+class LargestEigenIntegerS(InvariantBool):
+    name = "Largest S-eigen is integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_integer(inv_other.SeidelSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(LargestEigenIntegerS.calculate(graph), precision)
+
+
 class LargestEigenIntegerD(InvariantBool):
-    name = "Largest D-eigenvalue is integer\n(Distance Matrix)"
+    name = "Largest D-eigen is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -409,8 +512,41 @@ class LargestEigenIntegerD(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerD.calculate(graph), precision)
 
 
+class LargestEigenIntegerDL(InvariantBool):
+    name = "Largest DL-eigen is integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.is_integer(inv_other.LaplacianDistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(LargestEigenIntegerD.calculate(graph), precision)
+
+
+class LargestEigenIntegerDQ(InvariantBool):
+    name = "Largest DQ-eigen is integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.is_integer(
+                inv_other.SignlessLaplacianDistanceSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(LargestEigenIntegerDQ.calculate(graph), precision)
+
+
 class LargestEigenIntegerN(InvariantBool):
-    name = "Largest N-eigenvalue is integer\n(Normalized Laplacian)"
+    name = "Largest N-eigenvalue is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -441,7 +577,7 @@ class RegularTransmission(InvariantBool):
 
 
 class InvertibleMatrixA(InvariantBool):
-    name = "A is invertible\n(Adjacency)"
+    name = "A is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -454,7 +590,7 @@ class InvertibleMatrixA(InvariantBool):
 
 
 class InvertibleMatrixL(InvariantBool):
-    name = "L is invertible\n(Laplacian)"
+    name = "L is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -467,7 +603,7 @@ class InvertibleMatrixL(InvariantBool):
 
 
 class InvertibleMatrixQ(InvariantBool):
-    name = "Q is invertible\n(Signless Laplacian)"
+    name = "Q is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -480,7 +616,7 @@ class InvertibleMatrixQ(InvariantBool):
 
 
 class InvertibleMatrixN(InvariantBool):
-    name = "N is invertible\n(Normalized Laplacian)"
+    name = "N is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -493,7 +629,7 @@ class InvertibleMatrixN(InvariantBool):
 
 
 class InvertibleMatrixD(InvariantBool):
-    name = "D is invertible\n(Distance)"
+    name = "D is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -506,3 +642,16 @@ class InvertibleMatrixD(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixD.calculate(graph), precision)
+
+
+class InvertibleMatrixS(InvariantBool):
+    name = "S is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.SeidelMatrix.calculate(graph))) != 0)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(InvertibleMatrixS.calculate(graph), precision)

@@ -157,7 +157,7 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             file = open(file_name, 'w')
             for step, graph in enumerate(project_information_store.filtered_graphs):
-                file.write(graph)
+                file.write(f'{graph}\n')
                 self.update_loading_window(step)
             file.close()
             self.loading_window.close()

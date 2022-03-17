@@ -104,7 +104,6 @@ class UtilsToInvariants:
         list_text = str(text).split("\n")
         return len(max(list_text, key=len))
 
-
     @staticmethod
     def MainEigenvalue(matrix: np.ndarray):
         eigenvalues, vectors = la.eigh(matrix)
@@ -116,7 +115,26 @@ class UtilsToInvariants:
         return mains
 
 
+    @staticmethod
+    def Spectrum(matrix: np.ndarray):
+        return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())
 
+    @staticmethod
+    def LargestEigen(matrix: np.ndarray):
+        return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[matrix.shape[0] - 1]
 
+    @staticmethod
+    def SecondLargestEigen(matrix: np.ndarray):
+        return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[matrix.shape[0] - 2]
 
+    @staticmethod
+    def Eigenvectors(matrix: np.ndarray):
+        values, vectors = la.eigh(matrix)
+        return values, UtilsToInvariants.approx_array_to_int(vectors)
+
+    @staticmethod
+    def Energy(matrix: np.ndarray):
+        trace = matrix.trace()
+        eig = UtilsToInvariants.Spectrum(matrix)
+        return sum([np.absolute(x-(float(trace)/float(matrix.shape[0]))) for x in eig])
 
