@@ -13,6 +13,7 @@ from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
 import pathlib
+from pathlib import Path
 
 
 class WizardController:
@@ -68,11 +69,14 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('Select the filtering method')
 
     def update_complete_graph_files_page(self):
-        if self.graph_files_page.complete:
-            self.wizard_window.next_button.setToolTip('')
+        if self.graph_files_page.list_files_input.count() == 0:
+            self.graph_files_page.complete = False
+            self.wizard_window.next_button.setToolTip('Insert at least one graph file')
         else:
-            self.wizard_window.next_button.setToolTip('Invalid graph file')
+            self.wizard_window.next_button.setToolTip('')
+            self.graph_files_page.complete = True
         self.graph_files_page.completeChanged.emit()
+        self.wizard_window.next_button.clicked.connect(self.store_graph_files)
 
     def update_complete_project_files_page(self, complete_project_name=None, complete_project_location=None):
         if complete_project_name is not None:
@@ -110,10 +114,13 @@ class WizardController:
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
 
     def connect_graph_files_page_events(self):
-        self.graph_files_page.open_file.clicked.connect(self.on_update_graph_file)
-        self.graph_files_page.add_file.clicked.connect(self.on_add_graph_file_input)
-        self.graph_files_page.files_input.textEdited.connect(self.on_insert_graph_file_path)
+        self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
+        self.graph_files_page.add_file.clicked.connect(self.on_add_graph_file)
+        self.graph_files_page.remove_file.clicked.connect(self.on_remove_graph_file)
+        self.graph_files_page.list_files_input.itemPressed.connect(lambda: self.graph_files_page.update_file.setEnabled(True))
+        self.graph_files_page.list_files_input.itemPressed.connect(lambda: self.graph_files_page.remove_file.setEnabled(True))
         self.graph_files_page.download_button.clicked.connect(lambda: self.open_url("https://hog.grinvin.org/MetaDirectory.action"))
+
 
     def open_url(self, url):
         QDesktopServices.openUrl(QUrl(url))
@@ -283,74 +290,48 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('')
 
     def on_update_graph_file(self):
-        button_clicked = QPushButton().sender()
-        form = button_clicked.parentWidget()
-        input_file = form.findChildren(QLineEdit)
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
         # self.graph_files_page.tr("Text files (*.g6)")
         file_path = file_dialog.getOpenFileName(
             filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;Text files (*.txt *.txt.gz);;Graph6 files (*.g6 *.g6.gz)"
         )
-        self.save_graph_file_path(file_path[0], input_file[-1])
 
-    def on_insert_graph_file_path(self):
-        line_input = QLineEdit().sender()
-        path = line_input.text()
-        self.save_graph_file_path(path, line_input)
+        for i in range(self.graph_files_page.list_files_input.count()):
+            if self.graph_files_page.list_files_input.item(i).text() == file_path[0]:
+                return
 
-    def save_graph_file_path(self, path, line_input):
-        if validate_file(path):
-            if path not in wizard_information_store.graph_files and path != '':
-                if line_input.text() != '' and line_input.text() in wizard_information_store.graph_files:
-                    wizard_information_store.graph_files.remove(line_input.text())
-                line_input.setText(path)
-                wizard_information_store.graph_files.append(path)
-                self.review_page.set_graph_files(wizard_information_store.graph_files)
-                self.graph_files_page.add_file.setEnabled(True)
-            elif path == '':
-                self.graph_files_page.complete = False
-            self.graph_files_page.complete = True
-        else:
-            self.graph_files_page.complete = False
-        print(wizard_information_store.graph_files)
+        list_files = self.graph_files_page.list_files_input
+        k = list_files.currentRow()
+        list_files.takeItem(k)
+        list_files.insertItem(k, file_path[0])
+        self.graph_files_page.remove_file.setEnabled(False)
+        self.graph_files_page.update_file.setEnabled(False)
         self.update_complete_graph_files_page()
 
-    def on_add_graph_file_input(self):
-        button_clicked = QPushButton().sender()
-        form = button_clicked.parentWidget()
-        input_file = form.findChildren(QLineEdit)
-        if input_file[-1].text() != '':
-
-            input_file = QLineEdit()
-            input_file.textEdited.connect(self.on_insert_graph_file_path)
-
-            button = QPushButton("...")
-            remove = QPushButton("-")
-
-            button.clicked.connect(self.on_update_graph_file)
-
-            layout = QHBoxLayout()
-            layout.addWidget(QLabel("Graph .g6 file:"))
-            layout.addWidget(input_file)
-            layout.addWidget(button)
-            layout.addWidget(remove)
-
-            self.graph_files_page.form.addRow(layout)
-
-            remove.clicked.connect(lambda: self.on_remove_graph_file(layout, input_file))
-            self.graph_files_page.add_file.setEnabled(False)
-
-    def on_remove_graph_file(self, layout, input_file):
-        text = input_file.text()
-        if text in wizard_information_store.graph_files:
-            wizard_information_store.graph_files.remove(text)
-            self.review_page.set_graph_files(wizard_information_store.graph_files)
-        print(wizard_information_store.graph_files)
-        self.graph_files_page.form.removeRow(layout)
-        self.graph_files_page.add_file.setEnabled(True)
-
-        if len(wizard_information_store.graph_files) == 0:
-            self.graph_files_page.complete = False
+    def on_add_graph_file(self):
+        file_dialog = QFileDialog()
+        file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
+        file_path = file_dialog.getOpenFileNames(
+            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;Text files (*.txt *.txt.gz);;Graph6 files (*.g6 *.g6.gz)"
+        )
+        for file_name in file_path[0]:
+            duplicate_file = False
+            for i in range(self.graph_files_page.list_files_input.count()):
+                if self.graph_files_page.list_files_input.item(i).text() == file_name:
+                    duplicate_file = True
+            if not duplicate_file:
+                self.graph_files_page.list_files_input.addItem(file_name)
 
         self.update_complete_graph_files_page()
+
+    def on_remove_graph_file(self):
+        list_files = self.graph_files_page.list_files_input
+        list_files.takeItem(list_files.currentRow())
+        self.graph_files_page.remove_file.setEnabled(False)
+        self.graph_files_page.update_file.setEnabled(False)
+        self.update_complete_graph_files_page()
+
+    def store_graph_files(self):
+        list_files = self.graph_files_page.list_files_input
+        wizard_information_store.graph_files =[list_files.item(x).text() for x in range(list_files.count())]

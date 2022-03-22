@@ -13,10 +13,12 @@ class FilesPage(QWizardPage):
         self.incomplete_message = "Invalid graph file"
         self.alert_text = help_button_text.files
 
-        self.files_input = QLineEdit()
+        self.list_files_input = QListWidget()
 
-        self.open_file = QPushButton("...")
-        self.add_file = QPushButton("+")
+        self.add_file = QPushButton("Add file")
+        self.remove_file = QPushButton("Remove file")
+        self.update_file = QPushButton("Change file")
+
 
         self.download_button = QPushButton(" get .g6 graph")
 
@@ -30,22 +32,22 @@ class FilesPage(QWizardPage):
         self.download_button.setFixedWidth(120)
         self.download_button.setFixedHeight(40)
 
-        self.add_file.setEnabled(False)
+        self.remove_file.setEnabled(False)
+        self.update_file.setEnabled(False)
 
     def set_up_layout(self):
-        self.setTitle("Files")
+        self.setTitle("Graph files")
 
-        file_line = QHBoxLayout()
-        file_line.addWidget(QLabel("Graph .g6 file:"))
-        file_line.addWidget(self.files_input)
-        file_line.addWidget(self.open_file)
-        file_line.addWidget(self.add_file)
-
-        self.form.addRow(file_line)
+        buttons = QHBoxLayout()
+        buttons.addWidget(self.add_file)
+        buttons.addWidget(self.remove_file)
+        buttons.addWidget(self.update_file)
+        self.form.addRow(buttons)
 
         layout = QVBoxLayout()
         layout.addStretch(1)
         layout.addLayout(self.form)
+        layout.addWidget(self.list_files_input)
         layout.addStretch(10)
         layout.addWidget(self.download_button, alignment=QtCore.Qt.AlignRight)
 
