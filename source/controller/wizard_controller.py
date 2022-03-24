@@ -13,7 +13,10 @@ from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
 import pathlib
-from pathlib import Path
+
+
+def open_url(url):
+    QDesktopServices.openUrl(QUrl(url))
 
 
 class WizardController:
@@ -117,13 +120,12 @@ class WizardController:
         self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_file.clicked.connect(self.on_add_graph_file)
         self.graph_files_page.remove_file.clicked.connect(self.on_remove_graph_file)
-        self.graph_files_page.list_files_input.itemPressed.connect(lambda: self.graph_files_page.update_file.setEnabled(True))
-        self.graph_files_page.list_files_input.itemPressed.connect(lambda: self.graph_files_page.remove_file.setEnabled(True))
-        self.graph_files_page.download_button.clicked.connect(lambda: self.open_url("https://hog.grinvin.org/MetaDirectory.action"))
-
-
-    def open_url(self, url):
-        QDesktopServices.openUrl(QUrl(url))
+        self.graph_files_page.list_files_input.itemPressed.connect(
+            lambda: self.graph_files_page.update_file.setEnabled(True))
+        self.graph_files_page.list_files_input.itemPressed.connect(
+            lambda: self.graph_files_page.remove_file.setEnabled(True))
+        self.graph_files_page.download_button.clicked.connect(
+            lambda: open_url("https://hog.grinvin.org/MetaDirectory.action"))
 
     def connect_events(self):
         self.wizard_window.currentIdChanged.connect(self.on_wizard_page_change)
@@ -169,7 +171,8 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 
     def set_equations_tabs(self):
-        tab_num_structural_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_inv_structural_names)
+        tab_num_structural_invariants = TabOperations(self.add_button_input_to_equation_text,
+                                                      dic_num_inv_structural_names)
         tab_num_spectral_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_inv_spectral_names)
         tab_graph_operations = TabOperations(self.add_button_input_to_equation_text, dic_graph_operations_names)
         tab_math_operations = TabOperations(self.add_button_input_to_equation_text, dic_math_and_basic_operations_names)
@@ -334,4 +337,5 @@ class WizardController:
 
     def store_graph_files(self):
         list_files = self.graph_files_page.list_files_input
-        wizard_information_store.graph_files =[list_files.item(x).text() for x in range(list_files.count())]
+        wizard_information_store.graph_files = [list_files.item(x).text() for x in range(list_files.count())]
+        self.review_page.set_graph_files(wizard_information_store.graph_files)
