@@ -23,6 +23,7 @@ class ConditionsPage(QWizardPage):
         layout.addWidget(self.structural_invariants_group)
         layout.addStretch(2)
         layout.addWidget(self.spectral_invariants_group)
+        layout.setContentsMargins(50, 25, 50, 25)
 
         self.setLayout(layout)
 

@@ -108,11 +108,15 @@ class WizardController:
         self.project_files_page.project_name_input.textEdited.connect(self.verify_and_save_project_name)
         self.project_files_page.project_location_button.clicked.connect(self.on_open_project_file)
         self.project_files_page.project_location_input.textEdited.connect(self.verify_and_save_project_folder)
+        self.project_files_page.project_description_input.textChanged.connect(self.save_project_description)
 
     def connect_equations_page_events(self):
         self.equations_page.equation.textEdited.connect(self.on_insert_equation_input)
 
     def connect_method_page_events(self):
+        self.method_page.filter_button.setChecked(False)
+        self.method_page.filter_button.setChecked(False)
+
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
 
@@ -120,9 +124,10 @@ class WizardController:
         self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_file.clicked.connect(self.on_add_graph_file)
         self.graph_files_page.remove_file.clicked.connect(self.on_remove_graph_file)
-        self.graph_files_page.list_files_input.itemPressed.connect(
-            lambda: self.graph_files_page.update_file.setEnabled(True))
-        self.graph_files_page.list_files_input.itemPressed.connect(
+        self.graph_files_page.remove_all_files.clicked.connect(self.on_remove_all_files)
+        self.graph_files_page.list_files_input.itemClicked.connect(
+            lambda: self.graph_files_page.update_file.setEnabled(len(self.graph_files_page.list_files_input.selectedItems()) == 1))
+        self.graph_files_page.list_files_input.itemClicked.connect(
             lambda: self.graph_files_page.remove_file.setEnabled(True))
         self.graph_files_page.download_button.clicked.connect(
             lambda: open_url("https://hog.grinvin.org/MetaDirectory.action"))
@@ -156,6 +161,11 @@ class WizardController:
             self.review_page.set_project_location(project_location)
         else:
             self.update_complete_project_files_page(complete_project_location=False)
+
+    def save_project_description(self):
+        description = self.project_files_page.project_description_input.toPlainText()
+        wizard_information_store.project_location = description
+        self.review_page.set_project_description(description)
 
     def on_open_project_file(self):
         file_dialog = QFileDialog()
@@ -325,14 +335,24 @@ class WizardController:
                     duplicate_file = True
             if not duplicate_file:
                 self.graph_files_page.list_files_input.addItem(file_name)
-
+        self.graph_files_page.remove_all_files.setEnabled(True)
         self.update_complete_graph_files_page()
 
     def on_remove_graph_file(self):
         list_files = self.graph_files_page.list_files_input
-        list_files.takeItem(list_files.currentRow())
+        for item in list_files.selectedItems():
+            list_files.takeItem(list_files.row(item))
         self.graph_files_page.remove_file.setEnabled(False)
         self.graph_files_page.update_file.setEnabled(False)
+        if list_files.count() == 0:
+            self.graph_files_page.remove_all_files.setEnabled(False)
+        self.update_complete_graph_files_page()
+
+    def on_remove_all_files(self):
+        self.graph_files_page.list_files_input.clear()
+        self.graph_files_page.remove_file.setEnabled(False)
+        self.graph_files_page.update_file.setEnabled(False)
+        self.graph_files_page.remove_all_files.setEnabled(False)
         self.update_complete_graph_files_page()
 
     def store_graph_files(self):

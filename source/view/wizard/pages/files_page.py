@@ -14,42 +14,44 @@ class FilesPage(QWizardPage):
         self.alert_text = help_button_text.files
 
         self.list_files_input = QListWidget()
+        self.list_files_input.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
-        self.add_file = QPushButton("Add file")
-        self.remove_file = QPushButton("Remove file")
+        self.add_file = QPushButton("Add files")
+        self.remove_file = QPushButton("Remove files")
         self.update_file = QPushButton("Change file")
-
-
-        self.download_button = QPushButton(" get .g6 graph")
-
-        self.form = QFormLayout()
+        self.remove_all_files = QPushButton("Remove all")
+        self.download_button = QPushButton(" Download .g6 graph")
 
         self.set_content_attributes()
         self.set_up_layout()
 
     def set_content_attributes(self):
         self.download_button.setIcon(Icon('download'))
-        self.download_button.setFixedWidth(120)
         self.download_button.setFixedHeight(40)
 
         self.remove_file.setEnabled(False)
         self.update_file.setEnabled(False)
+        self.remove_all_files.setEnabled(False)
 
     def set_up_layout(self):
-        self.setTitle("Graph files")
+        self.setTitle("Input Graphs")
 
-        buttons = QHBoxLayout()
+        layout = QHBoxLayout()
+        #layout.addLayout(self.form)
+        layout.addWidget(self.list_files_input)
+
+        buttons = QVBoxLayout()
         buttons.addWidget(self.add_file)
         buttons.addWidget(self.remove_file)
         buttons.addWidget(self.update_file)
-        self.form.addRow(buttons)
+        buttons.addWidget(self.remove_all_files)
+        buttons.addStretch(5)
+        buttons.addWidget(self.download_button)
+        layout.addLayout(buttons)
 
-        layout = QVBoxLayout()
-        layout.addStretch(1)
-        layout.addLayout(self.form)
-        layout.addWidget(self.list_files_input)
-        layout.addStretch(10)
-        layout.addWidget(self.download_button, alignment=QtCore.Qt.AlignRight)
+        layout.setContentsMargins(25, 25, 25, 25)
+        # layout.addStretch(10)
+        # layout.addWidget(self.download_button, alignment=QtCore.Qt.AlignRight)
 
         self.setLayout(layout)
 

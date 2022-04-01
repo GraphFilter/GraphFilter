@@ -41,6 +41,7 @@ class EquationsPage(QWizardPage):
         layout.addStretch(1)
         layout.addWidget(self.math_tab)
         layout.addStretch(1)
+        layout.setContentsMargins(25, 25, 25, 25)
         self.setLayout(layout)
 
     def set_label_validation_equation(self, error_message):

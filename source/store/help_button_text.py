@@ -1,7 +1,8 @@
 equation = "<p> On this screen, you can insert a condition like as mathematical equation or inequality, using " \
                "the numeric invariants and operations. Each one must be applied to a graph, as a function “f(G)” and" \
                " compositions. Conditions can be combined using logical connectors AND or OR. <br> Examples:" \
-               " <br>\u03c9(G) == a(\u2113(G)) <br> \u03bb \u2081(G) > (\u03bb\u2081(c(G)))/2 </p>"
+               " <br>\u03c9(G) == a(\u2113(G)) <br> \u03bb \u2081(G) > (\u03bb\u2081(c(G)))/2 <br>" \
+           "\u03c9(G) == a(\u2113(G)) OR \u03bb \u2081(G) > (\u03bb\u2081(c(G)))/2 </p>"
 
 method = "<p> The 'Filter graphs'' will filter a list of graphs and return all those that satisfy the conditions " \
              "marked in the previous screens. <br> The 'Find Counterexample' will run until it finds a graph that " \
@@ -13,9 +14,11 @@ conditions = "<p> In this screen you will enter the conditions of the true/false
                  "Feel free to check as many conditions as you like. </p>"
 
 files = "<p> In this screen you must insert the files containing the lists of the graphs to be analyzed. The " \
-            "files must be in the .g6 format and can contain several graphs. If you want to insert more than one " \
-            "file, just click '+', to remove a file click '-'. <br> " \
-            "Accepted file formats: .g6, .txt, .g6.gz and .txt.gz</p>"
+            "files must be in the .g6 or .txt format and can contain several graphs. \n" \
+            "Accepted file formats: .g6, .txt, .g6.gz and .txt.gz</p> \n"\
+            "It is strongly recommended that you avoid compressed files (.gz) as it considerably increases the" \
+        " filtering time. Use a file decompressor softweare (7zip, winzip or winrar) and load here with a " \
+        ".txt or .g6 file."
 
 review = "<p> This is the last screen before starting to filter. Here you can review all the parameters " \
              "inserted. </p>"

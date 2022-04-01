@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from source.store import help_button_text
+from PyQt5 import QtCore
 
 
 class ProjectInformationWizardPage(QWizardPage):
@@ -13,6 +14,8 @@ class ProjectInformationWizardPage(QWizardPage):
         self.alert_text = help_button_text.project
 
         self.project_name_input = QLineEdit()
+        self.project_description_input = QTextEdit()
+        self.project_description_input.setMaximumHeight(200)
         self.project_location_input = QLineEdit()
         self.project_location_button = QPushButton("...")
 
@@ -34,8 +37,9 @@ class ProjectInformationWizardPage(QWizardPage):
 
         form = QFormLayout()
         form.addRow(QLabel("Project Name"), self.project_name_input)
-
         form.addRow(QLabel("Project location"), file_line)
+        form.addRow(QLabel("Project description \n(optional)"), self.project_description_input)
+        form.setContentsMargins(25, 25, 25, 300)
 
         self.setLayout(form)
 
