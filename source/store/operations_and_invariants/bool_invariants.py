@@ -1,5 +1,6 @@
 import grinpy as gp
 import networkx as nx
+import networkx.algorithms.threshold
 import numpy.linalg as la
 
 import source.store.operations_and_invariants.other_invariants as inv_other
@@ -214,6 +215,18 @@ class HasBridge(InvariantBool):
     def print(graph, precision):
         return Utils.print_boolean(HasBridge.calculate(graph), precision)
 
+
+class Threshold(InvariantBool):
+    name = 'Is threshold'
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        return nx.algorithms.threshold.is_threshold_graph(graph)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(Threshold.calculate(graph), precision)
 
 class SomeEigenIntegerA(InvariantBool):
     name = 'Some A-eigenvalue integer'
