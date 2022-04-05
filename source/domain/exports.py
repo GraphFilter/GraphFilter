@@ -1,10 +1,10 @@
-import networkx as nx
 import matplotlib.pyplot as plt
 import network2tikz as tkz
+import networkx as nx
 import xlsxwriter
-from source.store.operations_invariants import dic_invariants_to_visualize as dic
+
 from source.domain.utils import convert_g6_to_nx
-from source.store.operations_and_invariants.other_invariants import InvariantOther
+from source.store.operations_invariants import dic_invariants_to_visualize as dic
 
 
 def export_g6_to_png(g6code, folder, count):
