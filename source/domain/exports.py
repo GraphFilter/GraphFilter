@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import network2tikz as tkz
 import networkx as nx
 import xlsxwriter
+import xlwt
 
 from source.domain.utils import convert_g6_to_nx
 from source.store.operations_invariants import dic_invariants_to_visualize as dic

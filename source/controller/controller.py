@@ -164,7 +164,7 @@ class Controller:
             self.loading_window.close()
 
     def export_to_sheet(self):
-        file_name = self.get_name_from_save_dialog('xls')
+        file_name = self.get_name_from_save_dialog('xlsx')
         if file_name:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             export_g6_to_sheet(graph_list=project_information_store.filtered_graphs,
