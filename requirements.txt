@@ -30,3 +30,5 @@ rectangle-packer==2.0.1
 scipy==1.8.0
 simpleeval==0.9.11
 six==1.16.0
+
+XlsxWriter~=3.0.3
