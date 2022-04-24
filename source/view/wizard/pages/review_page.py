@@ -32,18 +32,13 @@ class ReviewPage(QWizardPage):
         self.graph_files_layout = QListWidget()
         self.conditions_layout = QVBoxLayout()
 
+        self.window_layout = QVBoxLayout()
+        self.widget = QWidget()
+
         self.set_up_layout()
 
     def set_up_layout(self):
         self.setTitle("Review")
-        self.setSubTitle("Review the information below and click 'Start' to create your new project. \n"
-                         "Use the 'Previous' button to ake changes.")
-
-        #TODO: scrool bar still not working
-        self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.scroll_area.setLayout(self.project_layout)
 
         self.project_layout.addRow("<b>Project Name:</b>", self.project_name)
         self.project_layout.addRow("<b>Project location:</b>", self.project_location)
@@ -54,7 +49,20 @@ class ReviewPage(QWizardPage):
         self.project_layout.addRow("<b>Graph files:</b>", self.graph_files_layout)
         self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
 
-        self.setLayout(self.project_layout)
+        self.project_layout.setContentsMargins(60, 25, 60, 25)
+
+        self.widget.setLayout(self.project_layout)
+
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidget(self.widget)
+        self.scroll_area.setFrameShape(QFrame.NoFrame)
+
+        aux = QVBoxLayout()
+        aux.addWidget(self.scroll_area)
+
+        self.setLayout(aux)
 
     def set_project_name(self, project_name):
         self.project_name.setText(project_name)
