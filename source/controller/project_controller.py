@@ -10,6 +10,7 @@ from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx
+from PyQt5.Qt import QUrl, QDesktopServices
 
 
 class ProjectController:
@@ -55,6 +56,8 @@ class ProjectController:
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
         self.project_window.invariants_check_action.triggered.connect(self.on_invariants_check)
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
+
+        self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
         self.project_window.restore_layout_action.triggered.connect(self.on_restore)
 
@@ -127,6 +130,9 @@ class ProjectController:
     def on_click_button_right(self):
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() + 1)
         self.on_change_graph()
+
+    def on_dictionary(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/wiki/Dictionary"))
 
     def on_check_condition(self):
         check = QCheckBox().sender()

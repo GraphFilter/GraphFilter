@@ -25,8 +25,8 @@ class ProjectWindow(QMainWindow):
         self.visualize_action = QAction("Visualize")
         self.invariants_check_action = QAction("Invariants Check")
         self.graph_info_action = QAction("Graph Info")
-        self.dictionary_action = QAction("Dictionary")
 
+        self.dictionary_action = QAction("Dictionary")
         self.about_action = QAction("About...")
 
         self.restore_layout_action = QAction("Restore default layout")
@@ -64,10 +64,10 @@ class ProjectWindow(QMainWindow):
         view_menu.addAction(self.visualize_action)
         view_menu.addAction(self.invariants_check_action)
         view_menu.addAction(self.graph_info_action)
-        view_menu.addAction(self.dictionary_action)
 
         window_menu = menu_bar.addMenu("Window")
         window_menu.addAction(self.restore_layout_action)
 
         help_menu = menu_bar.addMenu("Help")
+        help_menu.addAction(self.dictionary_action)
         help_menu.addAction(self.about_action)
