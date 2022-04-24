@@ -35,7 +35,6 @@ class MethodPage(QWizardPage):
         self.counter_example_button.setCheckable(True)
         self.counter_example_button.setObjectName('counterexample')
 
-
     def set_up_layout(self):
         self.setTitle("Method")
 

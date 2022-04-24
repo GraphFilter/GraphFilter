@@ -37,7 +37,6 @@ class FilesPage(QWizardPage):
         self.setTitle("Input Graphs")
 
         layout = QHBoxLayout()
-        #layout.addLayout(self.form)
         layout.addWidget(self.list_files_input)
 
         buttons = QVBoxLayout()
@@ -49,7 +48,6 @@ class FilesPage(QWizardPage):
         buttons.addWidget(self.download_button)
         layout.addLayout(buttons)
 
-        layout.setContentsMargins(25, 25, 25, 25)
         # layout.addStretch(10)
         # layout.addWidget(self.download_button, alignment=QtCore.Qt.AlignRight)
 
