@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import *
+
 from source.domain.utils import clear_layout
+from source.store import help_button_text
 from PyQt5 import QtCore
-from source.store.help_buttons_text import tip_review
-from source.view.components.help_button import HelpButton
 
 
 class ReviewPage(QWizardPage):
@@ -10,153 +10,117 @@ class ReviewPage(QWizardPage):
     def __init__(self):
         super().__init__()
 
+        self.complete = False
+
+        self.incomplete_message = "Fill all required information"
+        self.alert_text = help_button_text.review
+
         self.project_name = QLabel()
+        self.project_name.setWordWrap(True)
         self.project_location = QLabel()
+        self.project_location.setWordWrap(True)
+        self.project_description = QLabel('<i>none</i>')
+        self.project_description.setWordWrap(True)
         self.conditions = {}
         self.graph_files = []
         self.method = QLabel()
-        self.equation = QLabel("<b>Equation:</b>")
+        self.equation = QLabel('<i>none</i>')
 
-        self.help_button = HelpButton(tip_review)
+        self.scroll_area = QScrollArea()
+        self.project_layout = QFormLayout()
+        self.project_layout.setVerticalSpacing(20)
+        self.graph_files_layout = QListWidget()
+        self.conditions_layout = QVBoxLayout()
 
-        self.conditions_and_graphs_layout = QHBoxLayout()
+        self.window_layout = QVBoxLayout()
+        self.widget = QWidget()
 
-        self.conditions_layout = ReviewConditionsLayout(self.conditions)
-        self.graph_files_layout = ReviewGraphFilesLayout(self.graph_files)
-
-        self.set_content_attributes()
         self.set_up_layout()
 
-    def set_content_attributes(self):
-        self.setObjectName("review")
-
     def set_up_layout(self):
-        title_layout = QHBoxLayout()
-        title_layout.addWidget(QLabel("<h3>Review</h3>"))
-        title_layout.addWidget(self.help_button, alignment=QtCore.Qt.AlignRight)
+        self.setTitle("Review")
 
-        project_name_layout = QHBoxLayout()
-        project_name_layout.setSpacing(0)
-        project_name_layout.addWidget(self.project_name)
+        self.project_layout.addRow("<b>Project Name:</b>", self.project_name)
+        self.project_layout.addRow("<b>Project location:</b>", self.project_location)
+        self.project_layout.addRow("<b>Project description:</b>", self.project_description)
+        self.project_layout.addRow("<b>Method Selected:</b>", self.method)
+        self.project_layout.addRow("<b>(In)equations:</b>", self.equation)
+        self.project_layout.addRow("<b>Conditions:</b>", self.conditions_layout)
+        self.project_layout.addRow("<b>Graph files:</b>", self.graph_files_layout)
+        self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
 
-        project_location_layout = QHBoxLayout()
-        project_location_layout.setSpacing(0)
-        project_location_layout.addWidget(self.project_location)
+        self.project_layout.setContentsMargins(60, 25, 60, 25)
 
-        project_layout = QHBoxLayout()
-        project_layout.addLayout(project_name_layout)
-        project_layout.addLayout(project_location_layout)
+        self.widget.setLayout(self.project_layout)
 
-        self.conditions_and_graphs_layout.addLayout(self.conditions_layout)
-        self.conditions_and_graphs_layout.addLayout(self.graph_files_layout)
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidget(self.widget)
+        self.scroll_area.setFrameShape(QFrame.NoFrame)
 
-        layout = QVBoxLayout()
-        layout.addLayout(title_layout)
-        layout.addStretch(2)
-        layout.addLayout(project_layout)
-        layout.addStretch(1)
-        layout.addWidget(self.equation)
-        layout.addStretch(1)
-        layout.addWidget(self.method)
-        layout.addStretch(1)
-        layout.addLayout(self.conditions_and_graphs_layout)
-        layout.setContentsMargins(80, 10, 80, 50)
+        aux = QVBoxLayout()
+        aux.addWidget(self.scroll_area)
 
-        self.setLayout(layout)
+        self.setLayout(aux)
 
     def set_project_name(self, project_name):
-        self.project_name.setText(f"<b>Project Name:</b> {project_name}")
+        self.project_name.setText(project_name)
 
     def set_project_location(self, project_location):
-        self.project_location.setText(f"<b>Project Location:</b> {project_location}")
+        self.project_location.setText(project_location)
+
+    def set_project_description(self, project_description):
+        self.project_description.setText(project_description)
 
     def set_method(self, method):
-        self.method.setText(f"<b>Method:</b> {'Filter Graphs' if method == 'filter' else 'Find Counter Example'}")
+        self.method.setText(f"{'Filter Graphs' if method == 'filter' else 'Find Counter Example'}")
 
     def set_equation(self, equation):
-        self.equation.setText(f"<b>Equation:</b>  {equation}")
+        self.equation.setWordWrap(True)
+        self.equation.setText(equation)
 
     def set_conditions(self, conditions):
         self.conditions = conditions
-        self.update_conditions_and_graphs_layout()
+        self.update_conditions_view()
 
     def set_graph_files(self, graph_files):
         self.graph_files = graph_files
-        self.update_conditions_and_graphs_layout()
+        self.update_files_view()
 
-    def update_conditions_and_graphs_layout(self):
+    def update_conditions_view(self):
         clear_layout(self.conditions_layout)
-        clear_layout(self.graph_files_layout)
-        clear_layout(self.conditions_and_graphs_layout)
+        widget_aux = QWidget()
+        true_conditions = ''
+        false_conditions = ''
+        for condition, value in self.conditions.items():
+            if value == 'true':
+                true_conditions = true_conditions + f", {condition}"
+            else:
+                false_conditions = false_conditions + f", {condition}"
+        true_widget_text = QLabel()
+        true_widget_text.setWordWrap(True)
+        false_widget_text = QLabel()
+        false_widget_text.setWordWrap(True)
 
-        self.conditions_layout = ReviewConditionsLayout(self.conditions)
-        self.graph_files_layout = ReviewGraphFilesLayout(self.graph_files)
-
-        self.conditions_and_graphs_layout.addLayout(self.conditions_layout)
-        self.conditions_and_graphs_layout.addStretch(2)
-        self.conditions_and_graphs_layout.addLayout(self.graph_files_layout)
-
-
-class ReviewConditionsLayout(QVBoxLayout):
-    def __init__(self, conditions):
-        super().__init__()
-        self.conditions = conditions
-        self.addWidget(QLabel("<b>Conditions</b>"))
-
-        if len(self.conditions) <= 10:
-            aux_layout = QVBoxLayout()
-            for condition, value in self.conditions.items():
-                aux_layout.addWidget(QLabel(f"{condition}: {value}"))
-            aux_layout.addStretch(1)
-            aux_widget = QWidget()
-            aux_widget.setMinimumHeight(200)
-            aux_widget.setLayout(aux_layout)
-            self.addWidget(aux_widget)
+        if true_conditions == '' and false_conditions == '':
+            self.conditions_layout.addWidget(QLabel("no bollean condition selected"))
+        elif true_conditions == '':
+            false_widget_text.setText(f"<b>graph not is</b>: {false_conditions[2:]}")
+            self.conditions_layout.addWidget(false_widget_text)
+        elif false_conditions == '':
+            true_widget_text.setText(f"<b>graph is</b>: {true_conditions[2:]}")
+            self.conditions_layout.addWidget(true_widget_text)
         else:
-            scroll_area = QScrollArea()
-            scroll_area.setWidgetResizable(True)
-            scroll_area.setFrameShape(QFrame.NoFrame)
-            scroll_area.setMaximumHeight(200)
-            scroll_area.setMinimumWidth(230)
-            scroll_area.setMaximumWidth(230)
+            true_widget_text.setText(f"<b>graph is</b>: {true_conditions[2:]}")
+            false_widget_text.setText(f"<b>graph not is</b>: {false_conditions[2:]}")
+            self.conditions_layout.addWidget(true_widget_text)
+            self.conditions_layout.addWidget(false_widget_text)
+        widget_aux.setLayout(self.conditions_layout)
+        self.setLayout(self.project_layout)
 
-            vertical_layout_aux = QVBoxLayout()
-            for condition, value in self.conditions.items():
-                vertical_layout_aux.addWidget(QLabel(f"{condition}: {value}"))
-
-            widget_aux = QWidget()
-            widget_aux.setLayout(vertical_layout_aux)
-            scroll_area.setWidget(widget_aux)
-            self.addWidget(scroll_area)
-
-
-class ReviewGraphFilesLayout(QVBoxLayout):
-    def __init__(self, graph_files):
-        super().__init__()
-        self.graph_files = graph_files
-
-        self.addWidget(QLabel("<b>Graph Files</b>"))
-        if len(self.graph_files) <= 10:
-            aux_layout = QVBoxLayout()
-            for file in self.graph_files:
-                aux_layout.addWidget(QLabel(file))
-            aux_layout.addStretch(1)
-            aux_widget = QWidget()
-            aux_widget.setMinimumHeight(200)
-            aux_widget.setLayout(aux_layout)
-            self.addWidget(aux_widget)
-        else:
-            scroll_area = QScrollArea()
-            scroll_area.setWidgetResizable(True)
-            scroll_area.setFrameShape(QFrame.NoFrame)
-            scroll_area.setMaximumHeight(200)
-            scroll_area.setMinimumWidth(600)
-
-            vertical_layout_aux = QVBoxLayout()
-            for file in self.graph_files:
-                vertical_layout_aux.addWidget(QLabel(file))
-
-            widget_aux = QWidget()
-            widget_aux.setLayout(vertical_layout_aux)
-            scroll_area.setWidget(widget_aux)
-            self.addWidget(scroll_area)
+    def update_files_view(self):
+        self.graph_files_layout.clear()
+        for file in self.graph_files:
+            self.graph_files_layout.addItem(file)
+        self.setLayout(self.project_layout)

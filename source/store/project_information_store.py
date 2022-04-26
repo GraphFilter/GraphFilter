@@ -5,6 +5,7 @@ class ProjectInformationStore:
     def __init__(self):
         self.project_name = ""
         self.project_location = ""
+        self.project_description = ""
         self.equation = ""
         self.conditions = {}
         self.method = ""
@@ -14,6 +15,7 @@ class ProjectInformationStore:
     def reset_store(self):
         self.project_name = ""
         self.project_location = ""
+        self.project_description = ""
         self.equation = ""
         self.conditions = {}
         self.method = ""
@@ -23,6 +25,7 @@ class ProjectInformationStore:
     def fill_data(self, data):
         self.project_name = data['project_name']
         self.project_location = data['project_location']
+        self.project_description = data['project_description']
         self.equation = data['equation']
         self.conditions = data['conditions']
         self.method = data['method']
@@ -33,6 +36,7 @@ class ProjectInformationStore:
         project_dictionary = {
             "project_name": self.project_name,
             "project_location": self.project_location,
+            "project_description": self.project_description,
             "equation": self.equation,
             "conditions": self.conditions,
             "method": self.method,
@@ -55,6 +59,7 @@ def update_project_store():
     project_information_store.fill_data({
         'project_name': wizard_information_store.project_name,
         'project_location': wizard_information_store.project_location,
+        'project_description':  wizard_information_store.project_description,
         'equation': wizard_information_store.equation,
         'conditions': wizard_information_store.conditions.copy(),
         'method': wizard_information_store.method,
