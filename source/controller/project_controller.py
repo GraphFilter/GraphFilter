@@ -7,10 +7,10 @@ from source.view.project.about_window import AboutWindow
 from source.view.project.docks.graph_information_dock import GraphInformationDock
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
-from source.view.project.docks.invariants_dictionary_dock import InvariantsDictionaryDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx
+from PyQt5.Qt import QUrl, QDesktopServices
 
 
 class ProjectController:
@@ -24,7 +24,6 @@ class ProjectController:
         self.graph_information_dock = GraphInformationDock()
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
-        self.invariants_dictionary_dock = InvariantsDictionaryDock()
 
         self.invariants_selected = {}
 
@@ -57,13 +56,12 @@ class ProjectController:
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
         self.project_window.invariants_check_action.triggered.connect(self.on_invariants_check)
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
+
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
         self.project_window.restore_layout_action.triggered.connect(self.on_restore)
 
         self.project_window.about_action.triggered.connect(self.on_about)
-
-        self.invariants_dictionary_dock.visibilityChanged.connect(self.change_dock_size)
 
         self.connect_tool_bar_events()
 
@@ -74,19 +72,11 @@ class ProjectController:
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
 
-    def change_dock_size(self, visible):
-        if visible:
-            self.invariants_dictionary_dock.setMinimumWidth(800)
-        else:
-            self.invariants_dictionary_dock.setFixedWidth(235)
-
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
-        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_dictionary_dock)
 
-        self.project_window.tabifyDockWidget(self.invariants_dictionary_dock, self.invariants_check_dock)
         self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
     def on_exit(self):
@@ -108,9 +98,6 @@ class ProjectController:
 
     def on_graph_info(self):
         self.graph_information_dock.setVisible(True)
-
-    def on_dictionary(self):
-        self.invariants_dictionary_dock.setVisible(True)
 
     def on_about(self):
         self.about_window.show()
@@ -143,6 +130,9 @@ class ProjectController:
     def on_click_button_right(self):
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() + 1)
         self.on_change_graph()
+
+    def on_dictionary(self):
+        QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/wiki/Dictionary"))
 
     def on_check_condition(self):
         check = QCheckBox().sender()
