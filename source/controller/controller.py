@@ -1,3 +1,5 @@
+import os
+
 from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
@@ -59,14 +61,26 @@ class Controller:
 
     def show_open_project_window(self):
         file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Json (*.json)"])
-        file_path = file_dialog.getOpenFileName(filter="Json (*.json)")
+        file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt)"])
+        file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt)")
         if file_path[0] == '':
             return
-        with open(file_path[0]) as file:
-            content = file.read()
-            data = json.loads(content)
-            project_information_store.fill_data(data)
+        if file_path[0].endswith('.json'):
+            with open(file_path[0]) as file:
+                content = file.read()
+                data = json.loads(content)
+                project_information_store.fill_data(data)
+        else:
+            with open(file_path[0]) as file:
+                project_information_store.fill_data({
+                    'project_name': 'Visualization mode',
+                    'project_location': os.path.dirname(os.path.abspath(file_path[0])),
+                    'equation': '',
+                    'conditions': {},
+                    'method': '',
+                    'graph_files': file_path[0],
+                    'filtered_graphs': file.read().splitlines()
+                })
         if self.current_open_window == "welcome":
             self.show_project_window()
             self.close_welcome_window()
