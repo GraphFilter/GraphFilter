@@ -6,7 +6,7 @@ from source.store.project_information_store import update_project_store
 from PyQt5.QtWidgets import *
 from source.store.project_information_store import project_information_store
 import json
-from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf
+from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
 
@@ -45,6 +45,7 @@ class Controller:
         self.project_controller.project_window.export_g6_action.triggered.connect(self.export_to_g6)
         self.project_controller.project_window.export_tikz_action.triggered.connect(self.export_to_tikz)
         self.project_controller.project_window.export_pdf_action.triggered.connect(self.export_to_pdf)
+        self.project_controller.project_window.export_sheet_action.triggered.connect(self.export_to_sheet)
 
     def connect_events(self):
         self.connect_welcome_events()
@@ -116,7 +117,7 @@ class Controller:
     def get_name_from_save_dialog(self, format_file):
         file_name = QFileDialog.getSaveFileName(parent=self.project_controller.project_window,
                                                 caption=self.project_controller.project_window.tr(f"Export graphs to {format_file} file"),
-                                                filter=self.project_controller.project_window.tr(f"Text files (*.{format_file})"),
+                                                filter=self.project_controller.project_window.tr(f"Files (*.{format_file})"),
                                                 directory=f"{project_information_store.project_name}.{format_file}"
                                                 )[0]
         if file_name:
@@ -160,6 +161,16 @@ class Controller:
                 file.write(f'{graph}\n')
                 self.update_loading_window(step)
             file.close()
+            self.loading_window.close()
+
+    def export_to_sheet(self):
+        file_name = self.get_name_from_save_dialog('xlsx')
+        if file_name:
+            self.show_loading_window(len(project_information_store.filtered_graphs))
+            export_g6_to_sheet(graph_list=project_information_store.filtered_graphs,
+                               invariants=self.project_controller.invariants_selected,
+                               file_name=file_name,
+                               update_progress=self.update_loading_window)
             self.loading_window.close()
 
     def show_loading_window(self, set_total):
