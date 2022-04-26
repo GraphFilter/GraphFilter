@@ -11,7 +11,7 @@ macholib==1.14
 matplotlib==3.4.2
 modulegraph==0.18
 network2tikz==0.1.8
-networkx==2.5.1
+networkx==2.7.1
 numpy>=1.21
 pefile==2021.5.13
 Pillow>=9.0.0
@@ -27,6 +27,7 @@ pyqtgraph==0.12.1
 python-dateutil==2.8.2
 pywin32-ctypes==0.2.0
 rectangle-packer==2.0.1
-scipy==1.7.1
+scipy==1.8.0
 simpleeval==0.9.11
 six==1.16.0
+XlsxWriter~=3.0.3

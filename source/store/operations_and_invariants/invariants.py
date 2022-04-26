@@ -57,7 +57,7 @@ class UtilsToInvariants:
 
     @staticmethod
     def print_matrix(value, precision):
-        return np.array2string(value, precision=precision)
+        return np.array2string(value, precision=precision, separator=" ")
 
     @staticmethod
     def print_dict(value, precision):
@@ -69,9 +69,9 @@ class UtilsToInvariants:
         spectrum = ''
         for i, x in enumerate(value[0]):
             if UtilsToInvariants.is_integer(x):
-                spectrum = spectrum + f'{int(x)} \u2192 V{i}={vectors[:][i].tolist()} \n'
+                spectrum = spectrum + f"{int(x)} \u2192 V{i} ={vectors[:][i].tolist()} \n"
             else:
-                spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 v{i}={vectors[:][i].tolist()} \n'
+                spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 V{i}={vectors[:][i].tolist()} \n'
         return spectrum
 
     @staticmethod
@@ -91,13 +91,15 @@ class UtilsToInvariants:
         else:
             return str(np.around(value, precision))
 
+
     @staticmethod
     def print_boolean(value, precision):
         return str(value)
 
     @staticmethod
     def print_set(value, precision):
-        return str(value)
+        return np.array2string(np.array(value), precision=precision, separator=" , ")
+
 
     @staticmethod
     def max_line_of_string(text: str):
