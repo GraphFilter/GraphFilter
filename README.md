@@ -6,7 +6,7 @@
 </h1>
 
 <p align="center">
-<a href="https://doi.org/10.5281/zenodo.4906568"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4906568.svg" alt="DOI"></a>
+<a href="https://doi.org/10.5281/zenodo.4047103"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4047103.svg" alt="DOI"></a>
 </p>
 
 <h4 align="center"> Software to help Graph researchers providing filtering and visualization to a given list of graphs.</h4>
