@@ -13,7 +13,7 @@ class VisualizeGraphDock(QDockWidget):
     def __init__(self):
         super().__init__()
 
-        self.canvas = MplCanvas(self, None, width=5, height=4, dpi=100)
+        self.canvas = None
 
         self.set_content_attributes()
 
@@ -23,17 +23,15 @@ class VisualizeGraphDock(QDockWidget):
 
         self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
-        aux = QVBoxLayout()
-        aux.addWidget(self.canvas, alignment=Qt.AlignCenter)
-
-        self.setLayout(aux)
-
     def plot_graph(self, graph):
         self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')))
+        self.canvas.setFocusPolicy(Qt.ClickFocus)
+        self.canvas.setFocus()
+        self.setWidget(self.canvas)
 
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, width=5, height=9, dpi=100):
+    def __init__(self, parent=None, graph=None, width=5, height=4, dpi=100):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
