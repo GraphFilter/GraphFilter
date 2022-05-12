@@ -75,6 +75,7 @@ class Controller:
                 project_information_store.fill_data({
                     'project_name': 'Visualization mode',
                     'project_location': os.path.dirname(os.path.abspath(file_path[0])),
+                    'project_description': '',
                     'equation': '',
                     'conditions': {},
                     'method': '',

@@ -25,7 +25,7 @@ class ProjectInformationStore:
     def fill_data(self, data):
         self.project_name = data['project_name']
         self.project_location = data['project_location']
-        self.project_description = data['project_description']
+        self.project_description = data['project_description'] if 'project_description' in data.keys() is not None else ''
         self.equation = data['equation']
         self.conditions = data['conditions']
         self.method = data['method']
