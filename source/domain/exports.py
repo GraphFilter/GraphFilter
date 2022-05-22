@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import network2tikz as tkz
 import networkx as nx
 import xlsxwriter
-import xlwt
 
 from source.domain.utils import convert_g6_to_nx
 from source.store.operations_invariants import dic_invariants_to_visualize as dic
@@ -31,7 +30,7 @@ def export_g6_to_sheet(graph_list, invariants, file_name, update_progress):
     workbook = xlsxwriter.Workbook(filename=file_name)
     sheet = workbook.add_worksheet()
     sheet.write(0, 0, 'id')
-    sheet.write(0, 1, 'g6')
+    sheet.write(0, 1, 'g6 code')
     for i, invariant in enumerate(invariants):
         sheet.write(0, i + 2, invariant)
     for step, graph in enumerate(graph_list):
