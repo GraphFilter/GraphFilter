@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
+
 from source.store import help_button_text
-from PyQt5 import QtCore
 
 
 class ProjectInformationWizardPage(QWizardPage):

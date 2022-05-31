@@ -50,8 +50,11 @@ class InvariantsCheckDock(QDockWidget):
         widget_aux.setLayout(conditions_layout)
         scroll_area.setWidget(widget_aux)
         layout_aux.addLayout(layout_search)
-
         layout_aux.addWidget(scroll_area)
+
+        v_scroll = scroll_area.verticalScrollBar()
+        self.searchbar.textChanged.connect(lambda: v_scroll.setSliderPosition(0))
+
         self.widget.setLayout(layout_aux)
 
     def update_display(self, text):
