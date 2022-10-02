@@ -107,7 +107,7 @@ The user decides which filtering method: if he wants to filter all the graphs, a
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
 
 <h4 align="center">
-<image src="/resources/images/wizard_input_graphs.png" width="800">
+<image src="/resources/gifs/wizard_input_graphs.gif" width="800">
 </h4>
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But you do not have to understand how this fortat works. You can find files in this format for different classes of graphs on the pages: 

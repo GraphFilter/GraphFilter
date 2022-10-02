@@ -11,6 +11,7 @@ kiwisolver==1.4.2
 macholib==1.14
 matplotlib==3.4.2
 modulegraph==0.18
+netgraph==4.4.1
 network2tikz==0.1.8
 networkx==2.5.1
 numpy==1.21.6
@@ -24,7 +25,6 @@ PyQt5==5.15.4
 PyQt5-Qt5==5.15.2
 PyQt5-sip==12.9.0
 PyQt5-stubs==5.15.2.0
-pyqtgraph==0.12.1
 python-dateutil==2.8.2
 pywin32-ctypes==0.2.0
 rectangle-packer==2.0.1
