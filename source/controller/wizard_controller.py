@@ -130,7 +130,7 @@ class WizardController:
         self.graph_files_page.list_files_input.itemClicked.connect(
             lambda: self.graph_files_page.remove_file.setEnabled(True))
         self.graph_files_page.download_button.clicked.connect(
-            lambda: open_url("https://hog.grinvin.org/MetaDirectory.action"))
+            lambda: open_url("https://houseofgraphs.org/meta-directory"))
 
     def connect_events(self):
         self.wizard_window.currentIdChanged.connect(self.on_wizard_page_change)
