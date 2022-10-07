@@ -133,6 +133,7 @@ In the `File > Export to` menu, you can export the graphs returned in the filter
 - PNG
 - TikZ
 - graph6
+- xlsx
 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
