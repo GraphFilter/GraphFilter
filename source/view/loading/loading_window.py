@@ -1,37 +1,34 @@
-
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QDialog
-from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import *
+
+
+class External(QThread):
+    countChanged = pyqtSignal(int)
 
 
 class LoadingWindow(QDialog):
+    filter_complete_signal = pyqtSignal(int)
 
     def __init__(self):
         super().__init__()
-        self.setFixedSize(300, 300)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.CustomizeWindowHint)
+        self.progressBar = QProgressBar(self)
+        self.set_content_attributes()
+        self.set_up_layout()
 
-        self.label_animation = QLabel("loading...")
+    def set_content_attributes(self):
+        self.setWindowTitle("Loading...")
+        self.progressBar.setGeometry(25, 25, 300, 40)
+        self.setFixedSize(500, 100)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowContextHelpButtonHint)
 
-        layout = QHBoxLayout()
-
-        # self.label.setGeometry(QRect(25, 25, 200, 200))
-        # self.label.setMinimumSize(QSize(250, 250))
-        # self.label.setMaximumSize(QSize(250, 250))
-
-        self.movie = QMovie("loading.gif")
-        self.label_animation.setMovie(self.movie)
-
-        layout.addWidget(self.label_animation)
+    def set_up_layout(self):
+        layout = QVBoxLayout()
+        layout.addWidget(self.progressBar)
         self.setLayout(layout)
 
-    def start_animation(self):
-        self.movie.start()
-        self.show()
+    def increase_step(self, value):
+        self.progressBar.setValue(value)
 
-    def stop_animation(self):
-        self.movie.stop()
-        self.close()
-
-
+    def closeEvent(self, event):
+        self.filter_complete_signal.emit(1)
+        event.accept()

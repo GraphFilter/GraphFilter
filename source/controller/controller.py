@@ -21,7 +21,8 @@ class Controller:
         self.filter_controller = FilterController()
         self.project_controller = ProjectController()
 
-        self.progress_window = ProgressWindow()
+        self.loading_window = LoadingWindow()
+
         self.current_open_window = ""
 
         self.connect_events()
@@ -35,8 +36,8 @@ class Controller:
         self.wizard_controller.wizard_window.close_signal.connect(self.close_wizard_window)
         self.wizard_controller.wizard_window.start_button.clicked.connect(self.start_filter)
 
-    # def connect_filter_events(self):
-    #     self.filter_controller.progress_window.filter_complete_signal.connect(self.show_project_window)
+    def connect_filter_events(self):
+        self.filter_controller.loading_window.filter_complete_signal.connect(self.show_project_window)
 
     def connect_project_events(self):
         self.project_controller.project_window.new_action.triggered.connect(self.show_wizard_window)
@@ -51,7 +52,7 @@ class Controller:
     def connect_events(self):
         self.connect_welcome_events()
         self.connect_wizard_events()
-        # self.connect_filter_events()
+        self.connect_filter_events()
         self.connect_project_events()
 
     def show_welcome_window(self):
@@ -98,13 +99,11 @@ class Controller:
 
     def finish_filter(self):
         self.show_project_window()
-        # self.close_loading_window()
+        self.close_loading_window()
 
     def start_filter(self):
         update_project_store()
         self.filter_controller.start_filter()
-        self.finish_filter()
-
 
     def show_project_window(self):
         self.project_controller.show_window()
@@ -147,8 +146,8 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_png(graph, file_dir, step)
-                self.update_loading_window()
-            self.progress_window.close()
+                self.update_loading_window(step)
+            self.loading_window.close()
 
     def export_to_tikz(self):
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
@@ -156,8 +155,8 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_tikz(graph, file_dir, step)
-                self.update_loading_window()
-            self.progress_window.close()
+                self.update_loading_window(step)
+            self.loading_window.close()
 
     def export_to_pdf(self):
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
@@ -165,8 +164,8 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             for step, graph in enumerate(project_information_store.filtered_graphs):
                 export_g6_to_pdf(graph, file_dir, step)
-                self.update_loading_window()
-            self.progress_window.close()
+                self.update_loading_window(step)
+            self.loading_window.close()
 
     def export_to_g6(self):
         file_name = self.get_name_from_save_dialog('g6')
@@ -174,11 +173,10 @@ class Controller:
             self.show_loading_window(len(project_information_store.filtered_graphs))
             file = open(file_name, 'w')
             for step, graph in enumerate(project_information_store.filtered_graphs):
-
                 file.write(f'{graph}\n')
                 self.update_loading_window(step)
             file.close()
-            self.progress_window.close()
+            self.loading_window.close()
 
     def export_to_sheet(self):
         file_name = self.get_name_from_save_dialog('xlsx')
@@ -191,8 +189,9 @@ class Controller:
             self.loading_window.close()
 
     def show_loading_window(self, set_total):
-        self.progress_window.set_maximum(set_total)
-        self.progress_window.show()
+        self.loading_window.progressBar.setMaximum(set_total)
+        self.loading_window.progressBar.setValue(0)
+        self.loading_window.show()
 
     def update_loading_window(self, step):
         self.loading_window.increase_step(step)

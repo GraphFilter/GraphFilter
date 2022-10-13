@@ -1,38 +1,40 @@
+from PyQt5.QtCore import QThread
+
 from source.domain.filter_list import FilterList
 from source.domain.utils import *
 from source.store.project_information_store import project_information_store
 from source.view.loading.loading_window import LoadingWindow
-from source.view.loading.progress_window import ProgressWindow
 from PyQt5.QtWidgets import QApplication
+import multiprocessing as mp
 
-
-class FilterController:
+class FilterController(QThread):
 
     def __init__(self):
-
+        super.__init__()
         self.filter_list = FilterList()
-        #self.progress_window = ProgressWindow()
-    #
+        self.loading_window = LoadingWindow()
+        self.is_running = True
 
     def start_filter(self):
         g6_list = extract_files_to_list(project_information_store.graph_files)
-        # self.progress_window.start_animation()
-        # self.progress_window.set_maximum(len(g6_list))
-        # self.progress_window.show()
+        self.loading_window.set_maximum(len(g6_list))
+        self.loading_window.show()
         if project_information_store.method == 'filter':
-            self.filter_list.start_filter(g6_list, project_information_store.equation,
+            single_process = mp.Process(target=self.filter_list.start_filter,
+                                        args=(g6_list, project_information_store.equation,
                                           project_information_store.conditions,
-                                          self.update)
+                                          self.update,))
         else:
-            self.filter_list.start_find_counterexample(g6_list, project_information_store.equation,
+            single_process = mp.Process(target=self.filter_list.start_find_counterexample,
+                                        args=(g6_list, project_information_store.equation,
                                           project_information_store.conditions,
-                                        self.update)
+                                          self.update,))
+        single_process.start()
 
         # TODO: Use the percentage returned by filtering
         project_information_store.filtered_graphs = self.filter_list.list_out
         project_information_store.save_project()
         # self.progress_window.close()
-        # self.progress_window.stop_animation()
 
     def update(self):
         pass
