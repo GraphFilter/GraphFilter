@@ -44,12 +44,11 @@ class GraphInformationDock(QDockWidget):
             invariant_name = QtGui.QStandardItem(str(key))
             invariant_name.setEditable(False)
 
-            value_formatted = UtilsToInvariants.print(value)
-            invariant_value = QtGui.QStandardItem(value_formatted)
+            invariant_value = QtGui.QStandardItem(value)
             invariant_value.setEditable(False)
 
             current_column_max_width = 0
-            current_column_max_width = max(UtilsToInvariants.max_line_of_string(value_formatted), current_column_max_width)
+            current_column_max_width = max(UtilsToInvariants.max_line_of_string(value), current_column_max_width)
             if current_column_max_width > column_max_width:
                 column_max_width = current_column_max_width
 

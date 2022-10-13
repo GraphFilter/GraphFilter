@@ -1,21 +1,21 @@
 from PyQt5.QtWidgets import *
 import matplotlib
-import networkx as nx
-import numpy as np
-import pyqtgraph as pg
-from source.domain.graph import Graph
 
-matplotlib.use('Qt5Agg')
+import networkx as nx
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
+from netgraph import EditableGraph
+import numpy as np
+from PyQt5.QtCore import Qt
+matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
 
     def __init__(self):
         super().__init__()
-        self.graphic_layout_widget = pg.GraphicsLayoutWidget(show=True)
-        self.view_box = self.graphic_layout_widget.addViewBox()
 
-        self.graph = Graph()
+        self.canvas = None
 
         self.set_content_attributes()
 
@@ -23,43 +23,67 @@ class VisualizeGraphDock(QDockWidget):
         self.setWindowTitle("Visualize")
         self.setObjectName("Visualize")
 
-        self.graphic_layout_widget.setBackground('w')
-
-        self.view_box.setAspectLocked()
-
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
-
-        self.setWidget(self.graphic_layout_widget)
+        self.setFeatures(
+            QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
     def plot_graph(self, graph):
+        self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')))
+        self.canvas.setFocusPolicy(Qt.ClickFocus)
+        self.canvas.setFocus()
+        self.setWidget(self.canvas)
+
+
+class MplCanvas(FigureCanvasQTAgg):
+    def __init__(self, parent=None, graph=None, width=8, height=4, dpi=100):
+        super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
+        self.setParent(parent)
+        self.ax = self.figure.add_subplot(111)
+        self.ax.set_position([0, 0, 1, 1])
+        self.ax.clear()
         if graph is None:
-            self.view_box.removeItem(self.graph)
             return
+        self.plot_instance = ResizableGraph(graph, scale=(2, 1), ax=self.ax)
 
-        g = nx.from_graph6_bytes(graph.encode('utf-8'))
-        self.view_box.addItem(self.graph)
-        self.define_graph(g)
 
-    def define_graph(self, graph):
-        position = []
-        adjacency = []
-        indexes = []
+class ResizableGraph(EditableGraph):
 
-        points = nx.drawing.layout.spring_layout(graph)
-        for i, point in enumerate(points.values()):
-            aux = [point[0] * 10 // 1, point[1] * 10 // 1]
-            position.append(aux)
-            indexes.append(i)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        edges = graph.edges(data=True)
-        for edge in edges:
-            aux = [edge[0], edge[1]]
-            if not reversed(aux) in adjacency:
-                adjacency.append(aux)
+        kwargs.setdefault('origin', (0., 0.))
+        kwargs.setdefault('scale', (1., 1.))
+        self.origin = kwargs["origin"]
+        self.scale = kwargs["scale"]
+        self.figure_width = self.fig.bbox.width
+        self.figure_height = self.fig.bbox.height
+        self.fig.canvas.mpl_connect('resize_event', self._on_resize)
 
-        pos = np.array(position, dtype=float)
-        adj = np.array(adjacency)
+    def _on_resize(self, event, pad=0.05):
+        # determine ratio new : old
+        scale_x_by = self.fig.bbox.width / self.figure_width
+        scale_y_by = self.fig.bbox.height / self.figure_height
 
-        texts = ["%d" % i for i in indexes]
+        self.figure_width = self.fig.bbox.width
+        self.figure_height = self.fig.bbox.height
 
-        self.graph.setData(pos=pos, adj=adj, size=1, pxMode=False, text=texts)
+        # rescale node positions
+        for node, (x, y) in self.node_positions.items():
+            new_x = ((x - self.origin[0]) * scale_x_by) + self.origin[0]
+            new_y = ((y - self.origin[1]) * scale_y_by) + self.origin[1]
+            self.node_positions[node] = np.array([new_x, new_y])
+
+        # update axis dimensions
+        self.scale = (scale_x_by * self.scale[0],
+                      scale_y_by * self.scale[1])
+        xmin = self.origin[0] - pad * self.scale[0]
+        ymin = self.origin[1] - pad * self.scale[1]
+        xmax = self.origin[0] + self.scale[0] + pad * self.scale[0]
+        ymax = self.origin[1] + self.scale[1] + pad * self.scale[1]
+        self.ax.axis([xmin, xmax, ymin, ymax])
+
+        # redraw
+        self._update_node_artists(self.nodes)
+        self._update_node_label_positions()
+        self._update_edges(self.edges)
+        self._update_edge_label_positions(self.edges)
+        self.fig.canvas.draw()

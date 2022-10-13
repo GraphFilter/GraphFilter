@@ -1,12 +1,12 @@
 <h1 align="center">
   <a href="http://sistemas.jf.ifsudestemg.edu.br/graphfilter/home"><img src="/resources/icons/hexagon.png" alt="Graph Filter" width="180"></a>
-  <br><br>
+  <br>
   Graph Filter
   <br>
 </h1>
 
 <p align="center">
-<a href="https://doi.org/10.5281/zenodo.4906568"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4906568.svg" alt="DOI"></a>
+<a href="https://doi.org/10.5281/zenodo.4047103"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4047103.svg" alt="DOI"></a>
 </p>
 
 <h4 align="center"> Software to help Graph researchers providing filtering and visualization to a given list of graphs.</h4>
@@ -28,7 +28,7 @@ providing for visualization a filtered list of graphs according to the propertie
 
 > This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
-> * Graph Filter v2.0 was submitted to the [Simpósio Brasileiro de Pesquisa Operacional 2021, 53ª edição](https://sbpo2021.galoa.com.br) and is under analysis.
+> * Graph Filter v2.0 was published in [Anais do LIII Simpósio Brasileiro de Pesquisa Operacional, 2021](https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br).
 
 The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
 
@@ -46,7 +46,7 @@ The software has the purpose of filtering a list of graphs through conditions cu
 |    Calculations of invariants                   |   GUI development                                           |  Utilities                                               |
 | :------------:                                  | :---------:                                                 | :---------:                                              |
 | [Networkx](https://networkx.org/)               | [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
-| [Grinpy](https://github.com/somacdivad/grinpy)  |  [PyQtGraph](http://www.pyqtgraph.org/)                     | [network2tikz](https://github.com/hackl/network2tikz)    |
+| [Grinpy](https://github.com/somacdivad/grinpy)  | [PyQtGraph](http://www.pyqtgraph.org/)                      | [network2tikz](https://github.com/hackl/network2tikz)    |
 | [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval)  |
 
 ## Installation
@@ -56,28 +56,17 @@ You can run the program from the source code or from an executable file.
 To from the source code, you have to:
 
 - Install [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.io/en/stable/installing/).  
-- [Clone this project using git](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#cloning) or [Download the source code from the release](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#downloading)
-- Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#virtual-environment) (optional)
-- [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#install-required-libraries)
-- Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#running) from the project's source folder
+- [Clone this project using git](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#cloning) or [Download the source code from the release](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#downloading)
+- Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#virtual-environment) (optional)
+- [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#install-required-libraries)
+- Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#running) from the project's source folder
 
 ### Release
 Download the compact file from the release that matches your Operational System.
 
-#### Windows
-- Using an [extracting tool](https://winrar.en.softonic.com/), extract the file to any location folder you want
-- Run the installer
-- Follow the steps
-- Lanch the program
-
-#### Linux
-- Using the terminal, go to the file location
-- Extract the file
-- Enter the extracted GraphFilter directory
-- Launch the program
-
-#### Mac
-Unfortunately, to generate an executable file to Mac OS a developer account is needed. However, you can stil run Graph Filter by following the [Source Code](#source-code) installation method.
+- [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
+- [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
+- [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ## Getting started
 
@@ -118,7 +107,7 @@ The user decides which filtering method: if he wants to filter all the graphs, a
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
 
 <h4 align="center">
-<image src="/resources/images/wizard_input_graphs.png" width="800">
+<image src="/resources/gifs/wizard_input_graphs.gif" width="800">
 </h4>
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But you do not have to understand how this fortat works. You can find files in this format for different classes of graphs on the pages: 
@@ -144,6 +133,7 @@ In the `File > Export to` menu, you can export the graphs returned in the filter
 - PNG
 - TikZ
 - graph6
+- xlsx
 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
