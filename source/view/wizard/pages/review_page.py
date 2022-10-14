@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 
 from source.domain.utils import clear_layout
 from source.store import help_button_text
-from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 
 
 class ReviewPage(QWizardPage):
@@ -47,15 +47,18 @@ class ReviewPage(QWizardPage):
         self.project_layout.addRow("<b>(In)equations:</b>", self.equation)
         self.project_layout.addRow("<b>Conditions:</b>", self.conditions_layout)
         self.project_layout.addRow("<b>Graph files:</b>", self.graph_files_layout)
+
         self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.project_layout.setContentsMargins(60, 25, 60, 25)
+        self.project_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+        self.project_layout.setLabelAlignment(Qt.AlignLeft)
 
         self.widget.setLayout(self.project_layout)
 
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_area.setWidget(self.widget)
         self.scroll_area.setFrameShape(QFrame.NoFrame)
 
