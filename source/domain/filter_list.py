@@ -1,5 +1,6 @@
 import os
 
+import networkx as nx
 from simpleeval import simple_eval
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
@@ -25,7 +26,8 @@ class FilterList:
         self.AND_OR = None
         self.total = 0
 
-        self.update_to_progress_bar = mp.Value('d', 0.0)
+        self.update_to_progress_bar = None
+        self.valor_teste = mp.Value("d", 0.0)
 
         # NOTE: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
@@ -62,12 +64,13 @@ class FilterList:
             list_out = [None] * 1
             self.filter_multiprocess(self.list_g6_in, 0, list_out) #criar outro filter para single_process
             self.list_out = list_out[0]
+            print(self.list_out)
             return float(len(self.list_out) / self.total)
 
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []
         for g6code in list_g6_in:
-            self.update_to_progress_bar = self.update_to_progress_bar + (1 / self.total)
+            self.valor_teste.value = self.valor_teste.value + 1
             if g6code == '' or g6code == ' ':
                 continue
             try:
@@ -105,7 +108,6 @@ class FilterList:
         for g6code in list_g6_in:
             if graph_out.value != '':
                 return True
-            # self.update_to_progress_bar
             if g6code == '' or g6code == ' ':
                 continue
             try:

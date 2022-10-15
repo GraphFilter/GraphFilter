@@ -36,8 +36,8 @@ class Controller:
         self.wizard_controller.wizard_window.close_signal.connect(self.close_wizard_window)
         self.wizard_controller.wizard_window.start_button.clicked.connect(self.start_filter)
 
-    def connect_filter_events(self):
-        self.filter_controller.loading_window.filter_complete_signal.connect(self.show_project_window)
+    #def connect_filter_events(self):
+    #    self.filter_controller.loading_window.filter_complete_signal.connect(self.show_project_window)
 
     def connect_project_events(self):
         self.project_controller.project_window.new_action.triggered.connect(self.show_wizard_window)
@@ -52,7 +52,7 @@ class Controller:
     def connect_events(self):
         self.connect_welcome_events()
         self.connect_wizard_events()
-        self.connect_filter_events()
+        #self.connect_filter_events()
         self.connect_project_events()
 
     def show_welcome_window(self):
@@ -99,11 +99,11 @@ class Controller:
 
     def finish_filter(self):
         self.show_project_window()
-        self.close_loading_window()
 
     def start_filter(self):
         update_project_store()
         self.filter_controller.start_filter()
+        self.finish_filter()
 
     def show_project_window(self):
         self.project_controller.show_window()

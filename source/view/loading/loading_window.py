@@ -32,3 +32,6 @@ class LoadingWindow(QDialog):
     def closeEvent(self, event):
         self.filter_complete_signal.emit(1)
         event.accept()
+
+    def set_maximum(self, value):
+        self.progressBar.setMaximum(value)
