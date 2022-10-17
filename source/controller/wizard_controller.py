@@ -12,8 +12,7 @@ from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
-import pathlib
-
+from pathlib import Path
 
 def open_url(url):
     QDesktopServices.openUrl(QUrl(url))
@@ -170,11 +169,12 @@ class WizardController:
     def on_open_project_file(self):
         file_dialog = QFileDialog()
         directory_path = file_dialog.getExistingDirectory()
+
         self.project_files_page.project_location_input.setText(directory_path)
         self.verify_and_save_project_folder()
 
     def set_default_project_location(self):
-        default_path = str(pathlib.Path().absolute())
+        default_path = str(Path.home())
         self.project_files_page.project_location_input.setText(default_path)
         wizard_information_store.project_location = default_path
         self.review_page.set_project_location(default_path)
