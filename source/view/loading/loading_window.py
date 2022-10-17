@@ -2,10 +2,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 
-class External(QThread):
-    countChanged = pyqtSignal(int)
-
-
 class LoadingWindow(QDialog):
     filter_complete_signal = pyqtSignal(int)
 

@@ -26,25 +26,23 @@ class FilterList:
         self.AND_OR = None
         self.total = 0
 
-        self.update_to_progress_bar = None
-        self.valor_teste = mp.Value("d", 0.0)
+        self.update_to_progress_bar = mp.Value("d", 0.0, lock=True)
 
         # NOTE: list_g6_in: list with graphs6 string
         #  expression: (in)equation string with AND OR
         #  list_inv_bool_choices: dict of couples {invariant_name: 'true' or 'false'}
         self.functions_to_eval.update(dic_function_to_eval)
 
-    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices, update):
+    def set_inputs(self, list_g6_in, expression, list_inv_bool_choices):
         self.satisfied_graphs = 0
         self.list_out.clear()
         self.list_g6_in = list_g6_in
         self.total = len(self.list_g6_in)
         self.list_inv_bool_choices = list_inv_bool_choices
         self.expressions, self.AND_OR = Equation.split_translate_expression(expression)
-        self.update_to_progress_bar = update
 
-    def start_filter(self, list_g6_in, expression, list_inv_bool_choices, update):
-        self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
+    def start_filter(self, list_g6_in, expression, list_inv_bool_choices):
+        self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         if self.need_multiprocess(list_g6_in):
             manager_class = mp.Manager()
             number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
@@ -57,20 +55,20 @@ class FilterList:
                 single_process.start()
             for single_process in list_of_process:
                 single_process.join()
+                self.update_to_progress_bar.value = self.total
             for list_in in list_broken_out:
                 self.list_out += list_in
             return float(len(self.list_out) / self.total)
         else:
             list_out = [None] * 1
-            self.filter_multiprocess(self.list_g6_in, 0, list_out) #criar outro filter para single_process
+            self.filter_multiprocess(self.list_g6_in, 0, list_out)
             self.list_out = list_out[0]
-            print(self.list_out)
             return float(len(self.list_out) / self.total)
 
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []
         for g6code in list_g6_in:
-            self.valor_teste.value = self.valor_teste.value + 1
+            self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1
             if g6code == '' or g6code == ' ':
                 continue
             try:
@@ -82,8 +80,8 @@ class FilterList:
                 continue
         list_out[i] = list_out_temp
 
-    def start_find_counterexample(self, list_g6_in, expression, list_inv_bool_choices, update):
-        self.set_inputs(list_g6_in, expression, list_inv_bool_choices, update)
+    def start_find_counterexample(self, list_g6_in, expression, list_inv_bool_choices):
+        self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         manager = mp.Manager()
         graph_out = manager.Value(c_char_p, '')
         if self.need_multiprocess(list_g6_in):
@@ -175,18 +173,3 @@ class FilterList:
             return True
         else:
             return False
-
-
-if __name__ == "__main__":
-    start = time.time()
-    manager = mp.Manager()
-    cores = int(np.ceil((1 / 3) * os.cpu_count()))
-    list_process = []
-    for i in range(cores):
-        process = mp.Process()
-        list_process.append(process)
-        process.start()
-    for process in list_process:
-        process.join()
-    end = time.time()
-    print(end - start)
