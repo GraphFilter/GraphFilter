@@ -13,6 +13,8 @@ from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
 from pathlib import Path
+from PyQt5.QtCore import QStandardPaths
+
 
 def open_url(url):
     QDesktopServices.openUrl(QUrl(url))
@@ -174,7 +176,8 @@ class WizardController:
         self.verify_and_save_project_folder()
 
     def set_default_project_location(self):
-        default_path = str(Path.home())
+        default_path = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
+        self.project_files_page.project_location_input.setDisabled(True)
         self.project_files_page.project_location_input.setText(default_path)
         wizard_information_store.project_location = default_path
         self.review_page.set_project_location(default_path)
