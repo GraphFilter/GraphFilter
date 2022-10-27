@@ -35,21 +35,15 @@ class Helper:
         ftl = FilterList()
         return ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file),
                                 expression,
-                                choices,
-                                Helper.fake_update)
+                                choices)
 
     @staticmethod
     def some_c_exem(file, expression, choices):
         ftl = FilterList()
         boolean = ftl.start_find_counterexample(Helper.list_graphs_from('resources/graphs/' + file),
                                                 expression,
-                                                choices,
-                                                Helper.fake_update)
+                                                choices)
         return boolean, ftl.list_out
-
-    @staticmethod
-    def fake_update():
-        pass
 
 
 class ExpressionUnitTests(unittest.TestCase):
