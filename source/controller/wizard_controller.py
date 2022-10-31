@@ -13,7 +13,7 @@ from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
 from pathlib import Path
-from PyQt5.QtCore import QStandardPaths
+from PyQt5.QtCore import QStandardPaths as qs
 
 
 def open_url(url):
@@ -169,15 +169,17 @@ class WizardController:
         self.review_page.set_project_description(description)
 
     def on_open_project_file(self):
-        file_dialog = QFileDialog()
-        directory_path = file_dialog.getExistingDirectory()
+        file_dialog = QFileDialog.getExistingDirectory(
+              directory= wizard_information_store.project_location)
+        directory_path = file_dialog
 
-        self.project_files_page.project_location_input.setText(directory_path)
-        self.verify_and_save_project_folder()
+        if directory_path != "":
+            self.project_files_page.project_location_input.setText(directory_path)
+            self.verify_and_save_project_folder()
+        else: self.project_files_page.project_location_input.setText(wizard_information_store.project_location)
 
     def set_default_project_location(self):
-        default_path = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
-        self.project_files_page.project_location_input.setDisabled(True)
+        default_path = qs.writableLocation(qs.DocumentsLocation)
         self.project_files_page.project_location_input.setText(default_path)
         wizard_information_store.project_location = default_path
         self.review_page.set_project_location(default_path)
