@@ -9,8 +9,9 @@ class WizardWindow(QWizard):
     def __init__(self):
         super().__init__()
 
-        self.width = 900
-        self.height = 600
+        self.width = 0
+        self.height = 0
+        self.setViewSize()
 
         self.window_title = "New Project"
 
@@ -26,7 +27,6 @@ class WizardWindow(QWizard):
     def set_content_attributes(self):
         self.setWindowTitle(self.window_title)
 
-        self.setFixedSize(self.width, self.height)
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
 
         self.setOption(QWizard.HaveHelpButton, True)
@@ -42,3 +42,15 @@ class WizardWindow(QWizard):
     def closeEvent(self, event):
         self.close_signal.emit(1)
         event.accept()
+
+    def setViewSize(self):
+        screen = QApplication.desktop()
+        rect = screen.screenGeometry()
+        if rect.width() > 800 or rect.height() > 600:
+            self.width = int(rect.width() / 1.5)
+            self.height = int(rect.height() / 1.5)
+            self.setFixedSize(self.width, self.height)
+        else:
+            self.width = 800
+            self.height = 600
+            self.setFixedSize(self.width,self.height)
