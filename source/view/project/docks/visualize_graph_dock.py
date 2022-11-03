@@ -8,7 +8,6 @@ from netgraph import EditableGraph
 import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
-from source.store.edit_graph_store import edit_graph_store
 matplotlib.use("Qt5Agg")
 
 
@@ -100,12 +99,10 @@ class ResizableGraph(EditableGraph):
         super()._on_key_press(event)
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
-        edit_graph_store.new_graph = new_graph
         self.synchronize_change(new_graph)
 
     def _on_press(self, event):
         super()._on_press(event)
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
-        edit_graph_store.new_graph = new_graph
         self.synchronize_change(new_graph)
