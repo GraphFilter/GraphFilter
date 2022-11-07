@@ -50,7 +50,10 @@ class WizardWindow(QWizard):
             self.width = int(rect.width() / 1.5)
             self.height = int(rect.height() / 1.5)
             self.setFixedSize(self.width, self.height)
-        else:
-            self.width = 800
-            self.height = 600
+        elif rect.width() > 1920 or rect.height()>1080:
+            self.width = 1280
+            self.height = 720
+        elif rect.width() == 800 or rect.height == 600:
+            self.width = 700
+            self.height = 500
             self.setFixedSize(self.width,self.height)
