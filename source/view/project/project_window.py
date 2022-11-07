@@ -9,8 +9,9 @@ class ProjectWindow(QMainWindow):
 
         self.icon = Icon("hexagon")
 
-        self.width = 1200
-        self.height = 900
+        self.width = 0
+        self.height = 0
+        self.set_view_size()
 
         self.new_action = QAction("New Project")
         self.open_action = QAction("Open...")
@@ -73,3 +74,15 @@ class ProjectWindow(QMainWindow):
         help_menu = menu_bar.addMenu("Help")
         help_menu.addAction(self.dictionary_action)
         help_menu.addAction(self.about_action)
+
+    def set_view_size(self):
+        screen = QApplication.desktop()
+        rect = screen.screenGeometry()
+        if rect.width() > 800 or rect.height() > 600:
+            self.width = int(rect.width() / 1.4)
+            self.height = int(rect.height() / 1.4)
+            self.setFixedSize(self.width, self.height)
+        elif rect.width() == 800 or rect.height() == 600:
+            self.width = 770
+            self.height = 550
+            self.setFixedSize(self.width, self.height)

@@ -40,14 +40,17 @@ class MethodPage(QWizardPage):
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.filter_button)
-        button_layout.addStretch(1)
+        #button_layout.addStretch(1)
         button_layout.addWidget(self.counter_example_button)
 
         layout = QVBoxLayout()
-        layout.addStretch(4)
+        layout.addStretch(3)
         layout.addLayout(button_layout)
         layout.addStretch(6)
-        layout.setContentsMargins(100, 0, 100, 0)
+        layout.setSpacing(30)
+        self.setMinimumWidth(330)
+
+        layout.setContentsMargins(90, 0, 90, 0)
 
         self.setLayout(layout)
 

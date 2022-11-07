@@ -11,8 +11,9 @@ class WelcomeWindow(QMainWindow):
         self.title_bar = "Graph Filter"
         self.icon = Icon("hexagon")
 
-        self.width = 600
-        self.height = 600
+        self.width = 0
+        self.height = 0
+        self.set_view_size()
 
         self.set_screen_position()
 
@@ -32,3 +33,18 @@ class WelcomeWindow(QMainWindow):
         center_point = QDesktopWidget().availableGeometry().center()
         rectangle.moveCenter(center_point)
         self.move(rectangle.topLeft())
+
+    def set_view_size(self):
+        screen = QApplication.desktop()
+        rect = screen.screenGeometry()
+        if rect.width() > 800 or rect.height() > 600:
+            self.width = int(rect.height() / 1.5)
+            self.height = int(rect.height() / 1.5)
+            self.setFixedSize(self.width, self.height)
+        elif rect.width() > 1920 or rect.height() > 1080:
+            self.width = 720
+            self.height = 720
+        elif rect.width() == 800 or rect.height() == 600:
+            self.width = 500
+            self.height = 500
+            self.setFixedSize(self.width, self.height)
