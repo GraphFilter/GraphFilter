@@ -11,7 +11,7 @@ class WizardWindow(QWizard):
 
         self.width = 0
         self.height = 0
-        self.set_view_size()
+        self.set_view_size(1.7)
 
         self.window_title = "New Project"
 
@@ -43,17 +43,17 @@ class WizardWindow(QWizard):
         self.close_signal.emit(1)
         event.accept()
 
-    def set_view_size(self):
+    def set_view_size(self, p):
         screen = QApplication.desktop()
         rect = screen.screenGeometry()
-        if rect.width() > 800 or rect.height() > 600:
-            self.width = int(rect.width() / 1.7)
-            self.height = int(rect.height() / 1.7)
-            self.setFixedSize(self.width, self.height)
-        elif rect.width() > 1920 or rect.height() > 1080:
+        if rect.width() > 1920 or rect.height() > 1080:
             self.width = 1129
             self.height = 635
-        elif rect.width() == 800 or rect.height() == 600:
+        elif rect.width() > 800 or rect.height() > 600:
+            self.width = int(rect.width() / p)
+            self.height = int(rect.height() / p)
+            self.setFixedSize(self.width, self.height)
+        elif rect.width() <= 800 or rect.height() <= 600:
             self.width = 770
             self.height = 550
             self.setFixedSize(self.width, self.height)
