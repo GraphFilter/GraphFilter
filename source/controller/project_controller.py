@@ -144,8 +144,12 @@ class ProjectController:
 
         if check.text() not in self.invariants_selected:
             if self.edited_graph is not None:
-                self.invariants_selected[check.text()] = \
-                    dic_invariants_to_visualize[check.text()].print(self.edited_graph, precision=5)
+                if len(self.edited_graph.nodes) == 0:
+                    self.invariants_selected[check.text()] = \
+                        "Null Graph"
+                else:
+                    self.invariants_selected[check.text()] = \
+                        dic_invariants_to_visualize[check.text()].print(self.edited_graph, precision=5)
             else:
                 if g6code is not None:
                     self.invariants_selected[check.text()] = \
@@ -163,8 +167,12 @@ class ProjectController:
 
         for key in self.invariants_selected.keys():
             if self.edited_graph is not None:
-                self.invariants_selected[key] = \
-                    dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
+                if len(self.edited_graph.nodes) == 0:
+                    self.invariants_selected[key] = \
+                        "Null Graph"
+                else:
+                    self.invariants_selected[key] = \
+                        dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
             else:
                 if g6code is not None:
                     self.invariants_selected[key] = \
