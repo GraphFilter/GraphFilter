@@ -26,6 +26,7 @@ class ProjectController:
         self.visualize_graph_dock = VisualizeGraphDock()
 
         self.invariants_selected = {}
+        self.edited_graph = None
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
         self.connect_events()
@@ -64,6 +65,8 @@ class ProjectController:
         self.project_window.about_action.triggered.connect(self.on_about)
 
         self.connect_tool_bar_events()
+
+        self.visualize_graph_dock.any_signal.connect(self.update_graph_to_table)
 
         # self.project_window.print_action.triggered.connect(self.on_print)
 
@@ -106,6 +109,7 @@ class ProjectController:
         self.project_window.restoreState(self.settings.value("state"))
 
     def on_change_graph(self):
+        self.edited_graph = None
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
         else:
@@ -120,7 +124,7 @@ class ProjectController:
         if self.project_tool_bar.current_graph is not None:
             self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
-        self.update_graph_to_table()
+        self.update_graph_to_table(None)
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def on_click_button_left(self):
@@ -139,23 +143,40 @@ class ProjectController:
         g6code = self.project_tool_bar.current_graph
 
         if check.text() not in self.invariants_selected:
-            if g6code is not None:
-                self.invariants_selected[check.text()] = \
-                    dic_invariants_to_visualize[check.text()].print(convert_g6_to_nx(g6code), precision=5)
+            if self.edited_graph is not None:
+                if len(self.edited_graph.nodes) == 0:
+                    self.invariants_selected[check.text()] = \
+                        "Null Graph"
+                else:
+                    self.invariants_selected[check.text()] = \
+                        dic_invariants_to_visualize[check.text()].print(self.edited_graph, precision=5)
             else:
-                self.invariants_selected[check.text()] = 'No graph selected'
+                if g6code is not None:
+                    self.invariants_selected[check.text()] = \
+                        dic_invariants_to_visualize[check.text()].print(convert_g6_to_nx(g6code), precision=5)
+                else:
+                    self.invariants_selected[check.text()] = 'No graph selected'
         else:
             del self.invariants_selected[check.text()]
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    def update_graph_to_table(self):
+    def update_graph_to_table(self, edited_graph):
         g6code = self.project_tool_bar.current_graph
+        self.edited_graph = edited_graph
 
         for key in self.invariants_selected.keys():
-            if g6code is not None:
-                self.invariants_selected[key] = \
-                    dic_invariants_to_visualize[key].print(convert_g6_to_nx(g6code), precision=5)
+            if self.edited_graph is not None:
+                if len(self.edited_graph.nodes) == 0:
+                    self.invariants_selected[key] = \
+                        "Null Graph"
+                else:
+                    self.invariants_selected[key] = \
+                        dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
             else:
-                self.invariants_selected[key] = 'No graph selected'
+                if g6code is not None:
+                    self.invariants_selected[key] = \
+                        dic_invariants_to_visualize[key].print(convert_g6_to_nx(g6code), precision=5)
+                else:
+                    self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)
