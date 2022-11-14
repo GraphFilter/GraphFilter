@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 
 from source.store import help_button_text
@@ -36,6 +37,7 @@ class ProjectInformationWizardPage(QWizardPage):
         file_line.addWidget(self.project_location_button)
 
         form = QFormLayout()
+        form.setAlignment(Qt.AlignTop)
         form.addRow(QLabel("Project Name"), self.project_name_input)
         form.addRow(QLabel("Project location"), file_line)
         form.addRow(QLabel("Project description \n(optional)"), self.project_description_input)

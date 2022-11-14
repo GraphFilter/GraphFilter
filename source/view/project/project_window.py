@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
-
+from source.domain.utils import set_view_size
 
 class ProjectWindow(QMainWindow):
 
@@ -11,7 +11,7 @@ class ProjectWindow(QMainWindow):
 
         self.width = 0
         self.height = 0
-        self.set_view_size(1.4)
+        set_view_size(self,1.4)
 
         self.new_action = QAction("New Project")
         self.open_action = QAction("Open...")
@@ -74,16 +74,3 @@ class ProjectWindow(QMainWindow):
         help_menu = menu_bar.addMenu("Help")
         help_menu.addAction(self.dictionary_action)
         help_menu.addAction(self.about_action)
-
-    def set_view_size(self, p):
-        screen = QApplication.desktop()
-        rect = screen.screenGeometry()
-        if rect.width() > 1920 or rect.height() > 1080:
-            self.width = 800
-            self.height = 800
-        elif rect.width() > 800 or rect.height() > 600:
-            self.width = int(rect.width() / p)
-            self.height = int(rect.height() / p)
-        elif rect.width() <= 800 or rect.height() <= 600:
-            self.width = 770
-            self.height = 550

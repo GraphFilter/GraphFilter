@@ -3,6 +3,8 @@ import re
 import networkx as nx
 import gzip
 
+from PyQt5.QtWidgets import QApplication
+
 
 def validate_path(path):
     return os.path.isdir(path)  # NOTE: or ispath
@@ -43,3 +45,17 @@ def match_graph_code(text):
 
 def convert_g6_to_nx(g6code):
     return nx.from_graph6_bytes(g6code.encode('utf-8'))
+
+
+def set_view_size(self, p):
+    screen = QApplication.desktop()
+    rect = screen.screenGeometry()
+    if rect.width() > 1920 or rect.height() > 1080:
+        self.width = 1129
+        self.height = 635
+    elif rect.width() > 800 or rect.height() > 600:
+        self.width = int(rect.width() / p)
+        self.height = int(rect.height() / p)
+    elif rect.width() <= 800 or rect.height() <= 600:
+        self.width = 770
+        self.height = 550

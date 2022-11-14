@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
-
+from source.domain.utils import set_view_size
 
 class WelcomeWindow(QMainWindow):
 
@@ -13,7 +13,7 @@ class WelcomeWindow(QMainWindow):
 
         self.width = 0
         self.height = 0
-        self.set_view_size(1.5)
+        set_view_size(self, 1.5)
 
         self.set_screen_position()
 
@@ -33,18 +33,3 @@ class WelcomeWindow(QMainWindow):
         center_point = QDesktopWidget().availableGeometry().center()
         rectangle.moveCenter(center_point)
         self.move(rectangle.topLeft())
-
-    def set_view_size(self, p):
-        screen = QApplication.desktop()
-        rect = screen.screenGeometry()
-        if rect.width() > 1920 or rect.height() > 1080:
-            self.width = 720
-            self.height = 720
-        elif rect.width() > 800 or rect.height() > 600:
-            self.width = int(rect.height() / p)
-            self.height = int(rect.height() / p)
-            self.setFixedSize(self.width, self.height)
-        elif rect.width() <= 800 or rect.height() <= 600:
-            self.width = 770
-            self.height = 550
-            self.setFixedSize(self.width, self.height)

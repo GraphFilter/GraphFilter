@@ -1,6 +1,7 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore
-
+from source.domain.utils import set_view_size
 
 class WizardWindow(QWizard):
 
@@ -11,7 +12,7 @@ class WizardWindow(QWizard):
 
         self.width = 0
         self.height = 0
-        self.set_view_size(1.7)
+        set_view_size(self,1.7)
 
         self.window_title = "New Project"
 
@@ -26,8 +27,9 @@ class WizardWindow(QWizard):
 
     def set_content_attributes(self):
         self.setWindowTitle(self.window_title)
-
+        self.setFixedSize(self.width,self.height)
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+        self.setWindowFlag(Qt.WindowMinimizeButtonHint, True)
 
         self.setOption(QWizard.HaveHelpButton, True)
         self.setOption(QWizard.HelpButtonOnRight, False)
@@ -42,18 +44,3 @@ class WizardWindow(QWizard):
     def closeEvent(self, event):
         self.close_signal.emit(1)
         event.accept()
-
-    def set_view_size(self, p):
-        screen = QApplication.desktop()
-        rect = screen.screenGeometry()
-        if rect.width() > 1920 or rect.height() > 1080:
-            self.width = 1129
-            self.height = 635
-        elif rect.width() > 800 or rect.height() > 600:
-            self.width = int(rect.width() / p)
-            self.height = int(rect.height() / p)
-            self.setFixedSize(self.width, self.height)
-        elif rect.width() <= 800 or rect.height() <= 600:
-            self.width = 770
-            self.height = 550
-            self.setFixedSize(self.width, self.height)
