@@ -22,6 +22,7 @@ class WelcomeWindow(QMainWindow):
     def set_window_attributes(self):
         self.setWindowIcon(self.icon)
         self.setWindowTitle(self.title_bar)
+        self.width = int(self.width/1.7)
         self.setFixedSize(self.width, self.height)
         self.setWindowFlags(QtCore.Qt.CustomizeWindowHint
                             | QtCore.Qt.WindowTitleHint
