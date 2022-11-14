@@ -24,14 +24,14 @@ class MethodPage(QWizardPage):
         self.filter_button.setText("  Filter Graphs")
         self.filter_button.setIcon(Icon("filter"))
         self.filter_button.setMinimumHeight(50)
-        self.filter_button.setMinimumWidth(300)
+        self.filter_button.setMinimumWidth(200)
         self.filter_button.setCheckable(True)
         self.filter_button.setObjectName('filter')
 
         self.counter_example_button.setText("  Find Counterexample")
         self.counter_example_button.setIcon(Icon("zoom"))
         self.counter_example_button.setMinimumHeight(50)
-        self.counter_example_button.setMinimumWidth(300)
+        self.counter_example_button.setMinimumWidth(200)
         self.counter_example_button.setCheckable(True)
         self.counter_example_button.setObjectName('counterexample')
 
