@@ -39,7 +39,7 @@ class ProjectInformationWizardPage(QWizardPage):
         form.addRow(QLabel("Project Name"), self.project_name_input)
         form.addRow(QLabel("Project location"), file_line)
         form.addRow(QLabel("Project description \n(optional)"), self.project_description_input)
-        form.setContentsMargins(12, 25, 12, 150)
+        form.setContentsMargins(12, 25, 12, 200)
 
         self.setLayout(form)
 
