@@ -40,7 +40,6 @@ class MethodPage(QWizardPage):
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.filter_button)
-        #button_layout.addStretch(1)
         button_layout.addWidget(self.counter_example_button)
 
         layout = QVBoxLayout()

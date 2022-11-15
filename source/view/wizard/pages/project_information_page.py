@@ -52,5 +52,3 @@ class ProjectInformationWizardPage(QWizardPage):
         screen = QApplication.desktop()
         rect = screen.screenGeometry()
         form.setContentsMargins(12, 25, 12, int(rect.height()/5.5))
-        #if(rect.height() <= 700):
-        #    form.setContentsMargins(12,25,12,100)
