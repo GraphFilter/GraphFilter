@@ -50,12 +50,5 @@ def convert_g6_to_nx(g6code):
 def set_view_size(self, p):
     screen = QApplication.desktop()
     rect = screen.screenGeometry()
-    if rect.width() > 1920 or rect.height() > 1080:
-        self.width = 1129
-        self.height = 635
-    elif rect.width() > 800 or rect.height() > 600:
-        self.width = int(rect.width() / p)
-        self.height = int(rect.height() / p)
-    elif rect.width() <= 800 or rect.height() <= 600:
-        self.width = 770
-        self.height = 550
+    self.width = int(rect.width() / p)
+    self.height = int(rect.height() / p)

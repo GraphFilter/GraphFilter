@@ -41,9 +41,16 @@ class ProjectInformationWizardPage(QWizardPage):
         form.addRow(QLabel("Project Name"), self.project_name_input)
         form.addRow(QLabel("Project location"), file_line)
         form.addRow(QLabel("Project description \n(optional)"), self.project_description_input)
-        form.setContentsMargins(12, 25, 12, 200)
+        self.set_content_margin(form)
 
         self.setLayout(form)
 
     def isComplete(self):
         return self.complete_project_name and self.complete_project_location
+
+    def set_content_margin(self,form):
+        screen = QApplication.desktop()
+        rect = screen.screenGeometry()
+        form.setContentsMargins(12, 25, 12, int(rect.height()/5.5))
+        #if(rect.height() <= 700):
+        #    form.setContentsMargins(12,25,12,100)
