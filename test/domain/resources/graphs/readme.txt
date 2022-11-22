@@ -28,9 +28,7 @@ AND	Claw-Free = true
 -----------------------------
 
 graphs4
-	Edge Connectivity = 3.0
-AND	Planar = true
-AND	Regular = true
+all graphs connected with 4 vertices
 
 -----------------------------
 

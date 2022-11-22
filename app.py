@@ -8,9 +8,10 @@ try:
 except (OSError, AttributeError) as e:
     pass
 
-app = QApplication(sys.argv)
-controller = Controller()
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    controller = Controller()
 
-controller.show_welcome_window()
+    controller.show_welcome_window()
 
-app.exec_()
+    app.exec_()
