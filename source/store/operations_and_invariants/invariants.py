@@ -35,7 +35,7 @@ class UtilsToInvariants:
         if isinstance(array, np.ndarray):
             for index, x in np.ndenumerate(array):
                 array[index] = UtilsToInvariants.approx_to_int(x)
-        return array
+        return np.around(array, decimals=5)
 
     @staticmethod
     def is_there_integer(group):
@@ -109,6 +109,8 @@ class UtilsToInvariants:
     @staticmethod
     def MainEigenvalue(matrix: np.ndarray):
         eigenvalues, vectors = la.eigh(matrix)
+        eigenvalues = np.around(eigenvalues, decimals=10)
+        vectors = np.around(vectors, decimals=10)
         one = np.ones(matrix.shape[0])
         mains = set()
         for i, value in enumerate(eigenvalues):
