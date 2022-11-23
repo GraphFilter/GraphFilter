@@ -46,7 +46,9 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
-        self.project_window.show()
+        self.project_window.showMaximized()
+
+
 
         self.settings.setValue("state", self.project_window.saveState())
 

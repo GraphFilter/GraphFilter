@@ -20,10 +20,10 @@ class ConditionsPage(QWizardPage):
         self.setTitle("Conditions")
 
         layout = QHBoxLayout()
+        layout.setSpacing(5)
         layout.addWidget(self.structural_invariants_group)
-        layout.addStretch(2)
         layout.addWidget(self.spectral_invariants_group)
-        layout.setContentsMargins(60, 25, 60, 25)
+        layout.setContentsMargins(30, 25, 30, 25)
 
         self.setLayout(layout)
 
@@ -51,7 +51,7 @@ class ComboBoxesGroup(QGroupBox):
     def set_content_attributes(self):
         self.setTitle(self.title)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.setMinimumWidth(350)
+        self.setMinimumWidth(250)
 
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setFrameShape(QFrame.NoFrame)
