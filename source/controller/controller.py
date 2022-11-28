@@ -95,7 +95,7 @@ class Controller:
 
     def finish_filter(self):
         if not project_information_store.filtered_graphs:
-            self.wizard_controller.open_message_box("No graphs filtered")
+            self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
             self.show_wizard_window()
         else:
             self.show_project_window()
