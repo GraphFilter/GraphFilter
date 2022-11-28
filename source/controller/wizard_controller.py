@@ -140,8 +140,10 @@ class WizardController:
         self.connect_method_page_events()
         self.connect_graph_files_page_events()
 
-    def open_message_box(self):
+    def open_message_box(self, text=None):
         message_box = MessageBox(self.wizard_window.currentPage().alert_text)
+        if text is not None:
+            message_box = MessageBox(text)
         message_box.exec()
 
     def verify_and_save_project_name(self):

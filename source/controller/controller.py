@@ -94,7 +94,11 @@ class Controller:
         self.wizard_controller.show_window()
 
     def finish_filter(self):
-        self.show_project_window()
+        if not project_information_store.filtered_graphs:
+            self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
+            self.show_wizard_window()
+        else:
+            self.show_project_window()
 
     def start_filter(self):
         update_project_store()
