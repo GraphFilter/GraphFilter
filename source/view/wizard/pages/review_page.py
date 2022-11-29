@@ -92,6 +92,7 @@ class ReviewPage(QWizardPage):
         self.update_files_view()
 
     def update_conditions_view(self):
+        print('Chamou')
         clear_layout(self.conditions_layout)
         widget_aux = QWidget()
         true_conditions = ''
@@ -119,11 +120,8 @@ class ReviewPage(QWizardPage):
             false_widget_text.setText(f"<b>graph not is</b>: {false_conditions[2:]}")
             self.conditions_layout.addWidget(true_widget_text)
             self.conditions_layout.addWidget(false_widget_text)
-        widget_aux.setLayout(self.conditions_layout)
-        self.setLayout(self.project_layout)
 
     def update_files_view(self):
         self.graph_files_layout.clear()
         for file in self.graph_files:
             self.graph_files_layout.addItem(file)
-        self.setLayout(self.project_layout)
