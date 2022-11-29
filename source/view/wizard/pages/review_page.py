@@ -51,7 +51,7 @@ class ReviewPage(QWizardPage):
         self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.project_layout.setContentsMargins(60, 25, 60, 25)
-        self.project_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+        self.project_layout.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
         self.project_layout.setLabelAlignment(Qt.AlignLeft)
 
         self.widget.setLayout(self.project_layout)
