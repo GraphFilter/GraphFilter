@@ -7,6 +7,16 @@ from PyQt5.QtWidgets import QApplication
 
 
 def validate_path(path):
+    forbidden_chars = ['.', '\\', '/', ":"]
+    if len(path) != 0:
+        if path[0] in forbidden_chars:
+            return False
+        if path[len(path) - 1] in forbidden_chars:
+            try:
+                open(path + "/verify.txt", "x")
+                os.remove(path + "/verify.txt")
+            except IOError:
+                return False
     return os.path.isdir(path)  # NOTE: or ispath
 
 
