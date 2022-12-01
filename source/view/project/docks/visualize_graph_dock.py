@@ -7,10 +7,13 @@ from matplotlib.figure import Figure
 from netgraph import EditableGraph
 import numpy as np
 from PyQt5.QtCore import Qt
+from PyQt5 import QtCore
 matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
+
+    any_signal = QtCore.pyqtSignal(object)
 
     def __init__(self):
         super().__init__()
@@ -27,14 +30,17 @@ class VisualizeGraphDock(QDockWidget):
             QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
     def plot_graph(self, graph):
-        self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')))
+        self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')), self.synchronize_change)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
 
+    def synchronize_change(self, new_graph):
+        self.any_signal.emit(new_graph)
+
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, width=8, height=4, dpi=100):
+    def __init__(self, parent=None, graph=None, synchronize_change=None,  width=8, height=4, dpi=100,):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
@@ -42,12 +48,12 @@ class MplCanvas(FigureCanvasQTAgg):
         self.ax.clear()
         if graph is None:
             return
-        self.plot_instance = ResizableGraph(graph, scale=(2, 1), ax=self.ax)
+        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax)
 
 
 class ResizableGraph(EditableGraph):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, synchronize_change,  *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         kwargs.setdefault('origin', (0., 0.))
@@ -56,6 +62,7 @@ class ResizableGraph(EditableGraph):
         self.scale = kwargs["scale"]
         self.figure_width = self.fig.bbox.width
         self.figure_height = self.fig.bbox.height
+        self.synchronize_change = synchronize_change
         self.fig.canvas.mpl_connect('resize_event', self._on_resize)
 
     def _on_resize(self, event, pad=0.05):
@@ -87,3 +94,18 @@ class ResizableGraph(EditableGraph):
         self._update_edges(self.edges)
         self._update_edge_label_positions(self.edges)
         self.fig.canvas.draw()
+
+    def _on_key_press(self, event):
+        return
+        #super()._on_key_press(event)
+        #new_graph = nx.Graph(self.edges)
+        #new_graph.add_nodes_from(self.nodes)
+        #self.synchronize_change(new_graph)
+
+    def _on_press(self, event):
+        if event.dblclick:
+            return
+        super()._on_press(event)
+        #new_graph = nx.Graph(self.edges)
+        #new_graph.add_nodes_from(self.nodes)
+        #self.synchronize_change(new_graph)

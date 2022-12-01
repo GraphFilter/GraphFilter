@@ -24,25 +24,26 @@ class Helper:
             file_ungzipped = gzip.open(os.path.abspath(file), 'r')
             list_g6.extend(file_ungzipped.read().decode('utf-8').splitlines())
         else:
-            list_g6.extend(open(os.path.abspath(file), 'r').read().splitlines())
+            file = open(os.path.abspath(file), 'r')
+            list_g6.extend(file.read().splitlines())
+            file.close()
+
         return list_g6
 
     @staticmethod
     def run(file, expression, choices):
         ftl = FilterList()
-        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/' + file), expression, choices, Helper.fake_update)
-        return ftl.run_filter()
+        return ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file),
+                                expression,
+                                choices)
 
     @staticmethod
     def some_c_exem(file, expression, choices):
         ftl = FilterList()
-        ftl.set_inputs(Helper.list_graphs_from('resources/graphs/' + file), expression, choices, Helper.fake_update)
-        boolean = ftl.run_find_counterexample()
+        boolean = ftl.start_find_counterexample(Helper.list_graphs_from('resources/graphs/' + file),
+                                                expression,
+                                                choices)
         return boolean, ftl.list_out
-
-    @staticmethod
-    def fake_update(value):
-        pass
 
 
 class ExpressionUnitTests(unittest.TestCase):
@@ -101,6 +102,12 @@ class ExpressionUnitTests(unittest.TestCase):
         self.failureException(Equation.validate_expression(f'{chi}(G)=2 OR {eta}({c}(G))==2 AND {chi}(G)>2'))
         self.failureException(Equation.validate_expression(f'{chi}(G)==2 OR {eta}({c}(G))<2 AND {chi}(G)>=2'))
 
+    def test_name_of_all_bool_invariant(self):
+        for inv in inv_bool.InvariantBool().all:
+            self.assertTrue(Helper.run('single_graph.g6', '', {inv.name: 'true'}) >= 0)
+            self.assertTrue(Helper.run('single_graph.g6', '', {inv.name: 'false'}) >= 0)
+            self.assertTrue(isinstance(inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8'))), bool))
+
 
 class DomainUnitTests(unittest.TestCase):
 
@@ -135,11 +142,6 @@ class DomainUnitTests(unittest.TestCase):
         no_tree = {inv_bool.Tree.name: 'false'}
         self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
 
-    def test_name_of_all_bool_invariant(self):
-        for inv in inv_bool.InvariantBool().all:
-            self.assertTrue(Helper.run('single_graph.g6', '', {inv.name: 'true'}) >= 0)
-            self.assertTrue(Helper.run('single_graph.g6', '', {inv.name: 'false'}) >= 0)
-            self.assertTrue(isinstance(inv.calculate(nx.from_graph6_bytes('I???h?HpG'.encode('utf-8'))), bool))
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
@@ -208,6 +210,16 @@ class DomainUnitTests(unittest.TestCase):
         self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{diam}(G)>0', {}))
         self.assertEqual(4 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
         self.assertEqual(True, Helper.some_c_exem('graphs14.g6', f'{chi}(G)<8', {})[0])
+
+
+    def test_multiprocess_filter(self):
+        ec = str(inv_num.EdgeConnectivity.code)
+        planar_and_regular = {inv_bool.Planar.name: 'true', inv_bool.Regular.name: 'true'}
+        n = str(inv_num.NumberVertices.code)
+        # self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
+        graph_conterexample = 'I@`CJcnFw'
+        self.assertEqual(Helper.some_c_exem('graphs4.g6', f'{n}(G)==9',{})[1][0], graph_conterexample)
+
 
 
 class MiscellaneousTests(unittest.TestCase):

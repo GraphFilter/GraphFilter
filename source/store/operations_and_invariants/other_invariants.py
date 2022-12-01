@@ -548,3 +548,4 @@ class Transmission(InvariantOther):
     @staticmethod
     def print(graph, precision):
         return Utils.print_dict(Transmission.calculate(graph), precision)
+

@@ -1,7 +1,7 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
-
+from source.domain.utils import set_view_size
 
 class WelcomeWindow(QMainWindow):
 
@@ -11,8 +11,9 @@ class WelcomeWindow(QMainWindow):
         self.title_bar = "Graph Filter"
         self.icon = Icon("hexagon")
 
-        self.width = 600
-        self.height = 600
+        self.width = 0
+        self.height = 0
+        set_view_size(self, 1.5)
 
         self.set_screen_position()
 
@@ -21,6 +22,7 @@ class WelcomeWindow(QMainWindow):
     def set_window_attributes(self):
         self.setWindowIcon(self.icon)
         self.setWindowTitle(self.title_bar)
+        self.width = int(self.width/1.7)
         self.setFixedSize(self.width, self.height)
         self.setWindowFlags(QtCore.Qt.CustomizeWindowHint
                             | QtCore.Qt.WindowTitleHint

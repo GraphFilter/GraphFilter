@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from source.store import help_button_text
 from PyQt5.QtCore import Qt
@@ -38,13 +39,20 @@ class ProjectInformationWizardPage(QWizardPage):
         self.project_description_input.setMaximumHeight(200)
 
         form = QFormLayout()
+        form.setAlignment(Qt.AlignTop)
         form.addRow(QLabel("Project Name"), self.project_name_input)
         form.addRow(QLabel("Project location"), file_line)
         form.addRow(QLabel("Project description \n(optional)"), self.project_description_input)
-        form.setContentsMargins(12, 25, 12, 300)
+        self.set_content_margin(form)
         form.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
         form.setLabelAlignment(Qt.AlignLeft)
+
         self.setLayout(form)
 
     def isComplete(self):
         return self.complete_project_name and self.complete_project_location
+
+    def set_content_margin(self,form):
+        screen = QApplication.desktop()
+        rect = screen.screenGeometry()
+        form.setContentsMargins(12, 25, 12, int(rect.height()/5.5))

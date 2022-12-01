@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
-
+from source.domain.utils import set_view_size
 
 class ProjectWindow(QMainWindow):
 
@@ -9,8 +9,9 @@ class ProjectWindow(QMainWindow):
 
         self.icon = Icon("hexagon")
 
-        self.width = 1200
-        self.height = 900
+        self.width = 0
+        self.height = 0
+        set_view_size(self,1.4)
 
         self.new_action = QAction("New Project")
         self.open_action = QAction("Open...")
