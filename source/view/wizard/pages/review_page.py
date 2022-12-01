@@ -92,9 +92,7 @@ class ReviewPage(QWizardPage):
         self.update_files_view()
 
     def update_conditions_view(self):
-        print('Chamou')
         clear_layout(self.conditions_layout)
-        widget_aux = QWidget()
         true_conditions = ''
         false_conditions = ''
         for condition, value in self.conditions.items():
