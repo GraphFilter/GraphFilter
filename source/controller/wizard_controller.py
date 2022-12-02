@@ -143,7 +143,7 @@ class WizardController:
 
     def open_message_box(self, text=None):
         message_box = MessageBox(self.wizard_window.currentPage().alert_text)
-        if text is not None:
+        if text is not None and not bool:
             message_box = MessageBox(text)
         message_box.exec()
 
