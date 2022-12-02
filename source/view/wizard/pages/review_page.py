@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import *
 
 from source.domain.utils import clear_layout
 from source.store import help_button_text
-from PyQt5 import QtCore
+from PyQt5.QtCore import Qt
 
 
 class ReviewPage(QWizardPage):
@@ -47,15 +47,18 @@ class ReviewPage(QWizardPage):
         self.project_layout.addRow("<b>(In)equations:</b>", self.equation)
         self.project_layout.addRow("<b>Conditions:</b>", self.conditions_layout)
         self.project_layout.addRow("<b>Graph files:</b>", self.graph_files_layout)
+
         self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
 
         self.project_layout.setContentsMargins(60, 25, 60, 25)
+        self.project_layout.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+        self.project_layout.setLabelAlignment(Qt.AlignLeft)
 
         self.widget.setLayout(self.project_layout)
 
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-        self.scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll_area.setWidget(self.widget)
         self.scroll_area.setFrameShape(QFrame.NoFrame)
 
@@ -90,7 +93,6 @@ class ReviewPage(QWizardPage):
 
     def update_conditions_view(self):
         clear_layout(self.conditions_layout)
-        widget_aux = QWidget()
         true_conditions = ''
         false_conditions = ''
         for condition, value in self.conditions.items():
@@ -116,11 +118,8 @@ class ReviewPage(QWizardPage):
             false_widget_text.setText(f"<b>graph not is</b>: {false_conditions[2:]}")
             self.conditions_layout.addWidget(true_widget_text)
             self.conditions_layout.addWidget(false_widget_text)
-        widget_aux.setLayout(self.conditions_layout)
-        self.setLayout(self.project_layout)
 
     def update_files_view(self):
         self.graph_files_layout.clear()
         for file in self.graph_files:
             self.graph_files_layout.addItem(file)
-        self.setLayout(self.project_layout)
