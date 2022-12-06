@@ -28,8 +28,8 @@ class WizardWindow(QWizard):
     def set_content_attributes(self):
         self.setWindowTitle(self.window_title)
         self.setFixedSize(self.width,self.height)
-        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
-        self.setWindowFlag(Qt.WindowMinimizeButtonHint)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
 
         self.setOption(QWizard.HaveHelpButton, True)
         self.setOption(QWizard.HelpButtonOnRight, False)
