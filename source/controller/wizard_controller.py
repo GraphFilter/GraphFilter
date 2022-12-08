@@ -283,6 +283,7 @@ class WizardController:
                 radio.setAutoExclusive(True)
                 wizard_information_store.conditions.pop(groupbox.objectName())
                 print(wizard_information_store.conditions)
+                self.review_page.set_conditions(wizard_information_store.conditions)
                 self.update_conditions_page()
                 self.conditions_page.completeChanged.emit()
                 return
