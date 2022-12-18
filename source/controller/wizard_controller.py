@@ -167,7 +167,7 @@ class WizardController:
 
     def save_project_description(self):
         description = self.project_files_page.project_description_input.toPlainText()
-        wizard_information_store.project_location = description
+        wizard_information_store.project_description = description
         self.review_page.set_project_description(description)
 
     def on_open_project_file(self):
