@@ -24,6 +24,9 @@ class TestMainWorkflow(unittest.TestCase):
     def setUp(self):
         self.window = Controller()
 
+    def tearDown(self):
+        os.remove(Qs.writableLocation(Qs.DocumentsLocation) + "/My Title.json")
+
     def test_new_project_sequence(self):
         self.set_up_main_window()
         self.set_up_project_file_page()
@@ -53,12 +56,7 @@ class TestMainWorkflow(unittest.TestCase):
 
     def set_up_equations_page(self):
         self.assertTrue(self.window.wizard_controller.equations_page.isVisible())
-        QTest.keyPress(self.window.wizard_controller.equations_page.equation, "n")
-        QTest.keyPress(self.window.wizard_controller.equations_page.equation, "(")
-        QTest.keyPress(self.window.wizard_controller.equations_page.equation, "G")
-        QTest.keyPress(self.window.wizard_controller.equations_page.equation, ")")
-        QTest.keyPress(self.window.wizard_controller.equations_page.equation, ">")
-        QTest.keyPress(self.window.wizard_controller.equations_page.equation, "0")
+        key_sequence(self.window.wizard_controller.equations_page.equation, "n(G)>0")
         QTest.mouseClick(self.window.wizard_controller.wizard_window.next_button, Qt.LeftButton)
 
     def set_up_conditions_page(self):
@@ -94,4 +92,3 @@ class TestMainWorkflow(unittest.TestCase):
         self.assertTrue(self.window.project_controller.project_window.isVisible())
         self.assertEqual(len(project_information_store.filtered_graphs),
                          len(self.window.project_controller.project_tool_bar.combo_graphs))
-
