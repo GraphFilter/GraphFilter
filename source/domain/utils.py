@@ -53,7 +53,19 @@ def validate_file(path: str) -> bool:
     return os.path.isfile(path)  # NOTE: or ispath
 
 
-def validate_file_name(name):
+def validate_file_name(name: str) -> bool:
+    """Check if the file name is valid.
+
+    Parameters
+    ---------
+    name: str
+        User-given project file name
+
+    Returns
+    -------
+    out: boolean
+        True if the file name has none forbidden character , False otherwise
+    """
     forbidden_chars = ['?', '\\', '/', ':', '*', '"', '<', '>', '|', "'"]
     return not any(substring in name for substring in forbidden_chars) and len(name) > 0
 
