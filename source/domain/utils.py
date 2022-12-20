@@ -6,7 +6,25 @@ import gzip
 from PyQt5.QtWidgets import QApplication
 
 
-def validate_path(path):
+def validate_path(path: str) -> bool:
+    """Check if the path is valid.
+
+    Parameters
+    ---------
+    path: str
+        User-given project path
+
+    Returns
+    -------
+    out: boolean
+        True if the path is valid, False otherwise
+
+    Notes
+    -----
+    If the file ends with 2 forbidden characters, a temporary
+    file is created to perform the verification.
+    """
+
     forbidden_chars = ['.', '\\', '/', ":"]
     if len(path) != 0:
         if path[0] in forbidden_chars:
