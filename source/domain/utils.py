@@ -24,7 +24,6 @@ def validate_path(path: str) -> bool:
     If the file ends with 2 forbidden characters, a temporary
     file is created to perform the verification.
     """
-
     forbidden_chars = ['.', '\\', '/', ":"]
     if len(path) != 0:
         if path[0] in forbidden_chars:
@@ -38,7 +37,19 @@ def validate_path(path: str) -> bool:
     return os.path.isdir(path)  # NOTE: or ispath
 
 
-def validate_file(path):
+def validate_file(path: str) -> bool:
+    """Check if the file path is valid.
+
+    Parameters
+    ---------
+    path: str
+        User-given project file path
+
+    Returns
+    -------
+    out: boolean
+        True if the file path is valid, False otherwise
+    """
     return os.path.isfile(path)  # NOTE: or ispath
 
 
