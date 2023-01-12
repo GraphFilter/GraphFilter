@@ -127,8 +127,18 @@ def convert_g6_to_nx(g6code: str) -> object:
     return nx.from_graph6_bytes(g6code.encode('utf-8'))
 
 
-def set_view_size(self, p):
+def set_view_size(window: object, percentage: float) -> None:
+    """Dynamically resizes the window.
+
+    Parameters
+    ---------
+    window: PyQt5 object
+        The object of a PyQt5 window
+    percentage: float
+        Dynamic mathematical variable that contains the percentage
+        in decimal to resize the screen
+    """
     screen = QApplication.desktop()
     rect = screen.screenGeometry()
-    self.width = int(rect.width() / p)
-    self.height = int(rect.height() / p)
+    window.width = int(rect.width() / percentage)
+    window.height = int(rect.height() / percentage)
