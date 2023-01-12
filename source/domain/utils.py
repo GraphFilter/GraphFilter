@@ -77,12 +77,29 @@ def clear_layout(layout):
             child.widget().deleteLater()
 
 
-def extract_files_to_list(files):
+def extract_files_to_list(files: list[str]) -> list[str]:
+    """Extracts user-given files to a g6 list.
+
+    Parameters
+    ---------
+    files: list[str]
+        User-given list of files
+
+    Returns
+    -------
+    out: list[str]
+        A g6 list extracted from each file in the file list
+
+    Notes
+    -----
+    If the file is a .gz, the method also unzip it and
+    decode.
+    """
     list_g6 = []
     for file in files:
         if file.endswith('.gz'):
-            file_ungzipped = gzip.open(file, 'r')
-            list_g6.extend(file_ungzipped.read().decode('utf-8').splitlines())
+            file_unzipped = gzip.open(file, 'r')
+            list_g6.extend(file_unzipped.read().decode('utf-8').splitlines())
         else:
             list_g6.extend(open(file, 'r').read().splitlines())
     return list_g6
