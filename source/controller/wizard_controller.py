@@ -166,6 +166,14 @@ class WizardController:
             self.update_complete_project_files_page(complete_project_location=False)
 
     def save_project_description(self):
+        """Takes a 'str' added by the user in the wizard 'project_description_input',
+         save in the 'wizard_information_store' and set the 'project_description' in the review page.
+
+        Parameters
+        -----------
+        description : str
+            It is an input string added in the 'project_description_input'
+        """
         description = self.project_files_page.project_description_input.toPlainText()
         wizard_information_store.project_description = description
         self.review_page.set_project_description(description)
