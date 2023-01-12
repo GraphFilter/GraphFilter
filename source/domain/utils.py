@@ -105,7 +105,19 @@ def extract_files_to_list(files: list[str]) -> list[str]:
     return list_g6
 
 
-def match_graph_code(text):
+def match_graph_code(text: str) -> str:
+    """Gets a g6 code from the text given by filtered graphs combobox.
+
+    Parameters
+    ---------
+    text: str
+        The text from filtered graphs combobox
+
+    Returns
+    -------
+    out: str
+        A g6 code extracted from text attribute
+    """
     pattern = re.compile(r'(Graph \d* - )(.*)')
     match = pattern.match(text)
     return match.group(2)
