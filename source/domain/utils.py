@@ -111,7 +111,19 @@ def match_graph_code(text):
     return match.group(2)
 
 
-def convert_g6_to_nx(g6code):
+def convert_g6_to_nx(g6code: str) -> object:
+    """Converts a g6 code to a NetworkX format.
+
+    Parameters
+    ---------
+    g6code: str
+        A single g6 code
+
+    Returns
+    -------
+    out: object
+        A NetworkX object
+    """
     return nx.from_graph6_bytes(g6code.encode('utf-8'))
 
 
