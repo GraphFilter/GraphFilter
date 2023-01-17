@@ -16,16 +16,25 @@ class ConditionsPage(QWizardPage):
         self.structural_invariants_group: ComboBoxesGroup
         self.spectral_invariants_group: ComboBoxesGroup
 
-    def set_up_layout(self):
-        self.setTitle("Conditions")
+    def set_up_layout(window : object) -> None:
+        """Set the layout of the conditions page,
+        adding the two widgets with the conditions setting the spacing and the window title
+
+        Parameters
+        ----------
+        window: PyQt5 object
+            The object of a PyQt5 window
+
+        """
+        window.setTitle("Conditions")
 
         layout = QHBoxLayout()
         layout.setSpacing(5)
-        layout.addWidget(self.structural_invariants_group)
-        layout.addWidget(self.spectral_invariants_group)
+        layout.addWidget(window.structural_invariants_group)
+        layout.addWidget(window.spectral_invariants_group)
         layout.setContentsMargins(30, 25, 30, 25)
 
-        self.setLayout(layout)
+        window.setLayout(layout)
 
     def isComplete(self):
         return self.complete
