@@ -16,27 +16,29 @@ class ConditionsPage(QWizardPage):
         self.structural_invariants_group: ComboBoxesGroup
         self.spectral_invariants_group: ComboBoxesGroup
 
-    def set_up_layout(window : object) -> None:
+    def set_up_layout(self) -> None:
         """Set the layout of the conditions page,
         adding the two widgets with the conditions setting the spacing and the window title
 
-        Parameters
-        ----------
-        window: PyQt5 object
-            The object of a PyQt5 window
-
         """
-        window.setTitle("Conditions")
+        self.setTitle("Conditions")
 
         layout = QHBoxLayout()
         layout.setSpacing(5)
-        layout.addWidget(window.structural_invariants_group)
-        layout.addWidget(window.spectral_invariants_group)
+        layout.addWidget(self.structural_invariants_group)
+        layout.addWidget(self.spectral_invariants_group)
         layout.setContentsMargins(30, 25, 30, 25)
 
-        window.setLayout(layout)
+        self.setLayout(layout)
 
-    def isComplete(self):
+    def isComplete(self) -> bool:
+        """this method will verify the status of the 'complete' variable and return it
+
+        Returns
+        --------
+        bool
+            The status of the 'complete' variable
+        """
         return self.complete
 
 
@@ -57,7 +59,10 @@ class ComboBoxesGroup(QGroupBox):
         self.set_up_layout()
         self.fill_combos()
 
-    def set_content_attributes(self):
+    def set_content_attributes(self) -> None:
+        """ Set the content attributes of the Combo Boxes Group it will appear in the conditions page,
+            setting the size, policy's, spacing and the scroll area.
+        """
         self.setTitle(self.title)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setMinimumWidth(250)
@@ -69,7 +74,9 @@ class ComboBoxesGroup(QGroupBox):
 
         self.button_group.setFlat(True)
 
-    def set_up_layout(self):
+    def set_up_layout(self) -> None:
+        """Set the layout of the combo box, placing the widgets.
+        """
         grid_layout_aux = QGridLayout()
         grid_layout_aux.setColumnMinimumWidth(0, 200)
         grid_layout_aux.addWidget(QLabel("true"), 0, 1, Qt.AlignCenter)
@@ -77,7 +84,10 @@ class ComboBoxesGroup(QGroupBox):
         self.button_group.setLayout(grid_layout_aux)
         self.conditions_layout.addWidget(self.button_group, 0, 0)
 
-    def fill_combos(self):
+    def fill_combos(self) -> None:
+        """Fill the combos with the conditions in the combo box, and setting some little layout for the combos
+
+        """
         for i, key in enumerate(self.dictionary):
             button_group = QGroupBox()
             button_group.setFlat(True)
