@@ -17,6 +17,7 @@ class ProjectToolBar(QToolBar):
         self.save_button = QPushButton()
         self.delete_button = QPushButton()
         self.revert_button = QPushButton()
+        self.forward_button = QPushButton()
 
         self.combo_graphs = QComboBox()
         self.combo_operations = QComboBox()
@@ -63,6 +64,10 @@ class ProjectToolBar(QToolBar):
         self.revert_button.setIcon(Icon("revert"))
         self.revert_button.setIconSize(QtCore.QSize(20, 20))
 
+        self.forward_button.setIcon(Icon("forward"))
+        self.forward_button.setIconSize(QtCore.QSize(20, 20))
+        self.forward_button.setDisabled(True)
+
     def reset_combo_graphs(self):
         self.combo_graphs.clear()
 
@@ -78,6 +83,7 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.save_button)
         self.addWidget(self.delete_button)
         self.addWidget(self.revert_button)
+        self.addWidget(self.forward_button)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
