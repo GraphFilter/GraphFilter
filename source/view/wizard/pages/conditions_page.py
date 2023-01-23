@@ -19,7 +19,12 @@ class ConditionsPage(QWizardPage):
     def set_up_layout(self) -> None:
         """Set the layout of the conditions page,
         adding the two widgets with the conditions setting the spacing and the window title
-
+        The attributes will be set is the:
+            Title,
+            layout with is the QHBoxLayout,
+            set the spacing,
+            add the two widgets it is the structural invariants group and the spectral invariants group
+            and set the content margin
         """
         self.setTitle("Conditions")
 
@@ -33,7 +38,6 @@ class ConditionsPage(QWizardPage):
 
     def isComplete(self) -> bool:
         """this method will verify the status of the 'complete' variable and return it
-
         Returns
         --------
         bool
@@ -60,8 +64,15 @@ class ComboBoxesGroup(QGroupBox):
         self.fill_combos()
 
     def set_content_attributes(self) -> None:
-        """ Set the content attributes of the Combo Boxes Group it will appear in the conditions page,
-            setting the size, policy's, spacing and the scroll area.
+        """ Set the content attributes of the Combo Boxes Group it will appear in the conditions page.
+            The attributes are:
+                The title,
+                set the size policy it is QSizePolicy,
+                set the minimumWidth at 250 pixels,
+                set the attributes of the scroll area it is QScrollArea, the attributes are widgetResizable it is true
+                and setFrameShape who defines the shape frame of the scroll area it is No frame,
+                set the horizontal spacing of the conditions page, it is 20 pixels
+                and set the set flat the button group it is an QGroupBox, that button will contain the tue and false states for the conditions
         """
         self.setTitle(self.title)
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -76,6 +87,13 @@ class ComboBoxesGroup(QGroupBox):
 
     def set_up_layout(self) -> None:
         """Set the layout of the combo box, placing the widgets.
+            The content of the layout will be:
+                The grid layout it is an QGridLayout,
+                set the Column minimum width, who needs two parameters the first will be for what column been 0 for the first one,
+                and the second parameter for the stretch of the column,
+                add two widgets for the layout who will be one label with the true and align to center and other to false also with center alignment,
+                set the button group with that layout in grid,
+                add to the conditions layout the button group as a widget
         """
         grid_layout_aux = QGridLayout()
         grid_layout_aux.setColumnMinimumWidth(0, 200)
@@ -85,8 +103,15 @@ class ComboBoxesGroup(QGroupBox):
         self.conditions_layout.addWidget(self.button_group, 0, 0)
 
     def fill_combos(self) -> None:
-        """Fill the combos with the conditions in the combo box, and setting some little layout for the combos
-
+        """Fill the combos with the conditions in the combo box, and setting some layout for the combos
+            First this method will get in the dictionary with a 'for' all the conditions.
+            In it loop of the 'for' getting the condition with their key,
+            set the button_group with the nome of the object who is received by the dictionary,
+            create a grid auxiliary layout, set the minimum width and create add a label to the layout with the dictionary object,
+            create the true and false buttons passing the method passing the update_conditions parameter,
+            add to the layout the buttons aligning them to center set the layout and putt that in the conditions' layout.
+            After the loop will create and set the widget layout with the condition's layout,
+            set the scroll_area with the widget layout, and will put the widget layout as a widget in the vertical_layout_grid who will be showned
         """
         for i, key in enumerate(self.dictionary):
             button_group = QGroupBox()
