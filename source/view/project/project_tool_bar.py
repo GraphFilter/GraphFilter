@@ -28,7 +28,7 @@ class ProjectToolBar(QToolBar):
         self.set_up_layout()
 
     def set_content_attributes(self):
-        self.layout().setSpacing(30)
+        self.layout().setSpacing(35)
         self.layout().setContentsMargins(15, 10, 20, 20)
         self.setMinimumHeight(45)
         self.setMovable(False)
@@ -73,15 +73,23 @@ class ProjectToolBar(QToolBar):
 
     def set_up_layout(self):
         self.addWidget(self.features_info_button)
+        self.addSeparator()
+
         self.addWidget(self.filtered_graphs_label)
         self.addWidget(self.combo_graphs)
         self.addWidget(self.left_button)
         self.addWidget(self.right_button)
+        self.addSeparator()
+
         self.addWidget(self.refresh_button)
         self.addWidget(self.combo_operations)
+        self.addSeparator()
+
         self.addWidget(self.graph_button)
         self.addWidget(self.save_button)
         self.addWidget(self.delete_button)
+        self.addSeparator()
+
         self.addWidget(self.revert_button)
         self.addWidget(self.forward_button)
 
