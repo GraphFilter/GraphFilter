@@ -12,12 +12,12 @@ class ProjectToolBar(QToolBar):
         self.left_button = QPushButton()
         self.right_button = QPushButton()
         self.features_info_button = QPushButton()
-        self.refresh_button = QPushButton()
-        self.graph_button = QPushButton()
-        self.save_button = QPushButton()
-        self.delete_button = QPushButton()
-        self.revert_button = QPushButton()
-        self.forward_button = QPushButton()
+        self.refresh_button = QAction()
+        self.graph_button = QAction()
+        self.save_button = QAction()
+        self.delete_button = QAction()
+        self.revert_button = QAction()
+        self.forward_button = QAction()
 
         self.combo_graphs = QComboBox()
         self.combo_operations = QComboBox()
@@ -44,28 +44,24 @@ class ProjectToolBar(QToolBar):
         self.right_button.setIcon(Icon("right_arrow_key"))
         self.right_button.setIconSize(QtCore.QSize(20, 20))
         self.right_button.setDisabled(False)
+        self.right_button.setStyleSheet("background-color: #DCDCDC;"
+                                        "border-radius: 10px;")
 
         self.left_button.setIcon(Icon("left_arrow_key"))
         self.left_button.setIconSize(QtCore.QSize(20, 20))
         self.left_button.setDisabled(True)
+        self.left_button.setStyleSheet("background-color: #DCDCDC;"
+                                       "border-radius: 10px;")
 
         self.refresh_button.setIcon(Icon("refresh"))
-        self.refresh_button.setIconSize(QtCore.QSize(20, 20))
+        self.combo_operations.addItem(" Operations")
 
         self.graph_button.setIcon(Icon("graph"))
-        self.graph_button.setIconSize(QtCore.QSize(20, 20))
-
         self.save_button.setIcon(Icon("save"))
-        self.save_button.setIconSize(QtCore.QSize(20, 20))
-
         self.delete_button.setIcon(Icon("delete"))
-        self.delete_button.setIconSize(QtCore.QSize(20, 20))
 
         self.revert_button.setIcon(Icon("revert"))
-        self.revert_button.setIconSize(QtCore.QSize(20, 20))
-
         self.forward_button.setIcon(Icon("forward"))
-        self.forward_button.setIconSize(QtCore.QSize(20, 20))
         self.forward_button.setDisabled(True)
 
     def reset_combo_graphs(self):
@@ -81,17 +77,17 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.right_button)
         self.addSeparator()
 
-        self.addWidget(self.refresh_button)
+        self.addAction(self.refresh_button)
         self.addWidget(self.combo_operations)
         self.addSeparator()
 
-        self.addWidget(self.graph_button)
-        self.addWidget(self.save_button)
-        self.addWidget(self.delete_button)
+        self.addAction(self.graph_button)
+        self.addAction(self.save_button)
+        self.addAction(self.delete_button)
         self.addSeparator()
 
-        self.addWidget(self.revert_button)
-        self.addWidget(self.forward_button)
+        self.addAction(self.revert_button)
+        self.addAction(self.forward_button)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
