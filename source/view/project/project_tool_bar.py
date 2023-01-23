@@ -8,10 +8,11 @@ class ProjectToolBar(QToolBar):
         super().__init__()
 
         self.filtered_graphs_label = QLabel("  List of graphs filtered")
+        self.features_info_label = QLabel(" Graph editing features")
 
         self.left_button = QPushButton()
         self.right_button = QPushButton()
-        self.features_info_button = QPushButton()
+        self.features_info_button = QAction()
         self.refresh_button = QAction()
         self.graph_button = QAction()
         self.save_button = QAction()
@@ -28,7 +29,7 @@ class ProjectToolBar(QToolBar):
         self.set_up_layout()
 
     def set_content_attributes(self):
-        self.layout().setSpacing(35)
+        self.layout().setSpacing(30)
         self.layout().setContentsMargins(15, 10, 20, 20)
         self.setMinimumHeight(45)
         self.setMovable(False)
@@ -37,9 +38,7 @@ class ProjectToolBar(QToolBar):
         self.combo_graphs.setMaximumWidth(200)
         self.combo_graphs.setMinimumWidth(200)
 
-        self.features_info_button.setText(" Graph editing features")
         self.features_info_button.setIcon(Icon("help"))
-        self.features_info_button.setIconSize(QtCore.QSize(20, 20))
 
         self.right_button.setIcon(Icon("right_arrow_key"))
         self.right_button.setIconSize(QtCore.QSize(20, 20))
@@ -68,7 +67,8 @@ class ProjectToolBar(QToolBar):
         self.combo_graphs.clear()
 
     def set_up_layout(self):
-        self.addWidget(self.features_info_button)
+        self.addAction(self.features_info_button)
+        self.addWidget(self.features_info_label)
         self.addSeparator()
 
         self.addWidget(self.filtered_graphs_label)
