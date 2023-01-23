@@ -13,6 +13,7 @@ class ProjectToolBar(QToolBar):
         self.right_button = QPushButton()
         self.features_info_button = QPushButton()
         self.refresh_button = QPushButton()
+        self.graph_button = QPushButton()
 
         self.combo_graphs = QComboBox()
         self.combo_operations = QComboBox()
@@ -34,7 +35,7 @@ class ProjectToolBar(QToolBar):
 
         self.features_info_button.setText(" Graph editing features")
         self.features_info_button.setIcon(Icon("help"))
-        self.right_button.setIconSize(QtCore.QSize(30, 30))
+        self.features_info_button.setIconSize(QtCore.QSize(20, 20))
 
         self.right_button.setIcon(Icon("right_arrow_key"))
         self.right_button.setIconSize(QtCore.QSize(20, 20))
@@ -45,7 +46,10 @@ class ProjectToolBar(QToolBar):
         self.left_button.setDisabled(True)
 
         self.refresh_button.setIcon(Icon("refresh"))
-        self.left_button.setIconSize(QtCore.QSize(20, 20))
+        self.refresh_button.setIconSize(QtCore.QSize(20, 20))
+
+        self.graph_button.setIcon(Icon("graph"))
+        self.graph_button.setIconSize(QtCore.QSize(20, 20))
 
     def reset_combo_graphs(self):
         self.combo_graphs.clear()
@@ -58,6 +62,7 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.right_button)
         self.addWidget(self.refresh_button)
         self.addWidget(self.combo_operations)
+        self.addWidget(self.graph_button)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
