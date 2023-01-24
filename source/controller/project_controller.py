@@ -6,6 +6,7 @@ from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
 from source.view.project.docks.graph_information_dock import GraphInformationDock
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
+from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
@@ -24,6 +25,8 @@ class ProjectController:
         self.graph_information_dock = GraphInformationDock()
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
+
+        self.tree_file_dock = TreeFileDock()
 
         self.invariants_selected = {}
         self.edited_graph = None
@@ -59,6 +62,7 @@ class ProjectController:
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
         self.project_window.invariants_check_action.triggered.connect(self.on_invariants_check)
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
+        self.project_window.visualize_tree.triggered.connect(self.on_visualize_tree)
 
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
@@ -81,6 +85,7 @@ class ProjectController:
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
+        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
 
         self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
@@ -94,6 +99,9 @@ class ProjectController:
         # if dialog.exec_() == QPrintDialog.Accepted:
         #     pass
         pass
+
+    def on_visualize_tree(self):
+        self.tree_file_dock.setVisible(True)
 
     def on_visualize(self):
         self.visualize_graph_dock.setVisible(True)
