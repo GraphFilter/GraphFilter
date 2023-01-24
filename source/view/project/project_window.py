@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
 from source.domain.utils import set_view_size
 
+
 class ProjectWindow(QMainWindow):
 
     def __init__(self):
@@ -11,7 +12,7 @@ class ProjectWindow(QMainWindow):
 
         self.width = 0
         self.height = 0
-        set_view_size(self,1.4)
+        set_view_size(self, 1.4)
 
         self.new_action = QAction("New Project")
         self.open_action = QAction("Open...")
@@ -27,6 +28,7 @@ class ProjectWindow(QMainWindow):
         self.visualize_action = QAction("Visualize")
         self.invariants_check_action = QAction("Invariants Check")
         self.graph_info_action = QAction("Graph Info")
+        self.visualize_tree_action = QAction("Files")
 
         self.dictionary_action = QAction("Dictionary")
         self.about_action = QAction("About...")

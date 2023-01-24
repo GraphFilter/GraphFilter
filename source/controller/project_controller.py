@@ -25,7 +25,6 @@ class ProjectController:
         self.graph_information_dock = GraphInformationDock()
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
-
         self.tree_file_dock = TreeFileDock()
 
         self.invariants_selected = {}
@@ -49,9 +48,9 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
+        self.tree_file_dock.createTree()
+
         self.project_window.showMaximized()
-
-
 
         self.settings.setValue("state", self.project_window.saveState())
 
@@ -62,7 +61,7 @@ class ProjectController:
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
         self.project_window.invariants_check_action.triggered.connect(self.on_invariants_check)
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
-        self.project_window.visualize_tree.triggered.connect(self.on_visualize_tree)
+        self.project_window.visualize_tree_action.triggered.connect(self.on_visualize_tree)
 
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
@@ -82,12 +81,14 @@ class ProjectController:
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
 
     def create_docks(self):
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
-        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
+        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.visualize_graph_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
+        # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
-        self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
+        self.project_window.splitDockWidget(self.tree_file_dock, self.graph_information_dock, QtCore.Qt.Vertical)
+        self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock, QtCore.Qt.Horizontal)
 
     def on_exit(self):
         self.project_window.close()
