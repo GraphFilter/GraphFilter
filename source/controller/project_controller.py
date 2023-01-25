@@ -82,13 +82,15 @@ class ProjectController:
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.graph_information_dock)
         # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
-        self.project_window.splitDockWidget(self.tree_file_dock, self.graph_information_dock, QtCore.Qt.Vertical)
-        self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock, QtCore.Qt.Horizontal)
+        self.graph_information_dock.setMaximumHeight(250)
+        self.tree_file_dock.setMaximumWidth(250)
+        self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock,
+                                            QtCore.Qt.Horizontal)
 
     def on_exit(self):
         self.project_window.close()
