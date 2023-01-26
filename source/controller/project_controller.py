@@ -6,6 +6,7 @@ from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
 from source.view.project.docks.graph_information_dock import GraphInformationDock
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
+from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
@@ -24,6 +25,7 @@ class ProjectController:
         self.graph_information_dock = GraphInformationDock()
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
+        self.tree_file_dock = TreeFileDock()
 
         self.invariants_selected = {}
         self.edited_graph = None
@@ -46,9 +48,9 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
+        self.tree_file_dock.createTree()
+
         self.project_window.showMaximized()
-
-
 
         self.settings.setValue("state", self.project_window.saveState())
 
@@ -59,6 +61,7 @@ class ProjectController:
         self.project_window.visualize_action.triggered.connect(self.on_visualize)
         self.project_window.invariants_check_action.triggered.connect(self.on_invariants_check)
         self.project_window.graph_info_action.triggered.connect(self.on_graph_info)
+        self.project_window.visualize_tree_action.triggered.connect(self.on_visualize_tree)
 
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
 
@@ -78,11 +81,16 @@ class ProjectController:
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
 
     def create_docks(self):
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.visualize_graph_dock)
-        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.graph_information_dock)
+        self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
+        self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.graph_information_dock)
+        # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
-        self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
+        self.graph_information_dock.setMaximumHeight(250)
+        self.tree_file_dock.setMaximumWidth(250)
+        self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock,
+                                            QtCore.Qt.Horizontal)
 
     def on_exit(self):
         self.project_window.close()
@@ -94,6 +102,9 @@ class ProjectController:
         # if dialog.exec_() == QPrintDialog.Accepted:
         #     pass
         pass
+
+    def on_visualize_tree(self):
+        self.tree_file_dock.setVisible(True)
 
     def on_visualize(self):
         self.visualize_graph_dock.setVisible(True)
