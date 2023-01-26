@@ -72,8 +72,8 @@ class ProjectToolBar(QToolBar):
         self.addSeparator()
 
         self.addWidget(self.filtered_graphs_label)
-        self.addWidget(self.combo_graphs)
         self.addWidget(self.left_button)
+        self.addWidget(self.combo_graphs)
         self.addWidget(self.right_button)
         self.addSeparator()
 
