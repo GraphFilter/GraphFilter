@@ -114,6 +114,11 @@ class EditingFeatures(QMessageBox):
         self.set_content_attributes()
 
     def set_content_attributes(self):
-        self.setText("Insert or + : Insert a new node\n"
-                     "Delete or - : Delete a node \n"
-                     "Double clicking on two nodes successively will create an edge between them")
+        self.setText("Insert or + : Insert a new node\n\n"
+                     "Delete or - : Delete a node \n\n"
+                     "Control + Left-Click : Multiple nodes and or edges can"
+                     " be selected by holding control while clicking \n\n"
+                     "Left-Click: Double clicking on two nodes successively will create an edge between them \n\n"
+                     "Left-Click: Individual nodes and edges can be selected using the left-click. \n\n"
+                     "Left-Click: Selected plot elements can be dragged"
+                     " around by holding left-click on a selected artist.")
