@@ -101,3 +101,19 @@ class ProjectToolBar(QToolBar):
             return None
 
         return graphs[0]
+
+
+class EditingFeatures(QMessageBox):
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+        self.setWindowTitle("Information")
+
+        self.set_content_attributes()
+
+    def set_content_attributes(self):
+        self.setText("Insert or + : Insert a new node\n"
+                     "Delete or - : Delete a node \n"
+                     "Double clicking on two nodes successively will create an edge between them")

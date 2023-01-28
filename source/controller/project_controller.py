@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
-from source.view.project.editing_features import EditingFeatures
+from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
