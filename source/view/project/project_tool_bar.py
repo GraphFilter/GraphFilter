@@ -1,4 +1,3 @@
-from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
 from PyQt5 import QtCore
@@ -131,7 +130,7 @@ class EditingFeatures(QDialog):
         for i, label_item in enumerate(label_list):
             label = QLabel(label_item)
             label.setStyleSheet("font-weight: bold")
-            self.tableWidget.setCellWidget(i, 0, label  )
+            self.tableWidget.setCellWidget(i, 0, label)
 
         self.tableWidget.setCellWidget(0, 1, QLabel(" Insert a new node"))
         self.tableWidget.setCellWidget(1, 1, QLabel(" Delete a node"))
