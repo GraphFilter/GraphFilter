@@ -141,10 +141,13 @@ class EditingFeatures(QDialog):
         self.tableWidget.setCellWidget(5, 1, QLabel(" Selected plot elements can be dragged"
                                                     " around by holding left-click on a selected artist"))
 
+        self.tableWidget.setDisabled(True)
+        self.tableWidget.horizontalHeader().setStyleSheet("color: black;")
+        self.tableWidget.setStyleSheet("background-color: #DCDCDC; color: black")
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
+        self.tableWidget.verticalHeader().setStretchLastSection(True)
 
         self.tableWidget.setColumnWidth(0, 150)
-        self.tableWidget.setColumnWidth(1, 500)
 
     def set_up_layout(self):
         self.setMinimumSize(750, 250)
