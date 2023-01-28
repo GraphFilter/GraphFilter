@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
 from PyQt5 import QtCore
@@ -122,23 +123,23 @@ class EditingFeatures(QDialog):
 
         self.tableWidget.setHorizontalHeaderLabels(["Keymap", "Function"])
 
-        self.tableWidget.setItem(0, 0, QTableWidgetItem("Insert or +"))
-        self.tableWidget.setItem(1, 0, QTableWidgetItem("Delete or -"))
-        self.tableWidget.setItem(2, 0, QTableWidgetItem("Control + Left-Click"))
-        self.tableWidget.setItem(3, 0, QTableWidgetItem("Left-Click"))
-        self.tableWidget.setItem(4, 0, QTableWidgetItem("Left-Click"))
-        self.tableWidget.setItem(5, 0, QTableWidgetItem("Left-Click"))
+        self.tableWidget.setCellWidget(0, 0, QLabel("Insert or +"))
+        self.tableWidget.setCellWidget(1, 0, QLabel("Delete or -"))
+        self.tableWidget.setCellWidget(2, 0, QLabel("Control + Left-Click"))
+        self.tableWidget.setCellWidget(3, 0, QLabel("Left-Click"))
+        self.tableWidget.setCellWidget(4, 0, QLabel("Left-Click"))
+        self.tableWidget.setCellWidget(5, 0, QLabel("Left-Click"))
 
-        self.tableWidget.setItem(0, 1, QTableWidgetItem("Insert a new node"))
-        self.tableWidget.setItem(1, 1, QTableWidgetItem("Delete a node"))
-        self.tableWidget.setItem(2, 1, QTableWidgetItem("Multiple nodes and or edges can "
-                                                        "be selected by holding control while clicking"))
-        self.tableWidget.setItem(3, 1, QTableWidgetItem("Double clicking on two nodes"
-                                                        " successively will create an edge between them"))
-        self.tableWidget.setItem(4, 1, QTableWidgetItem("Individual nodes and edges can"
-                                                        " be selected using the left-click"))
-        self.tableWidget.setItem(5, 1, QTableWidgetItem(" Selected plot elements can be dragged"
-                                                        " around by holding left-click on a selected artist"))
+        self.tableWidget.setCellWidget(0, 1, QLabel("Insert a new node"))
+        self.tableWidget.setCellWidget(1, 1, QLabel("Delete a node"))
+        self.tableWidget.setCellWidget(2, 1, QLabel("Multiple nodes and or edges can "
+                                                    "be selected by holding control while clicking"))
+        self.tableWidget.setCellWidget(3, 1, QLabel("Double clicking on two nodes"
+                                                    " successively will create an edge between them"))
+        self.tableWidget.setCellWidget(4, 1, QLabel("Individual nodes and edges can"
+                                                    " be selected using the left-click"))
+        self.tableWidget.setCellWidget(5, 1, QLabel(" Selected plot elements can be dragged"
+                                                    " around by holding left-click on a selected artist"))
 
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
 
