@@ -121,32 +121,35 @@ class EditingFeatures(QDialog):
         self.tableWidget.setRowCount(6)
         self.tableWidget.setColumnCount(2)
 
+        self.tableWidget.verticalHeader().hide()
+
         self.tableWidget.setHorizontalHeaderLabels(["Keymap", "Function"])
 
-        self.tableWidget.setCellWidget(0, 0, QLabel("Insert or +"))
-        self.tableWidget.setCellWidget(1, 0, QLabel("Delete or -"))
-        self.tableWidget.setCellWidget(2, 0, QLabel("Control + Left-Click"))
-        self.tableWidget.setCellWidget(3, 0, QLabel("Left-Click"))
-        self.tableWidget.setCellWidget(4, 0, QLabel("Left-Click"))
-        self.tableWidget.setCellWidget(5, 0, QLabel("Left-Click"))
+        label_list = [" Insert or +", " Delete or -", " Control + Left-Click", " Left-Click", " Left-Click",
+                      " Left-Click"]
 
-        self.tableWidget.setCellWidget(0, 1, QLabel("Insert a new node"))
-        self.tableWidget.setCellWidget(1, 1, QLabel("Delete a node"))
-        self.tableWidget.setCellWidget(2, 1, QLabel("Multiple nodes and or edges can "
+        for i, label_item in enumerate(label_list):
+            label = QLabel(label_item)
+            label.setStyleSheet("font-weight: bold")
+            self.tableWidget.setCellWidget(i, 0, label  )
+
+        self.tableWidget.setCellWidget(0, 1, QLabel(" Insert a new node"))
+        self.tableWidget.setCellWidget(1, 1, QLabel(" Delete a node"))
+        self.tableWidget.setCellWidget(2, 1, QLabel(" Multiple nodes and or edges can "
                                                     "be selected by holding control while clicking"))
-        self.tableWidget.setCellWidget(3, 1, QLabel("Double clicking on two nodes"
+        self.tableWidget.setCellWidget(3, 1, QLabel(" Double clicking on two nodes"
                                                     " successively will create an edge between them"))
-        self.tableWidget.setCellWidget(4, 1, QLabel("Individual nodes and edges can"
+        self.tableWidget.setCellWidget(4, 1, QLabel(" Individual nodes and edges can"
                                                     " be selected using the left-click"))
         self.tableWidget.setCellWidget(5, 1, QLabel(" Selected plot elements can be dragged"
                                                     " around by holding left-click on a selected artist"))
 
-        self.tableWidget.setDisabled(True)
-        self.tableWidget.horizontalHeader().setStyleSheet("color: black;")
-        self.tableWidget.setStyleSheet("background-color: #DCDCDC; color: black")
+        self.tableWidget.horizontalHeader().setDisabled(True)
+        self.tableWidget.horizontalHeader().setStyleSheet("color: black; background-color: gray")
+        self.tableWidget.setStyleSheet("background-color: #DCDCDC; color: black;")
         self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.verticalHeader().setStretchLastSection(True)
 
+        self.tableWidget.setMaximumHeight((self.tableWidget.rowHeight(0) * 7) - 5)
         self.tableWidget.setColumnWidth(0, 150)
 
     def set_up_layout(self):
