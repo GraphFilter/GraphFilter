@@ -103,7 +103,7 @@ class ProjectToolBar(QToolBar):
         return graphs[0]
 
 
-class EditingFeatures(QMessageBox):
+class EditingFeatures(QDialog):
 
     def __init__(self):
         super().__init__()
@@ -111,14 +111,44 @@ class EditingFeatures(QMessageBox):
         self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
         self.setWindowTitle("Information")
 
+        self.tableWidget = QTableWidget()
+
         self.set_content_attributes()
+        self.set_up_layout()
 
     def set_content_attributes(self):
-        self.setText("Insert or + : Insert a new node\n\n"
-                     "Delete or - : Delete a node \n\n"
-                     "Control + Left-Click : Multiple nodes and or edges can"
-                     " be selected by holding control while clicking \n\n"
-                     "Left-Click: Double clicking on two nodes successively will create an edge between them \n\n"
-                     "Left-Click: Individual nodes and edges can be selected using the left-click. \n\n"
-                     "Left-Click: Selected plot elements can be dragged"
-                     " around by holding left-click on a selected artist.")
+        self.tableWidget.setRowCount(6)
+        self.tableWidget.setColumnCount(2)
+
+        self.tableWidget.setHorizontalHeaderLabels(["Keymap", "Function"])
+
+        self.tableWidget.setItem(0, 0, QTableWidgetItem("Insert or +"))
+        self.tableWidget.setItem(1, 0, QTableWidgetItem("Delete or -"))
+        self.tableWidget.setItem(2, 0, QTableWidgetItem("Control + Left-Click"))
+        self.tableWidget.setItem(3, 0, QTableWidgetItem("Left-Click"))
+        self.tableWidget.setItem(4, 0, QTableWidgetItem("Left-Click"))
+        self.tableWidget.setItem(5, 0, QTableWidgetItem("Left-Click"))
+
+        self.tableWidget.setItem(0, 1, QTableWidgetItem("Insert a new node"))
+        self.tableWidget.setItem(1, 1, QTableWidgetItem("Delete a node"))
+        self.tableWidget.setItem(2, 1, QTableWidgetItem("Multiple nodes and or edges can "
+                                                        "be selected by holding control while clicking"))
+        self.tableWidget.setItem(3, 1, QTableWidgetItem("Double clicking on two nodes"
+                                                        " successively will create an edge between them"))
+        self.tableWidget.setItem(4, 1, QTableWidgetItem("Individual nodes and edges can"
+                                                        " be selected using the left-click"))
+        self.tableWidget.setItem(5, 1, QTableWidgetItem(" Selected plot elements can be dragged"
+                                                        " around by holding left-click on a selected artist"))
+
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+        self.tableWidget.setColumnWidth(0, 150)
+        self.tableWidget.setColumnWidth(1, 500)
+
+    def set_up_layout(self):
+        self.setMinimumSize(750, 250)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.tableWidget)
+
+        self.setLayout(layout)
