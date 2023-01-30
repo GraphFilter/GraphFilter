@@ -96,6 +96,8 @@ class ResizableGraph(EditableGraph):
         self.fig.canvas.draw()
 
     def _on_key_press(self, event):
+        if event.key == "enter" or event.key == "alt+enter":
+            return
         super()._on_key_press(event)
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
