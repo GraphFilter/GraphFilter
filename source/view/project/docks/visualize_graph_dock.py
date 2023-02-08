@@ -96,6 +96,8 @@ class ResizableGraph(EditableGraph):
         self.fig.canvas.draw()
 
     def _on_key_press(self, event):
+        if event.key == "enter" or event.key == "alt+enter":
+            return
         super()._on_key_press(event)
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
@@ -106,3 +108,11 @@ class ResizableGraph(EditableGraph):
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
         self.synchronize_change(new_graph)
+
+    def _add_or_remove_nascent_edge(self, event):
+        for node, artist in self.node_artists.items():
+            if artist.contains(event)[0]:
+                if self._nascent_edge:
+                    if self._nascent_edge.source == node:
+                        return
+        super()._add_or_remove_nascent_edge(event)
