@@ -8,11 +8,11 @@ from netgraph import EditableGraph
 import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
+
 matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
-
     any_signal = QtCore.pyqtSignal(object)
 
     def __init__(self):
@@ -30,7 +30,10 @@ class VisualizeGraphDock(QDockWidget):
             QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
     def plot_graph(self, graph):
-        self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')), self.synchronize_change)
+        try:
+            self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')), self.synchronize_change)
+        except AttributeError:
+            self.canvas = MplCanvas(self, graph, self.synchronize_change)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
@@ -40,7 +43,7 @@ class VisualizeGraphDock(QDockWidget):
 
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, synchronize_change=None,  width=8, height=4, dpi=100,):
+    def __init__(self, parent=None, graph=None, synchronize_change=None, width=8, height=4, dpi=100, ):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
@@ -53,7 +56,7 @@ class MplCanvas(FigureCanvasQTAgg):
 
 class ResizableGraph(EditableGraph):
 
-    def __init__(self, synchronize_change,  *args, **kwargs):
+    def __init__(self, synchronize_change, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         kwargs.setdefault('origin', (0., 0.))

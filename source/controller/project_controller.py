@@ -78,12 +78,17 @@ class ProjectController:
 
         self.project_tool_bar.features_info_button.triggered.connect(self.show_editing_features)
 
+        self.connect_operations_events()
+
         # self.project_window.print_action.triggered.connect(self.on_print)
 
     def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
+
+    def connect_operations_events(self):
+        self.project_tool_bar.line_graph.triggered.connect(self.to_line_graph)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -201,3 +206,6 @@ class ProjectController:
                 else:
                     self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)
+
+    def to_line_graph(self):
+        self.visualize_graph_dock.plot_graph(nx.line_graph(convert_g6_to_nx(self.project_tool_bar.current_graph)))
