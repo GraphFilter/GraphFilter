@@ -48,7 +48,7 @@ class MplCanvas(FigureCanvasQTAgg):
         self.ax.clear()
         if graph is None:
             return
-        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax)
+        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True)
 
 
 class ResizableGraph(EditableGraph):
