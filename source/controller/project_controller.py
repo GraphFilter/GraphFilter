@@ -89,6 +89,7 @@ class ProjectController:
 
     def connect_operations_events(self):
         self.project_tool_bar.line_graph.triggered.connect(self.to_line_graph)
+        self.project_tool_bar.complement.triggered.connect(self.to_complement)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -209,3 +210,7 @@ class ProjectController:
 
     def to_line_graph(self):
         self.visualize_graph_dock.plot_graph(nx.line_graph(convert_g6_to_nx(self.project_tool_bar.current_graph)))
+
+    def to_complement(self):
+        self.visualize_graph_dock.plot_graph(nx.complement(convert_g6_to_nx(self.project_tool_bar.current_graph)))
+
