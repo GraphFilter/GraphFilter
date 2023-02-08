@@ -106,13 +106,3 @@ class ResizableGraph(EditableGraph):
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
         self.synchronize_change(new_graph)
-
-    def draw_node_labels(self, node_labels, node_label_fontdict):
-        for node, label in node_labels.items():
-            x, y = self.node_positions[node]
-            dx, dy = self.node_label_offset[node]
-            artist = self.ax.text(x+dx, y+dy, label + 1, **node_label_fontdict)
-
-            if node in self.node_label_artists:
-                self.node_label_artists[node].remove()
-            self.node_label_artists[node] = artist
