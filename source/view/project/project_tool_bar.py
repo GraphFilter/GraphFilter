@@ -98,7 +98,8 @@ class ProjectToolBar(QToolBar):
         self.addAction(self.forward_button)
 
     def create_menu_bar(self):
-        self.operation_menu_bar.setMaximumSize(75, 20)
+        self.operation_menu_bar.setMaximumSize(93, 26)
+        self.operation_menu_bar.setStyleSheet("background-color: #d3d3d3; color: black; font-size: 16px;")
 
         file_menu = QMenu("&Operations", self)
         self.operation_menu_bar.addMenu(file_menu)
