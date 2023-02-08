@@ -101,3 +101,60 @@ class ProjectToolBar(QToolBar):
             return None
 
         return graphs[0]
+
+
+class EditingFeatures(QDialog):
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+        self.setWindowTitle("Information")
+
+        self.tableWidget = QTableWidget()
+
+        self.set_content_attributes()
+        self.set_up_layout()
+
+    def set_content_attributes(self):
+        self.tableWidget.setRowCount(6)
+        self.tableWidget.setColumnCount(2)
+
+        self.tableWidget.verticalHeader().hide()
+
+        self.tableWidget.setHorizontalHeaderLabels(["Keymap", "Function"])
+
+        label_list = [" Insert or +", " Delete or -", " Control + Left-Click", " Left-Click", " Left-Click",
+                      " Left-Click"]
+
+        for i, label_item in enumerate(label_list):
+            label = QLabel(label_item)
+            label.setStyleSheet("font-weight: bold")
+            self.tableWidget.setCellWidget(i, 0, label)
+
+        self.tableWidget.setCellWidget(0, 1, QLabel(" Insert a new node"))
+        self.tableWidget.setCellWidget(1, 1, QLabel(" Delete a node"))
+        self.tableWidget.setCellWidget(2, 1, QLabel(" Multiple nodes and or edges can "
+                                                    "be selected by holding control while clicking"))
+        self.tableWidget.setCellWidget(3, 1, QLabel(" Double clicking on two nodes"
+                                                    " successively will create an edge between them"))
+        self.tableWidget.setCellWidget(4, 1, QLabel(" Individual nodes and edges can"
+                                                    " be selected using the left-click"))
+        self.tableWidget.setCellWidget(5, 1, QLabel(" Selected plot elements can be dragged"
+                                                    " around by holding left-click on a selected artist"))
+
+        self.tableWidget.horizontalHeader().setDisabled(True)
+        self.tableWidget.horizontalHeader().setStyleSheet("color: black; background-color: gray")
+        self.tableWidget.setStyleSheet("background-color: #DCDCDC; color: black;")
+        self.tableWidget.horizontalHeader().setStretchLastSection(True)
+
+        self.tableWidget.setMaximumHeight((self.tableWidget.rowHeight(0) * 7) - 5)
+        self.tableWidget.setColumnWidth(0, 150)
+
+    def set_up_layout(self):
+        self.setMinimumSize(750, 250)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.tableWidget)
+
+        self.setLayout(layout)

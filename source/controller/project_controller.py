@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
+from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
@@ -26,6 +27,8 @@ class ProjectController:
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
         self.tree_file_dock = TreeFileDock()
+
+        self.editing_features = EditingFeatures()
 
         self.invariants_selected = {}
         self.edited_graph = None
@@ -73,6 +76,8 @@ class ProjectController:
 
         self.visualize_graph_dock.any_signal.connect(self.update_graph_to_table)
 
+        self.project_tool_bar.features_info_button.triggered.connect(self.show_editing_features)
+
         # self.project_window.print_action.triggered.connect(self.on_print)
 
     def connect_tool_bar_events(self):
@@ -102,6 +107,9 @@ class ProjectController:
         # if dialog.exec_() == QPrintDialog.Accepted:
         #     pass
         pass
+
+    def show_editing_features(self):
+        self.editing_features.show()
 
     def on_visualize_tree(self):
         self.tree_file_dock.setVisible(True)
