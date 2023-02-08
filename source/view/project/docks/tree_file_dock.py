@@ -19,7 +19,6 @@ class TreeFileDock(QDockWidget):
         self.path = project_information_store.project_location
 
         self.model = QFileSystemModel()
-        self.model.setIconProvider(QFileIconProvider())
         self.model.setRootPath(self.path)
         self.model.setNameFilterDisables(False)
         self.model.setNameFilters(["*.g6", "*.txt", "*.json"])
