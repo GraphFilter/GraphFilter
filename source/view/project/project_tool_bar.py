@@ -20,6 +20,15 @@ class ProjectToolBar(QToolBar):
         self.revert_button = QAction()
         self.forward_button = QAction()
 
+        self.operation_menu_bar = QMenuBar()
+
+        self.line_graph = QAction("Line Graph")
+        self.inverse_line_graph = QAction("Inverse Line Graph")
+        self.complement = QAction("Complement")
+        self.clique_graph = QAction("Clique Graph")
+
+        self.create_menu_bar()
+
         self.combo_graphs = QComboBox()
         self.combo_operations = QComboBox()
 
@@ -77,8 +86,7 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.right_button)
         self.addSeparator()
 
-        self.addAction(self.refresh_button)
-        self.addWidget(self.combo_operations)
+        self.addWidget(self.operation_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
@@ -88,6 +96,17 @@ class ProjectToolBar(QToolBar):
 
         self.addAction(self.revert_button)
         self.addAction(self.forward_button)
+
+    def create_menu_bar(self):
+        self.operation_menu_bar.setMaximumSize(75, 20)
+
+        file_menu = QMenu("&Operations", self)
+        self.operation_menu_bar.addMenu(file_menu)
+
+        file_menu.addAction(self.line_graph)
+        file_menu.addAction(self.inverse_line_graph)
+        file_menu.addAction(self.complement)
+        file_menu.addAction(self.clique_graph)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
