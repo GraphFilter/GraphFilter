@@ -19,6 +19,7 @@ class VisualizeGraphDock(QDockWidget):
         super().__init__()
 
         self.canvas = None
+        self.current_graph = None
 
         self.set_content_attributes()
 
@@ -31,9 +32,10 @@ class VisualizeGraphDock(QDockWidget):
 
     def plot_graph(self, graph):
         try:
-            self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')), self.synchronize_change)
+            self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
         except AttributeError:
-            self.canvas = MplCanvas(self, graph, self.synchronize_change)
+            self.current_graph = graph
+        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)

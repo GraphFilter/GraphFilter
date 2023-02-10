@@ -197,6 +197,7 @@ class ProjectController:
 
         for key in self.invariants_selected.keys():
             if self.edited_graph is not None:
+                self.visualize_graph_dock.current_graph = self.edited_graph
                 if len(self.edited_graph.nodes) == 0:
                     self.invariants_selected[key] = \
                         "Null Graph"
@@ -212,19 +213,17 @@ class ProjectController:
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):
-        self.visualize_graph_dock.plot_graph(nx.line_graph(convert_g6_to_nx(self.project_tool_bar.current_graph)))
+        self.visualize_graph_dock.plot_graph(nx.line_graph(self.visualize_graph_dock.current_graph))
 
     def to_inverse_line_graph(self):
         try:
-            self.visualize_graph_dock.plot_graph(nx.inverse_line_graph(convert_g6_to_nx
-                                                                       (self.project_tool_bar.current_graph)))
+            self.visualize_graph_dock.plot_graph(nx.inverse_line_graph(self.visualize_graph_dock.current_graph))
         except nx.NetworkXError:
             message_box = MessageBox("The drawn graph is not a line graph of any graph")
             message_box.exec()
 
     def to_complement(self):
-        self.visualize_graph_dock.plot_graph(nx.complement(convert_g6_to_nx(self.project_tool_bar.current_graph)))
+        self.visualize_graph_dock.plot_graph(nx.complement(self.visualize_graph_dock.current_graph))
 
     def to_clique_graph(self):
-        self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(convert_g6_to_nx
-                                                                      (self.project_tool_bar.current_graph)))
+        self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(self.visualize_graph_dock.current_graph))
