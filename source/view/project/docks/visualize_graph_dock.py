@@ -121,3 +121,13 @@ class ResizableGraph(EditableGraph):
                     if self._nascent_edge.source == node:
                         return
         super()._add_or_remove_nascent_edge(event)
+
+    def draw_node_labels(self, node_labels, node_label_fontdict):
+        for i, (node, label) in enumerate(node_labels.items()):
+            node_label_fontdict['size'] = self.node_size[node] * 214
+            x, y = self.node_positions[node]
+            dx, dy = self.node_label_offset[node]
+            artist = self.ax.text(x+dx, y+dy, i, **node_label_fontdict)
+            if node in self.node_label_artists:
+                self.node_label_artists[node].remove()
+            self.node_label_artists[node] = artist
