@@ -51,7 +51,7 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
-        self.tree_file_dock.createTree()
+        self.tree_file_dock.create_tree()
 
         self.project_window.showMaximized()
 
