@@ -196,9 +196,11 @@ class ProjectController:
         g6code = self.project_tool_bar.current_graph
         self.edited_graph = edited_graph
 
+        if self.edited_graph is not None:
+            self.visualize_graph_dock.current_graph = self.edited_graph
+
         for key in self.invariants_selected.keys():
             if self.edited_graph is not None:
-                self.visualize_graph_dock.current_graph = self.edited_graph
                 if len(self.edited_graph.nodes) == 0:
                     self.invariants_selected[key] = \
                         "Null Graph"
