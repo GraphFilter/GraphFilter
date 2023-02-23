@@ -1,3 +1,4 @@
+import networkx as nx
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
@@ -12,6 +13,7 @@ from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx
+from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 
 
@@ -78,12 +80,20 @@ class ProjectController:
 
         self.project_tool_bar.features_info_button.triggered.connect(self.show_editing_features)
 
+        self.connect_operations_events()
+
         # self.project_window.print_action.triggered.connect(self.on_print)
 
     def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
+
+    def connect_operations_events(self):
+        self.project_tool_bar.line_graph.triggered.connect(self.to_line_graph)
+        self.project_tool_bar.complement.triggered.connect(self.to_complement)
+        self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
+        self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -186,6 +196,9 @@ class ProjectController:
         g6code = self.project_tool_bar.current_graph
         self.edited_graph = edited_graph
 
+        if self.edited_graph is not None:
+            self.visualize_graph_dock.current_graph = self.edited_graph
+
         for key in self.invariants_selected.keys():
             if self.edited_graph is not None:
                 if len(self.edited_graph.nodes) == 0:
@@ -201,3 +214,19 @@ class ProjectController:
                 else:
                     self.invariants_selected[key] = 'No graph selected'
         self.graph_information_dock.update_table(self.invariants_selected)
+
+    def to_line_graph(self):
+        self.visualize_graph_dock.plot_graph(nx.line_graph(self.visualize_graph_dock.current_graph))
+
+    def to_inverse_line_graph(self):
+        try:
+            self.visualize_graph_dock.plot_graph(nx.inverse_line_graph(self.visualize_graph_dock.current_graph))
+        except nx.NetworkXError:
+            message_box = MessageBox("The drawn graph is not a line graph of any graph")
+            message_box.exec()
+
+    def to_complement(self):
+        self.visualize_graph_dock.plot_graph(nx.complement(self.visualize_graph_dock.current_graph))
+
+    def to_clique_graph(self):
+        self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(self.visualize_graph_dock.current_graph))
