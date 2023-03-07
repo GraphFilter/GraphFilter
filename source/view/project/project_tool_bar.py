@@ -8,7 +8,7 @@ class ProjectToolBar(QToolBar):
         super().__init__()
 
         self.filtered_graphs_label = QLabel("  List of graphs filtered")
-        self.features_info_label = QLabel(" Graph editing features")
+        self.features_info_label = QLabel(" Graph editing \n features")
 
         self.left_button = QPushButton()
         self.right_button = QPushButton()
