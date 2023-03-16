@@ -98,8 +98,9 @@ class ProjectToolBar(QToolBar):
         self.addAction(self.forward_button)
 
     def create_menu_bar(self):
-        self.operations_menu_bar.setMaximumSize(93, 26)
-        self.operations_menu_bar.setStyleSheet("background-color: #d3d3d3; color: black; font-size: 16px;")
+        self.operations_menu_bar.setMaximumSize(95, 28)
+        self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+                                               "border: 1px solid gray;")
 
         file_menu = QMenu("&Operations", self)
         self.operations_menu_bar.addMenu(file_menu)
@@ -109,8 +110,9 @@ class ProjectToolBar(QToolBar):
         file_menu.addAction(self.complement)
         file_menu.addAction(self.clique_graph)
 
-        self.insert_menu_bar.setMaximumSize(91, 26)
-        self.insert_menu_bar.setStyleSheet("background-color: #d3d3d3; color: black; font-size: 16px;")
+        self.insert_menu_bar.setMaximumSize(93, 28)
+        self.insert_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+                                           "border: 1px solid gray;")
 
         file_insert_menu = QMenu("&Insert         ", self)
         self.insert_menu_bar.addMenu(file_insert_menu)
