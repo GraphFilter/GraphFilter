@@ -53,7 +53,8 @@ class MplCanvas(FigureCanvasQTAgg):
         self.ax.clear()
         if graph is None:
             return
-        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True)
+        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True,
+                                            node_label_fontdict=dict(size=8))
 
 
 class ResizableGraph(EditableGraph):
@@ -104,6 +105,12 @@ class ResizableGraph(EditableGraph):
         if event.key == "enter" or event.key == "alt+enter":
             return
         super()._on_key_press(event)
+
+        if event.key == "insert" or event.key == "+":
+            node_labels = {node: node for node in self.nodes}
+            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = self.node_label_offset[0]
+            self.draw_node_labels(node_labels, self.node_label_fontdict)
+
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
         self.synchronize_change(new_graph)
@@ -124,10 +131,14 @@ class ResizableGraph(EditableGraph):
 
     def draw_node_labels(self, node_labels, node_label_fontdict):
         for i, (node, label) in enumerate(node_labels.items()):
-            node_label_fontdict['size'] = self.node_size[node] * 214
             x, y = self.node_positions[node]
             dx, dy = self.node_label_offset[node]
-            artist = self.ax.text(x+dx, y+dy, i, **node_label_fontdict)
+
+            if str(node).find("(") >= 0:
+                artist = self.ax.text(x + dx, y + dy, i, **node_label_fontdict)
+            else:
+                artist = self.ax.text(x+dx, y+dy, label, **node_label_fontdict)
+
             if node in self.node_label_artists:
                 self.node_label_artists[node].remove()
             self.node_label_artists[node] = artist
