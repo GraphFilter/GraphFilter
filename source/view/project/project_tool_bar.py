@@ -20,7 +20,8 @@ class ProjectToolBar(QToolBar):
         self.revert_button = QAction()
         self.forward_button = QAction()
 
-        self.operation_menu_bar = QMenuBar()
+        self.operations_menu_bar = QMenuBar()
+        self.insert_menu_bar = QMenuBar()
 
         self.line_graph = QAction("Line Graph")
         self.inverse_line_graph = QAction("Inverse Line Graph")
@@ -86,7 +87,8 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.right_button)
         self.addSeparator()
 
-        self.addWidget(self.operation_menu_bar)
+        self.addWidget(self.operations_menu_bar)
+        self.addWidget(self.insert_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
@@ -98,16 +100,27 @@ class ProjectToolBar(QToolBar):
         self.addAction(self.forward_button)
 
     def create_menu_bar(self):
-        self.operation_menu_bar.setMaximumSize(93, 26)
-        self.operation_menu_bar.setStyleSheet("background-color: #d3d3d3; color: black; font-size: 16px;")
+        self.operations_menu_bar.setMaximumSize(93, 26)
+        self.operations_menu_bar.setStyleSheet("background-color: #d3d3d3; color: black; font-size: 16px;")
 
         file_menu = QMenu("&Operations", self)
-        self.operation_menu_bar.addMenu(file_menu)
+        self.operations_menu_bar.addMenu(file_menu)
 
         file_menu.addAction(self.line_graph)
         file_menu.addAction(self.inverse_line_graph)
         file_menu.addAction(self.complement)
         file_menu.addAction(self.clique_graph)
+
+        self.insert_menu_bar.setMaximumSize(91, 26)
+        self.insert_menu_bar.setStyleSheet("background-color: #d3d3d3; color: black; font-size: 16px;")
+
+        file_insert_menu = QMenu("&Insert         ", self)
+        self.insert_menu_bar.addMenu(file_insert_menu)
+    
+        file_insert_menu.addAction(QAction("Button 1"))
+        file_insert_menu.addAction(QAction("Button 2"))
+        file_insert_menu.addAction(QAction("Button 3"))
+        file_insert_menu.addAction(QAction("Button 4"))
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
