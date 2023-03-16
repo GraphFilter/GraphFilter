@@ -39,7 +39,7 @@ class ProjectToolBar(QToolBar):
         self.set_up_layout()
 
     def set_content_attributes(self):
-        self.layout().setSpacing(30)
+        self.layout().setSpacing(15)
         self.layout().setContentsMargins(15, 10, 20, 20)
         self.setMinimumHeight(45)
         self.setMovable(False)
@@ -94,8 +94,6 @@ class ProjectToolBar(QToolBar):
         self.addAction(self.graph_button)
         self.addAction(self.save_button)
         self.addAction(self.delete_button)
-        self.addSeparator()
-
         self.addAction(self.revert_button)
         self.addAction(self.forward_button)
 
@@ -116,7 +114,7 @@ class ProjectToolBar(QToolBar):
 
         file_insert_menu = QMenu("&Insert         ", self)
         self.insert_menu_bar.addMenu(file_insert_menu)
-    
+
         file_insert_menu.addAction(QAction("Button 1"))
         file_insert_menu.addAction(QAction("Button 2"))
         file_insert_menu.addAction(QAction("Button 3"))
