@@ -164,12 +164,14 @@ class ProjectController:
             f = open(file_path)
             data = json.load(f)
             graph = tuple(data['filtered_graphs'])
+            self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs(graph)
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
                 print(type(graph))
                 print(graph)
+                self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs(graph)
         else:
             pass
