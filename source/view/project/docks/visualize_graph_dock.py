@@ -108,7 +108,7 @@ class ResizableGraph(EditableGraph):
 
         if event.key == "insert" or event.key == "+":
             node_labels = {node: node for node in self.nodes}
-            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = self.node_label_offset[0]
+            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
             self.draw_node_labels(node_labels, self.node_label_fontdict)
 
         new_graph = nx.Graph(self.edges)
