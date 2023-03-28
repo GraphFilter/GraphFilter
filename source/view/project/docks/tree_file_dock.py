@@ -7,7 +7,7 @@ class TreeFileDock(QDockWidget):
 
     def __init__(self):
         super().__init__()
-        self.tree = None
+        self.tree = QTreeView()
         self.model = None
         self.path = None
         self.setWindowTitle("Files")
@@ -23,7 +23,9 @@ class TreeFileDock(QDockWidget):
         self.model.setNameFilterDisables(False)
         self.model.setNameFilters(["*.g6", "*.txt", "*.json"])
 
-        self.tree = QTreeView()
+        #self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
+        #self.tree.customContextMenuRequested.connect(self.context_menu)
+
         self.tree.setModel(self.model)
         self.tree.setRootIndex(self.model.index(self.path))
 
@@ -32,3 +34,11 @@ class TreeFileDock(QDockWidget):
         self.tree.hideColumn(3)
 
         self.setWidget(self.tree)
+
+    #def context_menu(self):
+    #    menu = QMenu()
+    #    load_file = menu.addAction("Load File on Graph Filter")
+    #    load_file.triggered.connect(self.handle_double_click)
+    #    cursor = QCursor()
+    #    menu.exec(cursor.pos())
+

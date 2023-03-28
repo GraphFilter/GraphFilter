@@ -15,6 +15,7 @@ from source.store.operations_invariants import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
+import json
 
 
 class ProjectController:
@@ -74,6 +75,8 @@ class ProjectController:
 
         self.project_window.about_action.triggered.connect(self.on_about)
 
+        self.tree_file_dock_events()
+
         self.connect_tool_bar_events()
 
         self.visualize_graph_dock.any_signal.connect(self.update_graph_to_table)
@@ -83,6 +86,10 @@ class ProjectController:
         self.connect_operations_events()
 
         # self.project_window.print_action.triggered.connect(self.on_print)
+
+    def tree_file_dock_events(self):
+        #self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
+        self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
 
     def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
@@ -157,6 +164,25 @@ class ProjectController:
 
         self.update_graph_to_table(None)
         self.graph_information_dock.update_table(self.invariants_selected)
+
+    def handle_tree_double_click(self):
+        index = self.tree_file_dock.tree.currentIndex()
+        file_path = self.tree_file_dock.model.filePath(index)
+        type_item = self.tree_file_dock.model.type(index)
+        if type_item == "json File":
+            f = open(file_path)
+            data = json.load(f)
+            graph = tuple(data['filtered_graphs'])
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs(graph)
+        if type_item == "g6 File" or type_item == "txt File":
+            with open(file_path) as file:
+                graph = file.read().splitlines()
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs(graph)
+        else:
+            pass
+
 
     def on_click_button_left(self):
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() - 1)
