@@ -8,17 +8,18 @@ from netgraph import EditableGraph
 import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
+
 matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
-
     any_signal = QtCore.pyqtSignal(object)
 
     def __init__(self):
         super().__init__()
 
         self.canvas = None
+        self.current_graph = None
 
         self.set_content_attributes()
 
@@ -30,7 +31,11 @@ class VisualizeGraphDock(QDockWidget):
             QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
     def plot_graph(self, graph):
-        self.canvas = MplCanvas(self, nx.from_graph6_bytes(graph.encode('utf-8')), self.synchronize_change)
+        try:
+            self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
+        except AttributeError:
+            self.current_graph = graph
+        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
@@ -40,7 +45,7 @@ class VisualizeGraphDock(QDockWidget):
 
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, synchronize_change=None,  width=8, height=4, dpi=100,):
+    def __init__(self, parent=None, graph=None, synchronize_change=None, width=8, height=4, dpi=100, ):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
@@ -48,12 +53,13 @@ class MplCanvas(FigureCanvasQTAgg):
         self.ax.clear()
         if graph is None:
             return
-        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True)
+        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True,
+                                            node_label_fontdict=dict(size=8))
 
 
 class ResizableGraph(EditableGraph):
 
-    def __init__(self, synchronize_change,  *args, **kwargs):
+    def __init__(self, synchronize_change, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         kwargs.setdefault('origin', (0., 0.))
@@ -99,6 +105,12 @@ class ResizableGraph(EditableGraph):
         if event.key == "enter" or event.key == "alt+enter":
             return
         super()._on_key_press(event)
+
+        if event.key == "insert" or event.key == "+":
+            node_labels = {node: node for node in self.nodes}
+            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
+            self.draw_node_labels(node_labels, self.node_label_fontdict)
+
         new_graph = nx.Graph(self.edges)
         new_graph.add_nodes_from(self.nodes)
         self.synchronize_change(new_graph)
@@ -116,3 +128,17 @@ class ResizableGraph(EditableGraph):
                     if self._nascent_edge.source == node:
                         return
         super()._add_or_remove_nascent_edge(event)
+
+    def draw_node_labels(self, node_labels, node_label_fontdict):
+        for i, (node, label) in enumerate(node_labels.items()):
+            x, y = self.node_positions[node]
+            dx, dy = self.node_label_offset[node]
+
+            if str(node).find("(") >= 0:
+                artist = self.ax.text(x + dx, y + dy, i, **node_label_fontdict)
+            else:
+                artist = self.ax.text(x+dx, y+dy, label, **node_label_fontdict)
+
+            if node in self.node_label_artists:
+                self.node_label_artists[node].remove()
+            self.node_label_artists[node] = artist

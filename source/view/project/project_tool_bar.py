@@ -7,8 +7,8 @@ class ProjectToolBar(QToolBar):
     def __init__(self):
         super().__init__()
 
-        self.filtered_graphs_label = QLabel("  List of graphs filtered")
-        self.features_info_label = QLabel(" Graph editing features")
+        self.filtered_graphs_label = QLabel("  Graph at \n selected file")
+        self.features_info_label = QLabel(" Graph editing \n features")
 
         self.left_button = QPushButton()
         self.right_button = QPushButton()
@@ -20,6 +20,16 @@ class ProjectToolBar(QToolBar):
         self.revert_button = QAction()
         self.forward_button = QAction()
 
+        self.operations_menu_bar = QMenuBar()
+        self.insert_menu_bar = QMenuBar()
+
+        self.line_graph = QAction("Line Graph")
+        self.inverse_line_graph = QAction("Inverse Line Graph")
+        self.complement = QAction("Complement")
+        self.clique_graph = QAction("Clique Graph")
+
+        self.create_menu_bar()
+
         self.combo_graphs = QComboBox()
         self.combo_operations = QComboBox()
 
@@ -29,7 +39,7 @@ class ProjectToolBar(QToolBar):
         self.set_up_layout()
 
     def set_content_attributes(self):
-        self.layout().setSpacing(30)
+        self.layout().setSpacing(15)
         self.layout().setContentsMargins(15, 10, 20, 20)
         self.setMinimumHeight(45)
         self.setMovable(False)
@@ -77,17 +87,40 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.right_button)
         self.addSeparator()
 
-        self.addAction(self.refresh_button)
-        self.addWidget(self.combo_operations)
+        self.addWidget(self.operations_menu_bar)
+        self.addWidget(self.insert_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
         self.addAction(self.save_button)
         self.addAction(self.delete_button)
-        self.addSeparator()
-
         self.addAction(self.revert_button)
         self.addAction(self.forward_button)
+
+    def create_menu_bar(self):
+        self.operations_menu_bar.setMaximumSize(95, 28)
+        self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+                                               "border: 1px solid gray;")
+
+        file_menu = QMenu("&Operations", self)
+        self.operations_menu_bar.addMenu(file_menu)
+
+        file_menu.addAction(self.line_graph)
+        file_menu.addAction(self.inverse_line_graph)
+        file_menu.addAction(self.complement)
+        file_menu.addAction(self.clique_graph)
+
+        self.insert_menu_bar.setMaximumSize(93, 28)
+        self.insert_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+                                           "border: 1px solid gray;")
+
+        file_insert_menu = QMenu("&Insert         ", self)
+        self.insert_menu_bar.addMenu(file_insert_menu)
+
+        file_insert_menu.addAction(QAction("Button 1"))
+        file_insert_menu.addAction(QAction("Button 2"))
+        file_insert_menu.addAction(QAction("Button 3"))
+        file_insert_menu.addAction(QAction("Button 4"))
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):

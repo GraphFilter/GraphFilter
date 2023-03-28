@@ -1,10 +1,3 @@
-import json
-
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QCursor
-from source.view.project.project_tool_bar import ProjectToolBar
-from source.controller.filter_controller import FilterController
-
 from PyQt5.QtWidgets import *
 
 from source.store.project_information_store import project_information_store
@@ -20,13 +13,15 @@ class TreeFileDock(QDockWidget):
         self.setWindowTitle("Files")
 
         self.widget = QWidget()
-        self.createTree()
+        self.create_tree()
 
-    def createTree(self):
+    def create_tree(self):
         self.path = project_information_store.project_location
 
         self.model = QFileSystemModel()
         self.model.setRootPath(self.path)
+        self.model.setNameFilterDisables(False)
+        self.model.setNameFilters(["*.g6", "*.txt", "*.json"])
 
         #self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         #self.tree.customContextMenuRequested.connect(self.context_menu)
