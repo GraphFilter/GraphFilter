@@ -175,11 +175,13 @@ class ProjectController:
             graph = tuple(data['filtered_graphs'])
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs(graph)
+            self.on_change_graph()
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs(graph)
+                self.on_change_graph()
         else:
             pass
 
