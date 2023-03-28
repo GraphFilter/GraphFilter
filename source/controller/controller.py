@@ -66,6 +66,7 @@ class Controller:
                 content = file.read()
                 data = json.loads(content)
                 project_information_store.fill_data(data)
+                project_information_store.project_location = os.path.dirname(os.path.abspath(file_path[0]))
         else:
             with open(file_path[0]) as file:
                 project_information_store.fill_data({
