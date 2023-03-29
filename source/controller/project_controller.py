@@ -81,6 +81,8 @@ class ProjectController:
 
         self.visualize_graph_dock.any_signal.connect(self.update_graph_to_table)
 
+        self.visualize_graph_dock.invalid_graph_signal.connect(self.on_invalid_graph_display_alert)
+
         self.project_tool_bar.features_info_button.triggered.connect(self.show_editing_features)
 
         self.connect_operations_events()
@@ -88,7 +90,7 @@ class ProjectController:
         # self.project_window.print_action.triggered.connect(self.on_print)
 
     def tree_file_dock_events(self):
-        #self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
+        # self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
 
     def connect_tool_bar_events(self):
@@ -165,27 +167,6 @@ class ProjectController:
         self.update_graph_to_table(None)
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    def handle_tree_double_click(self):
-        index = self.tree_file_dock.tree.currentIndex()
-        file_path = self.tree_file_dock.model.filePath(index)
-        type_item = self.tree_file_dock.model.type(index)
-        if type_item == "json File":
-            f = open(file_path)
-            data = json.load(f)
-            graph = tuple(data['filtered_graphs'])
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs(graph)
-            self.on_change_graph()
-        if type_item == "g6 File" or type_item == "txt File":
-            with open(file_path) as file:
-                graph = file.read().splitlines()
-                self.project_tool_bar.reset_combo_graphs()
-                self.project_tool_bar.fill_combo_graphs(graph)
-                self.on_change_graph()
-        else:
-            pass
-
-
     def on_click_button_left(self):
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() - 1)
         self.on_change_graph()
@@ -194,7 +175,8 @@ class ProjectController:
         self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.currentIndex() + 1)
         self.on_change_graph()
 
-    def on_dictionary(self):
+    @staticmethod
+    def on_dictionary():
         QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/wiki/Dictionary"))
 
     def on_check_condition(self):
@@ -219,6 +201,31 @@ class ProjectController:
             del self.invariants_selected[check.text()]
 
         self.graph_information_dock.update_table(self.invariants_selected)
+
+    @staticmethod
+    def on_invalid_graph_display_alert():
+        message_box = MessageBox("Invalid Graph")
+        message_box.exec()
+
+    def handle_tree_double_click(self):
+        index = self.tree_file_dock.tree.currentIndex()
+        file_path = self.tree_file_dock.model.filePath(index)
+        type_item = self.tree_file_dock.model.type(index)
+        if type_item == "json File":
+            f = open(file_path)
+            data = json.load(f)
+            graph = tuple(data['filtered_graphs'])
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs(graph)
+            self.on_change_graph()
+        if type_item == "g6 File" or type_item == "txt File":
+            with open(file_path) as file:
+                graph = file.read().splitlines()
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs(graph)
+                self.on_change_graph()
+        else:
+            pass
 
     def update_graph_to_table(self, edited_graph):
         g6code = self.project_tool_bar.current_graph

@@ -14,6 +14,7 @@ matplotlib.use("Qt5Agg")
 
 class VisualizeGraphDock(QDockWidget):
     any_signal = QtCore.pyqtSignal(object)
+    invalid_graph_signal = QtCore.pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -35,6 +36,9 @@ class VisualizeGraphDock(QDockWidget):
             self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
         except AttributeError:
             self.current_graph = graph
+        except nx.NetworkXError:
+            self.invalid_graph_signal.emit()
+            self.current_graph = nx.Graph()
         self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
