@@ -97,6 +97,7 @@ class ProjectController:
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
+        self.project_tool_bar.save_button.triggered.connect(self.on_save_graph)
 
     def connect_operations_events(self):
         self.project_tool_bar.line_graph.triggered.connect(self.to_line_graph)
@@ -210,6 +211,8 @@ class ProjectController:
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
+        project_information_store.file_path = file_path + "///"
+
         type_item = self.tree_file_dock.model.type(index)
         if type_item == "json File":
             f = open(file_path)
@@ -252,6 +255,44 @@ class ProjectController:
 
     def to_line_graph(self):
         self.visualize_graph_dock.plot_graph(nx.line_graph(self.visualize_graph_dock.current_graph))
+
+    def on_save_graph(self):
+        line_text = str(self.project_tool_bar.combo_graphs.currentText()[10:]) + "\n"
+
+        file_path = str(project_information_store.file_path)
+        file_path = file_path[2:-3]
+        file_type = file_path[len(file_path) - 1]
+
+        replaced_line = ""
+        new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
+
+        file = open(file_path, "r")
+        if file_type == "6" or file_type == "t":
+            for line in file:
+                line = line.strip()
+                line= line + "\n"
+                if line == line_text:
+                    new_line = line.replace(line, new_g6 + "\n")
+                else: new_line = line
+                replaced_line = replaced_line + new_line
+            file.close()
+            write_file = open(file_path, "w")
+            write_file.write(replaced_line)
+            write_file.close()
+
+        if file_type == "n":
+            f = open(file_path)
+            data = json.load(f)
+            graph = list(data['filtered_graphs'])
+            new_graphs = list()
+
+            for item in graph:
+                if item +"\n" == line_text:
+                    new_graphs.append(new_g6)
+                else: new_graphs.append(item)
+            new_graphs = tuple(new_graphs)
+            project_information_store.filtered_graphs = new_graphs
+            project_information_store.save_project()
 
     def to_inverse_line_graph(self):
         try:
