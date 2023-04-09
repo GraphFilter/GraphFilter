@@ -1,3 +1,5 @@
+from time import sleep
+
 import networkx as nx
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
@@ -266,8 +268,9 @@ class ProjectController:
         replaced_line = ""
         new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
 
-        file = open(file_path, "r")
+
         if file_type == "6" or file_type == "t":
+            file = open(file_path, "r")
             for line in file:
                 line = line.strip()
                 line= line + "\n"
@@ -280,6 +283,12 @@ class ProjectController:
             write_file.write(replaced_line)
             write_file.close()
 
+            with open(file_path) as file:
+                graph = file.read().splitlines()
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs(graph)
+                self.on_change_graph()
+
         if file_type == "n":
             f = open(file_path)
             data = json.load(f)
@@ -291,8 +300,19 @@ class ProjectController:
                     new_graphs.append(new_g6)
                 else: new_graphs.append(item)
             new_graphs = tuple(new_graphs)
+            print(new_graphs)
             project_information_store.filtered_graphs = new_graphs
             project_information_store.save_project()
+            sleep(2)
+
+            f = open(file_path)
+            print(file_path)
+            new_data = json.load(f)
+            new_json_graph = tuple(new_data['filtered_graphs'])
+
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs(new_json_graph)
+            self.on_change_graph()
 
     def to_inverse_line_graph(self):
         try:
