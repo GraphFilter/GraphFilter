@@ -300,13 +300,11 @@ class ProjectController:
                     new_graphs.append(new_g6)
                 else: new_graphs.append(item)
             new_graphs = tuple(new_graphs)
-            print(new_graphs)
             project_information_store.filtered_graphs = new_graphs
             project_information_store.save_project()
             sleep(2)
 
             f = open(file_path)
-            print(file_path)
             new_data = json.load(f)
             new_json_graph = tuple(new_data['filtered_graphs'])
 
