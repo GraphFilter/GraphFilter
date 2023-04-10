@@ -270,10 +270,10 @@ class ProjectController:
         self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(self.visualize_graph_dock.current_graph))
 
     def new_cycle_graph(self):
-        # dialog = NewGraphDialog(n=0)
-        # dialog.exec()
-        # graph = nx.cycle_graph(5)
-        # self.visualize_graph_dock.plot_graph(graph)
+        dialog = NewGraphDialog(name='default', n=0)
+        dialog.exec()
+        graph = nx.cycle_graph(5)
+        self.visualize_graph_dock.plot_graph(graph)
         # create_g6_file('teste', nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
 
         '''

@@ -28,6 +28,8 @@ class ProjectToolBar(QToolBar):
         self.complement = QAction("Complement")
         self.clique_graph = QAction("Clique Graph")
 
+        self.cycle_graph_button = QAction("Cycle Graph")
+
         self.create_menu_bar()
 
         self.combo_graphs = QComboBox()
@@ -117,10 +119,7 @@ class ProjectToolBar(QToolBar):
         file_insert_menu = QMenu("&Insert         ", self)
         self.insert_menu_bar.addMenu(file_insert_menu)
 
-        file_insert_menu.addAction(QAction("Button 1"))
-        file_insert_menu.addAction(QAction("Button 2"))
-        file_insert_menu.addAction(QAction("Button 3"))
-        file_insert_menu.addAction(QAction("Button 4"))
+        file_insert_menu.addAction(self.cycle_graph_button)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
