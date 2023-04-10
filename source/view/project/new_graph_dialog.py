@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import *
 
 
-class NewGraphDialog(QDialog):
+class NewGraphDialog(QMessageBox):
     def __init__(self, **kwargs):
         super().__init__()
 
@@ -12,13 +12,7 @@ class NewGraphDialog(QDialog):
         self.set_content_attributes()
 
     def set_content_attributes(self):
-        layout = QVBoxLayout()
-        self.setLayout(layout)
         for key, value in self.dict.items():
-            layout.addWidget(QLabel(key))
-            self.dict[key] = QLineEdit()
-            layout.addWidget(self.dict[key])
-
-        layout.addWidget(self.dialog_next_button)
-
-        self.setLayout(layout)
+            self.layout().addWidget(QLabel(key))
+            self.dict[key] = QLineEdit(value)
+            self.layout().addWidget(self.dict[key])

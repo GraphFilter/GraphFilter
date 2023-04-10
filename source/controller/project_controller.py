@@ -104,7 +104,7 @@ class ProjectController:
         self.project_tool_bar.complement.triggered.connect(self.to_complement)
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
-        self.project_tool_bar.cycle_graph_button.triggered.connect(self.new_cycle_graph)
+        self.project_tool_bar.cycle_graph_button.triggered.connect(self.on_new_graph_button_dialog)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -204,6 +204,23 @@ class ProjectController:
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
+    def on_new_graph_button(self):
+        dialog = NewGraphDialog(name='default', n='0')
+        dialog.exec()
+
+        graph = nx.cycle_graph(int(dialog.dict['n'].text()))
+        file_path = project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6"
+
+        self.visualize_graph_dock.plot_graph(graph)
+
+        create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+
+        with open(file_path) as file:
+            graph = file.read().splitlines()
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs(graph)
+            self.on_change_graph()
+
     @staticmethod
     def on_invalid_graph_display_alert():
         message_box = MessageBox("Invalid Graph")
@@ -268,27 +285,3 @@ class ProjectController:
 
     def to_clique_graph(self):
         self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(self.visualize_graph_dock.current_graph))
-
-    def new_cycle_graph(self):
-        dialog = NewGraphDialog(name='default', n=0)
-        dialog.exec()
-        graph = nx.cycle_graph(5)
-        self.visualize_graph_dock.plot_graph(graph)
-        # create_g6_file('teste', nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-
-        '''
-        file_path = project_information_store.project_location + "\\new.g6"
-        try:
-            open(file_path, "x")
-        except FileExistsError:
-            pass
-        file = open(file_path, "w")
-        file.write('Dhc')
-        file.close()
-
-        with open(file_path) as file:
-            graph = file.read().splitlines()
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs(graph)
-            self.on_change_graph()
-        '''

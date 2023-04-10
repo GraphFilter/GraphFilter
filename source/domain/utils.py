@@ -66,8 +66,7 @@ def set_view_size(self, p):
     self.height = int(rect.height() / p)
 
 
-def create_g6_file(name, g6):
-    file_path = project_information_store.project_location + f"\\{name}.g6"
+def create_g6_file(file_path, g6):
     try:
         open(file_path, "x")
     except FileExistsError:
