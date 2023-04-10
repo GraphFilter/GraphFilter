@@ -2,6 +2,7 @@ import networkx as nx
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
+from source.view.project.new_graph_dialog import NewGraphDialog
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
@@ -12,7 +13,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -103,6 +104,7 @@ class ProjectController:
         self.project_tool_bar.complement.triggered.connect(self.to_complement)
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
+        self.project_tool_bar.cycle_graph_button.triggered.connect(self.new_cycle_graph)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -248,6 +250,7 @@ class ProjectController:
                         dic_invariants_to_visualize[key].print(convert_g6_to_nx(g6code), precision=5)
                 else:
                     self.invariants_selected[key] = 'No graph selected'
+            print(dic_invariants_to_visualize)
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):
@@ -265,3 +268,27 @@ class ProjectController:
 
     def to_clique_graph(self):
         self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(self.visualize_graph_dock.current_graph))
+
+    def new_cycle_graph(self):
+        # dialog = NewGraphDialog(n=0)
+        # dialog.exec()
+        # graph = nx.cycle_graph(5)
+        # self.visualize_graph_dock.plot_graph(graph)
+        # create_g6_file('teste', nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+
+        '''
+        file_path = project_information_store.project_location + "\\new.g6"
+        try:
+            open(file_path, "x")
+        except FileExistsError:
+            pass
+        file = open(file_path, "w")
+        file.write('Dhc')
+        file.close()
+
+        with open(file_path) as file:
+            graph = file.read().splitlines()
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs(graph)
+            self.on_change_graph()
+        '''

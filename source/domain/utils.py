@@ -5,6 +5,8 @@ import gzip
 
 from PyQt5.QtWidgets import QApplication
 
+from source.store.project_information_store import project_information_store
+
 
 def validate_path(path):
     forbidden_chars = ['.', '\\', '/', ":"]
@@ -62,3 +64,14 @@ def set_view_size(self, p):
     rect = screen.screenGeometry()
     self.width = int(rect.width() / p)
     self.height = int(rect.height() / p)
+
+
+def create_g6_file(name, g6):
+    file_path = project_information_store.project_location + f"\\{name}.g6"
+    try:
+        open(file_path, "x")
+    except FileExistsError:
+        pass
+    file = open(file_path, "w")
+    file.write(g6)
+    file.close()
