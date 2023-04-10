@@ -104,7 +104,7 @@ class ProjectController:
         self.project_tool_bar.complement.triggered.connect(self.to_complement)
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
-        self.project_tool_bar.cycle_graph_button.triggered.connect(self.on_new_graph_button_dialog)
+        self.project_tool_bar.cycle_graph_button.triggered.connect(self.on_new_graph_button)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
