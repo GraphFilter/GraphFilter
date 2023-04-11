@@ -113,11 +113,12 @@ class ProjectToolBar(QToolBar):
 
         self.new_graph_menu_bar.setMaximumSize(98, 28)
         self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                           "border: 1px solid gray;")
+                                              "border: 1px solid gray;")
 
         self.new_graph_menu_bar.addMenu(self.new_graph_menu)
 
         self.new_graph_menu.addAction("Cycle Graph")
+        self.new_graph_menu.addAction("Path Graph")
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
