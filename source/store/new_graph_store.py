@@ -25,6 +25,23 @@ class NewGraphStore:
         self.file_path = None
 
 
+class BlankGraph(NewGraphStore):
+    name = "Blank Graph"
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(name=BlankGraph.name)
+        dialog.dialog_next_button.clicked.connect(lambda: BlankGraph.create_graph(dialog))
+        dialog.exec()
+
+    @staticmethod
+    def create_graph(dialog):
+        new_graph_store.set_graph(nx.Graph())
+        new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
+
+        dialog.close()
+
+
 class CycleGraph(NewGraphStore):
     name = "Cycle Graph"
 
