@@ -30,7 +30,7 @@ class CycleGraph(NewGraphStore):
 
     @staticmethod
     def open_dialog():
-        dialog = NewGraphDialog(name='default', n='')
+        dialog = NewGraphDialog(name=CycleGraph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: CycleGraph.create_graph(dialog))
         dialog.exec()
 
@@ -47,13 +47,30 @@ class PathGraph(NewGraphStore):
 
     @staticmethod
     def open_dialog():
-        dialog = NewGraphDialog(name='default', n='')
+        dialog = NewGraphDialog(name=PathGraph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: PathGraph.create_graph(dialog))
         dialog.exec()
 
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.path_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
+
+        dialog.close()
+
+
+class CompleteGraph(NewGraphStore):
+    name = "Complete Graph"
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(name=CompleteGraph.name, n='')
+        dialog.dialog_next_button.clicked.connect(lambda: CompleteGraph.create_graph(dialog))
+        dialog.exec()
+
+    @staticmethod
+    def create_graph(dialog):
+        new_graph_store.set_graph(nx.complete_graph(int(dialog.dict['n'].text())))
         new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
 
         dialog.close()

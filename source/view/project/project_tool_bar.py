@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
+from source.store.new_graph_store import *
 from PyQt5 import QtCore
 
 
@@ -117,8 +118,8 @@ class ProjectToolBar(QToolBar):
 
         self.new_graph_menu_bar.addMenu(self.new_graph_menu)
 
-        self.new_graph_menu.addAction("Cycle Graph")
-        self.new_graph_menu.addAction("Path Graph")
+        for new_graph in new_graph_dict_name:
+            self.new_graph_menu.addAction(new_graph)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
