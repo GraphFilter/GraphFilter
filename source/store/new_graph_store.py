@@ -110,6 +110,24 @@ class TuranGraph(NewGraphStore):
         dialog.close()
 
 
+class Grid2dGraph(NewGraphStore):
+    name = "Grid 2d Graph"
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(name=Grid2dGraph.name, m='', n='', periodic='False')
+        dialog.dialog_next_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
+        dialog.exec()
+
+    @staticmethod
+    def create_graph(dialog):
+        new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text()),
+                                                   bool(dialog.dict['periodic'].text())))
+        new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
+
+        dialog.close()
+
+
 new_graph_store = NewGraphStore()
 
 new_graph_dict_name = new_graph_store.dic_name_new_graph
