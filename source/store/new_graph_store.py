@@ -165,6 +165,23 @@ class PetersenGraph(NewGraphStore):
         dialog.close()
 
 
+class RandomRegularGraph(NewGraphStore):
+    name = "Random Regular Graph"
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(name=RandomRegularGraph.name, d='', n='')
+        dialog.dialog_next_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
+        dialog.exec()
+
+    @staticmethod
+    def create_graph(dialog):
+        new_graph_store.set_graph(nx.random_regular_graph(int(dialog.dict['d'].text()), int(dialog.dict['n'].text())))
+        new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
+
+        dialog.close()
+
+
 new_graph_store = NewGraphStore()
 
 new_graph_dict_name = new_graph_store.dic_name_new_graph
