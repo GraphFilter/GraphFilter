@@ -13,6 +13,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
+from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
@@ -36,6 +37,8 @@ class ProjectController:
 
         self.invariants_selected = {}
         self.edited_graph = None
+
+        self.active_new_graph_action = None
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
         self.connect_events()
@@ -104,7 +107,8 @@ class ProjectController:
         self.project_tool_bar.complement.triggered.connect(self.to_complement)
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
-        self.project_tool_bar.cycle_graph_button.triggered.connect(self.on_new_graph_button)
+        self.project_tool_bar.file_insert_menu.hovered.connect(self.set_active_new_graph_action)
+        self.project_tool_bar.insert_menu_bar.triggered.connect(self.on_new_graph_button)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -204,27 +208,32 @@ class ProjectController:
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    def on_new_graph_button(self):
-        dialog = NewGraphDialog(name='default', n='0')
-        dialog.exec()
-
-        graph = nx.cycle_graph(int(dialog.dict['n'].text()))
-        file_path = project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6"
-
-        self.visualize_graph_dock.plot_graph(graph)
-
-        create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-
-        with open(file_path) as file:
-            graph = file.read().splitlines()
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs(graph)
-            self.on_change_graph()
-
     @staticmethod
     def on_invalid_graph_display_alert():
         message_box = MessageBox("Invalid Graph")
         message_box.exec()
+
+    def on_new_graph_button(self):
+        new_graph_dict_name[self.active_new_graph_action].open_dialog()
+        graph = new_graph_store.graph
+        file_path = new_graph_store.file_path
+
+        if graph is not None:
+            self.visualize_graph_dock.plot_graph(graph)
+
+            create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+
+            with open(file_path) as file:
+                graph = file.read().splitlines()
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs(graph)
+                self.on_change_graph()
+
+            new_graph_store.reset_attributes()
+
+    def set_active_new_graph_action(self):
+        if self.project_tool_bar.file_insert_menu.activeAction() is not None:
+            self.active_new_graph_action = self.project_tool_bar.file_insert_menu.activeAction().text()
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()

@@ -116,10 +116,11 @@ class ProjectToolBar(QToolBar):
         self.insert_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                            "border: 1px solid gray;")
 
-        file_insert_menu = QMenu("&Insert         ", self)
-        self.insert_menu_bar.addMenu(file_insert_menu)
+        self.file_insert_menu = QMenu("&Insert         ", self)
+        self.insert_menu_bar.addMenu(self.file_insert_menu)
 
-        file_insert_menu.addAction(self.cycle_graph_button)
+        self.file_insert_menu.addAction(self.cycle_graph_button)
+        self.file_insert_menu.addAction("Cycle")
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
