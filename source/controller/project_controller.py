@@ -87,6 +87,8 @@ class ProjectController:
 
         self.connect_operations_events()
 
+        self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
+
         # self.project_window.print_action.triggered.connect(self.on_print)
 
     def tree_file_dock_events(self):
@@ -206,6 +208,17 @@ class ProjectController:
     def on_invalid_graph_display_alert():
         message_box = MessageBox("Invalid Graph")
         message_box.exec()
+
+    def insert_universal_vertex(self):
+        graph = self.visualize_graph_dock.current_graph
+        new_vertex = len(graph)
+        graph.add_node(new_vertex)
+
+        for node in graph:
+            if node is not new_vertex:
+                graph.add_edge(new_vertex, node)
+
+        self.visualize_graph_dock.plot_graph(graph)
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
