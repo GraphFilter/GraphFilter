@@ -12,6 +12,7 @@ class NewGraphDialog(QDialog):
         self.set_content_attributes()
 
     def set_content_attributes(self):
+        self.setWindowTitle("Attributes")
         layout = QVBoxLayout()
         for key, value in self.dict.items():
             layout.addWidget(QLabel(key))
