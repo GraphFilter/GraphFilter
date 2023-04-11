@@ -21,14 +21,13 @@ class ProjectToolBar(QToolBar):
         self.forward_button = QAction()
 
         self.operations_menu_bar = QMenuBar()
-        self.insert_menu_bar = QMenuBar()
+        self.new_graph_menu_bar = QMenuBar()
+        self.new_graph_menu = QMenu("&New Graph", self)
 
         self.line_graph = QAction("Line Graph")
         self.inverse_line_graph = QAction("Inverse Line Graph")
         self.complement = QAction("Complement")
         self.clique_graph = QAction("Clique Graph")
-
-        self.cycle_graph_button = QAction("Cycle Graph")
 
         self.create_menu_bar()
 
@@ -90,7 +89,7 @@ class ProjectToolBar(QToolBar):
         self.addSeparator()
 
         self.addWidget(self.operations_menu_bar)
-        self.addWidget(self.insert_menu_bar)
+        self.addWidget(self.new_graph_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
@@ -112,15 +111,13 @@ class ProjectToolBar(QToolBar):
         file_menu.addAction(self.complement)
         file_menu.addAction(self.clique_graph)
 
-        self.insert_menu_bar.setMaximumSize(93, 28)
-        self.insert_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+        self.new_graph_menu_bar.setMaximumSize(98, 28)
+        self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                            "border: 1px solid gray;")
 
-        self.file_insert_menu = QMenu("&Insert         ", self)
-        self.insert_menu_bar.addMenu(self.file_insert_menu)
+        self.new_graph_menu_bar.addMenu(self.new_graph_menu)
 
-        self.file_insert_menu.addAction(self.cycle_graph_button)
-        self.file_insert_menu.addAction("Cycle")
+        self.new_graph_menu.addAction("Cycle Graph")
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):

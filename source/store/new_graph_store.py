@@ -1,4 +1,4 @@
-from source.view.project.new_graph_dialog import NewGraphDialog
+from source.view.components.new_graph_dialog import NewGraphDialog
 from source.store.project_information_store import project_information_store
 import networkx as nx
 

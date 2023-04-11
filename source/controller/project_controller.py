@@ -2,7 +2,6 @@ import networkx as nx
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
-from source.view.project.new_graph_dialog import NewGraphDialog
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
@@ -11,7 +10,6 @@ from source.view.project.docks.graph_information_dock import GraphInformationDoc
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
-from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file
@@ -91,6 +89,9 @@ class ProjectController:
 
         self.connect_operations_events()
 
+        self.project_tool_bar.new_graph_menu.hovered.connect(self.set_active_new_graph_action)
+        self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
+
         # self.project_window.print_action.triggered.connect(self.on_print)
 
     def tree_file_dock_events(self):
@@ -107,8 +108,6 @@ class ProjectController:
         self.project_tool_bar.complement.triggered.connect(self.to_complement)
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
-        self.project_tool_bar.file_insert_menu.hovered.connect(self.set_active_new_graph_action)
-        self.project_tool_bar.insert_menu_bar.triggered.connect(self.on_new_graph_button)
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
@@ -232,8 +231,8 @@ class ProjectController:
             new_graph_store.reset_attributes()
 
     def set_active_new_graph_action(self):
-        if self.project_tool_bar.file_insert_menu.activeAction() is not None:
-            self.active_new_graph_action = self.project_tool_bar.file_insert_menu.activeAction().text()
+        if self.project_tool_bar.new_graph_menu.activeAction() is not None:
+            self.active_new_graph_action = self.project_tool_bar.new_graph_menu.activeAction().text()
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
