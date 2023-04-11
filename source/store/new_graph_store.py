@@ -42,6 +42,26 @@ class BlankGraph(NewGraphStore):
         dialog.close()
 
 
+class G6Graph(NewGraphStore):
+    name = "G6 Graph"
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(name=G6Graph.name, g6='')
+        dialog.dialog_next_button.clicked.connect(lambda: G6Graph.create_graph(dialog))
+        dialog.exec()
+
+    @staticmethod
+    def create_graph(dialog):
+        try:
+            new_graph_store.set_graph(nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8')))
+        except nx.NetworkXError:
+            new_graph_store.set_graph(str(dialog.dict['g6'].text()))
+        new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
+
+        dialog.close()
+
+
 class CycleGraph(NewGraphStore):
     name = "Cycle Graph"
 

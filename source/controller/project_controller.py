@@ -220,7 +220,10 @@ class ProjectController:
         if graph is not None:
             self.visualize_graph_dock.plot_graph(graph)
 
-            create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+            try:
+                create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+            except AttributeError:
+                create_g6_file(file_path, graph)
 
             with open(file_path) as file:
                 graph = file.read().splitlines()
