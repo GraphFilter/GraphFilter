@@ -62,3 +62,15 @@ def set_view_size(self, p):
     rect = screen.screenGeometry()
     self.width = int(rect.width() / p)
     self.height = int(rect.height() / p)
+
+
+def fix_graph_nodes(graph):
+    new_dict = {}
+    new_edges = []
+
+    for i, node in enumerate(graph):
+        new_dict[node] = i
+
+    for edge in graph.edges:
+        new_edges.append((new_dict[edge[0]], new_dict[edge[1]]))
+    return nx.from_edgelist(new_edges)
