@@ -12,7 +12,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx
+from source.domain.utils import match_graph_code, convert_g6_to_nx, fix_graph_nodes
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -251,11 +251,12 @@ class ProjectController:
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):
-        self.visualize_graph_dock.plot_graph(nx.line_graph(self.visualize_graph_dock.current_graph))
+        self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.line_graph(self.visualize_graph_dock.current_graph)))
 
     def to_inverse_line_graph(self):
         try:
-            self.visualize_graph_dock.plot_graph(nx.inverse_line_graph(self.visualize_graph_dock.current_graph))
+            self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.inverse_line_graph
+                                                                 (self.visualize_graph_dock.current_graph)))
         except nx.NetworkXError:
             message_box = MessageBox("The drawn graph is not a line graph of any graph")
             message_box.exec()
