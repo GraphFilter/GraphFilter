@@ -135,7 +135,9 @@ class ProjectController:
             file.close()
 
             with open(file_path, "w", encoding="utf-8") as file:
-                file.writelines(changed_data)
+                if changed_data == [""]:
+                    file.writelines("?")
+                else: file.writelines(changed_data)
 
             with open(file_path) as file:
                 graph = file.read().splitlines()
@@ -151,7 +153,11 @@ class ProjectController:
 
             graph.pop(current_index)
             graph = tuple(graph)
-            project_information_store.filtered_graphs = graph
+            if graph == ():
+                graph = "?"
+                project_information_store.filtered_graphs = graph
+            else:
+                project_information_store.filtered_graphs = graph
             project_information_store.save_project()
 
             f = open(file_path)
@@ -159,6 +165,9 @@ class ProjectController:
             new_json_file = tuple(new_data['filtered_graphs'])
 
             self.project_tool_bar.reset_combo_graphs()
+            if new_json_file == ():
+                new_json_file = ["?"]
+                #return
             self.project_tool_bar.fill_combo_graphs(new_json_file)
             self.project_tool_bar.combo_graphs.setCurrentIndex(next_index)
             self.on_change_graph()
