@@ -11,6 +11,7 @@ class ProjectInformationStore:
         self.method = ""
         self.graph_files = []
         self.filtered_graphs = []
+        self.file_path =""
 
     def reset_store(self):
         self.project_name = ""
