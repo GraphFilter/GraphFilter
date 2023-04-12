@@ -266,15 +266,17 @@ class ProjectController:
         file_type = file_path[len(file_path) - 1]
 
         replaced_line = ""
-        new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
-
+        if self.edited_graph == None or self.edited_graph != line_text:
+            new_g6 = line_text
+        else:
+            new_g6 = nx.to_graph6_bytes()[10:-1].decode("utf-8")
 
         if file_type == "6" or file_type == "t":
             file = open(file_path, "r")
             for line in file:
                 line = line.strip()
                 line= line + "\n"
-                if line == line_text:
+                if line == line_text and new_g6 != line:
                     new_line = line.replace(line, new_g6 + "\n")
                 else: new_line = line
                 replaced_line = replaced_line + new_line
