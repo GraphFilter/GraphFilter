@@ -10,9 +10,9 @@ from source.view.project.docks.graph_information_dock import GraphInformationDoc
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
-from source.store.project_information_store import project_information_store
 from source.store.operations_invariants import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx, fix_graph_nodes
+from source.store.new_graph_store import *
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -35,6 +35,8 @@ class ProjectController:
 
         self.invariants_selected = {}
         self.edited_graph = None
+
+        self.active_new_graph_action = None
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
         self.connect_events()
@@ -87,6 +89,8 @@ class ProjectController:
 
         self.connect_operations_events()
 
+        self.project_tool_bar.new_graph_menu.hovered.connect(self.set_active_new_graph_action)
+        self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
         self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
         # self.project_window.print_action.triggered.connect(self.on_print)
@@ -209,6 +213,31 @@ class ProjectController:
         message_box = MessageBox("Invalid Graph")
         message_box.exec()
 
+    def on_new_graph_button(self):
+        new_graph_dict_name[self.active_new_graph_action].open_dialog()
+        graph = new_graph_store.graph
+        file_path = new_graph_store.file_path
+
+        if graph is not None:
+            self.visualize_graph_dock.plot_graph(graph)
+
+            try:
+                create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+            except AttributeError:
+                create_g6_file(file_path, graph)
+
+            with open(file_path) as file:
+                graph = file.read().splitlines()
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs(graph)
+                self.on_change_graph()
+
+            new_graph_store.reset_attributes()
+
+    def set_active_new_graph_action(self):
+        if self.project_tool_bar.new_graph_menu.activeAction() is not None:
+            self.active_new_graph_action = self.project_tool_bar.new_graph_menu.activeAction().text()
+    
     def insert_universal_vertex(self):
         graph = self.visualize_graph_dock.current_graph
         new_vertex = len(graph)
@@ -261,6 +290,7 @@ class ProjectController:
                         dic_invariants_to_visualize[key].print(convert_g6_to_nx(g6code), precision=5)
                 else:
                     self.invariants_selected[key] = 'No graph selected'
+            print(dic_invariants_to_visualize)
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):

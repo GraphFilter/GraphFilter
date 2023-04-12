@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
+from source.store.new_graph_store import *
 from PyQt5 import QtCore
 
 
@@ -21,7 +22,8 @@ class ProjectToolBar(QToolBar):
         self.forward_button = QAction()
 
         self.operations_menu_bar = QMenuBar()
-        self.insert_menu_bar = QMenuBar()
+        self.new_graph_menu_bar = QMenuBar()
+        self.new_graph_menu = QMenu("&New Graph", self)
 
         self.line_graph = QAction("Line Graph")
         self.inverse_line_graph = QAction("Inverse Line Graph")
@@ -88,7 +90,7 @@ class ProjectToolBar(QToolBar):
         self.addSeparator()
 
         self.addWidget(self.operations_menu_bar)
-        self.addWidget(self.insert_menu_bar)
+        self.addWidget(self.new_graph_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
@@ -110,17 +112,14 @@ class ProjectToolBar(QToolBar):
         file_menu.addAction(self.complement)
         file_menu.addAction(self.clique_graph)
 
-        self.insert_menu_bar.setMaximumSize(93, 28)
-        self.insert_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                           "border: 1px solid gray;")
+        self.new_graph_menu_bar.setMaximumSize(98, 28)
+        self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+                                              "border: 1px solid gray;")
 
-        file_insert_menu = QMenu("&Insert         ", self)
-        self.insert_menu_bar.addMenu(file_insert_menu)
+        self.new_graph_menu_bar.addMenu(self.new_graph_menu)
 
-        file_insert_menu.addAction(QAction("Button 1"))
-        file_insert_menu.addAction(QAction("Button 2"))
-        file_insert_menu.addAction(QAction("Button 3"))
-        file_insert_menu.addAction(QAction("Button 4"))
+        for new_graph in new_graph_dict_name:
+            self.new_graph_menu.addAction(new_graph)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
