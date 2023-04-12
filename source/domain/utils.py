@@ -74,3 +74,15 @@ def create_g6_file(file_path, g6):
     file = open(file_path, "w")
     file.write(g6)
     file.close()
+
+
+def fix_graph_nodes(graph):
+    new_dict = {}
+    new_edges = []
+
+    for i, node in enumerate(graph):
+        new_dict[node] = i
+
+    for edge in graph.edges:
+        new_edges.append((new_dict[edge[0]], new_dict[edge[1]]))
+    return nx.from_edgelist(new_edges)

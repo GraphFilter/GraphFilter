@@ -12,7 +12,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -91,6 +91,7 @@ class ProjectController:
 
         self.project_tool_bar.new_graph_menu.hovered.connect(self.set_active_new_graph_action)
         self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
+        self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
         # self.project_window.print_action.triggered.connect(self.on_print)
 
@@ -236,6 +237,17 @@ class ProjectController:
     def set_active_new_graph_action(self):
         if self.project_tool_bar.new_graph_menu.activeAction() is not None:
             self.active_new_graph_action = self.project_tool_bar.new_graph_menu.activeAction().text()
+    
+    def insert_universal_vertex(self):
+        graph = self.visualize_graph_dock.current_graph
+        new_vertex = len(graph)
+        graph.add_node(new_vertex)
+
+        for node in graph:
+            if node is not new_vertex:
+                graph.add_edge(new_vertex, node)
+
+        self.visualize_graph_dock.plot_graph(graph)
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
@@ -282,11 +294,12 @@ class ProjectController:
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):
-        self.visualize_graph_dock.plot_graph(nx.line_graph(self.visualize_graph_dock.current_graph))
+        self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.line_graph(self.visualize_graph_dock.current_graph)))
 
     def to_inverse_line_graph(self):
         try:
-            self.visualize_graph_dock.plot_graph(nx.inverse_line_graph(self.visualize_graph_dock.current_graph))
+            self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.inverse_line_graph
+                                                                 (self.visualize_graph_dock.current_graph)))
         except nx.NetworkXError:
             message_box = MessageBox("The drawn graph is not a line graph of any graph")
             message_box.exec()
