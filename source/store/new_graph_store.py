@@ -25,13 +25,13 @@ class NewGraphStore:
         self.file_path = None
 
 
-class BlankGraph(NewGraphStore):
-    name = "Blank Graph"
+class EmptyGraph(NewGraphStore):
+    name = "Empty Graph"
 
     @staticmethod
     def open_dialog():
-        dialog = NewGraphDialog(name=BlankGraph.name)
-        dialog.dialog_next_button.clicked.connect(lambda: BlankGraph.create_graph(dialog))
+        dialog = NewGraphDialog(name=EmptyGraph.name)
+        dialog.dialog_next_button.clicked.connect(lambda: EmptyGraph.create_graph(dialog))
         dialog.exec()
 
     @staticmethod
@@ -42,13 +42,13 @@ class BlankGraph(NewGraphStore):
         dialog.close()
 
 
-class G6Graph(NewGraphStore):
-    name = "G6 Graph"
+class GraphFromGraph6(NewGraphStore):
+    name = "Graph from graph6"
 
     @staticmethod
     def open_dialog():
-        dialog = NewGraphDialog(name=G6Graph.name, g6='')
-        dialog.dialog_next_button.clicked.connect(lambda: G6Graph.create_graph(dialog))
+        dialog = NewGraphDialog(name=GraphFromGraph6.name, g6='')
+        dialog.dialog_next_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
         dialog.exec()
 
     @staticmethod
