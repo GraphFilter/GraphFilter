@@ -1,4 +1,5 @@
 import networkx as nx
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
@@ -99,12 +100,55 @@ class ProjectController:
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
         self.project_tool_bar.left_button.clicked.connect(self.on_click_button_left)
         self.project_tool_bar.right_button.clicked.connect(self.on_click_button_right)
+        self.project_tool_bar.delete_button.triggered.connect(self.open_delete_menu)
+        self.project_tool_bar.delete_file.triggered.connect(self.delete_file)
+        self.project_tool_bar.delete_graph.triggered.connect(self.delete_graph)
 
     def connect_operations_events(self):
         self.project_tool_bar.line_graph.triggered.connect(self.to_line_graph)
         self.project_tool_bar.complement.triggered.connect(self.to_complement)
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
+
+    def open_delete_menu(self):
+        self.project_tool_bar.delete_menu.addAction(self.project_tool_bar.delete_file)
+        self.project_tool_bar.delete_menu.addAction(self.project_tool_bar.delete_graph)
+        self.project_tool_bar.delete_button.setMenu(self.project_tool_bar.delete_menu)
+
+    def delete_file(self):
+        print("File deleted")
+
+    def delete_graph(self):
+        line_text = str(self.project_tool_bar.combo_graphs.currentText()[10:]) + "\n"
+
+        file_path = str(project_information_store.file_path)
+        file_path = file_path[2:-3]
+        file_type = file_path[len(file_path) -1]#temporary, will needs to change when issue 259 was merged
+
+        print(file_path)
+
+        replaced_line = ""
+        print(file_type)
+        if file_type == "6" or file_type == "t":
+            file = open(file_path, "r")
+            for line in file:
+                line = line.strip()
+                line = line + "\n"
+                if line == line_text:
+                    new_line = line.replace(line,"")
+                else:
+                    new_line = line
+                replaced_line = replaced_line + new_line
+            file.close()
+            write_file = open(file_path, "w")
+            write_file.write(replaced_line)
+            write_file.close()
+
+        with open(file_path) as file:
+            graph = file.read().splitlines()
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs(graph)
+            self.on_change_graph()
 
     def create_docks(self):
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
