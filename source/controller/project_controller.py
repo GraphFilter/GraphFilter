@@ -1,4 +1,4 @@
-from time import sleep
+import os.path
 
 import networkx as nx
 from PyQt5.QtWidgets import *
@@ -264,29 +264,21 @@ class ProjectController:
 
         file_path = str(project_information_store.file_path)
         file_path = file_path[2:-3]
-        file_type = file_path[len(file_path) - 1]
+        file_name , file_type = os.path.splitext(file_path)
         new_g6 = ""
         replaced_line = ""
 
-        if self.edited_graph == None and self.edited_graph != line_text:
-            new_g6 = line_text[:-1]
+        if self.edited_graph == None:
+            return
         else:
             new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
 
-        if file_type == "6" or file_type == "t":
+        if file_type == ".g6" or file_type == ".txt":
             file = open(file_path, "r")
-            for line in file:
-                line = line.strip()
-                line= line + "\n"
-                if line == line_text and new_g6 != line:
-                    new_line = line.replace(line, new_g6 + "\n")
-                else: new_line = line
-                replaced_line = replaced_line + new_line
-            file.close()
-            write_file = open(file_path, "w")
-            write_file.write(replaced_line)
-            write_file.close()
-
+            changed_data = file.readlines()
+            changed_data[current_index] = new_g6 + "\n"
+            with open(file_path, "w", encoding="utf-8") as file:
+                file.writelines(changed_data)
 
             with open(file_path) as file:
                 graph = file.read().splitlines()
@@ -295,22 +287,16 @@ class ProjectController:
                 self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
                 self.on_change_graph()
 
-        if file_type == "n":
+        if file_type == ".json":
             f = open(file_path)
             data = json.load(f)
             graph = list(data['filtered_graphs'])
-            new_graphs = list()
 
+            graph[current_index] = new_g6
 
-            for item in graph:
-                if item +"\n" == line_text and new_g6+"\n" != item +"\n":
-                    new_graphs.append(new_g6)
-                else: new_graphs.append(item)
-
-            new_graphs = tuple(new_graphs)
-            project_information_store.filtered_graphs = new_graphs
+            graph = tuple(graph)
+            project_information_store.filtered_graphs = graph
             project_information_store.save_project()
-            sleep(2)
 
             f = open(file_path)
             new_data = json.load(f)
