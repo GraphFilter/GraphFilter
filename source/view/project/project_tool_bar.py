@@ -1,4 +1,3 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
 from source.store.new_graph_store import *
@@ -21,15 +20,10 @@ class ProjectToolBar(QToolBar):
         self.delete_button = QAction()
         self.revert_button = QAction()
         self.forward_button = QAction()
-        self.delete_file = QAction("Delete this file")
-        self.delete_graph = QAction("Delete this graph")
 
         self.operations_menu_bar = QMenuBar()
         self.new_graph_menu_bar = QMenuBar()
         self.new_graph_menu = QMenu("&New Graph", self)
-
-        self.delete_menu = QMenu()
-        self.delete_menu.setContextMenuPolicy(Qt.CustomContextMenu)
 
         self.line_graph = QAction("Line Graph")
         self.inverse_line_graph = QAction("Inverse Line Graph")

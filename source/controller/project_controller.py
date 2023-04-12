@@ -167,7 +167,7 @@ class ProjectController:
             self.project_tool_bar.reset_combo_graphs()
             if new_json_file == ():
                 new_json_file = ["?"]
-                #return
+
             self.project_tool_bar.fill_combo_graphs(new_json_file)
             self.project_tool_bar.combo_graphs.setCurrentIndex(next_index)
             self.on_change_graph()
