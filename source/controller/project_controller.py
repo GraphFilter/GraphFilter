@@ -260,16 +260,18 @@ class ProjectController:
 
     def on_save_graph(self):
         line_text = str(self.project_tool_bar.combo_graphs.currentText()[10:]) + "\n"
+        current_index = self.project_tool_bar.combo_graphs.currentIndex()
 
         file_path = str(project_information_store.file_path)
         file_path = file_path[2:-3]
         file_type = file_path[len(file_path) - 1]
-
+        new_g6 = ""
         replaced_line = ""
-        if self.edited_graph == None or self.edited_graph != line_text:
-            new_g6 = line_text
+
+        if self.edited_graph == None and self.edited_graph != line_text:
+            new_g6 = line_text[:-1]
         else:
-            new_g6 = nx.to_graph6_bytes()[10:-1].decode("utf-8")
+            new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
 
         if file_type == "6" or file_type == "t":
             file = open(file_path, "r")
@@ -285,10 +287,12 @@ class ProjectController:
             write_file.write(replaced_line)
             write_file.close()
 
+
             with open(file_path) as file:
                 graph = file.read().splitlines()
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs(graph)
+                self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
                 self.on_change_graph()
 
         if file_type == "n":
@@ -297,10 +301,12 @@ class ProjectController:
             graph = list(data['filtered_graphs'])
             new_graphs = list()
 
+
             for item in graph:
-                if item +"\n" == line_text:
+                if item +"\n" == line_text and new_g6+"\n" != item +"\n":
                     new_graphs.append(new_g6)
                 else: new_graphs.append(item)
+
             new_graphs = tuple(new_graphs)
             project_information_store.filtered_graphs = new_graphs
             project_information_store.save_project()
@@ -312,6 +318,7 @@ class ProjectController:
 
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs(new_json_graph)
+            self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
             self.on_change_graph()
 
     def to_inverse_line_graph(self):
