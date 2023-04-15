@@ -1,3 +1,5 @@
+import os
+
 import networkx as nx
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import *
@@ -252,11 +254,46 @@ class ProjectController:
         self.visualize_graph_dock.plot_graph(graph)
 
     def tree_context_menu(self):
+        #delete_menu = QMenu("Delete")
+        #delete_file = delete_menu.addAction(self.tree_file_dock.delete_file)
+        #delete_file = delete_menu.addAction("delete File")
+        #delete_file.triggered.connect(self.delete_tree_file)
+        #delete_empty_folder = delete_menu.addAction(self.tree_file_dock.delete_empty_folder)
+        #delete_empty_folder = delete_menu.addAction("Delete folder")
+        #delete_empty_folder.triggered.connect(self.delete_tree_file)
+
         self.tree_file_dock.menu.clear()
         self.tree_file_dock.menu.addAction(self.tree_file_dock.load_file)
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
+        #self.tree_file_dock.menu.addMenu(delete_menu)
+        self.tree_file_dock.menu.addAction(self.tree_file_dock.delete_file)
+        self.tree_file_dock.delete_file.triggered.connect(self.delete_tree_file)
         cursor = QCursor()
         self.tree_file_dock.menu.exec_(cursor.pos())
+
+    def delete_tree_file(self):
+        index = self.tree_file_dock.tree.currentIndex()
+        file_path = self.tree_file_dock.model.filePath(index)
+        type_item = self.tree_file_dock.model.type(index)
+        if type_item == "File Folder":
+            try:
+                os.rmdir(file_path)
+            except FileNotFoundError:
+                return
+            except PermissionError:
+                return
+            except OSError:
+                return
+        else:
+            try:
+                os.remove(file_path)
+            except FileNotFoundError:
+                return
+            except PermissionError:
+                return
+            except OSError:
+                return
+        #File Folder
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()

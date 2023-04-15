@@ -15,7 +15,8 @@ class TreeFileDock(QDockWidget):
 
         self.menu = QMenu()
         self.load_file = QAction("Load File on Combo Box")
-
+        self.delete_file = QAction("Delete file or empty Folder")
+        #self.delete_empty_folder = QAction("Delete empty folder")
         self.widget = QWidget()
         self.create_tree()
 
