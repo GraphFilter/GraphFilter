@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 
 from source.store.project_information_store import project_information_store
@@ -12,6 +13,9 @@ class TreeFileDock(QDockWidget):
         self.path = None
         self.setWindowTitle("Files")
 
+        self.menu = QMenu()
+        self.load_file = QAction("Load File on Combo Box")
+
         self.widget = QWidget()
         self.create_tree()
 
@@ -23,7 +27,7 @@ class TreeFileDock(QDockWidget):
         self.model.setNameFilterDisables(False)
         self.model.setNameFilters(["*.g6", "*.txt", "*.json"])
 
-        #self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         #self.tree.customContextMenuRequested.connect(self.context_menu)
 
         self.tree.setModel(self.model)

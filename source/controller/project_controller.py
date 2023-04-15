@@ -1,4 +1,5 @@
 import networkx as nx
+from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
@@ -98,6 +99,7 @@ class ProjectController:
     def tree_file_dock_events(self):
         # self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
+        self.tree_file_dock.tree.customContextMenuRequested.connect(self.tree_context_menu)
 
     def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
@@ -248,6 +250,13 @@ class ProjectController:
                 graph.add_edge(new_vertex, node)
 
         self.visualize_graph_dock.plot_graph(graph)
+
+    def tree_context_menu(self):
+        self.tree_file_dock.menu.clear()
+        self.tree_file_dock.menu.addAction(self.tree_file_dock.load_file)
+        self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
+        cursor = QCursor()
+        self.tree_file_dock.menu.exec_(cursor.pos())
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
