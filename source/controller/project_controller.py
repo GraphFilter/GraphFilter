@@ -259,7 +259,6 @@ class ProjectController:
         self.visualize_graph_dock.plot_graph(nx.line_graph(self.visualize_graph_dock.current_graph))
 
     def on_save_graph(self):
-        line_text = str(self.project_tool_bar.combo_graphs.currentText()[10:]) + "\n"
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
 
         file_path = str(project_information_store.file_path)
