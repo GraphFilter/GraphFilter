@@ -115,10 +115,15 @@ class WizardController:
 
     def connect_method_page_events(self):
         self.method_page.filter_button.setChecked(False)
-        self.method_page.filter_button.setChecked(False)
+        self.method_page.counter_example_button.setChecked(False)
+        self.method_page.blank_project.setChecked(False)
 
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
+        self.method_page.blank_project.clicked.connect(self.on_button_method_clicked)
+
+    def test_blank(self):
+        print("okay")
 
     def connect_graph_files_page_events(self):
 
@@ -298,12 +303,20 @@ class WizardController:
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
         self.method_page.counter_example_button.setChecked(False)
+        self.method_page.blank_project.setChecked(False)
         button = QPushButton().sender()
         button.setChecked(True)
+
+        if 'blank'in button.objectName():
+            self.method_page.complete = True
+            self.method_page.completeChanged.emit()
+            self.wizard_window.next_button.setToolTip('')
+            return
+
         if 'filter' in button.objectName():
             wizard_information_store.method = 'filter'
             self.review_page.set_method('filter')
-        else:
+        if 'counterexample' in button.objectName():
             wizard_information_store.method = 'counterexample'
             self.review_page.set_method('counterexample')
         self.method_page.complete = True
