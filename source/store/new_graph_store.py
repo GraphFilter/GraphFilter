@@ -1,3 +1,6 @@
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
+
 from source.view.components.new_graph_dialog import NewGraphDialog
 from source.store.project_information_store import project_information_store
 import networkx as nx
@@ -24,6 +27,10 @@ class NewGraphStore:
         self.graph = None
         self.file_path = None
 
+    @staticmethod
+    def open_url(url):
+        QDesktopServices.openUrl(QUrl(url))
+
 
 class EmptyGraph(NewGraphStore):
     name = "Empty Graph"
@@ -33,6 +40,8 @@ class EmptyGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(EmptyGraph.dict_attributes_names, name=EmptyGraph.name)
         dialog.dialog_next_button.clicked.connect(lambda: EmptyGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Null_graph"))
         dialog.exec()
 
     @staticmethod
@@ -45,12 +54,14 @@ class EmptyGraph(NewGraphStore):
 
 class GraphFromGraph6(NewGraphStore):
     name = "Graph from graph6"
-    dict_attributes_names = {"g6": "Graph from g6"}
+    dict_attributes_names = {"name": "https://en.wikipedia.org/wiki/Null_graph", "g6": "Graph from g6"}
 
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(GraphFromGraph6.dict_attributes_names, name=GraphFromGraph6.name, g6='')
         dialog.dialog_next_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Null_graph"))
         dialog.exec()
 
     @staticmethod
@@ -72,6 +83,8 @@ class CycleGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(CycleGraph.dict_attributes_names, name=CycleGraph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: CycleGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Cycle_graph"))
         dialog.exec()
 
     @staticmethod
@@ -90,6 +103,8 @@ class PathGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(PathGraph.dict_attributes_names, name=PathGraph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: PathGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Path_graph"))
         dialog.exec()
 
     @staticmethod
@@ -108,6 +123,8 @@ class CompleteGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(CompleteGraph.dict_attributes_names, name=CompleteGraph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: CompleteGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Complete_graph"))
         dialog.exec()
 
     @staticmethod
@@ -126,6 +143,8 @@ class StarGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(StarGraph.dict_attributes_names, name=StarGraph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: StarGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Star_(graph_theory)"))
         dialog.exec()
 
     @staticmethod
@@ -138,12 +157,14 @@ class StarGraph(NewGraphStore):
 
 class TuranGraph(NewGraphStore):
     name = "Turan Graph"
-    dict_attributes_names = {"n": "Number of nodes", "r": "Number of partitions"}
+    dict_attributes_names = {"n": "Number of nodes", "r": "Number of subsets"}
 
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(TuranGraph.dict_attributes_names, name=TuranGraph.name, n='', r='')
         dialog.dialog_next_button.clicked.connect(lambda: TuranGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Turán_graph"))
         dialog.exec()
 
     @staticmethod
@@ -162,6 +183,9 @@ class Grid2dGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(Grid2dGraph.dict_attributes_names, name=Grid2dGraph.name, m='', n='')
         dialog.dialog_next_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://mathworld.wolfram.com/GridGraph.html#:~:text=A%20two-dimensional%20"
+                                           "grid%20graph,path%20graphs%20on%20and%20vertices."))
         dialog.exec()
 
     @staticmethod
@@ -181,6 +205,8 @@ class TriangularLatticeGraph(NewGraphStore):
         dialog = NewGraphDialog(TriangularLatticeGraph.dict_attributes_names,
                                 name=TriangularLatticeGraph.name, m='', n='')
         dialog.dialog_next_button.clicked.connect(lambda: TriangularLatticeGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Lattice_graph"))
         dialog.exec()
 
     @staticmethod
@@ -200,6 +226,8 @@ class PetersenGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(PetersenGraph.dict_attributes_names, name=PetersenGraph.name)
         dialog.dialog_next_button.clicked.connect(lambda: PetersenGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Petersen_graph"))
         dialog.exec()
 
     @staticmethod
@@ -218,6 +246,8 @@ class RandomRegularGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(RandomRegularGraph.dict_attributes_names, name=RandomRegularGraph.name, d='', n='')
         dialog.dialog_next_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Random_regular_graph"))
         dialog.exec()
 
     @staticmethod
@@ -236,6 +266,8 @@ class RandomCograph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(RandomCograph.dict_attributes_names, name=RandomCograph.name, n='')
         dialog.dialog_next_button.clicked.connect(lambda: RandomCograph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Cograph"))
         dialog.exec()
 
     @staticmethod
