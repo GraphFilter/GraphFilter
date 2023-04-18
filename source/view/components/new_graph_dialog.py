@@ -18,19 +18,16 @@ class NewGraphDialog(QDialog):
 
     def set_content_attributes(self):
         self.setWindowTitle("New Graph")
-        layout = QFormLayout()
+        layout = None
 
-        layout.addRow(QLabel("New graph will be insert in: "))
         for key, value in self.dict.items():
             self.dict[key] = QLineEdit(value)
             if key == "name":
-                layout.addRow(self.new_file_radio, self.dict[key])
-                layout.addRow(self.insert_final_radio)
-                layout.addRow(QLabel(value), self.graph_link)
-                layout.addRow(QLabel("Attributes: "))
+                layout = self.set_initial_layout()
             else:
-                layout_aux = QFormLayout()
-                layout_aux.addRow(" " + self.dict_attributes_names[key] + " =", self.dict[key])
+                layout_aux = QHBoxLayout()
+                layout_aux.addWidget(QLabel("  " + self.dict_attributes_names[key] + " ="), 0)
+                layout_aux.addWidget(self.dict[key], 1, Qt.AlignRight)
                 layout.addRow(layout_aux)
 
         layout.addRow(self.dialog_next_button)
@@ -39,3 +36,36 @@ class NewGraphDialog(QDialog):
         layout.setLabelAlignment(Qt.AlignLeft)
 
         self.setLayout(layout)
+
+    def set_initial_layout(self):
+        layout = QFormLayout()
+        layout_aux = QHBoxLayout()
+        name = QLabel(self.dict["name"].text() + " : ")
+        attributes = QLabel("Attributes: ")
+
+        self.new_file_radio.setStyleSheet("padding: 0px 0px 0px 10px;")
+        self.insert_final_radio.setStyleSheet("padding: 0px 0px 0px 10px;")
+        name.setStyleSheet("font-weight: bold")
+        attributes.setStyleSheet("font-weight: bold")
+        attributes.setContentsMargins(0, 0, 0, 5)
+
+        layout_aux.addWidget(self.new_file_radio, 0)
+        layout_aux.addWidget(self.dict["name"], 1)
+        layout_aux.setContentsMargins(0, 5, 0, 0)
+
+        layout.addRow(QLabel("New graph will be insert in: "))
+        layout.addRow(layout_aux)
+        layout.addRow(self.insert_final_radio)
+
+        layout_aux = QHBoxLayout()
+
+        layout_aux.addWidget(name)
+        layout_aux.addWidget(self.graph_link, 1)
+        layout_aux.setContentsMargins(0, 5, 0, 0)
+
+        layout.addRow(layout_aux)
+
+        if self.dict_attributes_names is not None:
+            layout.addRow(attributes)
+
+        return layout
