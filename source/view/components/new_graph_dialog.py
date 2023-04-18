@@ -3,12 +3,13 @@ from PyQt5.QtWidgets import *
 
 
 class NewGraphDialog(QDialog):
-    def __init__(self, **kwargs):
+    def __init__(self, attributes_names, **kwargs):
         super().__init__()
 
         self.dict = kwargs
+        self.dict_attributes_names = attributes_names
 
-        self.dialog_next_button = QPushButton("Next")
+        self.dialog_next_button = QPushButton("Create")
         self.new_file_radio = QRadioButton("New single file:")
         self.insert_final_radio = QRadioButton("Insert in final of the current list")
 
@@ -26,7 +27,7 @@ class NewGraphDialog(QDialog):
                 layout.addRow(self.insert_final_radio)
             else:
                 layout_aux = QFormLayout()
-                layout_aux.addRow(" " + key + "=", self.dict[key])
+                layout_aux.addRow(" " + self.dict_attributes_names[key] + " =", self.dict[key])
                 layout.addRow(layout_aux)
 
         layout.addRow(self.dialog_next_button)
