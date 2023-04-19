@@ -15,7 +15,8 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes, change_g6_file
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes, change_g6_file, \
+    change_json_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -376,6 +377,7 @@ class ProjectController:
         file_path = str(project_information_store.file_path)
         file_path = file_path[2:-3]
         file_name, file_type = os.path.splitext(file_path)
+        graph = None
         new_g6 = ""
         replaced_line = ""
 
@@ -387,30 +389,13 @@ class ProjectController:
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
 
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs(graph)
-            self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
-            self.on_change_graph()
-
         if file_type == ".json":
-            f = open(file_path)
-            data = json.load(f)
-            graph = list(data['filtered_graphs'])
+            graph = change_json_file(file_path, new_g6, current_index)
 
-            graph[current_index] = new_g6
-
-            graph = tuple(graph)
-            project_information_store.filtered_graphs = graph
-            project_information_store.save_project()
-
-            f = open(file_path)
-            new_data = json.load(f)
-            new_json_graph = tuple(new_data['filtered_graphs'])
-
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs(new_json_graph)
-            self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
-            self.on_change_graph()
+        self.project_tool_bar.reset_combo_graphs()
+        self.project_tool_bar.fill_combo_graphs(graph)
+        self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
+        self.on_change_graph()
 
     def to_inverse_line_graph(self):
         try:
