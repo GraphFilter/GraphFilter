@@ -76,6 +76,24 @@ def create_g6_file(file_path, g6):
     file.close()
 
 
+def change_g6_file(file_path, new_g6, current_index=None):
+    file = open(file_path, "r")
+    changed_data = file.readlines()
+
+    try:
+        changed_data[current_index] = new_g6 + "\n"
+    except IndexError:
+        changed_data.append(new_g6 + "\n")
+
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.writelines(changed_data)
+
+    with open(file_path) as file:
+        graph = file.read().splitlines()
+
+    return graph
+
+
 def fix_graph_nodes(graph):
     new_dict = {}
     new_edges = []
