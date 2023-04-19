@@ -117,7 +117,8 @@ class ProjectController:
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
 
-    def delete_file(self):
+    @staticmethod
+    def delete_file():
         print("File deleted")
 
     def delete_graph(self):
@@ -285,13 +286,15 @@ class ProjectController:
         file_path = new_graph_store.file_path
 
         if graph is not None:
+            try:
+                graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
+            except AttributeError:
+                graph_g6 = graph
+
             self.visualize_graph_dock.plot_graph(graph)
 
             if new_graph_store.radio_option == 0:
-                try:
-                    create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-                except AttributeError:
-                    create_g6_file(file_path, graph)
+                create_g6_file(file_path, graph_g6)
 
                 with open(file_path) as file:
                     graph = file.read().splitlines()
@@ -301,7 +304,7 @@ class ProjectController:
             else:
                 self.edited_graph = graph
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
-                                                           f' - {nx.to_graph6_bytes(graph, header=False).decode("utf-8")}')
+                                                           f' - {graph_g6}')
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
                 self.on_save_graph()
 

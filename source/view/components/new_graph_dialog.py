@@ -44,6 +44,7 @@ class NewGraphDialog(QDialog):
         attributes = QLabel("Attributes: ")
 
         self.new_file_radio.setStyleSheet("padding: 0px 0px 0px 10px;")
+        self.new_file_radio.setChecked(True)
         self.insert_final_radio.setStyleSheet("padding: 0px 0px 0px 10px;")
         name.setStyleSheet("font-weight: bold")
         attributes.setStyleSheet("font-weight: bold")
