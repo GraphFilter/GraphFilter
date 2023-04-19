@@ -22,6 +22,7 @@ class ProjectInformationStore:
         self.method = ""
         self.graph_files = []
         self.filtered_graphs = []
+        self.file_path = ""
 
     def fill_data(self, data):
         self.project_name = data['project_name']

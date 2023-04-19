@@ -79,7 +79,6 @@ class Controller:
                     'graph_files': file_path[0],
                     'filtered_graphs': file.read().splitlines()
                 })
-
         formatted_file_path = file_path[:-1]
         project_information_store.file_path = formatted_file_path
 
