@@ -61,6 +61,15 @@ class NewGraphStore:
             dialog.dialog_next_button.setDisabled(True)
             dialog.dict['name'].setStyleSheet('background-color: #EF5350;')
 
+    @staticmethod
+    def verify_number_of_nodes(dialog):
+        if dialog.dict['n'].text().isnumeric() and int(dialog.dict['n'].text()) > 0:
+            dialog.dialog_next_button.setEnabled(True)
+            dialog.dict['n'].setStyleSheet('background-color: white;')
+        else:
+            dialog.dialog_next_button.setDisabled(True)
+            dialog.dict['n'].setStyleSheet('background-color: #EF5350;')
+
 
 class EmptyGraph(NewGraphStore):
     name = "Empty Graph"
@@ -121,6 +130,7 @@ class CycleGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: CycleGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Cycle_graph"))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -140,6 +150,7 @@ class PathGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: PathGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Path_graph"))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -159,6 +170,7 @@ class CompleteGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: CompleteGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Complete_graph"))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -178,6 +190,7 @@ class StarGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: StarGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Star_(graph_theory)"))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -197,6 +210,7 @@ class TuranGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: TuranGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Turán_graph"))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -217,6 +231,7 @@ class Grid2dGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://mathworld.wolfram.com/GridGraph.html#:~:text=A%20two-dimensional%20"
          "grid%20graph,path%20graphs%20on%20and%20vertices."))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -276,6 +291,7 @@ class RandomRegularGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Random_regular_graph"))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
