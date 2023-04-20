@@ -304,7 +304,8 @@ class RandomRegularGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Random_regular_graph"))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['d'].textEdited.connect(lambda: RandomRegularGraph.verify_dxn(dialog))
+        dialog.dict['n'].textEdited.connect(lambda: RandomRegularGraph.verify_dxn(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -312,6 +313,20 @@ class RandomRegularGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.random_regular_graph(int(dialog.dict['d'].text()), int(dialog.dict['n'].text())))
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_dxn(dialog):
+        NewGraphStore.verify_natural_number(dialog, 'd')
+        NewGraphStore.verify_natural_number(dialog, 'n')
+        if dialog.dict['d'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
+                (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0:
+            dialog.dialog_next_button.setEnabled(True)
+            dialog.dict['d'].setStyleSheet('background-color: white;')
+            dialog.dict['n'].setStyleSheet('background-color: white;')
+        else:
+            dialog.dialog_next_button.setDisabled(True)
+            dialog.dict['d'].setStyleSheet('background-color: #EF5350;')
+            dialog.dict['n'].setStyleSheet('background-color: #EF5350;')
 
 
 class RandomCograph(NewGraphStore):
