@@ -39,6 +39,11 @@ class NewGraphStore:
         QDesktopServices.openUrl(QUrl(url))
 
     @staticmethod
+    def open_new_dialog(dialog):
+        dialog.dict['name'].textEdited.connect(lambda: NewGraphStore.verify_file_name(dialog))
+        dialog.exec()
+
+    @staticmethod
     def create_graph(dialog):
         new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
         new_graph_store.set_radio_option(1 if dialog.insert_final_radio.isChecked() else 0)
@@ -46,7 +51,9 @@ class NewGraphStore:
         dialog.close()
 
     @staticmethod
-    def verify_and_save_project_name(dialog):
+    def verify_file_name(dialog):
+        if new_graph_store.radio_option == 1:
+            return
         if validate_file_name(dialog.dict['name'].text()):
             dialog.dialog_next_button.setEnabled(True)
             dialog.dict['name'].setStyleSheet('background-color: white;')
@@ -65,8 +72,8 @@ class EmptyGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: EmptyGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Null_graph"))
-        dialog.dict['name'].textEdited.connect(lambda: NewGraphStore.verify_and_save_project_name(dialog))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -84,17 +91,24 @@ class GraphFromGraph6(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Null_graph"))
-        new_graph_store.set_radio_option(1 if dialog.insert_final_radio.isChecked() else 0)
+        dialog.dict['g6'].textEdited.connect(lambda: GraphFromGraph6.verify_new_graph_params(dialog))
 
-        dialog.exec()
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
-        try:
-            new_graph_store.set_graph(nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8')))
-        except nx.NetworkXError:
-            new_graph_store.set_graph(str(dialog.dict['g6'].text()))
+        new_graph_store.set_graph(nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8')))
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_new_graph_params(dialog):
+        try:
+            nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8'))
+            dialog.dialog_next_button.setEnabled(True)
+            dialog.dict['g6'].setStyleSheet('background-color: white;')
+        except nx.NetworkXError:
+            dialog.dialog_next_button.setDisabled(True)
+            dialog.dict['g6'].setStyleSheet('background-color: #EF5350;')
 
 
 class CycleGraph(NewGraphStore):
@@ -108,7 +122,7 @@ class CycleGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Cycle_graph"))
 
-        dialog.exec()
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -126,7 +140,8 @@ class PathGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: PathGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Path_graph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -144,7 +159,8 @@ class CompleteGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: CompleteGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Complete_graph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -162,7 +178,8 @@ class StarGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: StarGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Star_(graph_theory)"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -180,7 +197,8 @@ class TuranGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: TuranGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Turán_graph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -199,7 +217,8 @@ class Grid2dGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://mathworld.wolfram.com/GridGraph.html#:~:text=A%20two-dimensional%20"
          "grid%20graph,path%20graphs%20on%20and%20vertices."))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -218,7 +237,8 @@ class TriangularLatticeGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: TriangularLatticeGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Lattice_graph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -237,7 +257,8 @@ class PetersenGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: PetersenGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Petersen_graph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -255,7 +276,8 @@ class RandomRegularGraph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Random_regular_graph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
@@ -273,7 +295,8 @@ class RandomCograph(NewGraphStore):
         dialog.dialog_next_button.clicked.connect(lambda: RandomCograph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Cograph"))
-        dialog.exec()
+
+        NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
