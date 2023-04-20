@@ -211,6 +211,7 @@ class TuranGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
         ("https://en.wikipedia.org/wiki/Turán_graph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_number_of_nodes(dialog))
+        dialog.dict['r'].textEdited.connect(lambda: TuranGraph.verify_number_of_subsets(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -218,6 +219,15 @@ class TuranGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.turan_graph(int(dialog.dict['n'].text()), int(dialog.dict['r'].text())))
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_number_of_subsets(dialog):
+        if dialog.dict['r'].text().isnumeric() and 0 < int(dialog.dict['r'].text()) <= int(dialog.dict['n'].text()):
+            dialog.dialog_next_button.setEnabled(True)
+            dialog.dict['r'].setStyleSheet('background-color: white;')
+        else:
+            dialog.dialog_next_button.setDisabled(True)
+            dialog.dict['r'].setStyleSheet('background-color: #EF5350;')
 
 
 class Grid2dGraph(NewGraphStore):
