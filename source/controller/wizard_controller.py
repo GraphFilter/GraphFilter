@@ -308,15 +308,21 @@ class WizardController:
         button.setChecked(True)
 
         if 'blank'in button.objectName():
-            self.method_page.complete = True
-            self.method_page.completeChanged.emit()
-            self.wizard_window.next_button.setToolTip('')
-            return
+            self.method_page.setFinalPage(True)
+            wizard_information_store.method = 'blank'
+            self.review_page.set_method('blank')
+            self.wizard_window.next_button.setEnabled(False)
+            #self.equations_page.completeChanged.emit()
+            #self.graph_files_page.complete = True
+            #self.conditions_page.complete = True
+            #self.wizard_window.next_button.setDisabled(True)
 
         if 'filter' in button.objectName():
+            self.method_page.setFinalPage(False)
             wizard_information_store.method = 'filter'
             self.review_page.set_method('filter')
         if 'counterexample' in button.objectName():
+            self.method_page.setFinalPage(False)
             wizard_information_store.method = 'counterexample'
             self.review_page.set_method('counterexample')
         self.method_page.complete = True

@@ -1,4 +1,5 @@
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
 from source.store import help_button_text
@@ -37,8 +38,9 @@ class MethodPage(QWizardPage):
         self.counter_example_button.setCheckable(True)
         self.counter_example_button.setObjectName('counterexample')
 
-        self.blank_project.setText("  Blank project \n "
+        self.blank_project.setText(" Blank project \n "
                                    " Drawn your own graphs")
+        
         self.blank_project.setIcon(Icon("edit"))
         self.blank_project.setMinimumHeight(50)
         self.blank_project.setMinimumWidth(100)
