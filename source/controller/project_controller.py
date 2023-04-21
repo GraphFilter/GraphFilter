@@ -121,13 +121,10 @@ class ProjectController:
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
 
-    def delete_file(self):
-        print("File deleted")
 
     def delete_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
-        file_path = str(project_information_store.file_path)
-        file_path = file_path[2:-3]
+        file_path = project_information_store.file_path[0]
         file_name, file_type = os.path.splitext(file_path)
 
         if current_index > 0:
@@ -319,18 +316,9 @@ class ProjectController:
         self.visualize_graph_dock.plot_graph(graph)
 
     def tree_context_menu(self):
-        #delete_menu = QMenu("Delete")
-        #delete_file = delete_menu.addAction(self.tree_file_dock.delete_file)
-        #delete_file = delete_menu.addAction("delete File")
-        #delete_file.triggered.connect(self.delete_tree_file)
-        #delete_empty_folder = delete_menu.addAction(self.tree_file_dock.delete_empty_folder)
-        #delete_empty_folder = delete_menu.addAction("Delete folder")
-        #delete_empty_folder.triggered.connect(self.delete_tree_file)
-
         self.tree_file_dock.menu.clear()
         self.tree_file_dock.menu.addAction(self.tree_file_dock.load_file)
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
-        #self.tree_file_dock.menu.addMenu(delete_menu)
         self.tree_file_dock.menu.addAction(self.tree_file_dock.delete_file)
         self.tree_file_dock.delete_file.triggered.connect(self.delete_tree_file)
         cursor = QCursor()
@@ -363,7 +351,7 @@ class ProjectController:
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
-        project_information_store.file_path = file_path + "///"
+        project_information_store.file_path = file_path
         
         type_item = self.tree_file_dock.model.type(index)
         if type_item == "json File":
@@ -412,8 +400,7 @@ class ProjectController:
     def on_save_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
 
-        file_path = str(project_information_store.file_path)
-        file_path = file_path[2:-3]
+        file_path = project_information_store.file_path[0]
         file_name , file_type = os.path.splitext(file_path)
         new_g6 = ""
         replaced_line = ""
