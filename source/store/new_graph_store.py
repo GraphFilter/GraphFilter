@@ -359,7 +359,7 @@ class RandomRegularGraph(NewGraphStore):
 
 class RandomCograph(NewGraphStore):
     name = "Random Cograph"
-    dict_attributes_names = {"n": "Order of cograph (n)", "conditions": "0 < n <= 60"}
+    dict_attributes_names = {"n": "K value for a graph with 2^k nodes (k)", "conditions": "0 < k <= 60"}
 
     @staticmethod
     def open_dialog():
