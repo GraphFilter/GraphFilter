@@ -375,6 +375,29 @@ class RandomCograph(NewGraphStore):
         NewGraphStore.create_graph(dialog)
 
 
+class CompleteBipartiteGraph(NewGraphStore):
+    name = "Complete Bipartite Graph"
+    dict_attributes_names = {"m": "Number of nodes for set A", "n": "Number of nodes for set B"}
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(CompleteBipartiteGraph.dict_attributes_names,
+                                name=CompleteBipartiteGraph.name, m='', n='')
+        dialog.create_button.clicked.connect(lambda: CompleteBipartiteGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Complete_bipartite_graph"))
+        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+
+        NewGraphStore.open_new_dialog(dialog)
+
+    @staticmethod
+    def create_graph(dialog):
+        new_graph_store.set_graph(nx.complete_bipartite_graph(int(dialog.dict['m'].text()),
+                                                              int(dialog.dict['n'].text())))
+        NewGraphStore.create_graph(dialog)
+
+
 new_graph_store = NewGraphStore()
 
 new_graph_dict_name = new_graph_store.dic_name_new_graph
