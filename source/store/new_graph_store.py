@@ -95,14 +95,14 @@ class EmptyGraph(NewGraphStore):
 
 class GraphFromGraph6(NewGraphStore):
     name = "Graph from graph6"
-    dict_attributes_names = {"name": "https://en.wikipedia.org/wiki/Null_graph", "g6": "Graph from g6"}
+    dict_attributes_names = {"g6": "Graph from g6"}
 
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(GraphFromGraph6.dict_attributes_names, name=GraphFromGraph6.name, g6='')
         dialog.create_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
-                                          ("https://en.wikipedia.org/wiki/Null_graph"))
+                                          ("http://users.cecs.anu.edu.au/~bdm/data/formats.txt"))
         dialog.dict['g6'].textEdited.connect(lambda: GraphFromGraph6.verify_new_graph_params(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
@@ -242,8 +242,7 @@ class Grid2dGraph(NewGraphStore):
         dialog = NewGraphDialog(Grid2dGraph.dict_attributes_names, name=Grid2dGraph.name, m='', n='')
         dialog.create_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
-                                          ("https://mathworld.wolfram.com/GridGraph.html#:~:text=A%20two-dimensional%20"
-                                           "grid%20graph,path%20graphs%20on%20and%20vertices."))
+                                          ("https://en.wikipedia.org/wiki/Lattice_graph"))
         dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
 
@@ -265,7 +264,8 @@ class TriangularLatticeGraph(NewGraphStore):
                                 name=TriangularLatticeGraph.name, m='', n='')
         dialog.create_button.clicked.connect(lambda: TriangularLatticeGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
-                                          ("https://en.wikipedia.org/wiki/Lattice_graph"))
+                                          ("https://networkx.org/documentation/stable/reference/generated/networkx."
+                                           "generators.lattice.triangular_lattice_graph.html"))
         dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
 
@@ -306,7 +306,7 @@ class RandomRegularGraph(NewGraphStore):
         dialog = NewGraphDialog(RandomRegularGraph.dict_attributes_names, name=RandomRegularGraph.name, d='', n='')
         dialog.create_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
-                                          ("https://en.wikipedia.org/wiki/Random_regular_graph"))
+                                          ("https://en.wikipedia.org/wiki/Regular_graph"))
         dialog.dict['d'].textEdited.connect(lambda: RandomRegularGraph.verify_dxn(dialog))
         dialog.dict['n'].textEdited.connect(lambda: RandomRegularGraph.verify_dxn(dialog))
 
