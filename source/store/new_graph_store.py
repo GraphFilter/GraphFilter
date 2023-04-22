@@ -225,7 +225,8 @@ class TuranGraph(NewGraphStore):
 
     @staticmethod
     def verify_number_of_subsets(dialog):
-        if dialog.dict['r'].text().isnumeric() and 0 < int(dialog.dict['r'].text()) <= int(dialog.dict['n'].text()):
+        if dialog.dict['r'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
+                0 < int(dialog.dict['r'].text()) <= int(dialog.dict['n'].text()):
             dialog.create_button.setEnabled(True)
             dialog.dict['r'].setStyleSheet('background-color: white;')
         else:
