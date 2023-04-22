@@ -54,23 +54,23 @@ class NewGraphStore:
     def verify_file_name(dialog):
         new_graph_store.set_radio_option(1 if dialog.insert_final_radio.isChecked() else 0)
         if new_graph_store.radio_option == 1:
-            dialog.dialog_next_button.setEnabled(True)
+            dialog.create_button.setEnabled(True)
             dialog.dict['name'].setStyleSheet('background-color: white;')
             return
         if validate_file_name(dialog.dict['name'].text()):
-            dialog.dialog_next_button.setEnabled(True)
+            dialog.create_button.setEnabled(True)
             dialog.dict['name'].setStyleSheet('background-color: white;')
         else:
-            dialog.dialog_next_button.setDisabled(True)
+            dialog.create_button.setDisabled(True)
             dialog.dict['name'].setStyleSheet('background-color: #EF5350;')
 
     @staticmethod
     def verify_natural_number(dialog, param):
         if dialog.dict[param].text().isnumeric() and int(dialog.dict[param].text()) > 0:
-            dialog.dialog_next_button.setEnabled(True)
+            dialog.create_button.setEnabled(True)
             dialog.dict[param].setStyleSheet('background-color: white;')
         else:
-            dialog.dialog_next_button.setDisabled(True)
+            dialog.create_button.setDisabled(True)
             dialog.dict[param].setStyleSheet('background-color: #EF5350;')
 
 
@@ -81,7 +81,7 @@ class EmptyGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(EmptyGraph.dict_attributes_names, name=EmptyGraph.name)
-        dialog.dialog_next_button.clicked.connect(lambda: EmptyGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: EmptyGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Null_graph"))
 
@@ -100,7 +100,7 @@ class GraphFromGraph6(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(GraphFromGraph6.dict_attributes_names, name=GraphFromGraph6.name, g6='')
-        dialog.dialog_next_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Null_graph"))
         dialog.dict['g6'].textEdited.connect(lambda: GraphFromGraph6.verify_new_graph_params(dialog))
@@ -116,10 +116,10 @@ class GraphFromGraph6(NewGraphStore):
     def verify_new_graph_params(dialog):
         try:
             nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8'))
-            dialog.dialog_next_button.setEnabled(True)
+            dialog.create_button.setEnabled(True)
             dialog.dict['g6'].setStyleSheet('background-color: white;')
         except nx.NetworkXError:
-            dialog.dialog_next_button.setDisabled(True)
+            dialog.create_button.setDisabled(True)
             dialog.dict['g6'].setStyleSheet('background-color: #EF5350;')
 
 
@@ -130,7 +130,7 @@ class CycleGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(CycleGraph.dict_attributes_names, name=CycleGraph.name, n='')
-        dialog.dialog_next_button.clicked.connect(lambda: CycleGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: CycleGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Cycle_graph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
@@ -150,7 +150,7 @@ class PathGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(PathGraph.dict_attributes_names, name=PathGraph.name, n='')
-        dialog.dialog_next_button.clicked.connect(lambda: PathGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: PathGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Path_graph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
@@ -170,7 +170,7 @@ class CompleteGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(CompleteGraph.dict_attributes_names, name=CompleteGraph.name, n='')
-        dialog.dialog_next_button.clicked.connect(lambda: CompleteGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: CompleteGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Complete_graph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
@@ -190,7 +190,7 @@ class StarGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(StarGraph.dict_attributes_names, name=StarGraph.name, n='')
-        dialog.dialog_next_button.clicked.connect(lambda: StarGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: StarGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Star_(graph_theory)"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
@@ -210,7 +210,7 @@ class TuranGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(TuranGraph.dict_attributes_names, name=TuranGraph.name, n='', r='')
-        dialog.dialog_next_button.clicked.connect(lambda: TuranGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: TuranGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Turán_graph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
@@ -226,10 +226,10 @@ class TuranGraph(NewGraphStore):
     @staticmethod
     def verify_number_of_subsets(dialog):
         if dialog.dict['r'].text().isnumeric() and 0 < int(dialog.dict['r'].text()) <= int(dialog.dict['n'].text()):
-            dialog.dialog_next_button.setEnabled(True)
+            dialog.create_button.setEnabled(True)
             dialog.dict['r'].setStyleSheet('background-color: white;')
         else:
-            dialog.dialog_next_button.setDisabled(True)
+            dialog.create_button.setDisabled(True)
             dialog.dict['r'].setStyleSheet('background-color: #EF5350;')
 
 
@@ -240,7 +240,7 @@ class Grid2dGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(Grid2dGraph.dict_attributes_names, name=Grid2dGraph.name, m='', n='')
-        dialog.dialog_next_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://mathworld.wolfram.com/GridGraph.html#:~:text=A%20two-dimensional%20"
                                            "grid%20graph,path%20graphs%20on%20and%20vertices."))
@@ -263,7 +263,7 @@ class TriangularLatticeGraph(NewGraphStore):
     def open_dialog():
         dialog = NewGraphDialog(TriangularLatticeGraph.dict_attributes_names,
                                 name=TriangularLatticeGraph.name, m='', n='')
-        dialog.dialog_next_button.clicked.connect(lambda: TriangularLatticeGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: TriangularLatticeGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Lattice_graph"))
         dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
@@ -285,7 +285,7 @@ class PetersenGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(PetersenGraph.dict_attributes_names, name=PetersenGraph.name)
-        dialog.dialog_next_button.clicked.connect(lambda: PetersenGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: PetersenGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Petersen_graph"))
 
@@ -304,7 +304,7 @@ class RandomRegularGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(RandomRegularGraph.dict_attributes_names, name=RandomRegularGraph.name, d='', n='')
-        dialog.dialog_next_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: RandomRegularGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Random_regular_graph"))
         dialog.dict['d'].textEdited.connect(lambda: RandomRegularGraph.verify_dxn(dialog))
@@ -321,11 +321,11 @@ class RandomRegularGraph(NewGraphStore):
     def verify_dxn(dialog):
         if dialog.dict['d'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
                 (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0:
-            dialog.dialog_next_button.setEnabled(True)
+            dialog.create_button.setEnabled(True)
             dialog.dict['d'].setStyleSheet('background-color: white;')
             dialog.dict['n'].setStyleSheet('background-color: white;')
         else:
-            dialog.dialog_next_button.setDisabled(True)
+            dialog.create_button.setDisabled(True)
             dialog.dict['d'].setStyleSheet('background-color: #EF5350;')
             dialog.dict['n'].setStyleSheet('background-color: #EF5350;')
 
@@ -337,7 +337,7 @@ class RandomCograph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(RandomCograph.dict_attributes_names, name=RandomCograph.name, n='')
-        dialog.dialog_next_button.clicked.connect(lambda: RandomCograph.create_graph(dialog))
+        dialog.create_button.clicked.connect(lambda: RandomCograph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Cograph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))

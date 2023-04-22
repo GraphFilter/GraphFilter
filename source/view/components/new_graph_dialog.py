@@ -9,10 +9,12 @@ class NewGraphDialog(QDialog):
         self.dict = kwargs
         self.dict_attributes_names = attributes_names
 
-        self.dialog_next_button = QPushButton("Create")
+        self.create_button = QPushButton("Create")
         self.new_file_radio = QRadioButton("New single file:")
         self.insert_final_radio = QRadioButton("Insert in final of the current list")
         self.graph_link = QPushButton("Link to definition")
+
+        self.create_button.setDefault(True)
 
         self.set_content_attributes()
 
@@ -30,7 +32,7 @@ class NewGraphDialog(QDialog):
                 layout_aux.addWidget(self.dict[key], 1, Qt.AlignRight)
                 layout.addRow(layout_aux)
 
-        layout.addRow(self.dialog_next_button)
+        layout.addRow(self.create_button)
 
         layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
         layout.setLabelAlignment(Qt.AlignLeft)
