@@ -66,7 +66,7 @@ class NewGraphStore:
 
     @staticmethod
     def verify_natural_number(dialog, param):
-        if dialog.dict[param].text().isnumeric() and int(dialog.dict[param].text()) > 0:
+        if dialog.dict[param].text().isnumeric() and 0 < int(dialog.dict[param].text()) <= 60:
             dialog.create_button.setEnabled(True)
             dialog.dict[param].setStyleSheet('background-color: white;')
         else:
