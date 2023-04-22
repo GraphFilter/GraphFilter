@@ -91,7 +91,7 @@ class NewGraphStore:
 
 class EmptyGraph(NewGraphStore):
     name = "Empty Graph"
-    dict_attributes_names = None
+    dict_attributes_names = {}
 
     @staticmethod
     def open_dialog():
@@ -111,7 +111,7 @@ class EmptyGraph(NewGraphStore):
 
 class GraphFromGraph6(NewGraphStore):
     name = "Graph from graph6"
-    dict_attributes_names = {"g6": "Graph from g6"}
+    dict_attributes_names = {"g6": "Graph from g6", "conditions": "graph6"}
 
     @staticmethod
     def open_dialog():
@@ -143,7 +143,7 @@ class GraphFromGraph6(NewGraphStore):
 
 class CycleGraph(NewGraphStore):
     name = "Cycle Graph"
-    dict_attributes_names = {"n": "Number of nodes"}
+    dict_attributes_names = {"n": "Number of nodes (n)", "conditions": "0 < n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -163,7 +163,7 @@ class CycleGraph(NewGraphStore):
 
 class PathGraph(NewGraphStore):
     name = "Path Graph"
-    dict_attributes_names = {"n": "Number of nodes"}
+    dict_attributes_names = {"n": "Number of nodes (n)", "conditions": "0 < n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -183,7 +183,7 @@ class PathGraph(NewGraphStore):
 
 class CompleteGraph(NewGraphStore):
     name = "Complete Graph"
-    dict_attributes_names = {"n": "Number of nodes"}
+    dict_attributes_names = {"n": "Number of nodes (n)", "conditions": "0 < n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -203,7 +203,7 @@ class CompleteGraph(NewGraphStore):
 
 class StarGraph(NewGraphStore):
     name = "Star Graph"
-    dict_attributes_names = {"n": "Number of leaves"}
+    dict_attributes_names = {"n": "Number of leaves (n)", "conditions": "0 < n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -223,7 +223,8 @@ class StarGraph(NewGraphStore):
 
 class TuranGraph(NewGraphStore):
     name = "Turan Graph"
-    dict_attributes_names = {"n": "Number of nodes", "r": "Number of subsets"}
+    dict_attributes_names = {"n": "Number of nodes (n)", "r": "Number of subsets (r)", "conditions": "0 < r <= n "
+                                                                                                     "& 1 < n <=60"}
 
     @staticmethod
     def open_dialog():
@@ -257,7 +258,7 @@ class TuranGraph(NewGraphStore):
 
 class Grid2dGraph(NewGraphStore):
     name = "Grid 2d Graph"
-    dict_attributes_names = {"m": "Number of rows", "n": "Number of columns"}
+    dict_attributes_names = {"m": "Number of rows (m)", "n": "Number of columns (n)", "conditions": "0 < m, n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -278,7 +279,7 @@ class Grid2dGraph(NewGraphStore):
 
 class TriangularLatticeGraph(NewGraphStore):
     name = "Triangular Lattice Graph"
-    dict_attributes_names = {"m": "Number of rows", "n": "Number of columns"}
+    dict_attributes_names = {"m": "Number of rows (m)", "n": "Number of columns (n)", "conditions": "0 < m,n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -302,7 +303,7 @@ class TriangularLatticeGraph(NewGraphStore):
 
 class PetersenGraph(NewGraphStore):
     name = "Petersen Graph"
-    dict_attributes_names = None
+    dict_attributes_names = {}
 
     @staticmethod
     def open_dialog():
@@ -322,7 +323,8 @@ class PetersenGraph(NewGraphStore):
 
 class RandomRegularGraph(NewGraphStore):
     name = "Random Regular Graph"
-    dict_attributes_names = {"d": "Degree of nodes", "n": "Number of nodes"}
+    dict_attributes_names = {"d": "Degree of nodes (d)", "n": "Number of nodes (n)", "conditions": "0 < d,n <= 60 "
+                                                                                                   "& dxn = even"}
 
     @staticmethod
     def open_dialog():
@@ -357,7 +359,7 @@ class RandomRegularGraph(NewGraphStore):
 
 class RandomCograph(NewGraphStore):
     name = "Random Cograph"
-    dict_attributes_names = {"n": "Order of cograph"}
+    dict_attributes_names = {"n": "Order of cograph (n)", "conditions": "0 < n <= 60"}
 
     @staticmethod
     def open_dialog():
@@ -377,7 +379,8 @@ class RandomCograph(NewGraphStore):
 
 class CompleteBipartiteGraph(NewGraphStore):
     name = "Complete Bipartite Graph"
-    dict_attributes_names = {"m": "Number of nodes for set A", "n": "Number of nodes for set B"}
+    dict_attributes_names = {"m": "Number of nodes for set A (m)", "n": "Number of nodes for set B (n)",
+                             "conditions": "0 < m,n <= 60"}
 
     @staticmethod
     def open_dialog():

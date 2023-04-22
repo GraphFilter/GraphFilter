@@ -22,6 +22,8 @@ class NewGraphDialog(QDialog):
     def set_content_attributes(self):
         self.setWindowTitle("New Graph")
         layout = None
+        conditions = QLabel("Conditions: ")
+        conditions.setStyleSheet("font-weight: bold;")
 
         for key, value in self.dict.items():
             self.dict[key] = QLineEdit(value)
@@ -32,6 +34,13 @@ class NewGraphDialog(QDialog):
                 layout_aux.addWidget(QLabel("  " + self.dict_attributes_names[key] + " ="), 0)
                 layout_aux.addWidget(self.dict[key], 1, Qt.AlignRight)
                 layout.addRow(layout_aux)
+
+        if 'conditions' in self.dict_attributes_names.keys():
+            layout_aux = QHBoxLayout()
+            layout_aux.addWidget(conditions, 0)
+            layout_aux.addWidget(QLabel(self.dict_attributes_names["conditions"]), 1)
+            layout_aux.setContentsMargins(10, 5, 0, 5)
+            layout.addRow(layout_aux)
 
         layout.addRow(self.create_button)
 
@@ -69,7 +78,7 @@ class NewGraphDialog(QDialog):
 
         layout.addRow(layout_aux)
 
-        if self.dict_attributes_names is not None:
+        if len(self.dict_attributes_names) != 0:
             layout.addRow(attributes)
 
         return layout
