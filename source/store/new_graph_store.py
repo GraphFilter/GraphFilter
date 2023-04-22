@@ -185,7 +185,7 @@ class CompleteGraph(NewGraphStore):
 
 class StarGraph(NewGraphStore):
     name = "Star Graph"
-    dict_attributes_names = {"n": "Number of nodes"}
+    dict_attributes_names = {"n": "Number of leaves"}
 
     @staticmethod
     def open_dialog():
