@@ -53,6 +53,8 @@ class NewGraphStore:
     @staticmethod
     def verify_file_name(dialog):
         new_graph_store.set_radio_option(1 if dialog.insert_final_radio.isChecked() else 0)
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
         if new_graph_store.radio_option == 1:
             dialog.create_button.setEnabled(True)
             dialog.dict['name'].setStyleSheet('background-color: white;')
@@ -66,12 +68,25 @@ class NewGraphStore:
 
     @staticmethod
     def verify_natural_number(dialog, param):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
         if dialog.dict[param].text().isnumeric() and 0 < int(dialog.dict[param].text()) <= 60:
             dialog.create_button.setEnabled(True)
             dialog.dict[param].setStyleSheet('background-color: white;')
         else:
             dialog.create_button.setDisabled(True)
             dialog.dict[param].setStyleSheet('background-color: #EF5350;')
+
+    @staticmethod
+    def is_other_params_empty(dialog):
+        if new_graph_store.radio_option == 0 and dialog.dict['name'] == "":
+            return True
+        for key, value in dialog.dict.items():
+            if key != 'name' and value.text() == "":
+                dialog.create_button.setDisabled(True)
+                return True
+
+        return False
 
 
 class EmptyGraph(NewGraphStore):
@@ -81,6 +96,7 @@ class EmptyGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(EmptyGraph.dict_attributes_names, name=EmptyGraph.name)
+        dialog.create_button.setEnabled(True)
         dialog.create_button.clicked.connect(lambda: EmptyGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Null_graph"))
@@ -103,24 +119,26 @@ class GraphFromGraph6(NewGraphStore):
         dialog.create_button.clicked.connect(lambda: GraphFromGraph6.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("http://users.cecs.anu.edu.au/~bdm/data/formats.txt"))
-        dialog.dict['g6'].textEdited.connect(lambda: GraphFromGraph6.verify_new_graph_params(dialog))
+        dialog.dict['g6'].textEdited.connect(lambda: GraphFromGraph6.reset_line_edit(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
-        new_graph_store.set_graph(nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8')))
+        try:
+            new_graph_store.set_graph(nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8')))
+        except nx.NetworkXError:
+            dialog.dict['g6'].setStyleSheet('background-color: #EF5350;')
+            return
+
         NewGraphStore.create_graph(dialog)
 
     @staticmethod
-    def verify_new_graph_params(dialog):
-        try:
-            nx.from_graph6_bytes(str(dialog.dict['g6'].text()).encode('utf-8'))
-            dialog.create_button.setEnabled(True)
-            dialog.dict['g6'].setStyleSheet('background-color: white;')
-        except nx.NetworkXError:
-            dialog.create_button.setDisabled(True)
-            dialog.dict['g6'].setStyleSheet('background-color: #EF5350;')
+    def reset_line_edit(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        dialog.create_button.setEnabled(True)
+        dialog.dict['g6'].setStyleSheet('background-color: white;')
 
 
 class CycleGraph(NewGraphStore):
@@ -214,6 +232,7 @@ class TuranGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Turán_graph"))
         dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['n'].textEdited.connect(lambda: TuranGraph.verify_number_of_subsets(dialog))
         dialog.dict['r'].textEdited.connect(lambda: TuranGraph.verify_number_of_subsets(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
@@ -225,6 +244,8 @@ class TuranGraph(NewGraphStore):
 
     @staticmethod
     def verify_number_of_subsets(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
         if dialog.dict['r'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
                 0 < int(dialog.dict['r'].text()) <= int(dialog.dict['n'].text()):
             dialog.create_button.setEnabled(True)
@@ -286,6 +307,7 @@ class PetersenGraph(NewGraphStore):
     @staticmethod
     def open_dialog():
         dialog = NewGraphDialog(PetersenGraph.dict_attributes_names, name=PetersenGraph.name)
+        dialog.create_button.setEnabled(True)
         dialog.create_button.clicked.connect(lambda: PetersenGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Petersen_graph"))
@@ -320,6 +342,8 @@ class RandomRegularGraph(NewGraphStore):
 
     @staticmethod
     def verify_dxn(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
         if dialog.dict['d'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
                 (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0:
             dialog.create_button.setEnabled(True)

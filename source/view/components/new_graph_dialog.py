@@ -15,6 +15,7 @@ class NewGraphDialog(QDialog):
         self.graph_link = QPushButton("Link to definition")
 
         self.create_button.setDefault(True)
+        self.create_button.setDisabled(True)
 
         self.set_content_attributes()
 
