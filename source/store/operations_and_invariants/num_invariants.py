@@ -762,6 +762,23 @@ class SmallestEigenDL(InvariantNum):
         return Utils.print_numeric(SmallestEigenDL.calculate(graph), precision)
 
 
+class SmallestEigenDQ(InvariantNum):
+    name = "Smallest DQ-eigenvalue"
+    code = "\u03bb Q\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.SignlessLaplacianDistanceMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenDQ.calculate(graph), precision)
+
+
 class AdjacencyEnergy(InvariantNum):
     name = 'A-Energy'
     code = 'EA'
