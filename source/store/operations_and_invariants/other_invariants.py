@@ -157,6 +157,29 @@ class SignlessLaplacianDistanceMatrix(InvariantOther):
         return Utils.print_matrix(SignlessLaplacianDistanceMatrix.calculate(graph), precision)
 
 
+class EccentricityMatrix(InvariantOther):
+    name = "Eccentricity Matrix"
+    type = 'matrix'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            size = len(graph.nodes)
+            eccentricity_matrix = np.zeros((size, size))
+            for i in range(size):
+                for j in range(size):
+                    min_eccentricity = min(nx.eccentricity(graph, i), nx.eccentricity(graph, j))
+                    if min_eccentricity == nx.shortest_path_length(graph, i, j):
+                        eccentricity_matrix[i][j] = min_eccentricity
+            return eccentricity_matrix
+
+        return 'Disconnected graph'
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_matrix(EccentricityMatrix.calculate(graph), precision)
+
+
 class AdjacencySpectrum(InvariantOther):
     name = "Adjacency Spectrum"
     type = 'list'
@@ -397,6 +420,7 @@ class SignlessLaplacianDistanceEigenvectors(InvariantOther):
     def print(graph, precision):
         return Utils.print_eigenvectors_and_eigenvalues(SignlessLaplacianEigenvectors.calculate(graph), precision)
 
+
 class MaximumClique(InvariantOther):
     name = "Maximum Clique"
     type = 'set'
@@ -548,4 +572,3 @@ class Transmission(InvariantOther):
     @staticmethod
     def print(graph, precision):
         return Utils.print_dict(Transmission.calculate(graph), precision)
-

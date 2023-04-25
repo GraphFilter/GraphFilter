@@ -57,6 +57,8 @@ class UtilsToInvariants:
 
     @staticmethod
     def print_matrix(value, precision):
+        if type(value) is str:
+            return value
         return np.array2string(value, precision=precision, separator=" ")
 
     @staticmethod
