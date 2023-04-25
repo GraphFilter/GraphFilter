@@ -136,7 +136,7 @@ class UtilsToInvariants:
 
     @staticmethod
     def smallest_eigen(matrix: np.ndarray):
-        return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[matrix.shape[0] - 1]
+        return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[0]
 
     @staticmethod
     def eigenvectors(matrix: np.ndarray):
