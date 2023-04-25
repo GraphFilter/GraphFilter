@@ -471,6 +471,23 @@ class Largest1EigenDQ(InvariantNum):
         return Utils.print_numeric(Largest1EigenDQ.calculate(graph), precision)
 
 
+class Largest1EigenE(InvariantNum):
+    name = "Largest E-eigenvalue"
+    code = "\u03b5\u2081"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.LargestEigen(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest1EigenE.calculate(graph), precision)
+
+
 class Largest2EigenA(InvariantNum):
     name = "2th Largest A-eigenvalue"
     code = "\u03bb\u2082"
