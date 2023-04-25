@@ -609,6 +609,23 @@ class Largest2EigenDQ(InvariantNum):
         return Utils.print_numeric(Largest2EigenDQ.calculate(graph), precision)
 
 
+class Largest2EigenE(InvariantNum):
+    name = "2th Largest E-eigenvalue"
+    code = "\u03b5\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.SecondLargestEigen(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest2EigenE.calculate(graph), precision)
+
+
 class AdjacencyEnergy(InvariantNum):
     name = 'A-Energy'
     code = 'EA'
