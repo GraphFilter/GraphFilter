@@ -116,14 +116,11 @@ class WizardController:
     def connect_method_page_events(self):
         self.method_page.filter_button.setChecked(False)
         self.method_page.counter_example_button.setChecked(False)
-        self.method_page.blank_project.setChecked(False)
+        self.method_page.blank_project.setChecked(True)
 
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.blank_project.clicked.connect(self.on_button_method_clicked)
-
-    def test_blank(self):
-        print("okay")
 
     def connect_graph_files_page_events(self):
 
@@ -311,12 +308,7 @@ class WizardController:
             self.method_page.setFinalPage(True)
             wizard_information_store.method = 'blank'
             self.review_page.set_method('blank')
-            self.wizard_window.next_button.setEnabled(False)
-            #self.equations_page.completeChanged.emit()
-            #self.graph_files_page.complete = True
-            #self.conditions_page.complete = True
-            #self.wizard_window.next_button.setDisabled(True)
-
+            self.wizard_window.next_button.setDisabled(True)
         if 'filter' in button.objectName():
             self.method_page.setFinalPage(False)
             wizard_information_store.method = 'filter'

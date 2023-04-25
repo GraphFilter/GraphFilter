@@ -103,7 +103,10 @@ class Controller:
 
     def start_filter(self):
         update_project_store()
-        self.filter_controller.start_filter()
+        if project_information_store.method == 'blank':
+            project_information_store.filtered_graphs = "?"
+        else:
+            self.filter_controller.start_filter()
         self.finish_filter()
 
     def show_project_window(self):
