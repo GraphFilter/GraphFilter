@@ -69,6 +69,8 @@ class UtilsToInvariants:
     def print_eigenvectors_and_eigenvalues(value, precision):
         vectors = value[1]
         spectrum = ''
+        if type(value) is str:
+            return value
         for i, x in enumerate(value[0]):
             if UtilsToInvariants.is_integer(x):
                 spectrum = spectrum + f"{int(x)} \u2192 V{i} ={vectors[:][i].tolist()} \n"

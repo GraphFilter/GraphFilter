@@ -437,6 +437,22 @@ class SignlessLaplacianDistanceEigenvectors(InvariantOther):
         return Utils.print_eigenvectors_and_eigenvalues(SignlessLaplacianEigenvectors.calculate(graph), precision)
 
 
+class EccentricityEigenvectors(InvariantOther):
+    name = 'Eccentricity Eigenvectors'
+    type = 'list_and_matrix'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.Eigenvectors(EccentricityMatrix.calculate(graph))
+        else:
+            return 'Disconnected graph'
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_eigenvectors_and_eigenvalues(EccentricityEigenvectors.calculate(graph), precision)
+
+
 class MaximumClique(InvariantOther):
     name = "Maximum Clique"
     type = 'set'
