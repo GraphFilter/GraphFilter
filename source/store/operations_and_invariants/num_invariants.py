@@ -730,6 +730,23 @@ class SignlessLaplacianDistanceEnergy(InvariantNum):
         return Utils.print_numeric(SignlessLaplacianDistanceEnergy.calculate(graph), precision)
 
 
+class EccentricityEnergy(InvariantNum):
+    name = 'E-Energy'
+    code = 'E\u03b5'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.Energy(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(EccentricityEnergy.calculate(graph), precision)
+
+
 class AlgebraicConnectivity(InvariantNum):
     name = 'Algebraic connectivity'
     code = 'ac'
