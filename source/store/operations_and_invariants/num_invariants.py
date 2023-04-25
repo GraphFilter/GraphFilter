@@ -1172,3 +1172,19 @@ class DeterminantNormalizedLaplacian(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(DeterminantNormalizedLaplacian.calculate(graph), precision)
+
+
+class DeterminantEccentricityMatrix(InvariantNum):
+    name = 'Determinant E'
+    code = 'det\u03b5'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.approx_to_int(la.det(inv_other.EccentricityMatrix.calculate(graph)))
+        return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(DeterminantEccentricityMatrix.calculate(graph), precision)
