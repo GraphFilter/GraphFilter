@@ -295,6 +295,22 @@ class SignlessLaplacianDistanceSpectrum(InvariantOther):
         return Utils.print_list(SignlessLaplacianDistanceSpectrum.calculate(graph), precision)
 
 
+class EccentricitySpectrum(InvariantOther):
+    name = "Eccentricity Spectrum"
+    type = 'list'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.Spectrum(EccentricityMatrix.calculate(graph))
+        else:
+            return 'Disconnected graph'
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_list(EccentricitySpectrum.calculate(graph), precision)
+
+
 class DegreeSequence(InvariantOther):
     name = "Degree Sequence"
     type = 'list'

@@ -79,6 +79,8 @@ class UtilsToInvariants:
     @staticmethod
     def print_list(value, precision):
         values = []
+        if type(value) is str:
+            return value
         for x in value:
             if UtilsToInvariants.is_integer(x):
                 values.append(int(x))
