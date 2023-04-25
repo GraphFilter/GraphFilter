@@ -651,7 +651,24 @@ class SmallestEigenA(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.EccentricityMatrix.calculate(graph))
+            return Utils.smallest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenA.calculate(graph), precision)
+
+
+class SmallestEigenL(InvariantNum):
+    name = "Smallest L-eigenvalue"
+    code = "\u03bc\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.LaplacianMatrix.calculate(graph))
         else:
             return 10 ** 10
 
