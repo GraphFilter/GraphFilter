@@ -67,10 +67,10 @@ class NewGraphStore:
             dialog.dict['name'].setStyleSheet('background-color: #EF5350;')
 
     @staticmethod
-    def verify_natural_number(dialog, param):
+    def verify_natural_number(dialog, param, limit_max=60):
         if NewGraphStore.is_other_params_empty(dialog):
             return
-        if dialog.dict[param].text().isnumeric() and 0 < int(dialog.dict[param].text()) <= 60:
+        if dialog.dict[param].text().isnumeric() and 1 <= int(dialog.dict[param].text()) <= limit_max:
             dialog.create_button.setEnabled(True)
             dialog.dict[param].setStyleSheet('background-color: white;')
         else:
@@ -111,7 +111,7 @@ class EmptyGraph(NewGraphStore):
 
 class GraphFromGraph6(NewGraphStore):
     name = "Graph from graph6"
-    dict_attributes_names = {"g6": "Graph from g6", "conditions": "graph6"}
+    dict_attributes_names = {"g6": "Graph from g6", "conditions": "graph6 code"}
 
     @staticmethod
     def open_dialog():
@@ -143,7 +143,7 @@ class GraphFromGraph6(NewGraphStore):
 
 class CycleGraph(NewGraphStore):
     name = "Cycle Graph"
-    dict_attributes_names = {"n": "Number of nodes (n)", "conditions": "0 < n <= 60"}
+    dict_attributes_names = {"n": "Number of nodes, n", "conditions": "1 \u2264 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -163,7 +163,7 @@ class CycleGraph(NewGraphStore):
 
 class PathGraph(NewGraphStore):
     name = "Path Graph"
-    dict_attributes_names = {"n": "Number of nodes (n)", "conditions": "0 < n <= 60"}
+    dict_attributes_names = {"n": "Number of nodes, n", "conditions": "1 \u2264 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -183,7 +183,7 @@ class PathGraph(NewGraphStore):
 
 class CompleteGraph(NewGraphStore):
     name = "Complete Graph"
-    dict_attributes_names = {"n": "Number of nodes (n)", "conditions": "0 < n <= 60"}
+    dict_attributes_names = {"n": "Number of nodes, n", "conditions": "1 \u2264 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -203,7 +203,7 @@ class CompleteGraph(NewGraphStore):
 
 class StarGraph(NewGraphStore):
     name = "Star Graph"
-    dict_attributes_names = {"n": "Number of leaves (n)", "conditions": "0 < n <= 60"}
+    dict_attributes_names = {"n": "Number of leaves, n", "conditions": "1 \u2264 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -223,8 +223,8 @@ class StarGraph(NewGraphStore):
 
 class TuranGraph(NewGraphStore):
     name = "Turan Graph"
-    dict_attributes_names = {"n": "Number of nodes (n)", "r": "Number of subsets (r)", "conditions": "0 < r <= n "
-                                                                                                     "& 1 < n <=60"}
+    dict_attributes_names = {"n": "Number of nodes, n", "r": "Number of subsets, r",
+                             "conditions": "1 \u2264 r \u2264 n & 1 \u2264 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -258,7 +258,8 @@ class TuranGraph(NewGraphStore):
 
 class Grid2dGraph(NewGraphStore):
     name = "Grid 2d Graph"
-    dict_attributes_names = {"m": "Number of rows (m)", "n": "Number of columns (n)", "conditions": "0 < m, n <= 60"}
+    dict_attributes_names = {"m": "Number of rows, m", "n": "Number of columns, n",
+                             "conditions": "1 \u2264 m, n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -279,7 +280,8 @@ class Grid2dGraph(NewGraphStore):
 
 class TriangularLatticeGraph(NewGraphStore):
     name = "Triangular Lattice Graph"
-    dict_attributes_names = {"m": "Number of rows (m)", "n": "Number of columns (n)", "conditions": "0 < m,n <= 60"}
+    dict_attributes_names = {"m": "Number of rows, m", "n": "Number of columns, n", "conditions":
+                             "1 \u2264 m,n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -323,8 +325,8 @@ class PetersenGraph(NewGraphStore):
 
 class RandomRegularGraph(NewGraphStore):
     name = "Random Regular Graph"
-    dict_attributes_names = {"d": "Degree of nodes (d)", "n": "Number of nodes (n)", "conditions": "0 < d,n <= 60 "
-                                                                                                   "& dxn = even"}
+    dict_attributes_names = {"d": "Degree of nodes, d", "n": "Number of nodes, n", "conditions":
+                             "1 \u2264 d,n \u2264 60 & d \u00d7 n = even"}
 
     @staticmethod
     def open_dialog():
@@ -359,28 +361,28 @@ class RandomRegularGraph(NewGraphStore):
 
 class RandomCograph(NewGraphStore):
     name = "Random Cograph"
-    dict_attributes_names = {"n": "K value for a graph with 2^k nodes (k)", "conditions": "0 < k <= 60"}
+    dict_attributes_names = {"k": "2^k nodes, k", "conditions": " 1 \u2264 < k \u2264 6"}
 
     @staticmethod
     def open_dialog():
-        dialog = NewGraphDialog(RandomCograph.dict_attributes_names, name=RandomCograph.name, n='')
+        dialog = NewGraphDialog(RandomCograph.dict_attributes_names, name=RandomCograph.name, k='')
         dialog.create_button.clicked.connect(lambda: RandomCograph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Cograph"))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['k'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'k'))
 
         NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
-        new_graph_store.set_graph(nx.random_cograph(int(dialog.dict['n'].text())))
+        new_graph_store.set_graph(nx.random_cograph(int(dialog.dict['k'].text())))
         NewGraphStore.create_graph(dialog)
 
 
 class CompleteBipartiteGraph(NewGraphStore):
     name = "Complete Bipartite Graph"
-    dict_attributes_names = {"m": "Number of nodes for set A (m)", "n": "Number of nodes for set B (n)",
-                             "conditions": "0 < m,n <= 60"}
+    dict_attributes_names = {"m": "Number of nodes for set A, m", "n": "Number of nodes for set B, n",
+                             "conditions": "1 \u2264 m,n \u2264 60"}
 
     @staticmethod
     def open_dialog():
