@@ -169,7 +169,7 @@ class EccentricityMatrix(InvariantOther):
             eccentricity_matrix = np.zeros((size, size))
             for i in range(size):
                 for j in range(i + 1, size):
-                    min_eccentricity = min(nx.eccentricity(graph, i), nx.eccentricity(graph, j))
+                    min_eccentricity = min(max(distance_matrix[i]), max(distance_matrix[j]))
                     if min_eccentricity == distance_matrix[i][j]:
                         eccentricity_matrix[i][j] = min_eccentricity
                         eccentricity_matrix[j][i] = min_eccentricity
