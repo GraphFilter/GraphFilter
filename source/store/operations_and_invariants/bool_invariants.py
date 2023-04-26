@@ -228,6 +228,7 @@ class Threshold(InvariantBool):
     def print(graph, precision):
         return Utils.print_boolean(Threshold.calculate(graph), precision)
 
+
 class SomeEigenIntegerA(InvariantBool):
     name = 'Some A-eigenvalue integer'
     type = 'bool_spectral'
@@ -339,6 +340,22 @@ class SomeEigenIntegerDQ(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(SomeEigenIntegerDQ.calculate(graph), precision)
+
+
+class SomeEigenIntegerE(InvariantBool):
+    name = "Some E-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.is_there_integer(inv_other.EccentricitySpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerE.calculate(graph), precision)
 
 
 class IntegralA(InvariantBool):
