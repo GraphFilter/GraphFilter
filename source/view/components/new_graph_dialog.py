@@ -9,21 +9,16 @@ class NewGraphDialog(QDialog):
         self.dict = kwargs
         self.dict_attributes_names = attributes_names
 
-        self.create_button = QPushButton("Create")
+        self.dialog_next_button = QPushButton("Create")
         self.new_file_radio = QRadioButton("New single file:")
         self.insert_final_radio = QRadioButton("Insert in final of the current list")
         self.graph_link = QPushButton("Link to definition")
-
-        self.create_button.setDefault(True)
-        self.create_button.setDisabled(True)
 
         self.set_content_attributes()
 
     def set_content_attributes(self):
         self.setWindowTitle("New Graph")
         layout = None
-        conditions = QLabel("Conditions: ")
-        conditions.setStyleSheet("font-weight: bold;")
 
         for key, value in self.dict.items():
             self.dict[key] = QLineEdit(value)
@@ -35,14 +30,7 @@ class NewGraphDialog(QDialog):
                 layout_aux.addWidget(self.dict[key], 1, Qt.AlignRight)
                 layout.addRow(layout_aux)
 
-        if 'conditions' in self.dict_attributes_names.keys():
-            layout_aux = QHBoxLayout()
-            layout_aux.addWidget(conditions, 0)
-            layout_aux.addWidget(QLabel(self.dict_attributes_names["conditions"]), 1)
-            layout_aux.setContentsMargins(10, 5, 0, 5)
-            layout.addRow(layout_aux)
-
-        layout.addRow(self.create_button)
+        layout.addRow(self.dialog_next_button)
 
         layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
         layout.setLabelAlignment(Qt.AlignLeft)
@@ -78,7 +66,7 @@ class NewGraphDialog(QDialog):
 
         layout.addRow(layout_aux)
 
-        if len(self.dict_attributes_names) != 0:
+        if self.dict_attributes_names is not None:
             layout.addRow(attributes)
 
         return layout
