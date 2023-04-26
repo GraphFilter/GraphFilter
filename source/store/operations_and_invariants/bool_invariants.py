@@ -714,3 +714,16 @@ class InvertibleMatrixS(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixS.calculate(graph), precision)
+
+
+class InvertibleMatrixE(InvariantBool):
+    name = "E is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.EccentricityMatrix.calculate(graph))) != 0)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(InvertibleMatrixE.calculate(graph), precision)
