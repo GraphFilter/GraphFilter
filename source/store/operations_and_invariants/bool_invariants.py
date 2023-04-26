@@ -610,7 +610,9 @@ class LargestEigenIntegerE(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return Utils.is_integer(inv_other.EccentricitySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        if nx.is_connected(graph):
+            return Utils.is_integer(inv_other.EccentricitySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+        return False
 
     @staticmethod
     def print(graph, precision):
@@ -722,7 +724,9 @@ class InvertibleMatrixE(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return bool(Utils.approx_to_int(la.det(inv_other.EccentricityMatrix.calculate(graph))) != 0)
+        if nx.is_connected(graph):
+            return bool(Utils.approx_to_int(la.det(inv_other.EccentricityMatrix.calculate(graph))) != 0)
+        return False
 
     @staticmethod
     def print(graph, precision):
