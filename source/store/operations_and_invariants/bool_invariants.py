@@ -604,6 +604,19 @@ class LargestEigenIntegerN(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerN.calculate(graph), precision)
 
 
+class LargestEigenIntegerE(InvariantBool):
+    name = "Largest E-eigenvalue is integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_integer(inv_other.EccentricitySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(LargestEigenIntegerE.calculate(graph), precision)
+
+
 class RegularTransmission(InvariantBool):
     name = "Regular Transmission"
     type = 'bool_structural'
