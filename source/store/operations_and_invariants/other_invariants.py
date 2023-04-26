@@ -163,14 +163,16 @@ class EccentricityMatrix(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
+        distance_matrix = nx.algorithms.shortest_paths.floyd_warshall_numpy(graph)
+        if float('inf') not in distance_matrix:
             size = len(graph.nodes)
             eccentricity_matrix = np.zeros((size, size))
             for i in range(size):
-                for j in range(size):
+                for j in range(i + 1, size):
                     min_eccentricity = min(nx.eccentricity(graph, i), nx.eccentricity(graph, j))
-                    if min_eccentricity == nx.shortest_path_length(graph, i, j):
+                    if min_eccentricity == distance_matrix[i][j]:
                         eccentricity_matrix[i][j] = min_eccentricity
+                        eccentricity_matrix[j][i] = min_eccentricity
             return eccentricity_matrix
 
         return 'Disconnected graph'
