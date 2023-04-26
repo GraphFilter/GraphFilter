@@ -396,8 +396,8 @@ class CompleteBipartiteGraph(NewGraphStore):
 
     @staticmethod
     def create_graph(dialog):
-        new_graph_store.set_graph(nx.complete_bipartite_graph(int(dialog.dict['m'].text()),
-                                                              int(dialog.dict['n'].text())))
+        new_graph_store.set_graph(nx.complete_multipartite_graph(int(dialog.dict['m'].text()),
+                                                                 int(dialog.dict['n'].text())))
         NewGraphStore.create_graph(dialog)
 
 
