@@ -474,6 +474,22 @@ class IntegralDQ(InvariantBool):
         return Utils.print_boolean(IntegralDQ.calculate(graph), precision)
 
 
+class IntegralE(InvariantBool):
+    name = "E-integral (Eccentricity)"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.integral(inv_other.EccentricitySpectrum.calculate(graph))
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(IntegralE.calculate(graph), precision)
+
+
 class LargestEigenIntegerA(InvariantBool):
     name = "Largest A-eigen is integer"
     type = 'bool_spectral'
