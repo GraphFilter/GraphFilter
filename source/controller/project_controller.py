@@ -298,6 +298,8 @@ class ProjectController:
                 self.project_tool_bar.fill_combo_graphs(graph)
                 self.on_change_graph()
 
+            project_information_store.file_path = file_path
+
             new_graph_store.reset_attributes()
 
     def set_active_new_graph_action(self):
