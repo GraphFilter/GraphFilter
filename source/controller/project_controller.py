@@ -351,6 +351,12 @@ class ProjectController:
         else:
             try:
                 os.remove(file_path)
+                print(file_path)
+                print(project_information_store.file_path)
+                if(file_path == project_information_store.file_path):
+                    self.project_tool_bar.reset_combo_graphs()
+                    self.project_tool_bar.fill_combo_graphs("?")
+                    self.on_change_graph()
             except FileNotFoundError:
                 return
             except PermissionError:
