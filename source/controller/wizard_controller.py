@@ -19,6 +19,7 @@ from PyQt5.QtCore import QStandardPaths as qs
 def open_url(url):
     QDesktopServices.openUrl(QUrl(url))
 
+
 class WizardController:
 
     def __init__(self):
@@ -127,7 +128,8 @@ class WizardController:
         self.graph_files_page.remove_file.clicked.connect(self.on_remove_graph_file)
         self.graph_files_page.remove_all_files.clicked.connect(self.on_remove_all_files)
         self.graph_files_page.list_files_input.itemClicked.connect(
-            lambda: self.graph_files_page.update_file.setEnabled(len(self.graph_files_page.list_files_input.selectedItems()) == 1))
+            lambda: self.graph_files_page.update_file.setEnabled(
+                len(self.graph_files_page.list_files_input.selectedItems()) == 1))
         self.graph_files_page.list_files_input.itemClicked.connect(
             lambda: self.graph_files_page.remove_file.setEnabled(True))
         self.graph_files_page.download_button.clicked.connect(
@@ -172,13 +174,14 @@ class WizardController:
 
     def on_open_project_file(self):
         file_dialog = QFileDialog.getExistingDirectory(
-              directory= wizard_information_store.project_location)
+            directory=wizard_information_store.project_location)
         directory_path = file_dialog
 
         if directory_path != "":
             self.project_files_page.project_location_input.setText(directory_path)
             self.verify_and_save_project_folder()
-        else: self.project_files_page.project_location_input.setText(wizard_information_store.project_location)
+        else:
+            self.project_files_page.project_location_input.setText(wizard_information_store.project_location)
 
     def set_default_project_location(self):
         default_path = qs.writableLocation(qs.DocumentsLocation)
