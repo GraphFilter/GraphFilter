@@ -228,7 +228,6 @@ class Threshold(InvariantBool):
     def print(graph, precision):
         return Utils.print_boolean(Threshold.calculate(graph), precision)
 
-
 class SomeEigenIntegerA(InvariantBool):
     name = 'Some A-eigenvalue integer'
     type = 'bool_spectral'
@@ -340,22 +339,6 @@ class SomeEigenIntegerDQ(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(SomeEigenIntegerDQ.calculate(graph), precision)
-
-
-class SomeEigenIntegerE(InvariantBool):
-    name = "Some E-eigenvalue integer"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.is_there_integer(inv_other.EccentricitySpectrum.calculate(graph))
-        else:
-            return False
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(SomeEigenIntegerE.calculate(graph), precision)
 
 
 class IntegralA(InvariantBool):
@@ -474,22 +457,6 @@ class IntegralDQ(InvariantBool):
         return Utils.print_boolean(IntegralDQ.calculate(graph), precision)
 
 
-class IntegralE(InvariantBool):
-    name = "E-integral (Eccentricity)"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.integral(inv_other.EccentricitySpectrum.calculate(graph))
-        else:
-            return False
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(IntegralE.calculate(graph), precision)
-
-
 class LargestEigenIntegerA(InvariantBool):
     name = "Largest A-eigen is integer"
     type = 'bool_spectral'
@@ -604,21 +571,6 @@ class LargestEigenIntegerN(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerN.calculate(graph), precision)
 
 
-class LargestEigenIntegerE(InvariantBool):
-    name = "Largest E-eigenvalue is integer"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.is_integer(inv_other.EccentricitySpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
-        return False
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(LargestEigenIntegerE.calculate(graph), precision)
-
-
 class RegularTransmission(InvariantBool):
     name = "Regular Transmission"
     type = 'bool_structural'
@@ -716,18 +668,3 @@ class InvertibleMatrixS(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixS.calculate(graph), precision)
-
-
-class InvertibleMatrixE(InvariantBool):
-    name = "E is invertible"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return bool(Utils.approx_to_int(la.det(inv_other.EccentricityMatrix.calculate(graph))) != 0)
-        return False
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(InvertibleMatrixE.calculate(graph), precision)

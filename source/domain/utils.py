@@ -1,4 +1,3 @@
-import json
 import os
 import re
 import networkx as nx
@@ -75,45 +74,6 @@ def create_g6_file(file_path, g6):
     file = open(file_path, "w")
     file.write(g6)
     file.close()
-
-
-def change_g6_file(file_path, new_g6, current_index):
-    file = open(file_path, "r")
-    changed_data = file.readlines()
-
-    try:
-        changed_data[current_index] = new_g6 + "\n"
-    except IndexError:
-        changed_data.append(new_g6 + "\n")
-
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.writelines(changed_data)
-
-    with open(file_path) as file:
-        graph = file.read().splitlines()
-
-    return graph
-
-
-def change_json_file(file_path, new_g6, current_index):
-    f = open(file_path)
-    data = json.load(f)
-    graph = list(data['filtered_graphs'])
-
-    try:
-        graph[current_index] = new_g6
-    except IndexError:
-        graph.append(new_g6)
-
-    graph = tuple(graph)
-    project_information_store.filtered_graphs = graph
-    project_information_store.save_project()
-
-    f = open(file_path)
-    new_data = json.load(f)
-    new_json_graph = tuple(new_data['filtered_graphs'])
-
-    return new_json_graph
 
 
 def fix_graph_nodes(graph):
