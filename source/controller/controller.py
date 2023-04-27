@@ -1,5 +1,7 @@
 import os
 
+import networkx as nx
+
 from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
@@ -11,7 +13,7 @@ import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
-
+from source.domain.utils import create_g6_file
 
 class Controller:
 
@@ -104,7 +106,10 @@ class Controller:
     def start_filter(self):
         update_project_store()
         if project_information_store.method == 'blank':
+            graph = nx.Graph()
+            create_g6_file(project_information_store.project_location+"/EmptyGraph.g6", nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
             project_information_store.filtered_graphs = "?"
+            project_information_store.file_path = project_information_store.project_location+"/EmptyGraph.g6"
         else:
             self.filter_controller.start_filter()
         self.finish_filter()
