@@ -285,20 +285,29 @@ class ProjectController:
         file_path = new_graph_store.file_path
 
         if graph is not None:
+            try:
+                graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
+            except AttributeError:
+                graph_g6 = graph
+
             self.visualize_graph_dock.plot_graph(graph)
 
-            try:
-                create_g6_file(file_path, nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-            except AttributeError:
-                create_g6_file(file_path, graph)
+            if new_graph_store.radio_option == 0:
+                create_g6_file(file_path, graph_g6)
 
-            with open(file_path) as file:
-                graph = file.read().splitlines()
-                self.project_tool_bar.reset_combo_graphs()
-                self.project_tool_bar.fill_combo_graphs(graph)
-                self.on_change_graph()
+                with open(file_path) as file:
+                    graph = file.read().splitlines()
+                    self.project_tool_bar.reset_combo_graphs()
+                    self.project_tool_bar.fill_combo_graphs(graph)
+                    self.on_change_graph()
 
-            project_information_store.file_path = file_path
+                project_information_store.file_path = file_path
+            else:
+                self.edited_graph = graph
+                self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
+                                                           f' - {graph_g6}')
+                self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
+                self.on_save_graph()
 
             new_graph_store.reset_attributes()
 
