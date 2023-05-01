@@ -356,6 +356,7 @@ class ProjectController:
                     self.project_tool_bar.reset_combo_graphs()
                     self.project_tool_bar.fill_combo_graphs("?")
                     self.on_change_graph()
+                    self.visualize_graph_dock.setDisabled(True)
             except FileNotFoundError:
                 return
             except PermissionError:
@@ -385,6 +386,7 @@ class ProjectController:
                 self.on_change_graph()
         else:
             pass
+        self.visualize_graph_dock.setDisabled(False)
 
     def update_graph_to_table(self, edited_graph):
         g6code = self.project_tool_bar.current_graph
