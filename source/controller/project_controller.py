@@ -357,6 +357,7 @@ class ProjectController:
                     self.project_tool_bar.fill_combo_graphs("?")
                     self.on_change_graph()
                     self.visualize_graph_dock.setDisabled(True)
+                    project_information_store.file_path = os.path.dirname(file_path)
             except FileNotFoundError:
                 return
             except PermissionError:
@@ -431,7 +432,6 @@ class ProjectController:
 
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
-
         if file_type == ".json":
             graph = change_json_file(file_path, new_g6, current_index)
 
