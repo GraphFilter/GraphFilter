@@ -122,7 +122,9 @@ class ProjectController:
 
     def delete_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
-        file_path = project_information_store.file_path[0]
+        print(project_information_store.file_path)
+        file_path = project_information_store.file_path
+        print(file_path)
         file_name, file_type = os.path.splitext(file_path)
 
         if current_index > 0:
@@ -330,9 +332,23 @@ class ProjectController:
         self.tree_file_dock.menu.addAction(self.tree_file_dock.load_file)
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
         self.tree_file_dock.menu.addAction(self.tree_file_dock.delete_file)
-        self.tree_file_dock.delete_file.triggered.connect(self.delete_tree_file)
+        self.tree_file_dock.delete_file.triggered.connect(self.delete_confirmation)
         cursor = QCursor()
-        self.tree_file_dock.menu.exec_(cursor.pos())
+        self.tree_file_dock.menu.exec(cursor.pos())
+
+    def delete_confirmation(self):
+        dlg = QMessageBox()
+        dlg.setWindowTitle("Delete confirmation")
+        dlg.setText("Are you sure you want to delete this ")
+        dlg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        dlg.setDefaultButton(QMessageBox.No)
+        reply = dlg.exec()
+        if reply == QMessageBox.Yes:
+            self.delete_tree_file()
+            return
+        else:
+            return
+
 
     def delete_tree_file(self):
         index = self.tree_file_dock.tree.currentIndex()
@@ -419,7 +435,7 @@ class ProjectController:
     def on_save_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
 
-        file_path = project_information_store.file_path[0]
+        file_path = project_information_store.file_path
         file_name, file_type = os.path.splitext(file_path)
         graph = None
         new_g6 = ""

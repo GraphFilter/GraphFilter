@@ -79,7 +79,7 @@ class Controller:
                     'graph_files': file_path[0],
                     'filtered_graphs': file.read().splitlines()
                 })
-        formatted_file_path = file_path[:-1]
+        formatted_file_path = file_path[0]
         project_information_store.file_path = formatted_file_path
 
         if self.current_open_window == "welcome":
