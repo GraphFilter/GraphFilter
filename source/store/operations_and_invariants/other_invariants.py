@@ -540,7 +540,10 @@ class EigenvectorCentrality(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return dict(sorted(nx.eigenvector_centrality_numpy(graph).items(), key=lambda x: x[1]))
+        try:
+            return dict(sorted(nx.eigenvector_centrality_numpy(graph).items(), key=lambda x: x[1]))
+        except TypeError:
+            return dict(sorted(nx.eigenvector_centrality(graph).items(), key=lambda x: x[1]))
 
     @staticmethod
     def print(graph, precision):
