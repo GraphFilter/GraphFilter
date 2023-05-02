@@ -332,7 +332,10 @@ class ProjectController:
         self.tree_file_dock.menu.addAction(self.tree_file_dock.load_file)
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
         self.tree_file_dock.menu.addAction(self.tree_file_dock.delete_file)
+
+        self.tree_file_dock.delete_file.triggered.disconnect()
         self.tree_file_dock.delete_file.triggered.connect(self.delete_confirmation)
+
         cursor = QCursor()
         self.tree_file_dock.menu.exec(cursor.pos())
 
@@ -342,12 +345,11 @@ class ProjectController:
         dlg.setText("Are you sure you want to delete this ")
         dlg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         dlg.setDefaultButton(QMessageBox.No)
-        reply = dlg.exec()
-        if reply == QMessageBox.Yes:
+        if dlg.exec_() == QMessageBox.Yes:
             self.delete_tree_file()
             return
         else:
-            return
+            pass
 
 
     def delete_tree_file(self):

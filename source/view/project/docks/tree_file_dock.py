@@ -40,10 +40,5 @@ class TreeFileDock(QDockWidget):
 
         self.setWidget(self.tree)
 
-    #def context_menu(self):
-    #    menu = QMenu()
-    #    load_file = menu.addAction("Load File on Graph Filter")
-    #    load_file.triggered.connect(self.handle_double_click)
-    #    cursor = QCursor()
-    #    menu.exec(cursor.pos())
+
 
