@@ -125,10 +125,6 @@ class WizardController:
         self.equations_page.equation.textEdited.connect(self.on_insert_equation_input)
 
     def connect_method_page_events(self):
-        self.method_page.filter_button.setChecked(False)
-        self.method_page.counter_example_button.setChecked(False)
-        self.method_page.blank_project.setChecked(True)
-
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.blank_project.clicked.connect(self.on_button_method_clicked)

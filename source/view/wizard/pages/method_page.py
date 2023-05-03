@@ -47,13 +47,13 @@ class MethodPage(QWizardPage):
         self.blank_project.setCheckable(True)
         self.blank_project.setObjectName("blank")
 
-
     def set_up_layout(self):
         self.setTitle("Method")
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.filter_button)
         button_layout.addWidget(self.counter_example_button)
+
 
         second_button_layout = QHBoxLayout()
         second_button_layout.addWidget(self.blank_project)

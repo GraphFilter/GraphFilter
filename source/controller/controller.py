@@ -107,9 +107,9 @@ class Controller:
         update_project_store()
         if project_information_store.method == 'blank':
             graph = nx.Graph()
-            create_g6_file(project_information_store.project_location+"/EmptyGraph.g6", nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+            create_g6_file(project_information_store.project_location+"/"+project_information_store.project_name+".g6", nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
             project_information_store.filtered_graphs = "?"
-            project_information_store.file_path = project_information_store.project_location+"/EmptyGraph.g6"
+            project_information_store.file_path = project_information_store.project_location+project_information_store.project_name+".g6"
         else:
             self.filter_controller.start_filter()
         self.finish_filter()
