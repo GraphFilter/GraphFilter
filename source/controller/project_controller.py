@@ -348,27 +348,17 @@ class ProjectController:
             pass
 
     def update_graph_to_table(self, edited_graph):
-        g6code = self.project_tool_bar.current_graph
         self.edited_graph = edited_graph
-
-        if self.edited_graph is not None:
-            self.visualize_graph_dock.current_graph = self.edited_graph
+        self.visualize_graph_dock.current_graph = self.edited_graph
 
         for key in self.invariants_selected.keys():
-            if self.edited_graph is not None:
-                if len(self.edited_graph.nodes) == 0:
-                    self.invariants_selected[key] = \
-                        "Null Graph"
-                else:
-                    self.invariants_selected[key] = \
-                        dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
+            if len(self.edited_graph.nodes) == 0:
+                self.invariants_selected[key] = \
+                    "Null Graph"
             else:
-                if g6code is not None:
-                    self.invariants_selected[key] = \
-                        dic_invariants_to_visualize[key].print(convert_g6_to_nx(g6code), precision=5)
-                else:
-                    self.invariants_selected[key] = 'No graph selected'
-            print(dic_invariants_to_visualize)
+                self.invariants_selected[key] = \
+                    dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
+
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):

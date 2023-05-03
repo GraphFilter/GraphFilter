@@ -69,6 +69,8 @@ class UtilsToInvariants:
     def print_eigenvectors_and_eigenvalues(value, precision):
         vectors = value[1]
         spectrum = ''
+        if type(value) is str:
+            return value
         for i, x in enumerate(value[0]):
             if UtilsToInvariants.is_integer(x):
                 spectrum = spectrum + f"{int(x)} \u2192 V{i} ={vectors[:][i].tolist()} \n"
@@ -79,6 +81,8 @@ class UtilsToInvariants:
     @staticmethod
     def print_list(value, precision):
         values = []
+        if type(value) is str:
+            return value
         for x in value:
             if UtilsToInvariants.is_integer(x):
                 values.append(int(x))
@@ -93,7 +97,6 @@ class UtilsToInvariants:
         else:
             return str(np.around(value, precision))
 
-
     @staticmethod
     def print_boolean(value, precision):
         return str(value)
@@ -102,14 +105,13 @@ class UtilsToInvariants:
     def print_set(value, precision):
         return np.array2string(np.array(value), precision=precision, separator=" , ")
 
-
     @staticmethod
     def max_line_of_string(text: str):
         list_text = str(text).split("\n")
         return len(max(list_text, key=len))
 
     @staticmethod
-    def MainEigenvalue(matrix: np.ndarray):
+    def main_eigenvalue(matrix: np.ndarray):
         eigenvalues, vectors = la.eigh(matrix)
         eigenvalues = np.around(eigenvalues, decimals=10)
         vectors = np.around(vectors, decimals=10)
@@ -120,27 +122,29 @@ class UtilsToInvariants:
                 mains.add(value)
         return mains
 
-
     @staticmethod
-    def Spectrum(matrix: np.ndarray):
+    def spectrum(matrix: np.ndarray):
         return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())
 
     @staticmethod
-    def LargestEigen(matrix: np.ndarray):
+    def largest_eigen(matrix: np.ndarray):
         return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[matrix.shape[0] - 1]
 
     @staticmethod
-    def SecondLargestEigen(matrix: np.ndarray):
+    def second_largest_eigen(matrix: np.ndarray):
         return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[matrix.shape[0] - 2]
 
     @staticmethod
-    def Eigenvectors(matrix: np.ndarray):
+    def smallest_eigen(matrix: np.ndarray):
+        return UtilsToInvariants.approx_array_to_int(la.eigvalsh(matrix).tolist())[0]
+
+    @staticmethod
+    def eigenvectors(matrix: np.ndarray):
         values, vectors = la.eigh(matrix)
         return values, UtilsToInvariants.approx_array_to_int(vectors)
 
     @staticmethod
-    def Energy(matrix: np.ndarray):
+    def energy(matrix: np.ndarray):
         trace = matrix.trace()
-        eig = UtilsToInvariants.Spectrum(matrix)
-        return sum([np.absolute(x-(float(trace)/float(matrix.shape[0]))) for x in eig])
-
+        eig = UtilsToInvariants.spectrum(matrix)
+        return sum([np.absolute(x - (float(trace) / float(matrix.shape[0]))) for x in eig])
