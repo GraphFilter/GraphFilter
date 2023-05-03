@@ -119,10 +119,15 @@ def change_json_file(file_path, new_g6, current_index):
 def fix_graph_nodes(graph):
     new_dict = {}
     new_edges = []
+    new_graph = nx.Graph()
 
     for i, node in enumerate(graph):
         new_dict[node] = i
+        new_graph.add_node(i)
 
     for edge in graph.edges:
         new_edges.append((new_dict[edge[0]], new_dict[edge[1]]))
-    return nx.from_edgelist(new_edges)
+
+    new_graph.add_edges_from(new_edges)
+
+    return new_graph
