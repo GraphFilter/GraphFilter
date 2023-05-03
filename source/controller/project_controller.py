@@ -349,7 +349,6 @@ class ProjectController:
         if dlg.exec_() == QMessageBox.Yes:
             self.delete_tree_file()
             return
-            return
         else:
             pass
 
@@ -369,14 +368,17 @@ class ProjectController:
         else:
             try:
                 os.remove(file_path)
-                print(file_path)
-                print(project_information_store.file_path)
                 if file_path == project_information_store.file_path:
                     self.project_tool_bar.reset_combo_graphs()
                     self.project_tool_bar.fill_combo_graphs("?")
                     self.on_change_graph()
                     self.visualize_graph_dock.setDisabled(True)
                     project_information_store.file_path = os.path.dirname(file_path)
+                    dlg = QMessageBox()
+                    dlg.setIcon(QMessageBox.Information)
+                    dlg.setText("You erased the current file. To continue, please create a new graph or select another file in the directory.")
+                    dlg.setWindowTitle("Select another file")
+                    dlg.exec()
             except FileNotFoundError:
                 return
             except PermissionError:
