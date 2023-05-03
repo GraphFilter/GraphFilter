@@ -9,6 +9,8 @@ import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
 
+from source.domain.utils import fix_graph_nodes
+
 matplotlib.use("Qt5Agg")
 
 
@@ -111,19 +113,23 @@ class ResizableGraph(EditableGraph):
             return
         super()._on_key_press(event)
 
-        if event.key == "insert" or event.key == "+":
-            node_labels = {node: node for node in self.nodes}
-            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
-            self.draw_node_labels(node_labels, self.node_label_fontdict)
+        node_labels = {node: i for i, node in enumerate(self.nodes)}
+        self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
+        self.draw_node_labels(node_labels, self.node_label_fontdict)
 
-        new_graph = nx.Graph(self.edges)
+        new_graph = nx.Graph()
         new_graph.add_nodes_from(self.nodes)
+        new_graph.add_edges_from(self.edges)
+        new_graph = fix_graph_nodes(new_graph)
+
         self.synchronize_change(new_graph)
 
     def _on_press(self, event):
         super()._on_press(event)
-        new_graph = nx.Graph(self.edges)
+        new_graph = nx.Graph()
         new_graph.add_nodes_from(self.nodes)
+        new_graph.add_edges_from(self.edges)
+        new_graph = fix_graph_nodes(new_graph)
         self.synchronize_change(new_graph)
 
     def _add_or_remove_nascent_edge(self, event):
