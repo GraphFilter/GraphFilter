@@ -43,6 +43,7 @@ class VisualizeGraphDock(QDockWidget):
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
+        self.synchronize_change(self.current_graph)
 
     def synchronize_change(self, new_graph):
         self.any_signal.emit(new_graph)
