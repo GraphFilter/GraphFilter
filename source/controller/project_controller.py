@@ -310,6 +310,7 @@ class ProjectController:
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
                 self.on_save_graph()
 
+            self.visualize_graph_dock.setDisabled(False)
             new_graph_store.reset_attributes()
 
     def set_active_new_graph_action(self):
@@ -348,9 +349,9 @@ class ProjectController:
         if dlg.exec_() == QMessageBox.Yes:
             self.delete_tree_file()
             return
+            return
         else:
             pass
-
 
     def delete_tree_file(self):
         index = self.tree_file_dock.tree.currentIndex()
@@ -370,7 +371,7 @@ class ProjectController:
                 os.remove(file_path)
                 print(file_path)
                 print(project_information_store.file_path)
-                if(file_path == project_information_store.file_path):
+                if file_path == project_information_store.file_path:
                     self.project_tool_bar.reset_combo_graphs()
                     self.project_tool_bar.fill_combo_graphs("?")
                     self.on_change_graph()
