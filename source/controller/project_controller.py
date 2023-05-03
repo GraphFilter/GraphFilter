@@ -222,7 +222,6 @@ class ProjectController:
         self.project_window.restoreState(self.settings.value("state"))
 
     def on_change_graph(self):
-        self.edited_graph = None
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
         else:
@@ -237,7 +236,6 @@ class ProjectController:
         if self.project_tool_bar.current_graph is not None:
             self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
-        self.update_graph_to_table(None)
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def on_click_button_left(self):
