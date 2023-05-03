@@ -125,8 +125,10 @@ class ResizableGraph(EditableGraph):
 
     def _on_press(self, event):
         super()._on_press(event)
-        new_graph = nx.Graph(self.edges)
+        new_graph = nx.Graph()
         new_graph.add_nodes_from(self.nodes)
+        new_graph.add_edges_from(self.edges)
+        new_graph = fix_graph_nodes(new_graph)
         self.synchronize_change(new_graph)
 
     def _add_or_remove_nascent_edge(self, event):
