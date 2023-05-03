@@ -44,6 +44,9 @@ class NewGraphStore:
         dialog.new_file_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
         dialog.insert_final_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
 
+        if os.path.isdir(project_information_store.file_path):
+            dialog.insert_final_radio.setEnabled(False)
+
         dialog.exec()
 
     @staticmethod
