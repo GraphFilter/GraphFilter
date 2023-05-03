@@ -33,12 +33,23 @@ class WizardController:
         self.set_up_window()
 
     def set_wizard_pages(self):
-        self.wizard_window.addPage(self.project_files_page)
         self.wizard_window.addPage(self.method_page)
+        self.wizard_window.addPage(self.project_files_page)
+
+    def add_filter_wizard_pages(self):
         self.wizard_window.addPage(self.equations_page)
         self.wizard_window.addPage(self.conditions_page)
         self.wizard_window.addPage(self.graph_files_page)
         self.wizard_window.addPage(self.review_page)
+
+    def remove_filter_wizard_pages(self):
+        try:
+            self.wizard_window.removePage(2)
+            self.wizard_window.removePage(3)
+            self.wizard_window.removePage(4)
+            self.wizard_window.removePage(5)
+        except:
+            pass
 
     def set_up_window(self):
         self.set_wizard_pages()
@@ -305,18 +316,21 @@ class WizardController:
         button.setChecked(True)
 
         if 'blank'in button.objectName():
-            self.method_page.setFinalPage(True)
+            self.project_files_page.setFinalPage(True)
             wizard_information_store.method = 'blank'
             self.review_page.set_method('blank')
-            self.wizard_window.next_button.setDisabled(True)
+            # self.wizard_window.next_button.setDisabled(True)
+            self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
-            self.method_page.setFinalPage(False)
+            self.project_files_page.setFinalPage(False)
             wizard_information_store.method = 'filter'
             self.review_page.set_method('filter')
+            self.add_filter_wizard_pages()
         if 'counterexample' in button.objectName():
-            self.method_page.setFinalPage(False)
+            self.project_files_page.setFinalPage(False)
             wizard_information_store.method = 'counterexample'
             self.review_page.set_method('counterexample')
+            self.add_filter_wizard_pages()
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
         self.wizard_window.next_button.setToolTip('')
