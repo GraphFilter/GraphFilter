@@ -17,6 +17,7 @@ class NewGraphStore:
             self.dic_name_new_graph[new_graph.name] = new_graph
         self.graph = None
         self.file_path = None
+        self.layout = 'spring'
         self.radio_option = 0
 
     def set_graph(self, graph):
@@ -27,6 +28,9 @@ class NewGraphStore:
 
     def set_radio_option(self, option):
         self.radio_option = option
+
+    def set_layout(self, layout):
+        self.layout = layout
 
     def reset_attributes(self):
         self.graph = None
@@ -158,6 +162,7 @@ class CycleGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.cycle_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
 
@@ -178,6 +183,7 @@ class PathGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.path_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
 
@@ -198,6 +204,7 @@ class CompleteGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.complete_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
 
@@ -241,6 +248,7 @@ class TuranGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.turan_graph(int(dialog.dict['n'].text()), int(dialog.dict['r'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
     @staticmethod

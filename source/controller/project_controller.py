@@ -281,6 +281,7 @@ class ProjectController:
     def on_new_graph_button(self):
         new_graph_dict_name[self.active_new_graph_action].open_dialog()
         graph = new_graph_store.graph
+        graph_layout = new_graph_store.layout
         file_path = new_graph_store.file_path
 
         if graph is not None:
@@ -289,7 +290,7 @@ class ProjectController:
             except AttributeError:
                 graph_g6 = graph
 
-            self.visualize_graph_dock.plot_graph(graph)
+            self.visualize_graph_dock.plot_graph(graph, graph_layout)
 
             if new_graph_store.radio_option == 0:
                 create_g6_file(file_path, graph_g6)

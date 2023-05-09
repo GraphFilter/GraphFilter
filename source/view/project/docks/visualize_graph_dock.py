@@ -33,7 +33,7 @@ class VisualizeGraphDock(QDockWidget):
         self.setFeatures(
             QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
-    def plot_graph(self, graph):
+    def plot_graph(self, graph, layout='spring'):
         try:
             self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
         except AttributeError:
@@ -41,7 +41,7 @@ class VisualizeGraphDock(QDockWidget):
         except nx.NetworkXError:
             self.invalid_graph_signal.emit()
             self.current_graph = nx.Graph()
-        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change)
+        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change, layout)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
@@ -52,7 +52,7 @@ class VisualizeGraphDock(QDockWidget):
 
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, synchronize_change=None, width=8, height=4, dpi=100, ):
+    def __init__(self, parent=None, graph=None, synchronize_change=None, layout='spring', width=8, height=4, dpi=100,):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
@@ -61,7 +61,7 @@ class MplCanvas(FigureCanvasQTAgg):
         if graph is None:
             return
         self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True,
-                                            node_label_fontdict=dict(size=8))
+                                            node_label_fontdict=dict(size=8), node_layout=layout)
 
 
 class ResizableGraph(EditableGraph):
