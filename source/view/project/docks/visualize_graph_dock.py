@@ -45,14 +45,13 @@ class VisualizeGraphDock(QDockWidget):
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
-        self.synchronize_change(self.current_graph)
 
     def synchronize_change(self, new_graph):
         self.any_signal.emit(new_graph)
 
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, synchronize_change=None, layout='spring', width=8, height=4, dpi=100,):
+    def __init__(self, parent=None, graph=None, synchronize_change=None, layout='spring', width=8, height=4, dpi=100, ):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
@@ -76,6 +75,7 @@ class ResizableGraph(EditableGraph):
         self.figure_width = self.fig.bbox.width
         self.figure_height = self.fig.bbox.height
         self.synchronize_change = synchronize_change
+        self.restart_label()
         self.fig.canvas.mpl_connect('resize_event', self._on_resize)
 
     def _on_resize(self, event, pad=0.05):
@@ -108,11 +108,7 @@ class ResizableGraph(EditableGraph):
         self._update_edge_label_positions(self.edges)
         self.fig.canvas.draw()
 
-    def _on_key_press(self, event):
-        if event.key == "enter" or event.key == "alt+enter":
-            return
-        super()._on_key_press(event)
-
+    def restart_label(self):
         node_labels = {node: i for i, node in enumerate(self.nodes)}
         self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
         self.draw_node_labels(node_labels, self.node_label_fontdict)
@@ -124,13 +120,16 @@ class ResizableGraph(EditableGraph):
 
         self.synchronize_change(new_graph)
 
+    def _on_key_press(self, event):
+        if event.key == "enter" or event.key == "alt+enter":
+            return
+        super()._on_key_press(event)
+
+        self.restart_label()
+
     def _on_press(self, event):
         super()._on_press(event)
-        new_graph = nx.Graph()
-        new_graph.add_nodes_from(self.nodes)
-        new_graph.add_edges_from(self.edges)
-        new_graph = fix_graph_nodes(new_graph)
-        self.synchronize_change(new_graph)
+        self.restart_label()
 
     def _add_or_remove_nascent_edge(self, event):
         for node, artist in self.node_artists.items():
@@ -145,7 +144,7 @@ class ResizableGraph(EditableGraph):
             x, y = self.node_positions[node]
             dx, dy = self.node_label_offset[node]
 
-            artist = self.ax.text(x+dx, y+dy, label, **node_label_fontdict)
+            artist = self.ax.text(x + dx, y + dy, label, **node_label_fontdict)
 
             if node in self.node_label_artists:
                 self.node_label_artists[node].remove()

@@ -281,7 +281,7 @@ class ProjectController:
     def on_new_graph_button(self):
         new_graph_dict_name[self.active_new_graph_action].open_dialog()
         graph = new_graph_store.graph
-        graph_layout = new_graph_store.layout
+        layout = new_graph_store.layout
         file_path = new_graph_store.file_path
 
         if graph is not None:
@@ -289,8 +289,6 @@ class ProjectController:
                 graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
             except AttributeError:
                 graph_g6 = graph
-
-            self.visualize_graph_dock.plot_graph(graph, graph_layout)
 
             if new_graph_store.radio_option == 0:
                 create_g6_file(file_path, graph_g6)
@@ -306,6 +304,8 @@ class ProjectController:
                                                            f' - {graph_g6}')
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
                 self.on_save_graph()
+
+            self.visualize_graph_dock.plot_graph(graph, layout)
 
             new_graph_store.reset_attributes()
 

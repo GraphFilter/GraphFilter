@@ -283,6 +283,9 @@ class Grid2dGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text())))
+        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
+                  for x, y in new_graph_store.graph.nodes()}
+        new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
 
@@ -308,6 +311,9 @@ class TriangularLatticeGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.triangular_lattice_graph(int(dialog.dict['m'].text()),
                                                               int(dialog.dict['n'].text())))
+        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
+                  for x, y in new_graph_store.graph.nodes()}
+        new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
 
