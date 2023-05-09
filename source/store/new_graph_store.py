@@ -1,3 +1,5 @@
+import math
+
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
@@ -334,7 +336,20 @@ class PetersenGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.petersen_graph())
+        new_graph_store.set_layout(PetersenGraph.calculate_layout())
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def calculate_layout():
+        pos = {}
+
+        for i in range(5):
+            theta = 2 * math.pi * i / 5 + math.pi / 2
+            pos[i] = ((2 * math.cos(theta) + 2) * 5, (2 * math.sin(theta) + 2) * 0.25)
+            pos[5 + i] = ((math.cos(theta) + 2) * 5, (math.sin(theta) + 2) * 0.25)
+
+        print(pos)
+        return pos
 
 
 class RandomRegularGraph(NewGraphStore):
@@ -414,6 +429,7 @@ class CompleteBipartiteGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.complete_multipartite_graph(int(dialog.dict['m'].text()),
                                                                  int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('bipartite')
         NewGraphStore.create_graph(dialog)
 
 
