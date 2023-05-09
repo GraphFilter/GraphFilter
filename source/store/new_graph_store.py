@@ -345,8 +345,8 @@ class PetersenGraph(NewGraphStore):
 
         for i in range(5):
             theta = 2 * math.pi * i / 5 + math.pi / 2
-            pos[i] = ((2 * math.cos(theta) + 2) * 5, (2 * math.sin(theta) + 2) * 0.25)
-            pos[5 + i] = ((math.cos(theta) + 2) * 5, (math.sin(theta) + 2) * 0.25)
+            pos[i] = ((2 * math.cos(theta) + 2) * 0.5, (2 * math.sin(theta) + 2) * 0.25)
+            pos[5 + i] = ((math.cos(theta) + 2) * 0.5, (math.sin(theta) + 2) * 0.25)
 
         return pos
 
