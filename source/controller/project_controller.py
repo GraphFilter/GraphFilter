@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
+from source.store.operations_graph import dict_name_operations_graph
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
@@ -360,7 +361,8 @@ class ProjectController:
         self.graph_information_dock.update_table(self.invariants_selected)
 
     def to_line_graph(self):
-        self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.line_graph(self.visualize_graph_dock.current_graph)))
+        self.visualize_graph_dock.plot_graph(dict_name_operations_graph['Line Graph'].
+                                             get_operation(self.visualize_graph_dock.current_graph))
 
     def on_save_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
