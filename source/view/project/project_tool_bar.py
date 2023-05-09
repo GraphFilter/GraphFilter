@@ -1,4 +1,6 @@
 from PyQt5.QtWidgets import *
+
+from source.store.operations_graph import dict_name_operations_graph
 from source.view.components.icon import Icon
 from source.store.new_graph_store import *
 from PyQt5 import QtCore
@@ -24,11 +26,7 @@ class ProjectToolBar(QToolBar):
         self.operations_menu_bar = QMenuBar()
         self.new_graph_menu_bar = QMenuBar()
         self.new_graph_menu = QMenu("&New Graph", self)
-
-        self.line_graph = QAction("Line Graph")
-        self.inverse_line_graph = QAction("Inverse Line Graph")
-        self.complement = QAction("Complement")
-        self.clique_graph = QAction("Clique Graph")
+        self.operations_menu = QMenu("&Operations", self)
 
         self.create_menu_bar()
 
@@ -103,20 +101,15 @@ class ProjectToolBar(QToolBar):
         self.operations_menu_bar.setMaximumSize(95, 28)
         self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                                "border: 1px solid gray;")
-
-        file_menu = QMenu("&Operations", self)
-        self.operations_menu_bar.addMenu(file_menu)
-
-        file_menu.addAction(self.line_graph)
-        file_menu.addAction(self.inverse_line_graph)
-        file_menu.addAction(self.complement)
-        file_menu.addAction(self.clique_graph)
-
         self.new_graph_menu_bar.setMaximumSize(98, 28)
         self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                               "border: 1px solid gray;")
 
+        self.operations_menu_bar.addMenu(self.operations_menu)
         self.new_graph_menu_bar.addMenu(self.new_graph_menu)
+
+        for operation in dict_name_operations_graph:
+            self.operations_menu.addAction(operation)
 
         for new_graph in new_graph_dict_name:
             self.new_graph_menu.addAction(new_graph)
