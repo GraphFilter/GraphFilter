@@ -1,4 +1,4 @@
-import os.path
+import math
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
@@ -19,6 +19,7 @@ class NewGraphStore:
             self.dic_name_new_graph[new_graph.name] = new_graph
         self.graph = None
         self.file_path = None
+        self.layout = 'spring'
         self.radio_option = 0
 
     def set_graph(self, graph):
@@ -29,6 +30,9 @@ class NewGraphStore:
 
     def set_radio_option(self, option):
         self.radio_option = option
+
+    def set_layout(self, layout):
+        self.layout = layout
 
     def reset_attributes(self):
         self.graph = None
@@ -167,6 +171,7 @@ class CycleGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.cycle_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
 
@@ -187,6 +192,7 @@ class PathGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.path_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
 
@@ -207,6 +213,7 @@ class CompleteGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.complete_graph(int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
 
@@ -250,6 +257,7 @@ class TuranGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.turan_graph(int(dialog.dict['n'].text()), int(dialog.dict['r'].text())))
+        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
     @staticmethod
@@ -284,6 +292,9 @@ class Grid2dGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text())))
+        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
+                  for x, y in new_graph_store.graph.nodes()}
+        new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
 
@@ -309,6 +320,9 @@ class TriangularLatticeGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.triangular_lattice_graph(int(dialog.dict['m'].text()),
                                                               int(dialog.dict['n'].text())))
+        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
+                  for x, y in new_graph_store.graph.nodes()}
+        new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
 
@@ -329,7 +343,19 @@ class PetersenGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.petersen_graph())
+        new_graph_store.set_layout(PetersenGraph.calculate_layout())
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def calculate_layout():
+        pos = {}
+
+        for i in range(5):
+            theta = 2 * math.pi * i / 5 + math.pi / 2
+            pos[i] = ((2 * math.cos(theta) + 2) * 5, (2 * math.sin(theta) + 2) * 0.25)
+            pos[5 + i] = ((math.cos(theta) + 2) * 5, (math.sin(theta) + 2) * 0.25)
+
+        return pos
 
 
 class RandomRegularGraph(NewGraphStore):
@@ -409,6 +435,7 @@ class CompleteBipartiteGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.complete_multipartite_graph(int(dialog.dict['m'].text()),
                                                                  int(dialog.dict['n'].text())))
+        new_graph_store.set_layout('bipartite')
         NewGraphStore.create_graph(dialog)
 
 

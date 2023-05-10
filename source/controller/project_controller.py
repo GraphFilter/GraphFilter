@@ -7,6 +7,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 
+from source.store.operations_graph import dict_name_operations_graph
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
@@ -43,6 +44,7 @@ class ProjectController:
         self.edited_graph = None
 
         self.active_new_graph_action = None
+        self.active_operation_action = None
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
         self.connect_events()
@@ -93,10 +95,10 @@ class ProjectController:
 
         self.project_tool_bar.features_info_button.triggered.connect(self.show_editing_features)
 
-        self.connect_operations_events()
-
         self.project_tool_bar.new_graph_menu.hovered.connect(self.set_active_new_graph_action)
+        self.project_tool_bar.operations_menu.hovered.connect(self.set_active_operation_action)
         self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
+        self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
         self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
         # self.project_window.print_action.triggered.connect(self.on_print)
@@ -113,12 +115,6 @@ class ProjectController:
 
         self.project_tool_bar.save_button.triggered.connect(self.on_save_graph)
         self.project_tool_bar.delete_button.triggered.connect(self.delete_graph)
-
-    def connect_operations_events(self):
-        self.project_tool_bar.line_graph.triggered.connect(self.to_line_graph)
-        self.project_tool_bar.complement.triggered.connect(self.to_complement)
-        self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
-        self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
 
     def delete_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
@@ -279,6 +275,7 @@ class ProjectController:
     def on_new_graph_button(self):
         new_graph_dict_name[self.active_new_graph_action].open_dialog()
         graph = new_graph_store.graph
+        layout = new_graph_store.layout
         file_path = new_graph_store.file_path
 
         if graph is not None:
@@ -286,8 +283,6 @@ class ProjectController:
                 graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
             except AttributeError:
                 graph_g6 = graph
-
-            self.visualize_graph_dock.plot_graph(graph)
 
             if new_graph_store.radio_option == 0:
                 create_g6_file(file_path, graph_g6)
@@ -306,12 +301,24 @@ class ProjectController:
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
                 self.on_save_graph()
 
+            self.visualize_graph_dock.plot_graph(graph, layout)
             self.visualize_graph_dock.setDisabled(False)
             new_graph_store.reset_attributes()
+
+    def on_operations_button(self):
+        graph = dict_name_operations_graph[self.active_operation_action]. \
+            calculate(self.visualize_graph_dock.current_graph)
+
+        if graph is not None:
+            self.visualize_graph_dock.plot_graph(graph)
 
     def set_active_new_graph_action(self):
         if self.project_tool_bar.new_graph_menu.activeAction() is not None:
             self.active_new_graph_action = self.project_tool_bar.new_graph_menu.activeAction().text()
+
+    def set_active_operation_action(self):
+        if self.project_tool_bar.operations_menu.activeAction() is not None:
+            self.active_operation_action = self.project_tool_bar.operations_menu.activeAction().text()
 
     def insert_universal_vertex(self):
         graph = self.visualize_graph_dock.current_graph
@@ -417,9 +424,6 @@ class ProjectController:
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    def to_line_graph(self):
-        self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.line_graph(self.visualize_graph_dock.current_graph)))
-
     def on_save_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
 
@@ -443,17 +447,3 @@ class ProjectController:
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
         self.on_change_graph()
-
-    def to_inverse_line_graph(self):
-        try:
-            self.visualize_graph_dock.plot_graph(fix_graph_nodes(nx.inverse_line_graph
-                                                                 (self.visualize_graph_dock.current_graph)))
-        except nx.NetworkXError:
-            message_box = MessageBox("The drawn graph is not a line graph of any graph")
-            message_box.exec()
-
-    def to_complement(self):
-        self.visualize_graph_dock.plot_graph(nx.complement(self.visualize_graph_dock.current_graph))
-
-    def to_clique_graph(self):
-        self.visualize_graph_dock.plot_graph(nx.make_max_clique_graph(self.visualize_graph_dock.current_graph))
