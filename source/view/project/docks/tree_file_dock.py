@@ -19,6 +19,7 @@ class TreeFileDock(QDockWidget):
         #self.delete_empty_folder = QAction("Delete empty folder")
         self.widget = QWidget()
         self.create_tree()
+        self.populate_context_menu()
 
     def create_tree(self):
         self.path = project_information_store.project_location
@@ -41,4 +42,6 @@ class TreeFileDock(QDockWidget):
         self.setWidget(self.tree)
 
 
-
+    def populate_context_menu(self):
+        self.menu.addAction(self.load_file)
+        self.menu.addAction(self.delete_file)

@@ -104,7 +104,7 @@ class ProjectController:
     def tree_file_dock_events(self):
         # self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
-        self.tree_file_dock.tree.customContextMenuRequested.connect(self.tree_context_menu)
+        self.tree_file_dock.tree.customContextMenuRequested.connect(self.tree_context_menu_events)
 
     def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
@@ -122,9 +122,7 @@ class ProjectController:
 
     def delete_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
-        print(project_information_store.file_path)
         file_path = project_information_store.file_path
-        print(file_path)
         file_name, file_type = os.path.splitext(file_path)
 
         if current_index > 0:
@@ -328,11 +326,8 @@ class ProjectController:
 
         self.visualize_graph_dock.plot_graph(graph)
 
-    def tree_context_menu(self):
-        self.tree_file_dock.menu.clear()
-        self.tree_file_dock.menu.addAction(self.tree_file_dock.load_file)
+    def tree_context_menu_events(self):
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
-        self.tree_file_dock.menu.addAction(self.tree_file_dock.delete_file)
 
         self.tree_file_dock.delete_file.triggered.disconnect()
         self.tree_file_dock.delete_file.triggered.connect(self.delete_confirmation)
