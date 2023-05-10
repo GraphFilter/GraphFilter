@@ -141,8 +141,10 @@ class WizardController:
                 len(self.graph_files_page.list_files_input.selectedItems()) == 1))
         self.graph_files_page.list_files_input.itemClicked.connect(
             lambda: self.graph_files_page.remove_file.setEnabled(True))
-        self.graph_files_page.download_button.clicked.connect(
+        self.graph_files_page.download_button_hog.clicked.connect(
             lambda: open_url("https://houseofgraphs.org/meta-directory"))
+        self.graph_files_page.download_button_mckay.clicked.connect(
+            lambda: open_url("http://users.cecs.anu.edu.au/~bdm/data/graphs.html"))
 
     def connect_events(self):
         self.wizard_window.currentIdChanged.connect(self.on_wizard_page_change)
