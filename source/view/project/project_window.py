@@ -69,6 +69,7 @@ class ProjectWindow(QMainWindow):
         view_menu.addAction(self.visualize_action)
         view_menu.addAction(self.invariants_check_action)
         view_menu.addAction(self.graph_info_action)
+        view_menu.addAction(self.visualize_tree_action)
 
         window_menu = menu_bar.addMenu("Window")
         window_menu.addAction(self.restore_layout_action)

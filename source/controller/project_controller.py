@@ -2,6 +2,7 @@ import os.path
 
 import networkx as nx
 from PyQt5.QtCore import Qt
+
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 
@@ -60,7 +61,6 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
-        self.tree_file_dock.create_tree()
 
         self.project_window.showMaximized()
 
@@ -178,6 +178,7 @@ class ProjectController:
             self.on_change_graph()
 
     def create_docks(self):
+        self.tree_file_dock.create_tree()
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
@@ -220,6 +221,7 @@ class ProjectController:
 
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
+        self.on_visualize_tree()
 
     def on_change_graph(self):
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
