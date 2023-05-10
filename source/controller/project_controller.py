@@ -1,9 +1,11 @@
+import os
 import os.path
 
 import networkx as nx
+from PyQt5.QtGui import QCursor
+from PyQt5 import QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
-from PyQt5 import QtCore
 
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
@@ -15,8 +17,8 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes, change_g6_file, \
-    change_json_file
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes, change_json_file, \
+    change_g6_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -102,6 +104,7 @@ class ProjectController:
     def tree_file_dock_events(self):
         # self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
+        self.tree_file_dock.tree.customContextMenuRequested.connect(self.tree_context_menu_events)
 
     def connect_tool_bar_events(self):
         self.project_tool_bar.combo_graphs.activated.connect(self.on_change_graph)
@@ -117,14 +120,9 @@ class ProjectController:
         self.project_tool_bar.clique_graph.triggered.connect(self.to_clique_graph)
         self.project_tool_bar.inverse_line_graph.triggered.connect(self.to_inverse_line_graph)
 
-    @staticmethod
-    def delete_file():
-        print("File deleted")
-
     def delete_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
-        file_path = str(project_information_store.file_path)
-        file_path = file_path[2:-3]
+        file_path = project_information_store.file_path
         file_name, file_type = os.path.splitext(file_path)
 
         if current_index > 0:
@@ -299,6 +297,8 @@ class ProjectController:
                     self.project_tool_bar.reset_combo_graphs()
                     self.project_tool_bar.fill_combo_graphs(graph)
                     self.on_change_graph()
+
+                project_information_store.file_path = file_path
             else:
                 self.edited_graph = graph
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
@@ -306,6 +306,7 @@ class ProjectController:
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
                 self.on_save_graph()
 
+            self.visualize_graph_dock.setDisabled(False)
             new_graph_store.reset_attributes()
 
     def set_active_new_graph_action(self):
@@ -323,10 +324,66 @@ class ProjectController:
 
         self.visualize_graph_dock.plot_graph(graph)
 
+    def tree_context_menu_events(self):
+        self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
+
+        self.tree_file_dock.delete_file.triggered.disconnect()
+        self.tree_file_dock.delete_file.triggered.connect(self.delete_confirmation)
+
+        cursor = QCursor()
+        self.tree_file_dock.menu.exec(cursor.pos())
+
+    def delete_confirmation(self):
+        dlg = QMessageBox()
+        dlg.setWindowTitle("Delete confirmation")
+        dlg.setText("Are you sure you want to delete this ")
+        dlg.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        dlg.setDefaultButton(QMessageBox.No)
+        if dlg.exec_() == QMessageBox.Yes:
+            self.delete_tree_file()
+            return
+        else:
+            pass
+
+    def delete_tree_file(self):
+        index = self.tree_file_dock.tree.currentIndex()
+        file_path = self.tree_file_dock.model.filePath(index)
+        type_item = self.tree_file_dock.model.type(index)
+        if type_item == "File Folder":
+            try:
+                os.rmdir(file_path)
+            except FileNotFoundError:
+                return
+            except PermissionError:
+                return
+            except OSError:
+                return
+        else:
+            try:
+                os.remove(file_path)
+                if file_path == project_information_store.file_path:
+                    self.project_tool_bar.reset_combo_graphs()
+                    self.project_tool_bar.fill_combo_graphs("?")
+                    self.on_change_graph()
+                    self.visualize_graph_dock.setDisabled(True)
+                    project_information_store.file_path = os.path.dirname(file_path)
+                    dlg = QMessageBox()
+                    dlg.setIcon(QMessageBox.Information)
+                    dlg.setText("You erased the current file. To continue, please create a new graph or select another file in the directory.")
+                    dlg.setWindowTitle("Select another file")
+                    dlg.exec()
+            except FileNotFoundError:
+                return
+            except PermissionError:
+                return
+            except OSError:
+                return
+        # File Folder
+
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
-        project_information_store.file_path = file_path + "///"
+        project_information_store.file_path = file_path
 
         type_item = self.tree_file_dock.model.type(index)
         if type_item == "json File":
@@ -344,6 +401,7 @@ class ProjectController:
                 self.on_change_graph()
         else:
             pass
+        self.visualize_graph_dock.setDisabled(False)
 
     def update_graph_to_table(self, edited_graph):
         self.edited_graph = edited_graph
@@ -365,8 +423,7 @@ class ProjectController:
     def on_save_graph(self):
         current_index = self.project_tool_bar.combo_graphs.currentIndex()
 
-        file_path = str(project_information_store.file_path)
-        file_path = file_path[2:-3]
+        file_path = project_information_store.file_path
         file_name, file_type = os.path.splitext(file_path)
         graph = None
         new_g6 = ""
@@ -379,7 +436,6 @@ class ProjectController:
 
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
-
         if file_type == ".json":
             graph = change_json_file(file_path, new_g6, current_index)
 
