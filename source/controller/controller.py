@@ -1,5 +1,7 @@
 import os
 
+import networkx as nx
+
 from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
@@ -11,7 +13,7 @@ import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
-
+from source.domain.utils import create_g6_file
 
 class Controller:
 
@@ -34,7 +36,7 @@ class Controller:
     def connect_wizard_events(self):
         self.wizard_controller.wizard_window.cancel_button.clicked.connect(self.close_wizard_window)
         self.wizard_controller.wizard_window.close_signal.connect(self.close_wizard_window)
-        self.wizard_controller.wizard_window.start_button.clicked.connect(self.start_filter)
+        self.wizard_controller.wizard_window.start_button.clicked.connect(self.finish_wizard)
 
     def connect_project_events(self):
         self.project_controller.project_window.new_action.triggered.connect(self.show_wizard_window)
@@ -79,7 +81,7 @@ class Controller:
                     'graph_files': file_path[0],
                     'filtered_graphs': file.read().splitlines()
                 })
-        formatted_file_path = file_path[:-1]
+        formatted_file_path = file_path[0]
         project_information_store.file_path = formatted_file_path
 
         if self.current_open_window == "welcome":
@@ -97,17 +99,26 @@ class Controller:
         self.connect_wizard_events()
         self.wizard_controller.show_window()
 
-    def finish_filter(self):
+    def start_project(self):
         if not project_information_store.filtered_graphs:
             self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
             self.show_wizard_window()
         else:
             self.show_project_window()
 
-    def start_filter(self):
+    def finish_wizard(self):
         update_project_store()
-        self.filter_controller.start_filter()
-        self.finish_filter()
+        if project_information_store.method == 'blank':
+            graph = nx.Graph()
+            create_g6_file(project_information_store.project_location+
+                           "/"+project_information_store.project_name+".g6",
+                           nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+            project_information_store.filtered_graphs = "?"
+            project_information_store.file_path = project_information_store.project_location+\
+                                                  project_information_store.project_name+".g6"
+        else:
+            self.filter_controller.start_filter()
+        self.start_project()
 
     def show_project_window(self):
         self.project_controller.show_window()

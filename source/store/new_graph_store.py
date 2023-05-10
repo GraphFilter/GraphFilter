@@ -48,11 +48,18 @@ class NewGraphStore:
         dialog.new_file_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
         dialog.insert_final_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
 
+        if os.path.isdir(project_information_store.file_path):
+            dialog.insert_final_radio.setEnabled(False)
+
         dialog.exec()
 
     @staticmethod
     def create_graph(dialog):
-        new_graph_store.set_file_path(project_information_store.project_location + f"\\{dialog.dict['name'].text()}.g6")
+        if os.path.isdir(project_information_store.file_path):
+            new_graph_store.set_file_path(project_information_store.file_path + f"/{dialog.dict['name'].text()}.g6")
+        else:
+            new_graph_store.set_file_path(
+                project_information_store.get_file_directory() + f"{dialog.dict['name'].text()}.g6")
 
         dialog.close()
 
