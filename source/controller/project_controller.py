@@ -306,8 +306,8 @@ class ProjectController:
             new_graph_store.reset_attributes()
 
     def on_operations_button(self):
-        graph = dict_name_operations_graph[self.active_operation_action].\
-            get_operation(self.visualize_graph_dock.current_graph)
+        graph = dict_name_operations_graph[self.active_operation_action]. \
+            calculate(self.visualize_graph_dock.current_graph)
 
         if graph is not None:
             self.visualize_graph_dock.plot_graph(graph)

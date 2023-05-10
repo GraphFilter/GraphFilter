@@ -17,7 +17,7 @@ class LineGraph(OperationsGraph):
     name = "Line Graph"
 
     @staticmethod
-    def get_operation(graph):
+    def calculate(graph):
         return nx.line_graph(graph)
 
 
@@ -25,7 +25,7 @@ class InverseLineGraph(OperationsGraph):
     name = "Inverse Line Graph"
 
     @staticmethod
-    def get_operation(graph):
+    def calculate(graph):
         try:
             return nx.inverse_line_graph(graph)
         except nx.NetworkXError:
@@ -39,7 +39,7 @@ class Complement(OperationsGraph):
     name = "Complement"
 
     @staticmethod
-    def get_operation(graph):
+    def calculate(graph):
         return nx.complement(graph)
 
 
@@ -47,7 +47,7 @@ class CliqueGraph(OperationsGraph):
     name = "Clique Graph"
 
     @staticmethod
-    def get_operation(graph):
+    def calculate(graph):
         return nx.make_max_clique_graph(graph)
 
 
