@@ -109,14 +109,18 @@ class ResizableGraph(EditableGraph):
         self.fig.canvas.draw()
 
     def restart_label(self):
-        node_labels = {node: i for i, node in enumerate(self.nodes)}
-        self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
-        self.draw_node_labels(node_labels, self.node_label_fontdict)
+        try:
+            node_labels = {node: i for i, node in enumerate(self.nodes)}
+            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
+            self.draw_node_labels(node_labels, self.node_label_fontdict)
 
-        new_graph = nx.Graph()
-        new_graph.add_nodes_from(self.nodes)
-        new_graph.add_edges_from(self.edges)
-        new_graph = fix_graph_nodes(new_graph)
+            new_graph = nx.Graph()
+            new_graph.add_nodes_from(self.nodes)
+            new_graph.add_edges_from(self.edges)
+            new_graph = fix_graph_nodes(new_graph)
+        except IndexError:
+            new_graph = nx.Graph()
+            pass
 
         self.synchronize_change(new_graph)
 
