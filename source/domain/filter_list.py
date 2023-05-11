@@ -1,14 +1,13 @@
-import os
-
-import networkx as nx
-from simpleeval import simple_eval
-from source.store.operations_invariants import *
-from source.domain.equation import Equation
-import numpy as np
 import multiprocessing as mp
-from ctypes import c_char_p
-import time
+import os
 import random
+import time
+from ctypes import c_char_p
+
+from simpleeval import simple_eval
+
+from source.domain.equation import Equation
+from source.store.operations_invariants import *
 
 
 class FilterList:
@@ -154,6 +153,7 @@ class FilterList:
 
     def need_multiprocess(self, list_g6_in):
         graph_is_valid = False
+        fails = 0
         while not graph_is_valid:
             choices = random.choices(population=list_g6_in, k=2)
             try:
@@ -162,6 +162,9 @@ class FilterList:
                 graph_is_valid = True
             except Exception:
                 graph_is_valid = False
+                fails += 1
+                if fails > 10:
+                    return False
 
         start = time.time()
         self.graph_satisfies_equation(g1)
