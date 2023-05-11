@@ -1,4 +1,6 @@
 import math
+import os
+import os.path
 
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
