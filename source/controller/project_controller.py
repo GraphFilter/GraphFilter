@@ -288,9 +288,9 @@ class ProjectController:
                 create_g6_file(file_path, graph_g6)
 
                 with open(file_path) as file:
-                    graph = file.read().splitlines()
+                    graph_text = file.read().splitlines()
                     self.project_tool_bar.reset_combo_graphs()
-                    self.project_tool_bar.fill_combo_graphs(graph)
+                    self.project_tool_bar.fill_combo_graphs(graph_text)
                     self.on_change_graph()
 
                 project_information_store.file_path = file_path

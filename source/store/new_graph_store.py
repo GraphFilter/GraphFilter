@@ -91,6 +91,20 @@ class NewGraphStore:
             dialog.dict[param].setStyleSheet('background-color: #EF5350;')
 
     @staticmethod
+    def verify_mxn_values(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        if dialog.dict['m'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
+                1 <= (int(dialog.dict['m'].text()) * int(dialog.dict['n'].text())) <= 60:
+            dialog.create_button.setEnabled(True)
+            dialog.dict['m'].setStyleSheet('background-color: white;')
+            dialog.dict['n'].setStyleSheet('background-color: white;')
+        else:
+            dialog.create_button.setDisabled(True)
+            dialog.dict['m'].setStyleSheet('background-color: #EF5350;')
+            dialog.dict['n'].setStyleSheet('background-color: #EF5350;')
+
+    @staticmethod
     def is_other_params_empty(dialog):
         if new_graph_store.radio_option == 0 and dialog.dict['name'] == "":
             return True
@@ -276,7 +290,7 @@ class TuranGraph(NewGraphStore):
 class Grid2dGraph(NewGraphStore):
     name = "Grid 2d Graph"
     dict_attributes_names = {"m": "Number of rows, m", "n": "Number of columns, n",
-                             "conditions": "1 \u2264 m, n \u2264 60"}
+                             "conditions": "1 \u2264 m \u00d7 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -284,16 +298,18 @@ class Grid2dGraph(NewGraphStore):
         dialog.create_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Lattice_graph"))
-        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text())))
-        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
+        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 0.99)) * x, y / (int(dialog.dict['n'].text()) - 0.99))
                   for x, y in new_graph_store.graph.nodes()}
+        if len(new_graph_store.graph.nodes) == 1:
+            layout = {(0, 0): (1, 1), 0: (1, 1)}
         new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
@@ -301,7 +317,7 @@ class Grid2dGraph(NewGraphStore):
 class TriangularLatticeGraph(NewGraphStore):
     name = "Triangular Lattice Graph"
     dict_attributes_names = {"m": "Number of rows, m", "n": "Number of columns, n", "conditions":
-                             "1 \u2264 m,n \u2264 60"}
+                             "1 \u2264 m \u00d7 n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -311,8 +327,8 @@ class TriangularLatticeGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://networkx.org/documentation/stable/reference/generated/networkx."
                                            "generators.lattice.triangular_lattice_graph.html"))
-        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -320,8 +336,10 @@ class TriangularLatticeGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.triangular_lattice_graph(int(dialog.dict['m'].text()),
                                                               int(dialog.dict['n'].text())))
-        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
-                  for x, y in new_graph_store.graph.nodes()}
+        layout = nx.get_node_attributes(new_graph_store.graph, 'pos')
+        for key, value in layout.items():
+            layout[key] = ((3 / (0.75 * (int(dialog.dict['n'].text()) + 1))) * value[0],
+                           (1.1 / int(dialog.dict['m'].text())) * value[1])
         new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
@@ -352,8 +370,8 @@ class PetersenGraph(NewGraphStore):
 
         for i in range(5):
             theta = 2 * math.pi * i / 5 + math.pi / 2
-            pos[i] = ((2 * math.cos(theta) + 2) * 5, (2 * math.sin(theta) + 2) * 0.25)
-            pos[5 + i] = ((math.cos(theta) + 2) * 5, (math.sin(theta) + 2) * 0.25)
+            pos[i] = ((2 * math.cos(theta) + 2) * 0.5, (2 * math.sin(theta) + 2) * 0.25)
+            pos[5 + i] = ((math.cos(theta) + 2) * 0.5, (math.sin(theta) + 2) * 0.25)
 
         return pos
 
@@ -396,7 +414,7 @@ class RandomRegularGraph(NewGraphStore):
 
 class RandomCograph(NewGraphStore):
     name = "Random Cograph"
-    dict_attributes_names = {"k": "2^k nodes, k", "conditions": " 1 \u2264 < k \u2264 6"}
+    dict_attributes_names = {"k": "2^k nodes, k", "conditions": " 1 \u2264 k < 6"}
 
     @staticmethod
     def open_dialog():
@@ -404,7 +422,7 @@ class RandomCograph(NewGraphStore):
         dialog.create_button.clicked.connect(lambda: RandomCograph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Cograph"))
-        dialog.dict['k'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'k'))
+        dialog.dict['k'].textEdited.connect(lambda: RandomCograph.verify_k_number(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -412,6 +430,17 @@ class RandomCograph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.random_cograph(int(dialog.dict['k'].text())))
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_k_number(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        if dialog.dict['k'].text().isnumeric() and 1 <= int(dialog.dict['k'].text()) < 6:
+            dialog.create_button.setEnabled(True)
+            dialog.dict['k'].setStyleSheet('background-color: white;')
+        else:
+            dialog.create_button.setDisabled(True)
+            dialog.dict['k'].setStyleSheet('background-color: #EF5350;')
 
 
 class CompleteBipartiteGraph(NewGraphStore):
