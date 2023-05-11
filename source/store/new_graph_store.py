@@ -84,6 +84,20 @@ class NewGraphStore:
             dialog.dict[param].setStyleSheet('background-color: #EF5350;')
 
     @staticmethod
+    def verify_mxn_values(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        if dialog.dict['m'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
+                1 <= (int(dialog.dict['m'].text()) * int(dialog.dict['n'].text())) <= 60:
+            dialog.create_button.setEnabled(True)
+            dialog.dict['m'].setStyleSheet('background-color: white;')
+            dialog.dict['n'].setStyleSheet('background-color: white;')
+        else:
+            dialog.create_button.setDisabled(True)
+            dialog.dict['m'].setStyleSheet('background-color: #EF5350;')
+            dialog.dict['n'].setStyleSheet('background-color: #EF5350;')
+
+    @staticmethod
     def is_other_params_empty(dialog):
         if new_graph_store.radio_option == 0 and dialog.dict['name'] == "":
             return True
@@ -277,15 +291,15 @@ class Grid2dGraph(NewGraphStore):
         dialog.create_button.clicked.connect(lambda: Grid2dGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Lattice_graph"))
-        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text())))
-        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
+        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1.01)) * x, y / (int(dialog.dict['n'].text()) - 1.01))
                   for x, y in new_graph_store.graph.nodes()}
         new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
@@ -304,8 +318,8 @@ class TriangularLatticeGraph(NewGraphStore):
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://networkx.org/documentation/stable/reference/generated/networkx."
                                            "generators.lattice.triangular_lattice_graph.html"))
-        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
+        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_mxn_values(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -313,8 +327,10 @@ class TriangularLatticeGraph(NewGraphStore):
     def create_graph(dialog):
         new_graph_store.set_graph(nx.triangular_lattice_graph(int(dialog.dict['m'].text()),
                                                               int(dialog.dict['n'].text())))
-        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 1)) * x, y / (int(dialog.dict['n'].text()) - 1))
-                  for x, y in new_graph_store.graph.nodes()}
+        layout = nx.get_node_attributes(new_graph_store.graph, 'pos')
+        for key, value in layout.items():
+            layout[key] = ((3 / (int(dialog.dict['n'].text()) + 0.25)) * value[0],
+                           (1.1 / int(dialog.dict['m'].text())) * value[1])
         new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
@@ -435,3 +451,7 @@ class CompleteBipartiteGraph(NewGraphStore):
 new_graph_store = NewGraphStore()
 
 new_graph_dict_name = new_graph_store.dic_name_new_graph
+
+if __name__ == '__main__':
+    graph = nx.triangular_lattice_graph(4, 3)
+    print(nx.get_node_attributes(graph, 'pos'))
