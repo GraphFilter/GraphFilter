@@ -16,7 +16,13 @@ class TreeFileDock(QDockWidget):
         self.menu = QMenu()
         self.load_file = QAction("Load File")
         self.delete_file = QAction("Delete")
-        #self.delete_empty_folder = QAction("Delete empty folder")
+
+        self.export_png_action = QAction("Image (.png)")
+        self.export_pdf_action = QAction("Image (.pdf)")
+        self.export_tikz_action = QAction("LaTeX (.tikz)")
+        self.export_g6_action = QAction("graph6 list (.txt)")
+        self.export_sheet_action = QAction("Sheet (.xlsx): graph6 and invariants")
+
         self.widget = QWidget()
         self.create_tree()
         self.populate_context_menu()
@@ -45,3 +51,10 @@ class TreeFileDock(QDockWidget):
     def populate_context_menu(self):
         self.menu.addAction(self.load_file)
         self.menu.addAction(self.delete_file)
+
+        prev_menu_export = self.menu.addMenu('Export all graphs to')
+        prev_menu_export.addAction(self.export_png_action)
+        prev_menu_export.addAction(self.export_tikz_action)
+        prev_menu_export.addAction(self.export_g6_action)
+        prev_menu_export.addAction(self.export_pdf_action)
+        prev_menu_export.addAction(self.export_sheet_action)

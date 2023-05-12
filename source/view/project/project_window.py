@@ -17,11 +17,7 @@ class ProjectWindow(QMainWindow):
         self.new_action = QAction("New Project")
         self.open_action = QAction("Open...")
         self.save_action = QAction("Save")
-        self.export_png_action = QAction("Image (.png)")
-        self.export_pdf_action = QAction("Image (.pdf)")
-        self.export_tikz_action = QAction("LaTeX (.tikz)")
-        self.export_g6_action = QAction("graph6 (.txt)")
-        self.export_sheet_action = QAction("Sheet (.xlsx)")
+
         # self.print_action = QAction(Icon("print"), "Print")
         self.exit_action = QAction("Exit")
 
@@ -54,13 +50,6 @@ class ProjectWindow(QMainWindow):
         file_menu.addAction(self.open_action)
         file_menu.addAction(self.save_action)
         file_menu.addSeparator()
-
-        prev_menu_export = file_menu.addMenu('Export all graphs to')
-        prev_menu_export.addAction(self.export_png_action)
-        prev_menu_export.addAction(self.export_tikz_action)
-        prev_menu_export.addAction(self.export_g6_action)
-        prev_menu_export.addAction(self.export_pdf_action)
-        prev_menu_export.addAction(self.export_sheet_action)
 
         file_menu.addSeparator()
         file_menu.addAction(self.exit_action)
