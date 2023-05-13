@@ -100,7 +100,7 @@ class Controller:
         self.wizard_controller.show_window()
 
     def start_project(self):
-        if not project_information_store.filtered_graphs:
+        if not project_information_store.temp_filtered_graphs:
             self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
             self.show_wizard_window()
         else:
@@ -113,7 +113,7 @@ class Controller:
             create_g6_file(project_information_store.root_tree_path+
                            "/"+project_information_store.temp_project_name+".g6",
                            nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-            project_information_store.filtered_graphs = "?"
+            project_information_store.temp_filtered_graphs = "?"
             project_information_store.file_path = project_information_store.root_tree_path+\
                                                   project_information_store.temp_project_name+".g6"
         else:

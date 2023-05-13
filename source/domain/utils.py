@@ -107,7 +107,7 @@ def change_json_file(file_path, new_g6, current_index):
         graph.append(new_g6)
 
     graph = tuple(graph)
-    project_information_store.filtered_graphs = graph
+    project_information_store.temp_filtered_graphs = graph
     project_information_store.save_project()
 
     f = open(file_path)

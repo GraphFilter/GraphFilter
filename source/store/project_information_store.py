@@ -10,7 +10,7 @@ class ProjectInformationStore:
         self.temp_conditions = {}
         self.temp_method = ""
         self.temp_graph_input_files = []
-        self.filtered_graphs = []
+        self.temp_filtered_graphs = []
         self.file_path = ""
 
     def reset_store(self):
@@ -21,7 +21,7 @@ class ProjectInformationStore:
         self.temp_conditions = {}
         self.temp_method = ""
         self.temp_graph_input_files = []
-        self.filtered_graphs = []
+        self.temp_filtered_graphs = []
         self.file_path = ""
 
     def fill_data(self, data):
@@ -33,7 +33,7 @@ class ProjectInformationStore:
         self.temp_conditions = data['conditions']
         self.temp_method = data['method']
         self.temp_graph_input_files = data['graph_files']
-        self.filtered_graphs = data['filtered_graphs']
+        self.temp_filtered_graphs = data['filtered_graphs']
 
     def save_project(self):
         project_dictionary = {
@@ -44,7 +44,7 @@ class ProjectInformationStore:
             "conditions": self.temp_conditions,
             "method": self.temp_method,
             "graph_files": self.temp_graph_input_files,
-            "filtered_graphs": self.filtered_graphs
+            "filtered_graphs": self.temp_filtered_graphs
         }
         project_json = json.dumps(project_dictionary)
 

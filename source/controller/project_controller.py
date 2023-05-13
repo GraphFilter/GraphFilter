@@ -58,7 +58,7 @@ class ProjectController:
         self.project_tool_bar.reset_combo_graphs()
 
         self.project_tool_bar.current_graph = \
-            self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
+            self.project_tool_bar.fill_combo_graphs(project_information_store.temp_filtered_graphs)
 
         self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
 
@@ -154,9 +154,9 @@ class ProjectController:
             graph = tuple(graph)
             if graph == ():
                 graph = "?"
-                project_information_store.filtered_graphs = graph
+                project_information_store.temp_filtered_graphs = graph
             else:
-                project_information_store.filtered_graphs = graph
+                project_information_store.temp_filtered_graphs = graph
             project_information_store.save_project()
 
             f = open(file_path)
