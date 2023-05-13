@@ -68,7 +68,7 @@ class Controller:
                 content = file.read()
                 data = json.loads(content)
                 project_information_store.fill_data(data)
-                project_information_store.project_location = os.path.dirname(os.path.abspath(file_path[0]))
+                project_information_store.root_tree_path = os.path.dirname(os.path.abspath(file_path[0]))
         else:
             with open(file_path[0]) as file:
                 project_information_store.fill_data({
@@ -108,14 +108,14 @@ class Controller:
 
     def finish_wizard(self):
         update_project_store()
-        if project_information_store.method == 'blank':
+        if project_information_store.temp_method == 'blank':
             graph = nx.Graph()
-            create_g6_file(project_information_store.project_location+
-                           "/"+project_information_store.project_name+".g6",
+            create_g6_file(project_information_store.root_tree_path+
+                           "/"+project_information_store.temp_project_name+".g6",
                            nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
             project_information_store.filtered_graphs = "?"
-            project_information_store.file_path = project_information_store.project_location+\
-                                                  project_information_store.project_name+".g6"
+            project_information_store.file_path = project_information_store.root_tree_path+\
+                                                  project_information_store.temp_project_name+".g6"
         else:
             self.filter_controller.start_filter()
         self.start_project()
@@ -148,7 +148,7 @@ class Controller:
         file_name = QFileDialog.getSaveFileName(parent=self.project_controller.project_window,
                                                 caption=self.project_controller.project_window.tr(f"Export graphs to {format_file} file"),
                                                 filter=self.project_controller.project_window.tr(f"Files (*.{format_file})"),
-                                                directory=f"{project_information_store.project_name}.{format_file}"
+                                                directory=f"{project_information_store.temp_project_name}.{format_file}"
                                                 )[0]
         if file_name:
             if not QtCore.QFileInfo(file_name).suffix():

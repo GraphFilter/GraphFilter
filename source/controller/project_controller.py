@@ -52,7 +52,7 @@ class ProjectController:
     def show_window(self):
         self.create_docks()
 
-        self.project_window.set_title_bar(project_information_store.project_name)
+        self.project_window.set_title_bar(project_information_store.temp_project_name)
         self.project_window.addToolBar(self.project_tool_bar)
 
         self.project_tool_bar.reset_combo_graphs()
