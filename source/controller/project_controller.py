@@ -41,7 +41,6 @@ class ProjectController:
         self.editing_features = EditingFeatures()
 
         self.invariants_selected = {}
-        self.edited_graph = None
 
         self.active_new_graph_action = None
         self.active_operation_action = None
@@ -246,20 +245,21 @@ class ProjectController:
 
     def on_check_condition(self):
         check = QCheckBox().sender()
-        g6code = self.project_tool_bar.current_graph
+        graph = project_information_store.current_graph
+        g6code = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
 
         if check.text() not in self.invariants_selected:
-            if self.edited_graph is not None:
-                if len(self.edited_graph.nodes) == 0:
+            if graph is not None:
+                if len(graph) == 0:
                     self.invariants_selected[check.text()] = \
                         "Null Graph"
                 else:
                     self.invariants_selected[check.text()] = \
-                        dic_invariants_to_visualize[check.text()].print(self.edited_graph, precision=5)
+                        dic_invariants_to_visualize[check.text()].print(graph, precision=5)
             else:
                 if g6code is not None:
                     self.invariants_selected[check.text()] = \
-                        dic_invariants_to_visualize[check.text()].print(convert_g6_to_nx(g6code), precision=5)
+                        dic_invariants_to_visualize[check.text()].print(graph, precision=5)
                 else:
                     self.invariants_selected[check.text()] = 'No graph selected'
         else:
@@ -295,7 +295,6 @@ class ProjectController:
 
                 project_information_store.file_path = file_path
             else:
-                self.edited_graph = graph
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
                                                            f' - {graph_g6}')
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
@@ -307,7 +306,7 @@ class ProjectController:
 
     def on_operations_button(self):
         graph = dict_name_operations_graph[self.active_operation_action]. \
-            calculate(self.visualize_graph_dock.current_graph)
+            calculate(project_information_store.current_graph)
 
         if graph is not None:
             self.visualize_graph_dock.plot_graph(graph)
@@ -321,7 +320,7 @@ class ProjectController:
             self.active_operation_action = self.project_tool_bar.operations_menu.activeAction().text()
 
     def insert_universal_vertex(self):
-        graph = self.visualize_graph_dock.current_graph
+        graph = project_information_store.current_graph
         new_vertex = len(graph)
         graph.add_node(new_vertex)
 
@@ -376,7 +375,8 @@ class ProjectController:
                     project_information_store.file_path = os.path.dirname(file_path)
                     dlg = QMessageBox()
                     dlg.setIcon(QMessageBox.Information)
-                    dlg.setText("You erased the current file. To continue, please create a new graph or select another file in the directory.")
+                    dlg.setText("You erased the current file. To continue, please create a new graph or select another"
+                                " file in the directory.")
                     dlg.setWindowTitle("Select another file")
                     dlg.exec()
             except FileNotFoundError:
@@ -410,17 +410,14 @@ class ProjectController:
             pass
         self.visualize_graph_dock.setDisabled(False)
 
-    def update_graph_to_table(self, edited_graph):
-        self.edited_graph = edited_graph
-        self.visualize_graph_dock.current_graph = self.edited_graph
+    def update_graph_to_table(self):
+        graph = project_information_store.current_graph
 
         for key in self.invariants_selected.keys():
-            if len(self.edited_graph.nodes) == 0:
-                self.invariants_selected[key] = \
-                    "Null Graph"
+            if len(graph) == 0:
+                self.invariants_selected[key] = "Null Graph"
             else:
-                self.invariants_selected[key] = \
-                    dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
+                self.invariants_selected[key] = dic_invariants_to_visualize[key].print(graph, precision=5)
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
@@ -429,14 +426,15 @@ class ProjectController:
 
         file_path = project_information_store.file_path
         file_name, file_type = os.path.splitext(file_path)
+        current_graph = project_information_store.current_graph
         graph = None
         new_g6 = ""
         replaced_line = ""
 
-        if self.edited_graph is None:
+        if current_graph is None:
             return
         else:
-            new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
+            new_g6 = nx.to_graph6_bytes(current_graph)[10:-1].decode("utf-8")
 
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)

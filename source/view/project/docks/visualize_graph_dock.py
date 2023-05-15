@@ -16,7 +16,7 @@ matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
-    any_signal = QtCore.pyqtSignal(object)
+    any_signal = QtCore.pyqtSignal()
     invalid_graph_signal = QtCore.pyqtSignal()
 
     def __init__(self):
@@ -47,8 +47,8 @@ class VisualizeGraphDock(QDockWidget):
         self.canvas.setFocus()
         self.setWidget(self.canvas)
 
-    def synchronize_change(self, new_graph):
-        self.any_signal.emit(new_graph)
+    def synchronize_change(self):
+        self.any_signal.emit()
 
 
 class MplCanvas(FigureCanvasQTAgg):
@@ -125,7 +125,7 @@ class ResizableGraph(EditableGraph):
 
         project_information_store.current_graph = new_graph
         project_information_store.current_graph_pos = self.node_positions
-        self.synchronize_change(new_graph)
+        self.synchronize_change()
 
     def _on_key_press(self, event):
         if event.key == "enter" or event.key == "alt+enter":
