@@ -12,6 +12,8 @@ class ProjectInformationStore:
         self.temp_graph_input_files = []
         self.temp_filtered_graphs = []
         self.file_path = ""
+        self.current_graph = None
+        self.current_graph_pos = {}
 
     def reset_store(self):
         self.temp_project_name = ""

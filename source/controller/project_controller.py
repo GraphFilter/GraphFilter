@@ -18,7 +18,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes, change_json_file, \
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, change_json_file, \
     change_g6_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices

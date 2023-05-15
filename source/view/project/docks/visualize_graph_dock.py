@@ -10,6 +10,7 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
 
 from source.domain.utils import fix_graph_nodes
+from source.store.project_information_store import project_information_store
 
 matplotlib.use("Qt5Agg")
 
@@ -122,6 +123,8 @@ class ResizableGraph(EditableGraph):
             new_graph = nx.Graph()
             pass
 
+        project_information_store.current_graph = new_graph
+        project_information_store.current_graph_pos = self.node_positions
         self.synchronize_change(new_graph)
 
     def _on_key_press(self, event):
