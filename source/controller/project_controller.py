@@ -19,7 +19,7 @@ from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, change_json_file, \
-    change_g6_file
+    change_g6_file, set_new_vertex_positions
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -322,13 +322,16 @@ class ProjectController:
     def insert_universal_vertex(self):
         graph = project_information_store.current_graph
         new_vertex = len(graph)
+        node_positions = project_information_store.current_graph_pos
         graph.add_node(new_vertex)
 
         for node in graph:
             if node is not new_vertex:
                 graph.add_edge(new_vertex, node)
 
-        self.visualize_graph_dock.plot_graph(graph)
+        node_positions[new_vertex] = set_new_vertex_positions(node_positions)
+
+        self.visualize_graph_dock.plot_graph(graph, node_positions)
 
     def tree_context_menu_events(self):
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
@@ -363,7 +366,7 @@ class ProjectController:
             except PermissionError:
                 return
             except OSError:
-                return
+                return''
         else:
             try:
                 os.remove(file_path)

@@ -1,6 +1,7 @@
 import json
 import os
 import os.path
+import random
 import re
 import networkx as nx
 import gzip
@@ -132,3 +133,22 @@ def fix_graph_nodes(graph):
     new_graph.add_edges_from(new_edges)
 
     return new_graph
+
+
+def set_new_vertex_positions(node_positions):
+    list_x = []
+    list_y = []
+    new_x = random.uniform(0, 2)
+    new_y = random.uniform(0, 1)
+
+    for (x, y) in node_positions.values():
+        list_x.append(round(x, 1))
+        list_y.append(round(y, 1))
+
+    while new_x in list_x:
+        new_x = random.uniform(0, 2)
+
+    while new_y in list_y:
+        new_y = random.uniform(0, 1)
+
+    return new_x, new_y
