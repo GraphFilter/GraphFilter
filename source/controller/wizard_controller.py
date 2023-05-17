@@ -34,12 +34,23 @@ class WizardController:
         self.set_up_window()
 
     def set_wizard_pages(self):
-        self.wizard_window.addPage(self.project_files_page)
         self.wizard_window.addPage(self.method_page)
+        self.wizard_window.addPage(self.project_files_page)
+
+    def add_filter_wizard_pages(self):
         self.wizard_window.addPage(self.equations_page)
         self.wizard_window.addPage(self.conditions_page)
         self.wizard_window.addPage(self.graph_files_page)
         self.wizard_window.addPage(self.review_page)
+
+    def remove_filter_wizard_pages(self):
+        try:
+            self.wizard_window.removePage(2)
+            self.wizard_window.removePage(3)
+            self.wizard_window.removePage(4)
+            self.wizard_window.removePage(5)
+        except:
+            pass
 
     def set_up_window(self):
         self.set_wizard_pages()
@@ -115,11 +126,9 @@ class WizardController:
         self.equations_page.equation.textEdited.connect(self.on_insert_equation_input)
 
     def connect_method_page_events(self):
-        self.method_page.filter_button.setChecked(False)
-        self.method_page.filter_button.setChecked(False)
-
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
+        self.method_page.blank_project.clicked.connect(self.on_button_method_clicked)
 
     def connect_graph_files_page_events(self):
 
@@ -132,8 +141,10 @@ class WizardController:
                 len(self.graph_files_page.list_files_input.selectedItems()) == 1))
         self.graph_files_page.list_files_input.itemClicked.connect(
             lambda: self.graph_files_page.remove_file.setEnabled(True))
-        self.graph_files_page.download_button.clicked.connect(
+        self.graph_files_page.download_button_hog.clicked.connect(
             lambda: open_url("https://houseofgraphs.org/meta-directory"))
+        self.graph_files_page.download_button_mckay.clicked.connect(
+            lambda: open_url("http://users.cecs.anu.edu.au/~bdm/data/graphs.html"))
 
     def connect_events(self):
         self.wizard_window.currentIdChanged.connect(self.on_wizard_page_change)
@@ -302,14 +313,26 @@ class WizardController:
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
         self.method_page.counter_example_button.setChecked(False)
+        self.method_page.blank_project.setChecked(False)
         button = QPushButton().sender()
         button.setChecked(True)
+
+        if 'blank'in button.objectName():
+            self.project_files_page.setFinalPage(True)
+            wizard_information_store.method = 'blank'
+            self.review_page.set_method('blank')
+            # self.wizard_window.next_button.setDisabled(True)
+            self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
+            self.project_files_page.setFinalPage(False)
             wizard_information_store.method = 'filter'
             self.review_page.set_method('filter')
-        else:
+            self.add_filter_wizard_pages()
+        if 'counterexample' in button.objectName():
+            self.project_files_page.setFinalPage(False)
             wizard_information_store.method = 'counterexample'
             self.review_page.set_method('counterexample')
+            self.add_filter_wizard_pages()
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
         self.wizard_window.next_button.setToolTip('')

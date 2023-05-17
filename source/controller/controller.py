@@ -1,5 +1,7 @@
 import os
 
+import networkx as nx
+
 from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
@@ -11,7 +13,7 @@ import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
-
+from source.domain.utils import create_g6_file
 
 class Controller:
 
@@ -34,17 +36,17 @@ class Controller:
     def connect_wizard_events(self):
         self.wizard_controller.wizard_window.cancel_button.clicked.connect(self.close_wizard_window)
         self.wizard_controller.wizard_window.close_signal.connect(self.close_wizard_window)
-        self.wizard_controller.wizard_window.start_button.clicked.connect(self.start_filter)
+        self.wizard_controller.wizard_window.start_button.clicked.connect(self.finish_wizard)
 
     def connect_project_events(self):
         self.project_controller.project_window.new_action.triggered.connect(self.show_wizard_window)
         self.project_controller.project_window.open_action.triggered.connect(self.show_open_project_window)
 
-        self.project_controller.project_window.export_png_action.triggered.connect(self.export_to_png)
-        self.project_controller.project_window.export_g6_action.triggered.connect(self.export_to_g6)
-        self.project_controller.project_window.export_tikz_action.triggered.connect(self.export_to_tikz)
-        self.project_controller.project_window.export_pdf_action.triggered.connect(self.export_to_pdf)
-        self.project_controller.project_window.export_sheet_action.triggered.connect(self.export_to_sheet)
+        self.project_controller.tree_file_dock.export_png_action.triggered.connect(self.export_to_png)
+        self.project_controller.tree_file_dock.export_g6_action.triggered.connect(self.export_to_g6)
+        self.project_controller.tree_file_dock.export_tikz_action.triggered.connect(self.export_to_tikz)
+        self.project_controller.tree_file_dock.export_pdf_action.triggered.connect(self.export_to_pdf)
+        self.project_controller.tree_file_dock.export_sheet_action.triggered.connect(self.export_to_sheet)
 
     def connect_events(self):
         self.connect_welcome_events()
@@ -79,7 +81,7 @@ class Controller:
                     'graph_files': file_path[0],
                     'filtered_graphs': file.read().splitlines()
                 })
-        formatted_file_path = file_path[:-1]
+        formatted_file_path = file_path[0]
         project_information_store.file_path = formatted_file_path
 
         if self.current_open_window == "welcome":
@@ -97,17 +99,26 @@ class Controller:
         self.connect_wizard_events()
         self.wizard_controller.show_window()
 
-    def finish_filter(self):
+    def start_project(self):
         if not project_information_store.filtered_graphs:
             self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
             self.show_wizard_window()
         else:
             self.show_project_window()
 
-    def start_filter(self):
+    def finish_wizard(self):
         update_project_store()
-        self.filter_controller.start_filter()
-        self.finish_filter()
+        if project_information_store.method == 'blank':
+            graph = nx.Graph()
+            create_g6_file(project_information_store.project_location+
+                           "/"+project_information_store.project_name+".g6",
+                           nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
+            project_information_store.filtered_graphs = "?"
+            project_information_store.file_path = project_information_store.project_location+\
+                                                  project_information_store.project_name+".g6"
+        else:
+            self.filter_controller.start_filter()
+        self.start_project()
 
     def show_project_window(self):
         self.project_controller.show_window()
@@ -144,49 +155,68 @@ class Controller:
                 file_name += f".{format_file}"
         return file_name
 
+    def get_graph_from_tree(self):
+        index = self.project_controller.tree_file_dock.tree.currentIndex()
+        file_path = self.project_controller.tree_file_dock.model.filePath(index)
+        type_item = self.project_controller.tree_file_dock.model.type(index)
+
+        if type_item == "json File":
+            f = open(file_path)
+            data = json.load(f)
+            return tuple(data['filtered_graphs'])
+        else:
+            with open(file_path) as file:
+                return file.read().splitlines()
+
     def export_to_png(self):
+        self.project_controller.handle_tree_double_click()
+        graph_to_export = self.get_graph_from_tree()
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
         if file_dir:
-            self.show_loading_window(len(project_information_store.filtered_graphs))
-            for step, graph in enumerate(project_information_store.filtered_graphs):
+            self.show_loading_window(len(graph_to_export))
+            for step, graph in enumerate(graph_to_export):
                 export_g6_to_png(graph, file_dir, step)
                 self.update_loading_window(step)
             self.loading_window.close()
 
     def export_to_tikz(self):
+        graph_to_export = self.get_graph_from_tree()
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
         if file_dir:
-            self.show_loading_window(len(project_information_store.filtered_graphs))
-            for step, graph in enumerate(project_information_store.filtered_graphs):
+            self.show_loading_window(len(graph_to_export))
+            for step, graph in enumerate(graph_to_export):
                 export_g6_to_tikz(graph, file_dir, step)
                 self.update_loading_window(step)
             self.loading_window.close()
 
     def export_to_pdf(self):
+        graph_to_export = self.get_graph_from_tree()
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
         if file_dir:
-            self.show_loading_window(len(project_information_store.filtered_graphs))
-            for step, graph in enumerate(project_information_store.filtered_graphs):
+            self.show_loading_window(len(graph_to_export))
+            for step, graph in enumerate(graph_to_export):
                 export_g6_to_pdf(graph, file_dir, step)
                 self.update_loading_window(step)
             self.loading_window.close()
 
     def export_to_g6(self):
+        graph_to_export = self.get_graph_from_tree()
         file_name = self.get_name_from_save_dialog('g6')
         if file_name:
-            self.show_loading_window(len(project_information_store.filtered_graphs))
+            self.show_loading_window(len(graph_to_export))
             file = open(file_name, 'w')
-            for step, graph in enumerate(project_information_store.filtered_graphs):
+            for step, graph in enumerate(graph_to_export):
                 file.write(f'{graph}\n')
                 self.update_loading_window(step)
             file.close()
             self.loading_window.close()
 
     def export_to_sheet(self):
+        graph_to_export = self.get_graph_from_tree()
         file_name = self.get_name_from_save_dialog('xlsx')
         if file_name:
-            self.show_loading_window(len(project_information_store.filtered_graphs))
-            export_g6_to_sheet(graph_list=project_information_store.filtered_graphs,
+            self.show_loading_window(len(graph_to_export))
+            export_g6_to_sheet(graph_list=graph_to_export,
                                invariants=self.project_controller.invariants_selected,
                                file_name=file_name,
                                update_progress=self.update_loading_window)

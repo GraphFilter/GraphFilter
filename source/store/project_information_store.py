@@ -27,7 +27,8 @@ class ProjectInformationStore:
     def fill_data(self, data):
         self.project_name = data['project_name']
         self.project_location = data['project_location']
-        self.project_description = data['project_description'] if 'project_description' in data.keys() is not None else ''
+        self.project_description = data[
+            'project_description'] if 'project_description' in data.keys() is not None else ''
         self.equation = data['equation']
         self.conditions = data['conditions']
         self.method = data['method']
@@ -55,13 +56,20 @@ class ProjectInformationStore:
             file_json.write(project_json)
             file_json.close()
 
+    def get_file_directory(self):
+        file_directory = self.file_path.split('/')
+        file_directory = file_directory[: -1]
+        file_directory = ''.join(element + '/' for element in file_directory)
+
+        return file_directory
+
 
 def update_project_store():
     global project_information_store
     project_information_store.fill_data({
         'project_name': wizard_information_store.project_name,
         'project_location': wizard_information_store.project_location,
-        'project_description':  wizard_information_store.project_description,
+        'project_description': wizard_information_store.project_description,
         'equation': wizard_information_store.equation,
         'conditions': wizard_information_store.conditions.copy(),
         'method': wizard_information_store.method,
