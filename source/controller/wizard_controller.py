@@ -174,7 +174,7 @@ class WizardController:
         if validate_path(self.project_files_page.project_location_input.text()):
             self.update_complete_project_files_page(complete_project_location=True)
             project_location = self.project_files_page.project_location_input.text()
-            wizard_information_store.root_tree_path = project_location
+            wizard_information_store.file_path = project_location
             self.review_page.set_project_location(project_location)
         else:
             self.update_complete_project_files_page(complete_project_location=False)
@@ -186,19 +186,19 @@ class WizardController:
 
     def on_open_project_file(self):
         file_dialog = QFileDialog.getExistingDirectory(
-            directory=wizard_information_store.root_tree_path)
+            directory=wizard_information_store.file_path)
         directory_path = file_dialog
 
         if directory_path != "":
             self.project_files_page.project_location_input.setText(directory_path)
             self.verify_and_save_project_folder()
         else:
-            self.project_files_page.project_location_input.setText(wizard_information_store.root_tree_path)
+            self.project_files_page.project_location_input.setText(wizard_information_store.file_path)
 
     def set_default_project_location(self):
         default_path = qs.writableLocation(qs.DocumentsLocation)
         self.project_files_page.project_location_input.setText(default_path)
-        wizard_information_store.root_tree_path = default_path
+        wizard_information_store.file_path = default_path
         self.review_page.set_project_location(default_path)
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 

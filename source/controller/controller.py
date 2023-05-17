@@ -68,7 +68,7 @@ class Controller:
                 content = file.read()
                 data = json.loads(content)
                 project_information_store.fill_data(data)
-                project_information_store.root_tree_path = os.path.dirname(os.path.abspath(file_path[0]))
+                project_information_store.file_path = os.path.dirname(os.path.abspath(file_path[0]))
         else:
             with open(file_path[0]) as file:
                 project_information_store.fill_data({
@@ -112,12 +112,12 @@ class Controller:
         update_project_store()
         if project_information_store.temp_method == 'blank':
             graph = nx.Graph()
-            create_g6_file(project_information_store.root_tree_path+
+            create_g6_file(project_information_store.file_path+
                            "/"+project_information_store.temp_project_name+".g6",
                            nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
             project_information_store.temp_filtered_graphs = "?"
-            project_information_store.file_path = project_information_store.root_tree_path+\
-                                                  project_information_store.temp_project_name+".g6"
+            project_information_store.file_path = \
+                project_information_store.file_path+ "/"+project_information_store.temp_project_name+".g6"
         else:
             self.filter_controller.start_filter()
         self.start_project()

@@ -28,7 +28,7 @@ class TreeFileDock(QDockWidget):
         self.populate_context_menu()
 
     def create_tree(self):
-        self.path = project_information_store.root_tree_path
+        self.path = project_information_store.get_file_directory()
 
         self.model = QFileSystemModel()
         self.model.setRootPath(self.path)

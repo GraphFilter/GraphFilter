@@ -5,7 +5,6 @@ import os.path
 class ProjectInformationStore:
     def __init__(self):
         self.temp_project_name = ""
-        self.root_tree_path = ""
         self.temp_project_description = ""
         self.temp_equation = ""
         self.temp_conditions = {}
@@ -18,18 +17,16 @@ class ProjectInformationStore:
 
     def reset_store(self):
         self.temp_project_name = ""
-        self.root_tree_path = ""
         self.temp_project_description = ""
         self.temp_equation = ""
         self.temp_conditions = {}
         self.temp_method = ""
         self.temp_graph_input_files = []
         self.temp_filtered_graphs = []
-        #self.file_path = ""
 
     def fill_data(self, data):
         self.temp_project_name = data['project_name']
-        self.root_tree_path = data['project_location']
+        self.file_path = data['project_location']
         self.temp_project_description = data[
             'project_description'] if 'project_description' in data.keys() is not None else ''
         self.temp_equation = data['equation']
@@ -41,7 +38,7 @@ class ProjectInformationStore:
     def save_project(self):
         project_dictionary = {
             "project_name": self.temp_project_name,
-            "project_location": self.root_tree_path,
+            "project_location": self.file_path,
             "project_description": self.temp_project_description,
             "equation": self.temp_equation,
             "conditions": self.temp_conditions,
@@ -51,7 +48,7 @@ class ProjectInformationStore:
         }
         project_json = json.dumps(project_dictionary)
 
-        project_location = self.root_tree_path.replace('\\', '/')
+        project_location = self.file_path.replace('\\', '/')
 
         filename = f"{project_location}/{self.temp_project_name}.json"
 
@@ -69,11 +66,15 @@ class ProjectInformationStore:
     def get_file_name(self):
         return os.path.basename(self.file_path)
 
+    def get_file_type(self):
+        file_name, file_type = os.path.splitext(self.file_path)
+        return file_type
+
 def update_project_store():
     global project_information_store
     project_information_store.fill_data({
         'project_name': wizard_information_store.temp_project_name,
-        'project_location': wizard_information_store.root_tree_path,
+        'project_location': wizard_information_store.file_path,
         'project_description': wizard_information_store.temp_project_description,
         'equation': wizard_information_store.temp_equation,
         'conditions': wizard_information_store.temp_conditions.copy(),
