@@ -1,4 +1,5 @@
 import json
+import os.path
 
 
 class ProjectInformationStore:
@@ -24,7 +25,7 @@ class ProjectInformationStore:
         self.temp_method = ""
         self.temp_graph_input_files = []
         self.temp_filtered_graphs = []
-        self.file_path = ""
+        #self.file_path = ""
 
     def fill_data(self, data):
         self.temp_project_name = data['project_name']
@@ -65,6 +66,8 @@ class ProjectInformationStore:
 
         return file_directory
 
+    def get_file_name(self):
+        return os.path.basename(self.file_path)
 
 def update_project_store():
     global project_information_store

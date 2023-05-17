@@ -412,6 +412,8 @@ class ProjectController:
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
+        print(project_information_store.get_file_name())
+        self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
         graph = project_information_store.current_graph

@@ -90,6 +90,7 @@ class Controller:
         if self.current_open_window == "project":
             self.show_project_window()
         self.current_open_window = "project"
+        project_information_store.reset_store()
 
     def show_wizard_window(self):
         if self.current_open_window == "welcome":
@@ -105,6 +106,7 @@ class Controller:
             self.show_wizard_window()
         else:
             self.show_project_window()
+            project_information_store.reset_store()
 
     def finish_wizard(self):
         update_project_store()
