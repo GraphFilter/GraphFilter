@@ -1,29 +1,24 @@
-import os
+import json
 import os.path
 
-import networkx as nx
-from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt
-
+from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import *
 
+from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, change_json_file, \
+    change_g6_file
+from source.store.new_graph_store import *
 from source.store.operations_graph import dict_name_operations_graph
-from source.view.project.project_tool_bar import EditingFeatures
-from source.view.project.project_window import ProjectWindow
-from source.view.project.project_tool_bar import ProjectToolBar
+from source.store.operations_invariants import *
+from source.view.components.message_box import MessageBox
 from source.view.project.about_window import AboutWindow
 from source.view.project.docks.graph_information_dock import GraphInformationDock
-from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
-from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
-from source.store.operations_invariants import *
-from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, fix_graph_nodes, change_json_file, \
-    change_g6_file
-from source.view.components.message_box import MessageBox
-from PyQt5.Qt import QUrl, QDesktopServices
-import json
+from source.view.project.docks.tree_file_dock import TreeFileDock
+from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
+from source.view.project.project_tool_bar import EditingFeatures
+from source.view.project.project_tool_bar import ProjectToolBar
+from source.view.project.project_window import ProjectWindow
 
 
 class ProjectController:
@@ -65,7 +60,6 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
-
         self.project_window.showMaximized()
 
         self.settings.setValue("state", self.project_window.saveState())
@@ -101,10 +95,7 @@ class ProjectController:
         self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
         self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
-        # self.project_window.print_action.triggered.connect(self.on_print)
-
     def tree_file_dock_events(self):
-        # self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
         self.tree_file_dock.tree.customContextMenuRequested.connect(self.tree_context_menu_events)
 
@@ -187,14 +178,6 @@ class ProjectController:
     def on_exit(self):
         self.project_window.close()
 
-    def on_print(self):
-        # printer = QPrinter(QPrinter.HighResolution)
-        # dialog = QPrintDialog(printer, self)
-        #
-        # if dialog.exec_() == QPrintDialog.Accepted:
-        #     pass
-        pass
-
     def show_editing_features(self):
         self.editing_features.show()
 
@@ -215,7 +198,7 @@ class ProjectController:
 
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
-        self.on_visualize_tree()
+        # self.on_visualize_tree()
 
     def on_change_graph(self):
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
@@ -378,7 +361,8 @@ class ProjectController:
                     project_information_store.file_path = os.path.dirname(file_path)
                     dlg = QMessageBox()
                     dlg.setIcon(QMessageBox.Information)
-                    dlg.setText("You erased the current file. To continue, please create a new graph or select another file in the directory.")
+                    dlg.setText("You erased the current file. To continue, please create a new graph or select "
+                                "another file in the directory.")
                     dlg.setWindowTitle("Select another file")
                     dlg.exec()
             except FileNotFoundError:
