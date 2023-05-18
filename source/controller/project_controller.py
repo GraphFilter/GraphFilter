@@ -19,7 +19,7 @@ from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, change_json_file, \
-    change_g6_file, set_new_vertex_positions
+    change_g6_file, set_new_vertex_positions, change_graphml_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -59,7 +59,11 @@ class ProjectController:
         self.project_tool_bar.current_graph = \
             self.project_tool_bar.fill_combo_graphs(project_information_store.temp_filtered_graphs)
 
-        self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
+        if len(project_information_store.current_graph_pos) != 0:
+            self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
+                                                 project_information_store.current_graph_pos)
+        else:
+            self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
@@ -445,8 +449,11 @@ class ProjectController:
             graph = change_g6_file(file_path, new_g6, current_index)
         if file_type == ".json":
             graph = change_json_file(file_path, new_g6, current_index)
+        if file_type == ".graphml":
+            graph = [project_information_store.get_file_name()]
+            change_graphml_file(file_path)
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
-        self.on_change_graph()
+        self.graph_information_dock.update_table(self.invariants_selected)

@@ -50,7 +50,8 @@ class NewGraphStore:
         dialog.new_file_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
         dialog.insert_final_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
 
-        if os.path.isdir(project_information_store.file_path):
+        if os.path.isdir(project_information_store.file_path) or \
+                project_information_store.get_file_name().endswith('.graphml'):
             dialog.insert_final_radio.setEnabled(False)
 
         dialog.exec()

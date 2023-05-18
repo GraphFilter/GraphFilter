@@ -118,6 +118,17 @@ def change_json_file(file_path, new_g6, current_index):
     return new_json_graph
 
 
+def change_graphml_file(file_path):
+    graph = project_information_store.current_graph
+    pos = project_information_store.current_graph_pos
+
+    for node, (x, y) in pos.items():
+        graph.nodes[node]['x'] = float(x)
+        graph.nodes[node]['y'] = float(y)
+
+    nx.write_graphml(graph, file_path)
+
+
 def fix_graph_nodes(graph):
     new_dict = {}
     new_edges = []

@@ -76,7 +76,7 @@ class Controller:
                 'conditions': {},
                 'method': '',
                 'graph_files': file_path[0],
-                'filtered_graphs': ['Name of Graph']
+                'filtered_graphs': [project_information_store.get_file_name()]
             })
             project_information_store.current_graph = import_graphml_graph(file_path[0])
         else:
@@ -133,7 +133,7 @@ class Controller:
                            nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
             project_information_store.temp_filtered_graphs = "?"
             project_information_store.file_path = \
-                project_information_store.file_path+ "/"+project_information_store.temp_project_name+".g6"
+                project_information_store.file_path + "/"+project_information_store.temp_project_name+".g6"
         else:
             self.filter_controller.start_filter()
         self.start_project()
