@@ -152,3 +152,15 @@ def set_new_vertex_positions(node_positions):
         new_y = random.uniform(0, 1)
 
     return new_x, new_y
+
+
+def import_graphml_graph(file_path):
+    graph = nx.read_graphml(file_path)
+
+    if len(nx.get_node_attributes(graph, 'x')) != 0:
+        for node in graph.nodes:
+            graph.nodes[node]['pos'] = (graph.nodes[node]['x'], graph.nodes[node]['y'])
+
+        project_information_store.current_graph_pos = nx.get_node_attributes(graph, 'pos')
+
+    return graph

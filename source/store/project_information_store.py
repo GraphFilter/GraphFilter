@@ -26,7 +26,6 @@ class ProjectInformationStore:
 
     def fill_data(self, data):
         self.temp_project_name = data['project_name']
-        self.file_path = data['project_location']
         self.temp_project_description = data[
             'project_description'] if 'project_description' in data.keys() is not None else ''
         self.temp_equation = data['equation']
