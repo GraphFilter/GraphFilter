@@ -19,7 +19,7 @@ from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, change_json_file, \
-    change_g6_file, set_new_vertex_positions, change_graphml_file
+    change_g6_file, set_new_vertex_positions, change_graphml_file, change_gml_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -452,6 +452,9 @@ class ProjectController:
         if file_type == ".graphml":
             graph = [project_information_store.get_file_name()]
             change_graphml_file(file_path)
+        if file_type == ".gml":
+            graph = [project_information_store.get_file_name()]
+            change_gml_file(file_path)
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
