@@ -175,3 +175,15 @@ def import_graphml_graph(file_path):
         project_information_store.current_graph_pos = nx.get_node_attributes(graph, 'pos')
 
     return graph
+
+
+def import_gml_graph(file_path):
+    graph = nx.read_gml(file_path)
+
+    if len(nx.get_node_attributes(graph, 'x')) != 0:
+        for node in graph.nodes:
+            graph.nodes[node]['pos'] = (graph.nodes[node]['x'], graph.nodes[node]['y'])
+
+        project_information_store.current_graph_pos = nx.get_node_attributes(graph, 'pos')
+
+    return graph

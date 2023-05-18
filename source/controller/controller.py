@@ -13,7 +13,7 @@ import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
-from source.domain.utils import create_g6_file, import_graphml_graph
+from source.domain.utils import create_g6_file, import_graphml_graph, import_gml_graph
 
 
 class Controller:
@@ -60,14 +60,14 @@ class Controller:
 
     def show_open_project_window(self):
         file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.graphml)"])
-        file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.graphml)")
+        file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.graphml *.gml)"])
+        file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.graphml *.gml)")
         formatted_file_path = file_path[0]
         project_information_store.file_path = formatted_file_path
 
         if file_path[0] == '':
             return
-        if file_path[0].endswith('.graphml'):
+        if file_path[0].endswith('.graphml') or file_path[0].endswith('.gml'):
             project_information_store.fill_data({
                 'project_name': 'Visualization mode',
                 'project_location': os.path.dirname(os.path.abspath(file_path[0])),
@@ -78,7 +78,10 @@ class Controller:
                 'graph_files': file_path[0],
                 'filtered_graphs': [project_information_store.get_file_name()]
             })
-            project_information_store.current_graph = import_graphml_graph(file_path[0])
+            if file_path[0].endswith('.graphml'):
+                project_information_store.current_graph = import_graphml_graph(file_path[0])
+            elif file_path[0].endswith('.gml'):
+                project_information_store.current_graph = import_gml_graph(file_path[0])
         else:
             if file_path[0].endswith('.json'):
                 with open(file_path[0]) as file:
