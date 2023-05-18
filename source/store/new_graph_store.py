@@ -57,11 +57,8 @@ class NewGraphStore:
 
     @staticmethod
     def create_graph(dialog):
-        if os.path.isdir(project_information_store.file_path):
-            new_graph_store.set_file_path(project_information_store.file_path + f"/{dialog.dict['name'].text()}.g6")
-        else:
-            new_graph_store.set_file_path(
-                project_information_store.get_file_directory() + f"{dialog.dict['name'].text()}.g6")
+        new_graph_store.set_file_path(project_information_store.get_file_directory() +
+                                      f"{dialog.dict['name'].text()}.g6")
 
         dialog.close()
 

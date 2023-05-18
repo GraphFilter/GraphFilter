@@ -57,6 +57,9 @@ class ProjectInformationStore:
             file_json.close()
 
     def get_file_directory(self):
+        if os.path.isdir(self.file_path):
+            return self.file_path
+
         file_directory = self.file_path.split('/')
         file_directory = file_directory[: -1]
         file_directory = ''.join(element + '/' for element in file_directory)
@@ -69,6 +72,7 @@ class ProjectInformationStore:
     def get_file_type(self):
         file_name, file_type = os.path.splitext(self.file_path)
         return file_type
+
 
 def update_project_store():
     global project_information_store
