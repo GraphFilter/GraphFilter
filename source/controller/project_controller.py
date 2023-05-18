@@ -439,7 +439,7 @@ class ProjectController:
         if current_graph is None:
             return
         else:
-            new_g6 = nx.to_graph6_bytes(current_graph)[10:-1].decode("utf-8")
+            new_g6 = nx.to_graph6_bytes(current_graph, header=False).decode("utf-8")
 
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
