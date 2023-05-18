@@ -252,7 +252,7 @@ class ProjectController:
             if graph is not None:
                 if len(graph) == 0:
                     self.invariants_selected[check.text()] = \
-                        "Null Graph"
+                        "None Graph"
                 else:
                     self.invariants_selected[check.text()] = \
                         dic_invariants_to_visualize[check.text()].print(graph, precision=5)
