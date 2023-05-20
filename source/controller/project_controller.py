@@ -393,7 +393,6 @@ class ProjectController:
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
-        project_information_store.file_path = file_path
 
         type_item = self.tree_file_dock.model.type(index)
         if type_item == "json File":
@@ -403,16 +402,18 @@ class ProjectController:
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs(graph)
             self.on_change_graph()
+            project_information_store.file_path = file_path
+
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs(graph)
                 self.on_change_graph()
+                project_information_store.file_path = file_path
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
-        print(project_information_store.get_file_name())
         self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
