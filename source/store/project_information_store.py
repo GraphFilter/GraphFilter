@@ -49,7 +49,7 @@ class ProjectInformationStore:
 
         project_location = self.file_path.replace('\\', '/')
 
-        filename = f"{project_location}/{self.temp_project_name}.json"
+        filename = f"{project_location}/{self.temp_project_name}"[:-1]
 
         with open(filename, "w") as file_json:
             file_json.write(project_json)

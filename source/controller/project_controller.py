@@ -397,7 +397,6 @@ class ProjectController:
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
-        project_information_store.file_path = file_path
 
         type_item = self.tree_file_dock.model.type(index)
         if type_item == "json File":
@@ -423,8 +422,8 @@ class ProjectController:
                 self.visualize_graph_dock.plot_graph(graph)
         else:
             pass
+        project_information_store.file_path = file_path
         self.visualize_graph_dock.setDisabled(False)
-        print(project_information_store.get_file_name())
         self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
@@ -451,7 +450,7 @@ class ProjectController:
         if current_graph is None:
             return
         else:
-            new_g6 = nx.to_graph6_bytes(current_graph, header=False).decode("utf-8")
+            new_g6 = nx.to_graph6_bytes(current_graph, header=False).decode("utf-8")[:-1]
 
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
