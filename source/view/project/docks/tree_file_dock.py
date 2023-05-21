@@ -33,7 +33,7 @@ class TreeFileDock(QDockWidget):
         self.model = QFileSystemModel()
         self.model.setRootPath(self.path)
         self.model.setNameFilterDisables(False)
-        self.model.setNameFilters(["*.g6", "*.txt", "*.json", "*graphml", "*gml"])
+        self.model.setNameFilters(["*.g6", "*.txt", "*.json", "*gml"])
 
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         #self.tree.customContextMenuRequested.connect(self.context_menu)
