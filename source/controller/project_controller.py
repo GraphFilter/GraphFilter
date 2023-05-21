@@ -406,12 +406,14 @@ class ProjectController:
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs(graph)
             self.on_change_graph()
+            project_information_store.file_path = file_path
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs(graph)
                 self.on_change_graph()
+                project_information_store.file_path = file_path
         if type_item == "gml File":
             graph = import_gml_graph(file_path)
             self.project_tool_bar.reset_combo_graphs()
@@ -420,9 +422,9 @@ class ProjectController:
                 self.visualize_graph_dock.plot_graph(graph, project_information_store.current_graph_pos)
             else:
                 self.visualize_graph_dock.plot_graph(graph)
+            project_information_store.file_path = file_path
         else:
             pass
-        project_information_store.file_path = file_path
         self.visualize_graph_dock.setDisabled(False)
         self.project_window.set_title_bar(project_information_store.get_file_name())
 
