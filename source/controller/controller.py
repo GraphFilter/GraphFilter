@@ -85,6 +85,7 @@ class Controller:
                     content = file.read()
                     data = json.loads(content)
                     project_information_store.fill_data(data)
+                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
             else:
                 with open(file_path[0]) as file:
                     project_information_store.fill_data({
@@ -99,12 +100,15 @@ class Controller:
                     })
                 project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
 
-        if self.current_open_window == "welcome":
-            self.show_project_window()
-            self.close_welcome_window()
-        if self.current_open_window == "project":
-            self.show_project_window()
-        self.current_open_window = "project"
+        if self.current_open_window == "project" and project_information_store.get_file_type() != ".gml":
+            project_information_store.current_graph_pos = {}
+        self.show_project_window()
+        # if self.current_open_window == "welcome":
+        #    self.show_project_window()
+        #    self.close_welcome_window()
+        # if self.current_open_window == "project":
+        #    self.show_project_window()
+        # self.current_open_window = "project"
         project_information_store.reset_store()
 
     def show_wizard_window(self):
@@ -137,6 +141,7 @@ class Controller:
 
     def show_project_window(self):
         self.project_controller.show_window()
+        self.close_welcome_window()
         self.current_open_window = "project"
 
     def close_welcome_window(self):

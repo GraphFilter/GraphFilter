@@ -8,7 +8,10 @@ def create_gml_file(graph, file_path):
 
 
 def import_gml_graph(file_path):
-    graph = nx.read_gml(file_path)
+    try:
+        graph = nx.read_gml(file_path)
+    except nx.NetworkXError:
+        return None
 
     if len(nx.get_node_attributes(graph, 'x')) != 0:
         for node in graph.nodes:

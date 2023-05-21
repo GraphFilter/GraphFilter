@@ -57,11 +57,20 @@ class ProjectController:
         self.project_tool_bar.current_graph = \
             self.project_tool_bar.fill_combo_graphs(project_information_store.temp_filtered_graphs)
 
-        if len(project_information_store.current_graph_pos) != 0:
-            self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
-                                                 project_information_store.current_graph_pos)
+        if project_information_store.current_graph is not None:
+            if len(project_information_store.current_graph_pos) != 0:
+                self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
+                                                     project_information_store.current_graph_pos)
+            else:
+                self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
         else:
-            self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
+            dlg = QMessageBox()
+            dlg.setIcon(QMessageBox.Information)
+            dlg.setText("The file you tried to open contains an invalid graph. "
+                        "Open another file in the tree or in the menu option")
+            dlg.setWindowTitle("Invalid graph")
+            dlg.exec()
+            self.visualize_graph_dock.plot_graph(nx.Graph())
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
