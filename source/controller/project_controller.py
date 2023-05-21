@@ -1,10 +1,8 @@
-import os
 import os.path
 
 import networkx as nx
 from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 
 from source.store.operations_graph import dict_name_operations_graph
@@ -18,8 +16,8 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, change_json_file, \
-    change_g6_file, set_new_vertex_positions, change_gml_file, import_gml_graph, create_gml_file
+from source.domain.utils import match_graph_code, change_g6_file, set_new_vertex_positions, change_gml_file, \
+    import_gml_graph, create_gml_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -456,7 +454,13 @@ class ProjectController:
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
         if file_type == ".json":
-            graph = change_json_file(file_path, new_g6, current_index)
+            dlg = QMessageBox()
+            dlg.setIcon(QMessageBox.Information)
+            dlg.setText("Graph editing is not allowed in .json format, only in .g6, .txt and .gml formats. "
+                        "You can export this list of graphs to g6 by pressing right button on the desired file.")
+            dlg.setWindowTitle("Invalid save format")
+            dlg.exec()
+            return
         if file_type == ".gml":
             graph = [project_information_store.get_file_name()]
             change_gml_file(file_path)
