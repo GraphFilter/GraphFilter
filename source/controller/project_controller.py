@@ -74,8 +74,6 @@ class ProjectController:
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
-        self.tree_file_dock.create_tree()
-
         self.project_window.showMaximized()
 
         self.settings.setValue("state", self.project_window.saveState())
@@ -111,10 +109,7 @@ class ProjectController:
         self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
         self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
-        # self.project_window.print_action.triggered.connect(self.on_print)
-
     def tree_file_dock_events(self):
-        # self.tree_file_dock.tree.customContextMenuRequested.connect(self.context_menu)
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
         self.tree_file_dock.tree.customContextMenuRequested.connect(self.tree_context_menu_events)
 
@@ -182,6 +177,7 @@ class ProjectController:
             self.on_change_graph()
 
     def create_docks(self):
+        self.tree_file_dock.create_tree()
         self.project_window.addDockWidget(QtCore.Qt.LeftDockWidgetArea, self.tree_file_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.visualize_graph_dock)
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.invariants_check_dock)
@@ -195,14 +191,6 @@ class ProjectController:
 
     def on_exit(self):
         self.project_window.close()
-
-    def on_print(self):
-        # printer = QPrinter(QPrinter.HighResolution)
-        # dialog = QPrintDialog(printer, self)
-        #
-        # if dialog.exec_() == QPrintDialog.Accepted:
-        #     pass
-        pass
 
     def show_editing_features(self):
         self.editing_features.show()
@@ -224,6 +212,7 @@ class ProjectController:
 
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
+        # self.on_visualize_tree()
 
     def on_change_graph(self):
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:

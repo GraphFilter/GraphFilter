@@ -154,9 +154,9 @@ class Controller:
             self.wizard_controller.close_window()
             self.welcome_controller.show_window()
 
-        if self.current_open_window == "project":
-            self.wizard_controller.close_window()
-            self.project_controller.show_window()
+        # if self.current_open_window == "project":
+        #     self.wizard_controller.close_window()
+        #     self.project_controller.show_window()
 
     def close_loading_window(self):
         self.wizard_controller.close_window()
