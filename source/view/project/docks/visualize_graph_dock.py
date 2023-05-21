@@ -148,10 +148,13 @@ class ResizableGraph(EditableGraph):
         self.restart_label()
         self.set_node_positions_store()
 
+    def _on_motion(self, event):
+        super()._on_motion(event)
+        self.set_node_positions_store()
+
     def _on_press(self, event):
         super()._on_press(event)
         self.restart_label()
-        self.set_node_positions_store()
 
     def _add_or_remove_nascent_edge(self, event):
         for node, artist in self.node_artists.items():
