@@ -84,8 +84,8 @@ def update_project_store():
         'method': wizard_information_store.temp_method,
         'graph_files': wizard_information_store.temp_graph_input_files.copy(),
         'filtered_graphs': []
-
     })
+    project_information_store.file_path = wizard_information_store.file_path
     wizard_information_store.reset_store()
     pass
 

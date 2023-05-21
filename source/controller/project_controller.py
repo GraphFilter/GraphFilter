@@ -18,8 +18,8 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, create_g6_file, change_json_file, \
-    change_g6_file, set_new_vertex_positions, change_gml_file, import_gml_graph
+from source.domain.utils import match_graph_code, change_json_file, \
+    change_g6_file, set_new_vertex_positions, change_gml_file, import_gml_graph, create_gml_file
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -289,15 +289,13 @@ class ProjectController:
                 graph_g6 = graph
 
             if new_graph_store.radio_option == 0:
-                create_g6_file(file_path, graph_g6)
-
-                with open(file_path) as file:
-                    graph_text = file.read().splitlines()
-                    self.project_tool_bar.reset_combo_graphs()
-                    self.project_tool_bar.fill_combo_graphs(graph_text)
-                    self.on_change_graph()
-
                 project_information_store.file_path = file_path
+                create_gml_file(graph, file_path)
+
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
+                self.graph_information_dock.update_table(self.invariants_selected)
+
             else:
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
                                                            f' - {graph_g6}')
@@ -306,6 +304,7 @@ class ProjectController:
 
             self.visualize_graph_dock.plot_graph(graph, layout)
             self.visualize_graph_dock.setDisabled(False)
+            change_gml_file(file_path)
             new_graph_store.reset_attributes()
 
     def on_operations_button(self):
@@ -415,6 +414,7 @@ class ProjectController:
                 self.on_change_graph()
                 project_information_store.file_path = file_path
         if type_item == "gml File":
+            project_information_store.file_path = file_path
             graph = import_gml_graph(file_path)
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
@@ -422,7 +422,6 @@ class ProjectController:
                 self.visualize_graph_dock.plot_graph(graph, project_information_store.current_graph_pos)
             else:
                 self.visualize_graph_dock.plot_graph(graph)
-            project_information_store.file_path = file_path
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)

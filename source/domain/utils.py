@@ -129,6 +129,10 @@ def change_gml_file(file_path):
     nx.write_gml(graph, file_path)
 
 
+def create_gml_file(graph, file_path):
+    nx.write_gml(graph, file_path)
+
+
 def fix_graph_nodes(graph):
     new_dict = {}
     new_edges = []

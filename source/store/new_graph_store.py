@@ -51,7 +51,7 @@ class NewGraphStore:
         dialog.insert_final_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
 
         if os.path.isdir(project_information_store.file_path) or \
-                project_information_store.get_file_name().endswith('.graphml'):
+                project_information_store.get_file_type() == '.gml':
             dialog.insert_final_radio.setEnabled(False)
 
         dialog.exec()
@@ -59,7 +59,7 @@ class NewGraphStore:
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_file_path(project_information_store.get_file_directory() +
-                                      f"{dialog.dict['name'].text()}.g6")
+                                      f"{dialog.dict['name'].text()}.gml")
 
         dialog.close()
 

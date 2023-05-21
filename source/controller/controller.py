@@ -13,7 +13,7 @@ import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
-from source.domain.utils import create_g6_file, import_gml_graph
+from source.domain.utils import import_gml_graph, create_gml_file
 
 
 class Controller:
@@ -128,12 +128,10 @@ class Controller:
         update_project_store()
         if project_information_store.temp_method == 'blank':
             graph = nx.Graph()
-            create_g6_file(project_information_store.file_path+
-                           "/"+project_information_store.temp_project_name+".g6",
-                           nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-            project_information_store.temp_filtered_graphs = "?"
             project_information_store.file_path = \
-                project_information_store.file_path + "/"+project_information_store.temp_project_name+".g6"
+                project_information_store.file_path + "/" + project_information_store.temp_project_name + ".gml"
+            project_information_store.temp_filtered_graphs = [project_information_store.temp_project_name]
+            create_gml_file(graph, project_information_store.file_path)
         else:
             self.filter_controller.start_filter()
         self.start_project()
