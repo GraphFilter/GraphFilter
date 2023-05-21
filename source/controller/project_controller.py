@@ -5,6 +5,7 @@ from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
+from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file
 from source.store.operations_graph import dict_name_operations_graph
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
@@ -16,8 +17,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, change_g6_file, set_new_vertex_positions, change_gml_file, \
-    import_gml_graph, create_gml_file
+from source.domain.utils import match_graph_code, set_new_vertex_positions
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
