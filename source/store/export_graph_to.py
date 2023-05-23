@@ -1,5 +1,5 @@
 import networkx as nx
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from matplotlib import pyplot as plt
 
 from source.domain.utils_file import change_gml_file, create_g6_file
@@ -22,6 +22,17 @@ class ExportGraphTo:
         file_dialog = QFileDialog()
         file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
         export_graph_to.file_path = file_path[0].strip(project_information_store.get_file_type())
+        if export_graph_to.file_path == '':
+            return False
+
+    @staticmethod
+    def success_export_alert_box(file_type):
+        dlg = QMessageBox()
+        dlg.setIcon(QMessageBox.Information)
+        dlg.setText(f"The graph was exported to the {file_type} format and saved in the following directory: \n"
+                    f"{export_graph_to.file_path}")
+        dlg.setWindowTitle("Exported successfully")
+        dlg.exec()
 
 
 class ExportToGML(ExportGraphTo):
@@ -29,8 +40,10 @@ class ExportToGML(ExportGraphTo):
 
     @staticmethod
     def export():
-        ExportGraphTo.export()
-        change_gml_file(export_graph_to.file_path)
+        export = ExportGraphTo.export()
+        if export:
+            change_gml_file(export_graph_to.file_path)
+            ExportGraphTo.success_export_alert_box('gml')
 
 
 class ExportToG6(ExportGraphTo):
@@ -38,9 +51,11 @@ class ExportToG6(ExportGraphTo):
 
     @staticmethod
     def export():
-        ExportGraphTo.export()
-        create_g6_file(export_graph_to.file_path + ".g6", nx.to_graph6_bytes(project_information_store.current_graph,
-                                                                             header=False).decode('utf-8'))
+        export = ExportGraphTo.export()
+        if export:
+            create_g6_file(export_graph_to.file_path + ".g6", nx.to_graph6_bytes
+                           (project_information_store.current_graph, header=False).decode('utf-8'))
+            ExportGraphTo.success_export_alert_box('graph6')
 
 
 class ExportToPNG(ExportGraphTo):
@@ -48,10 +63,12 @@ class ExportToPNG(ExportGraphTo):
 
     @staticmethod
     def export():
-        ExportGraphTo.export()
-        nx.draw(project_information_store.current_graph)
-        plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
-        plt.close()
+        export = ExportGraphTo.export()
+        if export:
+            nx.draw(project_information_store.current_graph)
+            plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
+            plt.close()
+            ExportGraphTo.success_export_alert_box('png')
 
 
 class ExportToTikZ(ExportGraphTo):
@@ -59,9 +76,11 @@ class ExportToTikZ(ExportGraphTo):
 
     @staticmethod
     def export():
-        ExportGraphTo.export()
-        tkz.plot(project_information_store.current_graph, f"{export_graph_to.file_path}.tex", layout='fr',
-                 node_size=0.4)
+        export = ExportGraphTo.export()
+        if export:
+            tkz.plot(project_information_store.current_graph, f"{export_graph_to.file_path}.tex", layout='fr',
+                     node_size=0.4)
+            ExportGraphTo.success_export_alert_box('tikz')
 
 
 export_graph_to = ExportGraphTo()
