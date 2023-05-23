@@ -110,7 +110,7 @@ class ProjectController:
         self.project_tool_bar.export_menu.hovered.connect(self.set_active_export_action)
         self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
         self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
-        self.project_tool_bar.export_menu_bar.triggered.connect(self.on_export_button)
+        self.project_tool_bar.export_menu.triggered.connect(self.on_export_button)
         self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
     def tree_file_dock_events(self):

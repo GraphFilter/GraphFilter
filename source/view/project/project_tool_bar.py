@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 
 from source.store.export_graph_to import dict_name_export_graph_to
@@ -26,10 +27,10 @@ class ProjectToolBar(QToolBar):
 
         self.operations_menu_bar = QMenuBar()
         self.new_graph_menu_bar = QMenuBar()
-        self.export_menu_bar = QMenuBar()
+        self.export_menu_bar = QPushButton()
         self.new_graph_menu = QMenu("&New Graph", self)
         self.operations_menu = QMenu("&Operations", self)
-        self.export_menu = QMenu("&ExportTo", self)
+        self.export_menu = QMenu(self)
 
         self.create_menu_bar()
 
@@ -72,9 +73,8 @@ class ProjectToolBar(QToolBar):
         self.save_button.setIcon(Icon("save"))
         self.delete_button.setIcon(Icon("delete"))
 
-        self.revert_button.setIcon(Icon("revert"))
-        self.forward_button.setIcon(Icon("forward"))
-        self.forward_button.setDisabled(True)
+        self.export_menu_bar.setIcon(Icon("export"))
+        self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
 
     def reset_combo_graphs(self):
         self.combo_graphs.clear()
@@ -92,14 +92,12 @@ class ProjectToolBar(QToolBar):
 
         self.addWidget(self.operations_menu_bar)
         self.addWidget(self.new_graph_menu_bar)
-        self.addWidget(self.export_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
         self.addAction(self.save_button)
         self.addAction(self.delete_button)
-        self.addAction(self.revert_button)
-        self.addAction(self.forward_button)
+        self.addWidget(self.export_menu_bar)
 
     def create_menu_bar(self):
         self.operations_menu_bar.setMaximumSize(95, 28)
@@ -109,13 +107,15 @@ class ProjectToolBar(QToolBar):
         self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                               "border: 1px solid gray;")
 
-        self.export_menu_bar.setMaximumSize(98, 28)
-        self.export_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                           "border: 1px solid gray;")
+        # self.export_menu_bar.setGeometry(100, 40, 40, 100)
+        self.export_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
+                                           "QPushButton::hover { "
+                                           "    background-color: blue;"
+                                           "}")
 
         self.operations_menu_bar.addMenu(self.operations_menu)
         self.new_graph_menu_bar.addMenu(self.new_graph_menu)
-        self.export_menu_bar.addMenu(self.export_menu)
+        self.export_menu_bar.setMenu(self.export_menu)
 
         for operation in dict_name_operations_graph:
             self.operations_menu.addAction(operation)

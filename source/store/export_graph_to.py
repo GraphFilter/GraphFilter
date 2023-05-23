@@ -37,7 +37,7 @@ class ExportGraphTo:
     @staticmethod
     def same_format_alert_box():
         dlg = QMessageBox()
-        dlg.setIcon(QMessageBox.Information)
+        dlg.setIcon(QMessageBox.Warning)
         dlg.setText("The graph is already in this format, please try another format")
         dlg.setWindowTitle("Same format")
         dlg.exec()
