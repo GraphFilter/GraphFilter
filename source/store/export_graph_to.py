@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 
 from source.domain.utils_file import change_gml_file, create_g6_file
 from source.store.project_information_store import project_information_store
-from source.view.components.message_box import MessageBox
+import network2tikz as tkz
 
 
 class ExportGraphTo:
@@ -48,6 +48,17 @@ class ExportToPNG(ExportGraphTo):
         nx.draw(project_information_store.current_graph)
         plt.savefig(f"{file_path[0].strip(project_information_store.get_file_type())}.png", format="PNG")
         plt.close()
+
+
+class ExportToTikZ(ExportGraphTo):
+    name = ".TikZ"
+
+    @staticmethod
+    def export():
+        file_dialog = QFileDialog()
+        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
+        tkz.plot(project_information_store.current_graph,
+                 f"{file_path[0].strip(project_information_store.get_file_type())}.tex", layout='fr', node_size=0.4)
 
 
 export_graph_to = ExportGraphTo()
