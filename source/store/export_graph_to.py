@@ -15,6 +15,13 @@ class ExportGraphTo:
         self.dict_name_export_graph_to: {str: ExportGraphTo} = {}
         for formats in self.all:
             self.dict_name_export_graph_to[formats.name] = formats
+        self.file_path = None
+
+    @staticmethod
+    def export():
+        file_dialog = QFileDialog()
+        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
+        export_graph_to.file_path = file_path[0].strip(project_information_store.get_file_type())
 
 
 class ExportToGML(ExportGraphTo):
@@ -22,9 +29,8 @@ class ExportToGML(ExportGraphTo):
 
     @staticmethod
     def export():
-        file_dialog = QFileDialog()
-        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
-        change_gml_file(file_path[0].strip(project_information_store.get_file_type()))
+        ExportGraphTo.export()
+        change_gml_file(export_graph_to.file_path)
 
 
 class ExportToG6(ExportGraphTo):
@@ -32,10 +38,9 @@ class ExportToG6(ExportGraphTo):
 
     @staticmethod
     def export():
-        file_dialog = QFileDialog()
-        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
-        create_g6_file(file_path[0].strip(project_information_store.get_file_type()) + ".g6", nx.to_graph6_bytes
-                              (project_information_store.current_graph, header=False).decode('utf-8'))
+        ExportGraphTo.export()
+        create_g6_file(export_graph_to.file_path + ".g6", nx.to_graph6_bytes(project_information_store.current_graph,
+                                                                             header=False).decode('utf-8'))
 
 
 class ExportToPNG(ExportGraphTo):
@@ -43,10 +48,9 @@ class ExportToPNG(ExportGraphTo):
 
     @staticmethod
     def export():
-        file_dialog = QFileDialog()
-        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
+        ExportGraphTo.export()
         nx.draw(project_information_store.current_graph)
-        plt.savefig(f"{file_path[0].strip(project_information_store.get_file_type())}.png", format="PNG")
+        plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
         plt.close()
 
 
@@ -55,10 +59,9 @@ class ExportToTikZ(ExportGraphTo):
 
     @staticmethod
     def export():
-        file_dialog = QFileDialog()
-        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
-        tkz.plot(project_information_store.current_graph,
-                 f"{file_path[0].strip(project_information_store.get_file_type())}.tex", layout='fr', node_size=0.4)
+        ExportGraphTo.export()
+        tkz.plot(project_information_store.current_graph, f"{export_graph_to.file_path}.tex", layout='fr',
+                 node_size=0.4)
 
 
 export_graph_to = ExportGraphTo()
