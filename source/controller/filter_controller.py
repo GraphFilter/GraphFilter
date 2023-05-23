@@ -36,7 +36,9 @@ class FilterController:
         single_thread.join()
         # TODO: Use the percentage returned by filtering
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
-        project_information_store.save_project()
+        #project_information_store.save_project()
+        project_information_store.save_filtered_data()
+
         self.loading_window.close()
 
     def update(self, value):

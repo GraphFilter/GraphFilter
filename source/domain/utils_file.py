@@ -49,3 +49,8 @@ def change_g6_file(file_path, new_g6, current_index):
         graph = file.read().splitlines()
 
     return graph
+
+def create_g6_file(path_to_save,graph_list, name_file):
+    with open(f"{path_to_save}\\{name_file}.g6", 'w') as fp:
+        for graph in graph_list:
+            fp.write(f"{graph}\n")
