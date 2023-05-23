@@ -10,12 +10,13 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
 
 from source.domain.utils import fix_graph_nodes
+from source.store.project_information_store import project_information_store
 
 matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
-    any_signal = QtCore.pyqtSignal(object)
+    any_signal = QtCore.pyqtSignal()
     invalid_graph_signal = QtCore.pyqtSignal()
 
     def __init__(self):
@@ -46,8 +47,8 @@ class VisualizeGraphDock(QDockWidget):
         self.canvas.setFocus()
         self.setWidget(self.canvas)
 
-    def synchronize_change(self, new_graph):
-        self.any_signal.emit(new_graph)
+    def synchronize_change(self):
+        self.any_signal.emit()
 
 
 class MplCanvas(FigureCanvasQTAgg):
@@ -70,15 +71,18 @@ class ResizableGraph(EditableGraph):
 
         kwargs.setdefault('origin', (0., 0.))
         kwargs.setdefault('scale', (1., 1.))
+        self.node_labels = {}
         self.origin = kwargs["origin"]
         self.scale = kwargs["scale"]
         self.figure_width = self.fig.bbox.width
         self.figure_height = self.fig.bbox.height
         self.synchronize_change = synchronize_change
-        self.restart_label()
         self.fig.canvas.mpl_connect('resize_event', self._on_resize)
+        self.restart_label()
 
     def _on_resize(self, event, pad=0.05):
+        node_positions = {}
+
         # determine ratio new : old
         scale_x_by = self.fig.bbox.width / self.figure_width
         scale_y_by = self.fig.bbox.height / self.figure_height
@@ -88,9 +92,12 @@ class ResizableGraph(EditableGraph):
 
         # rescale node positions
         for node, (x, y) in self.node_positions.items():
+            node_positions[self.node_labels[node]] = (x, y)
             new_x = ((x - self.origin[0]) * scale_x_by) + self.origin[0]
             new_y = ((y - self.origin[1]) * scale_y_by) + self.origin[1]
             self.node_positions[node] = np.array([new_x, new_y])
+
+        project_information_store.current_graph_pos = node_positions
 
         # update axis dimensions
         self.scale = (scale_x_by * self.scale[0],
@@ -110,9 +117,9 @@ class ResizableGraph(EditableGraph):
 
     def restart_label(self):
         try:
-            node_labels = {node: i for i, node in enumerate(self.nodes)}
+            self.node_labels = {node: i for i, node in enumerate(self.nodes)}
             self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
-            self.draw_node_labels(node_labels, self.node_label_fontdict)
+            self.draw_node_labels(self.node_labels, self.node_label_fontdict)
 
             new_graph = nx.Graph()
             new_graph.add_nodes_from(self.nodes)
@@ -122,7 +129,16 @@ class ResizableGraph(EditableGraph):
             new_graph = nx.Graph()
             pass
 
-        self.synchronize_change(new_graph)
+        project_information_store.current_graph = new_graph
+        self.synchronize_change()
+
+    def set_node_positions_store(self):
+        node_positions = {}
+
+        for node, (x, y) in self.node_positions.items():
+            node_positions[self.node_labels[node]] = (x / 1.575, y / 1.75)
+
+        project_information_store.current_graph_pos = node_positions
 
     def _on_key_press(self, event):
         if event.key == "enter" or event.key == "alt+enter":
@@ -130,6 +146,11 @@ class ResizableGraph(EditableGraph):
         super()._on_key_press(event)
 
         self.restart_label()
+        self.set_node_positions_store()
+
+    def _on_motion(self, event):
+        super()._on_motion(event)
+        self.set_node_positions_store()
 
     def _on_press(self, event):
         super()._on_press(event)

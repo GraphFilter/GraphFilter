@@ -78,7 +78,7 @@ class WizardController:
             self.conditions_page.complete = True
 
     def is_conditions_page_complete(self):
-        return len(wizard_information_store.conditions) < 1 and self.equations_page.equation.text() == ""
+        return len(wizard_information_store.temp_conditions) < 1 and self.equations_page.equation.text() == ""
 
     def update_complete_method_page(self):
         self.wizard_window.next_button.setToolTip('Select the filtering method')
@@ -165,7 +165,7 @@ class WizardController:
         if validate_file_name(self.project_files_page.project_name_input.text()):
             self.update_complete_project_files_page(complete_project_name=True)
             project_name = self.project_files_page.project_name_input.text()
-            wizard_information_store.project_name = project_name
+            wizard_information_store.temp_project_name = project_name
             self.review_page.set_project_name(project_name)
         else:
             self.update_complete_project_files_page(complete_project_name=False)
@@ -174,31 +174,31 @@ class WizardController:
         if validate_path(self.project_files_page.project_location_input.text()):
             self.update_complete_project_files_page(complete_project_location=True)
             project_location = self.project_files_page.project_location_input.text()
-            wizard_information_store.project_location = project_location
+            wizard_information_store.file_path = project_location
             self.review_page.set_project_location(project_location)
         else:
             self.update_complete_project_files_page(complete_project_location=False)
 
     def save_project_description(self):
         description = self.project_files_page.project_description_input.toPlainText()
-        wizard_information_store.project_description = description
+        wizard_information_store.temp_project_description = description
         self.review_page.set_project_description(description)
 
     def on_open_project_file(self):
         file_dialog = QFileDialog.getExistingDirectory(
-            directory=wizard_information_store.project_location)
+            directory=wizard_information_store.file_path)
         directory_path = file_dialog
 
         if directory_path != "":
             self.project_files_page.project_location_input.setText(directory_path)
             self.verify_and_save_project_folder()
         else:
-            self.project_files_page.project_location_input.setText(wizard_information_store.project_location)
+            self.project_files_page.project_location_input.setText(wizard_information_store.file_path)
 
     def set_default_project_location(self):
         default_path = qs.writableLocation(qs.DocumentsLocation)
         self.project_files_page.project_location_input.setText(default_path)
-        wizard_information_store.project_location = default_path
+        wizard_information_store.file_path = default_path
         self.review_page.set_project_location(default_path)
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 
@@ -267,7 +267,7 @@ class WizardController:
 
         if len(error_message) == 0:
             self.equations_page.complete = True
-            wizard_information_store.equation = equation
+            wizard_information_store.temp_equation = equation
             self.review_page.set_equation(equation)
             if equation == '':
                 self.update_conditions_page()
@@ -291,24 +291,24 @@ class WizardController:
     def update_chosen_invariants_conditions(self):
         radio = QRadioButton().sender()
         groupbox = radio.parentWidget()
-        if groupbox.objectName() in wizard_information_store.conditions.keys():
-            if wizard_information_store.conditions.get(groupbox.objectName()) == radio.objectName():
+        if groupbox.objectName() in wizard_information_store.temp_conditions.keys():
+            if wizard_information_store.temp_conditions.get(groupbox.objectName()) == radio.objectName():
                 radio.setAutoExclusive(False)
                 radio.setChecked(False)
                 radio.setAutoExclusive(True)
-                wizard_information_store.conditions.pop(groupbox.objectName())
-                print(wizard_information_store.conditions)
-                self.review_page.set_conditions(wizard_information_store.conditions)
+                wizard_information_store.temp_conditions.pop(groupbox.objectName())
+                print(wizard_information_store.temp_conditions)
+                self.review_page.set_conditions(wizard_information_store.temp_conditions)
                 self.update_conditions_page()
                 self.conditions_page.completeChanged.emit()
                 return
 
-        wizard_information_store.conditions[groupbox.objectName()] = radio.objectName()
-        self.review_page.set_conditions(wizard_information_store.conditions)
+        wizard_information_store.temp_conditions[groupbox.objectName()] = radio.objectName()
+        self.review_page.set_conditions(wizard_information_store.temp_conditions)
         self.update_conditions_page()
         self.conditions_page.completeChanged.emit()
 
-        print(wizard_information_store.conditions)
+        #print(wizard_information_store.temp_conditions)
 
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
@@ -319,18 +319,18 @@ class WizardController:
 
         if 'blank'in button.objectName():
             self.project_files_page.setFinalPage(True)
-            wizard_information_store.method = 'blank'
+            wizard_information_store.temp_method = 'blank'
             self.review_page.set_method('blank')
             # self.wizard_window.next_button.setDisabled(True)
             self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
             self.project_files_page.setFinalPage(False)
-            wizard_information_store.method = 'filter'
+            wizard_information_store.temp_method = 'filter'
             self.review_page.set_method('filter')
             self.add_filter_wizard_pages()
         if 'counterexample' in button.objectName():
             self.project_files_page.setFinalPage(False)
-            wizard_information_store.method = 'counterexample'
+            wizard_information_store.temp_method = 'counterexample'
             self.review_page.set_method('counterexample')
             self.add_filter_wizard_pages()
         self.method_page.complete = True
@@ -354,19 +354,19 @@ class WizardController:
 
     def save_graph_file_path(self, path, line_input):
         if validate_file(path):
-            if path not in wizard_information_store.graph_files and path != '':
-                if line_input.text() != '' and line_input.text() in wizard_information_store.graph_files:
-                    wizard_information_store.graph_files.remove(line_input.text())
+            if path not in wizard_information_store.temp_graph_input_files and path != '':
+                if line_input.text() != '' and line_input.text() in wizard_information_store.temp_graph_input_files:
+                    wizard_information_store.temp_graph_input_files.remove(line_input.text())
                 line_input.setText(path)
-                wizard_information_store.graph_files.append(path)
-                self.review_page.set_graph_files(wizard_information_store.graph_files)
+                wizard_information_store.temp_graph_input_files.append(path)
+                self.review_page.set_graph_files(wizard_information_store.temp_graph_input_files)
                 self.graph_files_page.add_graph_file.setEnabled(True)
             elif path == '':
                 self.graph_files_page.complete = False
             self.graph_files_page.complete = True
         else:
             self.graph_files_page.complete = False
-        print(wizard_information_store.graph_files)
+        #print(wizard_information_store.temp_graph_input_files)
         self.update_complete_graph_files_page()
 
     def on_add_graph_file_input(self):
@@ -435,5 +435,5 @@ class WizardController:
 
     def store_graph_files(self):
         list_files = self.graph_files_page.list_files_input
-        wizard_information_store.graph_files = [list_files.item(x).text() for x in range(list_files.count())]
-        self.review_page.set_graph_files(wizard_information_store.graph_files)
+        wizard_information_store.temp_graph_input_files = [list_files.item(x).text() for x in range(list_files.count())]
+        self.review_page.set_graph_files(wizard_information_store.temp_graph_input_files)

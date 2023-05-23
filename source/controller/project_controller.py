@@ -1,24 +1,26 @@
-import json
 import os.path
 
-from PyQt5 import QtCore
+import networkx as nx
 from PyQt5.QtGui import QCursor
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
-from source.domain.utils import match_graph_code, convert_g6_to_nx, create_g6_file, change_json_file, \
-    change_g6_file
-from source.store.new_graph_store import *
+from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file
 from source.store.operations_graph import dict_name_operations_graph
-from source.store.operations_invariants import *
-from source.view.components.message_box import MessageBox
+from source.view.project.project_tool_bar import EditingFeatures
+from source.view.project.project_window import ProjectWindow
+from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
 from source.view.project.docks.graph_information_dock import GraphInformationDock
-from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
-from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
-from source.view.project.project_tool_bar import EditingFeatures
-from source.view.project.project_tool_bar import ProjectToolBar
-from source.view.project.project_window import ProjectWindow
+from source.view.project.docks.tree_file_dock import TreeFileDock
+from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
+from source.store.operations_invariants import *
+from source.store.new_graph_store import *
+from source.domain.utils import match_graph_code, set_new_vertex_positions
+from source.view.components.message_box import MessageBox
+from PyQt5.Qt import QUrl, QDesktopServices
+import json
 
 
 class ProjectController:
@@ -37,7 +39,6 @@ class ProjectController:
         self.editing_features = EditingFeatures()
 
         self.invariants_selected = {}
-        self.edited_graph = None
 
         self.active_new_graph_action = None
         self.active_operation_action = None
@@ -48,15 +49,30 @@ class ProjectController:
     def show_window(self):
         self.create_docks()
 
-        self.project_window.set_title_bar(project_information_store.project_name)
+        self.project_window.set_title_bar(project_information_store.temp_project_name)
         self.project_window.addToolBar(self.project_tool_bar)
 
         self.project_tool_bar.reset_combo_graphs()
 
         self.project_tool_bar.current_graph = \
-            self.project_tool_bar.fill_combo_graphs(project_information_store.filtered_graphs)
+            self.project_tool_bar.fill_combo_graphs(project_information_store.temp_filtered_graphs)
 
-        self.visualize_graph_dock.plot_graph(self.project_tool_bar.current_graph)
+        if project_information_store.current_graph is not None:
+            if len(project_information_store.current_graph_pos) != 0:
+                self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
+                                                     project_information_store.current_graph_pos)
+            else:
+                self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
+        else:
+            dlg = QMessageBox()
+            dlg.setIcon(QMessageBox.Information)
+            dlg.setText("The file you tried to open contains an invalid graph. \n"
+                        "Open another file in the tree or in the menu option"
+                        "(If you edit the graph, the changes will replace the"
+                        " invalid graph by clicking on save button)")
+            dlg.setWindowTitle("Invalid graph")
+            dlg.exec()
+            self.visualize_graph_dock.plot_graph(nx.Graph())
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
@@ -145,9 +161,9 @@ class ProjectController:
             graph = tuple(graph)
             if graph == ():
                 graph = "?"
-                project_information_store.filtered_graphs = graph
+                project_information_store.temp_filtered_graphs = graph
             else:
-                project_information_store.filtered_graphs = graph
+                project_information_store.temp_filtered_graphs = graph
             project_information_store.save_project()
 
             f = open(file_path)
@@ -231,20 +247,21 @@ class ProjectController:
 
     def on_check_condition(self):
         check = QCheckBox().sender()
-        g6code = self.project_tool_bar.current_graph
+        graph = project_information_store.current_graph
+        g6code = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
 
         if check.text() not in self.invariants_selected:
-            if self.edited_graph is not None:
-                if len(self.edited_graph.nodes) == 0:
+            if graph is not None:
+                if len(graph) == 0:
                     self.invariants_selected[check.text()] = \
-                        "Null Graph"
+                        "None Graph"
                 else:
                     self.invariants_selected[check.text()] = \
-                        dic_invariants_to_visualize[check.text()].print(self.edited_graph, precision=5)
+                        dic_invariants_to_visualize[check.text()].print(graph, precision=5)
             else:
                 if g6code is not None:
                     self.invariants_selected[check.text()] = \
-                        dic_invariants_to_visualize[check.text()].print(convert_g6_to_nx(g6code), precision=5)
+                        dic_invariants_to_visualize[check.text()].print(graph, precision=5)
                 else:
                     self.invariants_selected[check.text()] = 'No graph selected'
         else:
@@ -270,17 +287,14 @@ class ProjectController:
                 graph_g6 = graph
 
             if new_graph_store.radio_option == 0:
-                create_g6_file(file_path, graph_g6)
-
-                with open(file_path) as file:
-                    graph_text = file.read().splitlines()
-                    self.project_tool_bar.reset_combo_graphs()
-                    self.project_tool_bar.fill_combo_graphs(graph_text)
-                    self.on_change_graph()
-
                 project_information_store.file_path = file_path
+                create_gml_file(graph, file_path)
+
+                self.project_tool_bar.reset_combo_graphs()
+                self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
+                self.graph_information_dock.update_table(self.invariants_selected)
+
             else:
-                self.edited_graph = graph
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
                                                            f' - {graph_g6}')
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
@@ -288,11 +302,12 @@ class ProjectController:
 
             self.visualize_graph_dock.plot_graph(graph, layout)
             self.visualize_graph_dock.setDisabled(False)
+            change_gml_file(file_path)
             new_graph_store.reset_attributes()
 
     def on_operations_button(self):
         graph = dict_name_operations_graph[self.active_operation_action]. \
-            calculate(self.visualize_graph_dock.current_graph)
+            calculate(project_information_store.current_graph)
 
         if graph is not None:
             self.visualize_graph_dock.plot_graph(graph)
@@ -306,15 +321,18 @@ class ProjectController:
             self.active_operation_action = self.project_tool_bar.operations_menu.activeAction().text()
 
     def insert_universal_vertex(self):
-        graph = self.visualize_graph_dock.current_graph
+        graph = project_information_store.current_graph
         new_vertex = len(graph)
+        node_positions = project_information_store.current_graph_pos
         graph.add_node(new_vertex)
 
         for node in graph:
             if node is not new_vertex:
                 graph.add_edge(new_vertex, node)
 
-        self.visualize_graph_dock.plot_graph(graph)
+        node_positions[new_vertex] = set_new_vertex_positions(node_positions)
+
+        self.visualize_graph_dock.plot_graph(graph, node_positions)
 
     def tree_context_menu_events(self):
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
@@ -349,7 +367,7 @@ class ProjectController:
             except PermissionError:
                 return
             except OSError:
-                return
+                return''
         else:
             try:
                 os.remove(file_path)
@@ -361,8 +379,8 @@ class ProjectController:
                     project_information_store.file_path = os.path.dirname(file_path)
                     dlg = QMessageBox()
                     dlg.setIcon(QMessageBox.Information)
-                    dlg.setText("You erased the current file. To continue, please create a new graph or select "
-                                "another file in the directory.")
+                    dlg.setText("You erased the current file. To continue, please create a new graph or select another"
+                                " file in the directory.")
                     dlg.setWindowTitle("Select another file")
                     dlg.exec()
             except FileNotFoundError:
@@ -376,7 +394,6 @@ class ProjectController:
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
-        project_information_store.file_path = file_path
 
         type_item = self.tree_file_dock.model.type(index)
         if type_item == "json File":
@@ -386,27 +403,48 @@ class ProjectController:
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs(graph)
             self.on_change_graph()
+            project_information_store.file_path = file_path
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs(graph)
                 self.on_change_graph()
+                project_information_store.file_path = file_path
+        if type_item == "gml File":
+            project_information_store.file_path = file_path
+            graph = import_gml_graph(file_path)
+            self.project_tool_bar.reset_combo_graphs()
+            self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
+            if graph is not None:
+                if len(project_information_store.current_graph_pos) != 0:
+                    self.visualize_graph_dock.plot_graph(graph,
+                                                         project_information_store.current_graph_pos)
+                else:
+                    self.visualize_graph_dock.plot_graph(graph)
+            else:
+                dlg = QMessageBox()
+                dlg.setIcon(QMessageBox.Information)
+                dlg.setText("The file you tried to open contains an invalid graph. \n"
+                            "Open another file in the tree or in the menu option"
+                            "(If you edit the graph, the changes will replace the"
+                            " invalid graph by clicking on save button)")
+                dlg.setWindowTitle("Invalid graph")
+                dlg.exec()
+                self.visualize_graph_dock.plot_graph(nx.Graph())
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
+        self.project_window.set_title_bar(project_information_store.get_file_name())
 
-    def update_graph_to_table(self, edited_graph):
-        self.edited_graph = edited_graph
-        self.visualize_graph_dock.current_graph = self.edited_graph
+    def update_graph_to_table(self):
+        graph = project_information_store.current_graph
 
         for key in self.invariants_selected.keys():
-            if len(self.edited_graph.nodes) == 0:
-                self.invariants_selected[key] = \
-                    "Null Graph"
+            if len(graph) == 0:
+                self.invariants_selected[key] = "Null Graph"
             else:
-                self.invariants_selected[key] = \
-                    dic_invariants_to_visualize[key].print(self.edited_graph, precision=5)
+                self.invariants_selected[key] = dic_invariants_to_visualize[key].print(graph, precision=5)
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
@@ -415,21 +453,34 @@ class ProjectController:
 
         file_path = project_information_store.file_path
         file_name, file_type = os.path.splitext(file_path)
+        current_graph = project_information_store.current_graph
         graph = None
         new_g6 = ""
         replaced_line = ""
 
-        if self.edited_graph is None:
+        if current_graph is None:
             return
         else:
-            new_g6 = nx.to_graph6_bytes(self.edited_graph)[10:-1].decode("utf-8")
+            new_g6 = nx.to_graph6_bytes(current_graph, header=False).decode("utf-8")[:-1]
 
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
         if file_type == ".json":
-            graph = change_json_file(file_path, new_g6, current_index)
+            dlg = QMessageBox()
+            dlg.setIcon(QMessageBox.Information)
+            dlg.setText("Graph editing is not allowed in .json format, only in .g6, .txt and .gml formats. "
+                        "To allow manipulation and saving: \n"
+                        "  I. You can export the entire list of graphs list of graphs to g6 by pressing "
+                        "right button on the desired file. \n"
+                        "  II. Or you can convert this specific graph with the options available in the toolbar")
+            dlg.setWindowTitle("Invalid save format")
+            dlg.exec()
+            return
+        if file_type == ".gml":
+            graph = [project_information_store.get_file_name()]
+            change_gml_file(file_path)
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
-        self.on_change_graph()
+        self.graph_information_dock.update_table(self.invariants_selected)

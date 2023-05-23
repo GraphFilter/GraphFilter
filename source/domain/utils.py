@@ -1,13 +1,11 @@
-import json
 import os
 import os.path
+import random
 import re
 import networkx as nx
 import gzip
 
 from PyQt5.QtWidgets import QApplication
-
-from source.store.project_information_store import project_information_store
 
 
 def validate_path(path):
@@ -68,55 +66,6 @@ def set_view_size(self, p):
     self.height = int(rect.height() / p)
 
 
-def create_g6_file(file_path, g6):
-    try:
-        open(file_path, "x")
-    except FileExistsError:
-        pass
-    file = open(file_path, "w")
-    file.write(g6)
-    file.close()
-
-
-def change_g6_file(file_path, new_g6, current_index):
-    file = open(file_path, "r")
-    changed_data = file.readlines()
-
-    try:
-        changed_data[current_index] = new_g6 + "\n"
-    except IndexError:
-        changed_data.append(new_g6 + "\n")
-
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.writelines(changed_data)
-
-    with open(file_path) as file:
-        graph = file.read().splitlines()
-
-    return graph
-
-
-def change_json_file(file_path, new_g6, current_index):
-    f = open(file_path)
-    data = json.load(f)
-    graph = list(data['filtered_graphs'])
-
-    try:
-        graph[current_index] = new_g6
-    except IndexError:
-        graph.append(new_g6)
-
-    graph = tuple(graph)
-    project_information_store.filtered_graphs = graph
-    project_information_store.save_project()
-
-    f = open(file_path)
-    new_data = json.load(f)
-    new_json_graph = tuple(new_data['filtered_graphs'])
-
-    return new_json_graph
-
-
 def fix_graph_nodes(graph):
     new_dict = {}
     new_edges = []
@@ -132,3 +81,22 @@ def fix_graph_nodes(graph):
     new_graph.add_edges_from(new_edges)
 
     return new_graph
+
+
+def set_new_vertex_positions(node_positions):
+    list_x = []
+    list_y = []
+    new_x = random.uniform(0, 2)
+    new_y = random.uniform(0, 1)
+
+    for (x, y) in node_positions.values():
+        list_x.append(round(x, 1))
+        list_y.append(round(y, 1))
+
+    while new_x in list_x:
+        new_x = random.uniform(0, 2)
+
+    while new_y in list_y:
+        new_y = random.uniform(0, 1)
+
+    return new_x, new_y

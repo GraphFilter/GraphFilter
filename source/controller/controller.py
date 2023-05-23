@@ -6,6 +6,7 @@ from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
 from source.controller.project_controller import ProjectController
+from source.domain.utils_file import import_gml_graph, create_gml_file
 from source.store.project_information_store import update_project_store
 from PyQt5.QtWidgets import *
 from source.store.project_information_store import project_information_store
@@ -13,7 +14,7 @@ import json
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5 import QtCore
-from source.domain.utils import create_g6_file
+
 
 class Controller:
 
@@ -59,37 +60,56 @@ class Controller:
 
     def show_open_project_window(self):
         file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt)"])
-        file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt)")
-        if file_path[0] == '':
-            return
-        if file_path[0].endswith('.json'):
-            with open(file_path[0]) as file:
-                content = file.read()
-                data = json.loads(content)
-                project_information_store.fill_data(data)
-                project_information_store.project_location = os.path.dirname(os.path.abspath(file_path[0]))
-        else:
-            with open(file_path[0]) as file:
-                project_information_store.fill_data({
-                    'project_name': 'Visualization mode',
-                    'project_location': os.path.dirname(os.path.abspath(file_path[0])),
-                    'project_description': '',
-                    'equation': '',
-                    'conditions': {},
-                    'method': '',
-                    'graph_files': file_path[0],
-                    'filtered_graphs': file.read().splitlines()
-                })
+        file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.gml)"])
+        file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.gml)")
         formatted_file_path = file_path[0]
         project_information_store.file_path = formatted_file_path
 
-        if self.current_open_window == "welcome":
-            self.show_project_window()
-            self.close_welcome_window()
-        if self.current_open_window == "project":
-            self.show_project_window()
-        self.current_open_window = "project"
+        if file_path[0] == '':
+            return
+        if file_path[0].endswith('.gml'):
+            project_information_store.fill_data({
+                'project_name': 'Visualization mode',
+                'project_location': os.path.dirname(os.path.abspath(file_path[0])),
+                'project_description': '',
+                'equation': '',
+                'conditions': {},
+                'method': '',
+                'graph_files': file_path[0],
+                'filtered_graphs': [project_information_store.get_file_name()]
+            })
+            project_information_store.current_graph = import_gml_graph(file_path[0])
+        else:
+            if file_path[0].endswith('.json'):
+                with open(file_path[0]) as file:
+                    content = file.read()
+                    data = json.loads(content)
+                    project_information_store.fill_data(data)
+                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+            else:
+                with open(file_path[0]) as file:
+                    project_information_store.fill_data({
+                        'project_name': 'Visualization mode',
+                        'project_location': os.path.dirname(os.path.abspath(file_path[0])),
+                        'project_description': '',
+                        'equation': '',
+                        'conditions': {},
+                        'method': '',
+                        'graph_files': file_path[0],
+                        'filtered_graphs': file.read().splitlines()
+                    })
+                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+
+        if self.current_open_window == "project" and project_information_store.get_file_type() != ".gml":
+            project_information_store.current_graph_pos = {}
+        self.show_project_window()
+        # if self.current_open_window == "welcome":
+        #    self.show_project_window()
+        #    self.close_welcome_window()
+        # if self.current_open_window == "project":
+        #    self.show_project_window()
+        # self.current_open_window = "project"
+        project_information_store.reset_store()
 
     def show_wizard_window(self):
         if self.current_open_window == "welcome":
@@ -100,28 +120,28 @@ class Controller:
         self.wizard_controller.show_window()
 
     def start_project(self):
-        if not project_information_store.filtered_graphs:
+        if not project_information_store.temp_filtered_graphs:
             self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
             self.show_wizard_window()
         else:
             self.show_project_window()
+            project_information_store.reset_store()
 
     def finish_wizard(self):
         update_project_store()
-        if project_information_store.method == 'blank':
+        if project_information_store.temp_method == 'blank':
             graph = nx.Graph()
-            create_g6_file(project_information_store.project_location+
-                           "/"+project_information_store.project_name+".g6",
-                           nx.to_graph6_bytes(graph, header=False).decode('utf-8'))
-            project_information_store.filtered_graphs = "?"
-            project_information_store.file_path = project_information_store.project_location+\
-                                                  project_information_store.project_name+".g6"
+            project_information_store.file_path = \
+                project_information_store.file_path + "/" + project_information_store.temp_project_name + ".gml"
+            project_information_store.temp_filtered_graphs = [project_information_store.temp_project_name]
+            create_gml_file(graph, project_information_store.file_path)
         else:
             self.filter_controller.start_filter()
         self.start_project()
 
     def show_project_window(self):
         self.project_controller.show_window()
+        self.close_welcome_window()
         self.current_open_window = "project"
 
     def close_welcome_window(self):
@@ -146,9 +166,11 @@ class Controller:
 
     def get_name_from_save_dialog(self, format_file):
         file_name = QFileDialog.getSaveFileName(parent=self.project_controller.project_window,
-                                                caption=self.project_controller.project_window.tr(f"Export graphs to {format_file} file"),
-                                                filter=self.project_controller.project_window.tr(f"Files (*.{format_file})"),
-                                                directory=f"{project_information_store.project_name}.{format_file}"
+                                                caption=self.project_controller.project_window.tr
+                                                (f"Export graphs to {format_file} file"),
+                                                filter=self.project_controller.project_window.tr
+                                                (f"Files (*.{format_file})"),
+                                                directory=f"{project_information_store.temp_project_name}.{format_file}"
                                                 )[0]
         if file_name:
             if not QtCore.QFileInfo(file_name).suffix():
@@ -171,7 +193,8 @@ class Controller:
     def export_to_png(self):
         self.project_controller.handle_tree_double_click()
         graph_to_export = self.get_graph_from_tree()
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
+        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
+                                                        caption="Select Directory"))
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
@@ -181,7 +204,8 @@ class Controller:
 
     def export_to_tikz(self):
         graph_to_export = self.get_graph_from_tree()
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
+        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
+                                                        caption="Select Directory"))
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
@@ -191,7 +215,8 @@ class Controller:
 
     def export_to_pdf(self):
         graph_to_export = self.get_graph_from_tree()
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window, caption="Select Directory"))
+        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
+                                                        caption="Select Directory"))
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):

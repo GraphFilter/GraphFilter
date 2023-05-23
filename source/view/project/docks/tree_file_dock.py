@@ -28,12 +28,12 @@ class TreeFileDock(QDockWidget):
         self.populate_context_menu()
 
     def create_tree(self):
-        self.path = project_information_store.project_location
+        self.path = project_information_store.get_file_directory()
 
         self.model = QFileSystemModel()
         self.model.setRootPath(self.path)
         self.model.setNameFilterDisables(False)
-        self.model.setNameFilters(["*.g6", "*.txt", "*.json"])
+        self.model.setNameFilters(["*.g6", "*.txt", "*.json", "*gml"])
 
         self.tree.setContextMenuPolicy(Qt.CustomContextMenu)
         #self.tree.customContextMenuRequested.connect(self.context_menu)

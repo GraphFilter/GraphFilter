@@ -14,18 +14,18 @@ class FilterController:
         self.is_running = True
 
     def start_filter(self):
-        g6_list = extract_files_to_list(project_information_store.graph_files)
+        g6_list = extract_files_to_list(project_information_store.temp_graph_input_files)
         self.loading_window.set_maximum(100)
         self.loading_window.show()
 
-        if project_information_store.method == 'filter':
+        if project_information_store.temp_method == 'filter':
             single_thread = td.Thread(target=self.filter_list.start_filter,
-                                      args=(g6_list, project_information_store.equation,
-                                            project_information_store.conditions,))
+                                      args=(g6_list, project_information_store.temp_equation,
+                                            project_information_store.temp_conditions,))
         else:
             single_thread = td.Thread(target=self.filter_list.start_find_counterexample,
-                                      args=(g6_list, project_information_store.equation,
-                                            project_information_store.conditions))
+                                      args=(g6_list, project_information_store.temp_equation,
+                                            project_information_store.temp_conditions))
         single_thread.start()
         while self.is_running:
             value = int(((self.filter_list.update_to_progress_bar.value / len(g6_list)) * 100))
@@ -35,7 +35,7 @@ class FilterController:
 
         single_thread.join()
         # TODO: Use the percentage returned by filtering
-        project_information_store.filtered_graphs = self.filter_list.list_out
+        project_information_store.temp_filtered_graphs = self.filter_list.list_out
         project_information_store.save_project()
         self.loading_window.close()
 

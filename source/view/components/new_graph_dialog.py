@@ -10,8 +10,8 @@ class NewGraphDialog(QDialog):
         self.dict_attributes_names = attributes_names
 
         self.create_button = QPushButton("Create")
-        self.new_file_radio = QRadioButton("New single file:")
-        self.insert_final_radio = QRadioButton("Insert in final of the current list")
+        self.new_file_radio = QRadioButton("New file (.gml):")
+        self.insert_final_radio = QRadioButton("Insert in final of the current list (g6 file only)")
         self.graph_link = QPushButton("Link to definition")
 
         self.create_button.setDefault(True)
