@@ -66,8 +66,10 @@ class ProjectController:
         else:
             dlg = QMessageBox()
             dlg.setIcon(QMessageBox.Information)
-            dlg.setText("The file you tried to open contains an invalid graph. "
-                        "Open another file in the tree or in the menu option")
+            dlg.setText("The file you tried to open contains an invalid graph. \n"
+                        "Open another file in the tree or in the menu option"
+                        "(If you edit the graph, the changes will replace the"
+                        " invalid graph by clicking on save button)")
             dlg.setWindowTitle("Invalid graph")
             dlg.exec()
             self.visualize_graph_dock.plot_graph(nx.Graph())
@@ -423,8 +425,10 @@ class ProjectController:
             else:
                 dlg = QMessageBox()
                 dlg.setIcon(QMessageBox.Information)
-                dlg.setText("The file you tried to open contains an invalid graph. "
-                            "Open another file in the tree or in the menu option")
+                dlg.setText("The file you tried to open contains an invalid graph. \n"
+                            "Open another file in the tree or in the menu option"
+                            "(If you edit the graph, the changes will replace the"
+                            " invalid graph by clicking on save button)")
                 dlg.setWindowTitle("Invalid graph")
                 dlg.exec()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
