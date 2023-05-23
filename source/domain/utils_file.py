@@ -23,6 +23,8 @@ def import_gml_graph(file_path):
 
 
 def change_gml_file(file_path):
+    if project_information_store.get_file_type() != '.gml':
+        file_path = file_path + '.gml'
     graph = project_information_store.current_graph
     pos = project_information_store.current_graph_pos
 

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import *
 
+from source.store.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
 from source.view.components.icon import Icon
 from source.store.new_graph_store import *
@@ -25,8 +26,10 @@ class ProjectToolBar(QToolBar):
 
         self.operations_menu_bar = QMenuBar()
         self.new_graph_menu_bar = QMenuBar()
+        self.export_menu_bar = QMenuBar()
         self.new_graph_menu = QMenu("&New Graph", self)
         self.operations_menu = QMenu("&Operations", self)
+        self.export_menu = QMenu("&ExportTo", self)
 
         self.create_menu_bar()
 
@@ -89,6 +92,7 @@ class ProjectToolBar(QToolBar):
 
         self.addWidget(self.operations_menu_bar)
         self.addWidget(self.new_graph_menu_bar)
+        self.addWidget(self.export_menu_bar)
         self.addSeparator()
 
         self.addAction(self.graph_button)
@@ -105,14 +109,22 @@ class ProjectToolBar(QToolBar):
         self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                               "border: 1px solid gray;")
 
+        self.export_menu_bar.setMaximumSize(98, 28)
+        self.export_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
+                                           "border: 1px solid gray;")
+
         self.operations_menu_bar.addMenu(self.operations_menu)
         self.new_graph_menu_bar.addMenu(self.new_graph_menu)
+        self.export_menu_bar.addMenu(self.export_menu)
 
         for operation in dict_name_operations_graph:
             self.operations_menu.addAction(operation)
 
         for new_graph in new_graph_dict_name:
             self.new_graph_menu.addAction(new_graph)
+
+        for formats in dict_name_export_graph_to:
+            self.export_menu.addAction(formats)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
