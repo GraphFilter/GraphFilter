@@ -455,7 +455,10 @@ class ProjectController:
             dlg = QMessageBox()
             dlg.setIcon(QMessageBox.Information)
             dlg.setText("Graph editing is not allowed in .json format, only in .g6, .txt and .gml formats. "
-                        "You can export this list of graphs to g6 by pressing right button on the desired file.")
+                        "To allow manipulation and saving: \n"
+                        "  I. You can export the entire list of graphs list of graphs to g6 by pressing "
+                        "right button on the desired file. \n"
+                        "  II. Or you can convert this specific graph with the options available in the toolbar")
             dlg.setWindowTitle("Invalid save format")
             dlg.exec()
             return
