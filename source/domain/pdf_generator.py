@@ -30,7 +30,7 @@ class PDF(FPDF):
         self.cell(0,10,f"Methods: {method}", ln = True)
         self.multi_cell(0,10,f"Equations: {' '.join(equations)}", ln=True)
         self.multi_cell(0,10,f"Conditions: {conditions}",ln=True)
-        self.cell(0,10,f"Files: {' '.join(input_files)}", ln=True)
+        self.multi_cell(0,10,f"Files: {' '.join(input_files)}", ln=True)
 
     def information_about_graphs(self,graph_files, filtered_graphs):
         g6_list = extract_files_to_list(graph_files)
