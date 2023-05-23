@@ -34,14 +34,24 @@ class ExportGraphTo:
         dlg.setWindowTitle("Exported successfully")
         dlg.exec()
 
+    @staticmethod
+    def same_format_alert_box():
+        dlg = QMessageBox()
+        dlg.setIcon(QMessageBox.Information)
+        dlg.setText("The graph is already in this format, please try another format")
+        dlg.setWindowTitle("Same format")
+        dlg.exec()
+
 
 class ExportToGML(ExportGraphTo):
     name = ".GML"
 
     @staticmethod
     def export():
+        if project_information_store.get_file_type() == '.gml':
+            return ExportGraphTo.same_format_alert_box()
         export = ExportGraphTo.export()
-        if export:
+        if export is not False:
             change_gml_file(export_graph_to.file_path)
             ExportGraphTo.success_export_alert_box('gml')
 
@@ -51,8 +61,10 @@ class ExportToG6(ExportGraphTo):
 
     @staticmethod
     def export():
+        if project_information_store.get_file_type() == '.g6':
+            return ExportGraphTo.same_format_alert_box()
         export = ExportGraphTo.export()
-        if export:
+        if export is not False:
             create_g6_file(export_graph_to.file_path + ".g6", nx.to_graph6_bytes
                            (project_information_store.current_graph, header=False).decode('utf-8'))
             ExportGraphTo.success_export_alert_box('graph6')
@@ -64,7 +76,7 @@ class ExportToPNG(ExportGraphTo):
     @staticmethod
     def export():
         export = ExportGraphTo.export()
-        if export:
+        if export is not False:
             nx.draw(project_information_store.current_graph)
             plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
             plt.close()
@@ -77,7 +89,7 @@ class ExportToTikZ(ExportGraphTo):
     @staticmethod
     def export():
         export = ExportGraphTo.export()
-        if export:
+        if export is not False:
             tkz.plot(project_information_store.current_graph, f"{export_graph_to.file_path}.tex", layout='fr',
                      node_size=0.4)
             ExportGraphTo.success_export_alert_box('tikz')
