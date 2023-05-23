@@ -1,7 +1,7 @@
 import networkx as nx
 from PyQt5.QtWidgets import QFileDialog
 
-from source.domain.utils_file import change_gml_file
+from source.domain.utils_file import change_gml_file, create_g6_file
 from source.store.project_information_store import project_information_store
 from source.view.components.message_box import MessageBox
 
@@ -23,8 +23,18 @@ class ExportToGML(ExportGraphTo):
     def export():
         file_dialog = QFileDialog()
         file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
-        print(file_path)
-        return change_gml_file(file_path[0])
+        return change_gml_file(file_path[0].strip(project_information_store.get_file_type()))
+
+
+class ExportToG6(ExportGraphTo):
+    name = ".Graph6"
+
+    @staticmethod
+    def export():
+        file_dialog = QFileDialog()
+        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
+        return create_g6_file(file_path[0].strip(project_information_store.get_file_type()) + ".g6", nx.to_graph6_bytes
+                              (project_information_store.current_graph, header=False).decode('utf-8'))
 
 
 export_graph_to = ExportGraphTo()

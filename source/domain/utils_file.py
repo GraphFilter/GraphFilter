@@ -35,6 +35,11 @@ def change_gml_file(file_path):
     nx.write_gml(graph, file_path)
 
 
+def create_g6_file(file_path, graph):
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.writelines(graph)
+
+
 def change_g6_file(file_path, new_g6, current_index):
     file = open(file_path, "r")
     changed_data = file.readlines()
