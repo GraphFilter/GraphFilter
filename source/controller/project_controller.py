@@ -414,10 +414,20 @@ class ProjectController:
             graph = import_gml_graph(file_path)
             self.project_tool_bar.reset_combo_graphs()
             self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
-            if len(nx.get_node_attributes(graph, 'pos')) != 0:
-                self.visualize_graph_dock.plot_graph(graph, project_information_store.current_graph_pos)
+            if graph is not None:
+                if len(project_information_store.current_graph_pos) != 0:
+                    self.visualize_graph_dock.plot_graph(graph,
+                                                         project_information_store.current_graph_pos)
+                else:
+                    self.visualize_graph_dock.plot_graph(graph)
             else:
-                self.visualize_graph_dock.plot_graph(graph)
+                dlg = QMessageBox()
+                dlg.setIcon(QMessageBox.Information)
+                dlg.setText("The file you tried to open contains an invalid graph. "
+                            "Open another file in the tree or in the menu option")
+                dlg.setWindowTitle("Invalid graph")
+                dlg.exec()
+                self.visualize_graph_dock.plot_graph(nx.Graph())
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
