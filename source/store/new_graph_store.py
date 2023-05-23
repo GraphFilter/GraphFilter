@@ -51,7 +51,7 @@ class NewGraphStore:
         dialog.insert_final_radio.clicked.connect(lambda: NewGraphStore.verify_file_name(dialog))
 
         if os.path.isdir(project_information_store.file_path) or \
-                project_information_store.get_file_type() == '.gml':
+                project_information_store.get_file_type() in ['.gml', '.json']:
             dialog.insert_final_radio.setEnabled(False)
 
         dialog.exec()
