@@ -77,7 +77,7 @@ class ReviewPage(QWizardPage):
         self.project_description.setText(project_description)
 
     def set_method(self, method):
-        self.method.setText(f"{'Filter Graphs' if method == 'filter' else 'Find Counter Example'}")
+        self.method.setText(f"{'Filter Graphs' if method == 'filter' else 'Find a Example'}")
 
     def set_equation(self, equation):
         self.equation.setWordWrap(True)

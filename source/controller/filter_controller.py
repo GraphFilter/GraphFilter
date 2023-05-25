@@ -23,7 +23,7 @@ class FilterController:
                                       args=(g6_list, project_information_store.temp_equation,
                                             project_information_store.temp_conditions,))
         else:
-            single_thread = td.Thread(target=self.filter_list.start_find_counterexample,
+            single_thread = td.Thread(target=self.filter_list.start_find_example,
                                       args=(g6_list, project_information_store.temp_equation,
                                             project_information_store.temp_conditions))
         single_thread.start()
@@ -34,7 +34,6 @@ class FilterController:
                 self.is_running = False
 
         single_thread.join()
-        # TODO: Use the percentage returned by filtering
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
         project_information_store.save_project()
         self.loading_window.close()

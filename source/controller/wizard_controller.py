@@ -127,7 +127,7 @@ class WizardController:
 
     def connect_method_page_events(self):
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
-        self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
+        self.method_page.find_example_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.blank_project.clicked.connect(self.on_button_method_clicked)
 
     def connect_graph_files_page_events(self):
@@ -312,7 +312,7 @@ class WizardController:
 
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
-        self.method_page.counter_example_button.setChecked(False)
+        self.method_page.find_example_button.setChecked(False)
         self.method_page.blank_project.setChecked(False)
         button = QPushButton().sender()
         button.setChecked(True)
@@ -328,10 +328,10 @@ class WizardController:
             wizard_information_store.temp_method = 'filter'
             self.review_page.set_method('filter')
             self.add_filter_wizard_pages()
-        if 'counterexample' in button.objectName():
+        if 'find_example' in button.objectName():
             self.project_files_page.setFinalPage(False)
-            wizard_information_store.temp_method = 'counterexample'
-            self.review_page.set_method('counterexample')
+            wizard_information_store.temp_method = 'find_example'
+            self.review_page.set_method('find_example')
             self.add_filter_wizard_pages()
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
