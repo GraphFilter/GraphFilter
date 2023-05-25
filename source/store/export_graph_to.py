@@ -93,6 +93,20 @@ class ExportToTikZ(ExportGraphTo):
             ExportGraphTo.success_export_alert_box('tikz')
 
 
+class ExportToTXT(ExportGraphTo):
+    name = ".TXT"
+
+    @staticmethod
+    def export():
+        if project_information_store.get_file_type() == '.txt':
+            return ExportGraphTo.same_format_alert_box()
+        export = ExportGraphTo.export()
+        if export is not False:
+            create_g6_file(export_graph_to.file_path + ".txt", nx.to_graph6_bytes
+                           (project_information_store.current_graph, header=False).decode('utf-8'))
+            ExportGraphTo.success_export_alert_box('txt')
+
+
 export_graph_to = ExportGraphTo()
 
 dict_name_export_graph_to = export_graph_to.dict_name_export_graph_to
