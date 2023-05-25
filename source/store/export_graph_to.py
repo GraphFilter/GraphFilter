@@ -4,7 +4,6 @@ from matplotlib import pyplot as plt
 
 from source.domain.utils_file import change_gml_file, create_g6_file
 from source.store.project_information_store import project_information_store
-import network2tikz as tkz
 
 
 class ExportGraphTo:
@@ -90,8 +89,7 @@ class ExportToTikZ(ExportGraphTo):
     def export():
         export = ExportGraphTo.export()
         if export is not False:
-            tkz.plot(project_information_store.current_graph, f"{export_graph_to.file_path}.tex", layout='fr',
-                     node_size=0.4)
+            nx.write_latex(project_information_store.current_graph, f"{export_graph_to.file_path}.tex")
             ExportGraphTo.success_export_alert_box('tikz')
 
 
