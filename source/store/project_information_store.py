@@ -1,7 +1,5 @@
 import json
 import os.path
-from source.domain.pdf_generator import PDF
-
 
 class ProjectInformationStore:
     def __init__(self):
@@ -55,25 +53,6 @@ class ProjectInformationStore:
         with open(filename, "w") as file_json:
             file_json.write(project_json)
             file_json.close()
-
-    def save_filtered_data(self):
-        pdf = PDF('P', 'mm', 'Letter')
-        pdf.add_page()
-        pdf.information_about_filtering(self.temp_project_name,
-                                        self.temp_method,
-                                        self.temp_equation,
-                                        self.temp_conditions,
-                                        self.temp_graph_input_files)
-        pdf.information_about_graphs(self.temp_graph_input_files,
-                                     self.temp_filtered_graphs)
-        pdf.output(self.get_file_directory()+
-                   '\\'+f'{self.temp_project_name}_report.pdf')
-
-        with open(f"{self.get_file_directory()}\\{self.temp_project_name}_graphs.g6", 'w') as fp:
-            for graph in self.temp_filtered_graphs:
-                fp.write(f"{graph}\n")
-
-        self.file_path = f"{self.get_file_directory()}/{self.temp_project_name}_graphs.g6"
 
     def get_file_directory(self):
         if os.path.isdir(self.file_path):

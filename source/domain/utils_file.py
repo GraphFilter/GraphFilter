@@ -1,7 +1,7 @@
 import networkx as nx
 
 from source.store.project_information_store import project_information_store
-
+from source.domain.pdf_model import PDF
 
 def create_gml_file(graph, file_path):
     nx.write_gml(graph, file_path)
@@ -50,7 +50,20 @@ def change_g6_file(file_path, new_g6, current_index):
 
     return graph
 
-def create_g6_file(path_to_save,graph_list, name_file):
-    with open(f"{path_to_save}\\{name_file}.g6", 'w') as fp:
+def create_g6_file(path_to_save,graph_list, name_file, name_modificator):
+    with open(f"{path_to_save}\\{name_file}{name_modificator}.g6", 'w') as fp:
         for graph in graph_list:
             fp.write(f"{graph}\n")
+
+def generate_pdf(name,method,equation,conditions,input_graph_file, filtered_graphs,name_modificator):
+    pdf = PDF('P','mm','Letter')
+    pdf.add_page()
+
+    pdf.information_about_filtering(name,
+                                    method,
+                                    equation,
+                                    conditions,
+                                    input_graph_file)
+    pdf.information_about_graphs(input_graph_file,filtered_graphs, method)
+    pdf.output(project_information_store.get_file_directory()+
+               '\\'+f'{name}{name_modificator}.pdf')

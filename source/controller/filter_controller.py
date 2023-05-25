@@ -1,5 +1,6 @@
 from source.domain.filter_list import FilterList
 from source.domain.utils import *
+from source.domain.utils_file import *
 from source.store.project_information_store import project_information_store
 from source.view.loading.loading_window import LoadingWindow
 from PyQt5.QtWidgets import QApplication
@@ -37,7 +38,18 @@ class FilterController:
         # TODO: Use the percentage returned by filtering
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
         #project_information_store.save_project()
-        project_information_store.save_filtered_data()
+        generate_pdf(project_information_store.temp_project_name,
+                     project_information_store.temp_method,
+                     project_information_store.temp_equation,
+                     project_information_store.temp_conditions,
+                     project_information_store.temp_graph_input_files,
+                     project_information_store.temp_filtered_graphs,
+                     '_report')
+        create_g6_file(project_information_store.get_file_directory(),
+                       project_information_store.temp_filtered_graphs,
+                       project_information_store.temp_project_name,'_graphs')
+        project_information_store.file_path = f'{project_information_store.get_file_directory()}/' \
+                                              f'{project_information_store.temp_project_name}_graphs.g6'
 
         self.loading_window.close()
 
