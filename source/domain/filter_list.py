@@ -99,7 +99,7 @@ class FilterList:
                     return True
             return False
         else:
-            list_out = [None]*1
+            list_out = [None] * 1
             self.find_example_multiprocess(self.list_g6_in, 0, list_out)
             if list_out[0] == "":
                 return False
@@ -110,6 +110,8 @@ class FilterList:
     def find_example_multiprocess(self, list_g6_in, i, list_out):
         list_out[i] = ""
         for g6code in list_g6_in:
+            if self.update_to_progress_bar == self.total:
+                return
             self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1
             if g6code == '' or g6code == ' ':
                 continue
@@ -119,6 +121,7 @@ class FilterList:
                     if self.graph_satisfies_conditions(g):
                         # list_out_temp.append(g6code)
                         list_out[i] = g6code
+                        self.update_to_progress_bar = self.total
                         return
                         # break
             except Exception:
