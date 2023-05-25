@@ -1,7 +1,6 @@
 import json
 import os.path
 
-
 class ProjectInformationStore:
     def __init__(self):
         self.temp_project_name = ""
