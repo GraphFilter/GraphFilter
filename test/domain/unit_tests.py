@@ -33,9 +33,8 @@ class Helper:
     @staticmethod
     def run(file, expression, choices):
         ftl = FilterList()
-        return ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file),
-                                expression,
-                                choices)
+        ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file), expression, choices)
+        return float(len(ftl.list_out) / ftl.total)
 
     @staticmethod
     def find_example(file, expression, choices):

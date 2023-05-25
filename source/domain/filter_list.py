@@ -41,7 +41,8 @@ class FilterList:
 
     def start_filter(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
-        if self.need_multiprocess(list_g6_in):
+        number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
+        if self.need_multiprocess(list_g6_in, number_cores):
             manager_class = mp.Manager()
             number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
             list_broken_in = self.subdivide_input_list(number_cores)
@@ -80,9 +81,9 @@ class FilterList:
 
     def start_find_example(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
-        if self.need_multiprocess(list_g6_in):
+        number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
+        if self.need_multiprocess(list_g6_in,number_cores):
             manager_class = mp.Manager()
-            number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
             list_broken_in = self.subdivide_input_list(number_cores)
             list_broken_out = manager_class.list(range(number_cores))
             list_of_process = []
@@ -121,7 +122,7 @@ class FilterList:
                     if self.graph_satisfies_conditions(g):
                         # list_out_temp.append(g6code)
                         list_out[i] = g6code
-                        self.update_to_progress_bar = self.total
+                        self.update_to_progress_bar.value = self.total
                         return
                         # break
             except Exception:
@@ -159,7 +160,9 @@ class FilterList:
                 return False
         return True
 
-    def need_multiprocess(self, list_g6_in):
+    def need_multiprocess(self, list_g6_in, number_process):
+        if len(list_g6_in) < number_process:
+            return False
         graph_is_valid = False
         fails = 0
         while not graph_is_valid:
