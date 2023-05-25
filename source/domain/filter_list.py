@@ -2,7 +2,6 @@ import multiprocessing as mp
 import os
 import random
 import time
-from ctypes import c_char_p
 
 from simpleeval import simple_eval
 
@@ -107,7 +106,6 @@ class FilterList:
             else:
                 self.list_out.append(list_out[0])
                 return True
-
 
     def find_example_multiprocess(self, list_g6_in, i, list_out):
         list_out[i] = ""
