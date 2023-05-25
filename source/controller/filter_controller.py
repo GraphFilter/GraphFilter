@@ -10,11 +10,13 @@ import threading as td
 class FilterController:
 
     def __init__(self):
-        self.filter_list = FilterList()
-        self.loading_window = LoadingWindow()
-        self.is_running = True
+        self.filter_list = None
+        self.loading_window = None
+
 
     def start_filter(self):
+        self.filter_list = FilterList()
+        self.loading_window = LoadingWindow()
         g6_list = extract_files_to_list(project_information_store.temp_graph_input_files)
         self.loading_window.set_maximum(100)
         self.loading_window.show()
@@ -28,11 +30,12 @@ class FilterController:
                                       args=(g6_list, project_information_store.temp_equation,
                                             project_information_store.temp_conditions))
         single_thread.start()
-        while self.is_running:
+        is_running = True
+        while is_running:
             value = int(((self.filter_list.update_to_progress_bar.value / len(g6_list)) * 100))
             self.update(value)
             if value == 100:
-                self.is_running = False
+                is_running = False
 
         single_thread.join()
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
