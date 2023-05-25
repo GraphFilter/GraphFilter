@@ -57,12 +57,12 @@ class FilterList:
                 self.update_to_progress_bar.value = self.total
             for list_in in list_broken_out:
                 self.list_out += list_in
-            return float(len(self.list_out) / self.total)
+            return
         else:
             list_out = [None] * 1
             self.filter_multiprocess(self.list_g6_in, 0, list_out)
             self.list_out = list_out[0]
-            return float(len(self.list_out) / self.total)
+            return
 
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []

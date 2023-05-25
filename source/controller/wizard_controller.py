@@ -12,7 +12,6 @@ from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
-from pathlib import Path
 from PyQt5.QtCore import QStandardPaths as qs
 
 

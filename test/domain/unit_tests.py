@@ -132,13 +132,12 @@ class DomainUnitTests(unittest.TestCase):
         self.assertTrue(UtilsToInvariants.is_integer(1))
         self.assertTrue(UtilsToInvariants.is_integer(1.000001))
         self.assertTrue(UtilsToInvariants.is_integer(0.999998))
-        L_integral = {inv_bool.IntegralL.name: 'true'}
-        self.assertEqual(1, Helper.run('graphs2.g6', '', L_integral))
+        l_integral = {inv_bool.IntegralL.name: 'true'}
+        self.assertEqual(1, Helper.run('graphs2.g6', '', l_integral))
 
     def test_inv_boolean_false(self):
         no_tree = {inv_bool.Tree.name: 'false'}
         self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
-
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
@@ -208,17 +207,15 @@ class DomainUnitTests(unittest.TestCase):
         self.assertEqual(4 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
         self.assertEqual(True, Helper.find_example('graphs14.g6', f'{chi}(G)<8', {})[0])
 
-
     def test_multiprocess_find_example(self):
         ec = str(inv_num.EdgeConnectivity.code)
         planar_and_regular = {inv_bool.Planar.name: 'true', inv_bool.Regular.name: 'true'}
         diam = str(inv_num.Diameter.code)
         spnt = str(inv_num.NumberSpanningTree.code)
-        self.assertTrue(Helper.run('graphs4_mini.g6', f'{ec}(G)==3', planar_and_regular)>=0)
+        self.assertTrue(Helper.run('graphs4_mini.g6', f'{ec}(G)==3', planar_and_regular) >= 0)
         graph_conterexample = 'H?qczZb'
         self.assertEqual(Helper.find_example('graphs4_mini.g6', f'{spnt}(G)==3245', {})[1][0], graph_conterexample)
-        self.assertTrue(len(Helper.find_example('graphs9.g6', f'{diam}(G)==4', {})[1])==1)
-
+        self.assertTrue(len(Helper.find_example('graphs9.g6', f'{diam}(G)==4', {})[1]) == 1)
 
 
 class MiscellaneousTests(unittest.TestCase):

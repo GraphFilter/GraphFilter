@@ -13,7 +13,6 @@ class FilterController:
         self.filter_list = None
         self.loading_window = None
 
-
     def start_filter(self):
         self.filter_list = FilterList()
         self.loading_window = LoadingWindow()
@@ -39,7 +38,7 @@ class FilterController:
 
         single_thread.join()
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
-        #project_information_store.save_project()
+        # project_information_store.save_project()
         generate_pdf(project_information_store.temp_project_name,
                      project_information_store.temp_method,
                      project_information_store.temp_equation,
@@ -49,7 +48,7 @@ class FilterController:
                      '_report')
         create_g6_file(project_information_store.get_file_directory(),
                        project_information_store.temp_filtered_graphs,
-                       project_information_store.temp_project_name,'_graphs')
+                       project_information_store.temp_project_name, '_graphs')
         project_information_store.file_path = f'{project_information_store.get_file_directory()}/' \
                                               f'{project_information_store.temp_project_name}_graphs.g6'
 
