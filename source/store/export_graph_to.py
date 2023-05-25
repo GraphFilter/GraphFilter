@@ -77,7 +77,7 @@ class ExportToPNG(ExportGraphTo):
     def export():
         export = ExportGraphTo.export()
         if export is not False:
-            nx.draw(project_information_store.current_graph)
+            nx.draw_networkx(project_information_store.current_graph)
             plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
             plt.close()
             ExportGraphTo.success_export_alert_box('png')

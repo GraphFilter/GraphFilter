@@ -9,7 +9,7 @@ from source.store.operations_invariants import dic_invariants_to_visualize as di
 
 def export_g6_to_png(g6code, folder, count):
     graph = nx.from_graph6_bytes(g6code.encode('utf-8'))
-    nx.draw(graph)
+    nx.draw_networkx(graph)
     plt.savefig(f"{folder}\Graph_{count}.png", format="PNG")
     plt.close()
 

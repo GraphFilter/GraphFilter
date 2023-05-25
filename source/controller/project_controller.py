@@ -295,16 +295,17 @@ class ProjectController:
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
                 self.graph_information_dock.update_table(self.invariants_selected)
+                self.visualize_graph_dock.plot_graph(graph, layout)
+                change_gml_file(file_path)
 
             else:
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
                                                            f' - {graph_g6}')
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
+                self.visualize_graph_dock.plot_graph(graph, layout)
                 self.on_save_graph()
 
-            self.visualize_graph_dock.plot_graph(graph, layout)
             self.visualize_graph_dock.setDisabled(False)
-            change_gml_file(file_path)
             new_graph_store.reset_attributes()
 
     def on_operations_button(self):
