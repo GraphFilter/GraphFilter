@@ -37,14 +37,12 @@ class FilterController:
         single_thread.join()
         # TODO: Use the percentage returned by filtering
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
-        #project_information_store.save_project()
-        generate_pdf(project_information_store.temp_project_name,
-                     project_information_store.temp_method,
-                     project_information_store.temp_equation,
-                     project_information_store.temp_conditions,
-                     project_information_store.temp_graph_input_files,
-                     project_information_store.temp_filtered_graphs,
-                     '_report')
+
+        generate_pdf_report(project_information_store.temp_project_name, project_information_store.temp_method,
+                            project_information_store.temp_equation, project_information_store.temp_conditions,
+                            project_information_store.temp_graph_input_files,
+                            project_information_store.temp_filtered_graphs, '_report',len(g6_list),
+                            project_information_store.temp_project_description)
         create_g6_file(project_information_store.get_file_directory(),
                        project_information_store.temp_filtered_graphs,
                        project_information_store.temp_project_name,'_graphs')

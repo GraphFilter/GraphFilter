@@ -20,7 +20,7 @@ class PDF(FPDF):
 
         self.cell(0, 10, f'Page {self.page_no()}/{{nb}}', align='C')
 
-    def information_about_filtering(self, name, method, equations, conditions, input_files):
+    def information_about_filtering(self, name, method, equations, conditions,description, input_files):
         self.add_font('DejaVuSans', '', 'resources/fonts/DejaVuSans.ttf')
         self.set_font('DejaVuSans')
         self.cell(0, 10, f"Name: {name}", ln=True)
@@ -30,7 +30,7 @@ class PDF(FPDF):
         self.multi_cell(0, 10, f"Conditions: {conditions}", ln=True)
 
         self.cell(0, 10, f"Equations: {equations}", ln=True)
-
+        self.multi_cell(0,10,f"Description: {description}",ln=True)
         self.cell(0, 10, f"Files: ", ln=True)
         files_txt = ''
         for item in input_files:
@@ -38,12 +38,11 @@ class PDF(FPDF):
         self.multi_cell(0, 10, files_txt.strip())
         self.ln()
 
-    def information_about_graphs(self, graph_files, filtered_graphs, method):
-        g6_list = extract_files_to_list(graph_files)
-        percent = (len(filtered_graphs) / len(g6_list)) * 100
+    def information_about_graphs(self, filtered_graphs, method,num_graphs):
+        percent = (len(filtered_graphs) / num_graphs) * 100
 
         self.set_fill_color(200, 220, 255)
-        self.cell(0, 10, f"Number of inputted graphs: {len(g6_list)}", ln=True)
+        self.cell(0, 10, f"Number of inputted graphs: {num_graphs}", ln=True)
         if method == 'filter':
             self.cell(0, 10, f"Number of filtered graphs: {len(filtered_graphs)}", ln=True)
             self.cell(0, 10, f"Percentage of success: {round(percent,5)}%")
