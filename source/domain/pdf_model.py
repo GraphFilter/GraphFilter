@@ -23,14 +23,23 @@ class PDF(FPDF):
     def information_about_filtering(self, name, method, equations, conditions,description, input_files):
         self.add_font('DejaVuSans', '', 'resources/fonts/DejaVuSans.ttf')
         self.set_font('DejaVuSans')
+        cond = str(conditions)[1:-1]
         self.cell(0, 10, f"Name: {name}", ln=True)
-
         self.cell(0, 10, f"Methods: {method}", ln=True)
 
-        self.multi_cell(0, 10, f"Conditions: {conditions}", ln=True)
+        if cond == '':
+            self.cell(0,10,"Conditions: None",ln=True)
+        else:
+            self.multi_cell(0, 10, f"Conditions: {cond}", ln=True)
+        if equations == '':
+            self.cell(0, 10, f"(In)equations: None", ln=True)
+        else:
+            self.cell(0, 10, f"(In)equations: {equations}", ln=True)
+        if description == '':
+            self.cell(0,10,"Description: None", ln=True)
+        else:
+            self.multi_cell(0,10,f"Description: {description.strip()}",ln=True)
 
-        self.cell(0, 10, f"Equations: {equations}", ln=True)
-        self.multi_cell(0,10,f"Description: {description}",ln=True)
         self.cell(0, 10, f"Files: ", ln=True)
         files_txt = ''
         for item in input_files:
