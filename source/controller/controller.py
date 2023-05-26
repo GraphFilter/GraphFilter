@@ -191,8 +191,10 @@ class Controller:
                 return file.read().splitlines()
 
     def export_to_png(self):
-        self.project_controller.handle_tree_double_click()
-        graph_to_export = self.get_graph_from_tree()
+        try:
+            graph_to_export = self.get_graph_from_tree()
+        except:
+            return
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -203,7 +205,10 @@ class Controller:
             self.loading_window.close()
 
     def export_to_tikz(self):
-        graph_to_export = self.get_graph_from_tree()
+        try:
+            graph_to_export = self.get_graph_from_tree()
+        except:
+            return
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -214,7 +219,10 @@ class Controller:
             self.loading_window.close()
 
     def export_to_pdf(self):
-        graph_to_export = self.get_graph_from_tree()
+        try:
+            graph_to_export = self.get_graph_from_tree()
+        except:
+            return
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -225,7 +233,10 @@ class Controller:
             self.loading_window.close()
 
     def export_to_g6(self):
-        graph_to_export = self.get_graph_from_tree()
+        try:
+            graph_to_export = self.get_graph_from_tree()
+        except:
+            return
         file_name = self.get_name_from_save_dialog('g6')
         if file_name:
             self.show_loading_window(len(graph_to_export))
@@ -237,7 +248,10 @@ class Controller:
             self.loading_window.close()
 
     def export_to_sheet(self):
-        graph_to_export = self.get_graph_from_tree()
+        try:
+            graph_to_export = self.get_graph_from_tree()
+        except:
+            return
         file_name = self.get_name_from_save_dialog('xlsx')
         if file_name:
             self.show_loading_window(len(graph_to_export))
