@@ -200,7 +200,10 @@ class Controller:
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
-                export_g6_to_png(graph, file_dir, step)
+                try:
+                    export_g6_to_png(graph, file_dir, step)
+                except:
+                    pass
                 self.update_loading_window(step)
             self.loading_window.close()
 
@@ -214,7 +217,10 @@ class Controller:
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
-                export_g6_to_tikz(graph, file_dir, step)
+                try:
+                    export_g6_to_tikz(graph, file_dir, step)
+                except:
+                    pass
                 self.update_loading_window(step)
             self.loading_window.close()
 
@@ -228,7 +234,10 @@ class Controller:
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
-                export_g6_to_pdf(graph, file_dir, step)
+                try:
+                    export_g6_to_pdf(graph, file_dir, step)
+                except:
+                    pass
                 self.update_loading_window(step)
             self.loading_window.close()
 
@@ -255,10 +264,13 @@ class Controller:
         file_name = self.get_name_from_save_dialog('xlsx')
         if file_name:
             self.show_loading_window(len(graph_to_export))
-            export_g6_to_sheet(graph_list=graph_to_export,
+            try:
+                export_g6_to_sheet(graph_list=graph_to_export,
                                invariants=self.project_controller.invariants_selected,
                                file_name=file_name,
                                update_progress=self.update_loading_window)
+            except:
+                pass
             self.loading_window.close()
 
     def show_loading_window(self, set_total):
