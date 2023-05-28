@@ -43,7 +43,7 @@ class ExportGraphTo:
 
 
 class ExportToGML(ExportGraphTo):
-    name = ".GML"
+    name = "Graph (.gml)"
 
     @staticmethod
     def export():
@@ -56,7 +56,7 @@ class ExportToGML(ExportGraphTo):
 
 
 class ExportToG6(ExportGraphTo):
-    name = ".Graph6"
+    name = "Graph6 (.g6)"
 
     @staticmethod
     def export():
@@ -69,32 +69,8 @@ class ExportToG6(ExportGraphTo):
             ExportGraphTo.success_export_alert_box('graph6')
 
 
-class ExportToPNG(ExportGraphTo):
-    name = ".PNG"
-
-    @staticmethod
-    def export():
-        export = ExportGraphTo.export()
-        if export is not False:
-            nx.draw_networkx(project_information_store.current_graph)
-            plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
-            plt.close()
-            ExportGraphTo.success_export_alert_box('png')
-
-
-class ExportToTikZ(ExportGraphTo):
-    name = ".TikZ"
-
-    @staticmethod
-    def export():
-        export = ExportGraphTo.export()
-        if export is not False:
-            nx.write_latex(project_information_store.current_graph, f"{export_graph_to.file_path}.tex")
-            ExportGraphTo.success_export_alert_box('tikz')
-
-
 class ExportToTXT(ExportGraphTo):
-    name = ".TXT"
+    name = "Graph6 (.txt)"
 
     @staticmethod
     def export():
@@ -105,6 +81,31 @@ class ExportToTXT(ExportGraphTo):
             create_g6_file(export_graph_to.file_path + ".txt", nx.to_graph6_bytes
                            (project_information_store.current_graph, header=False).decode('utf-8'))
             ExportGraphTo.success_export_alert_box('txt')
+
+
+class ExportToPNG(ExportGraphTo):
+    name = "Image (.png)"
+
+    @staticmethod
+    def export():
+        export = ExportGraphTo.export()
+        if export is not False:
+            nx.draw_networkx(project_information_store.current_graph, pos=project_information_store.current_graph_pos)
+            plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
+            plt.close()
+            ExportGraphTo.success_export_alert_box('png')
+
+
+class ExportToTikZ(ExportGraphTo):
+    name = "Latex Tikz (.latex)"
+
+    @staticmethod
+    def export():
+        export = ExportGraphTo.export()
+        if export is not False:
+            nx.write_latex(project_information_store.current_graph, f"{export_graph_to.file_path}.tex",
+                           pos=project_information_store.current_graph_pos)
+            ExportGraphTo.success_export_alert_box('tikz')
 
 
 export_graph_to = ExportGraphTo()
