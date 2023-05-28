@@ -470,7 +470,7 @@ class CompleteBipartiteGraph(NewGraphStore):
 
 class ThresholdGraph(NewGraphStore):
     name = "Threshold Graph"
-    dict_attributes_names = {"b": "Binary sequence"}
+    dict_attributes_names = {"b": "Binary sequence, b", "conditions": "size of b \u2264 60 and b be a binary sequence"}
 
     @staticmethod
     def open_dialog():
@@ -479,9 +479,8 @@ class ThresholdGraph(NewGraphStore):
         dialog.create_button.clicked.connect(lambda: ThresholdGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Threshold_graph"))
-        # dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'b'))
+        dialog.dict['b'].textEdited.connect(lambda: ThresholdGraph.verify_binary_sequence(dialog))
 
-        dialog.create_button.setEnabled(True)
         NewGraphStore.open_new_dialog(dialog)
 
     @staticmethod
@@ -497,6 +496,23 @@ class ThresholdGraph(NewGraphStore):
 
         new_graph_store.set_graph(graph)
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_binary_sequence(dialog):
+        text = dialog.dict['b'].text()
+        size = len(text)
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        if size <= 60:
+            try:
+                int(text, 2)
+                dialog.create_button.setEnabled(True)
+                dialog.dict['b'].setStyleSheet('background-color: white;')
+                return
+            except ValueError:
+                pass
+        dialog.create_button.setDisabled(True)
+        dialog.dict['b'].setStyleSheet('background-color: #EF5350;')
 
 
 new_graph_store = NewGraphStore()
