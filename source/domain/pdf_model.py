@@ -51,8 +51,7 @@ class PDF(FPDF):
         percent = (len(filtered_graphs) / num_graphs) * 100
 
         self.set_fill_color(200, 220, 255)
-        self.cell(0, 10, "Conclusion", ln=True)
-        self.cell(0, 10, f"Number of inputted graphs: {num_graphs}", ln=True)
+        self.cell(0, 10, f"Number of input graphs: {num_graphs}", ln=True)
         if method == 'filter':
             self.cell(0, 10, f"Number of filtered graphs: {len(filtered_graphs)}", ln=True)
             self.cell(0, 10, f"Percentage of success: {round(percent,5)}%")
