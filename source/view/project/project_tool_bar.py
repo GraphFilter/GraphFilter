@@ -26,10 +26,10 @@ class ProjectToolBar(QToolBar):
         self.forward_button = QAction()
 
         self.operations_menu_bar = QMenuBar()
-        self.new_graph_menu_bar = QMenuBar()
+        self.new_graph_menu_bar = QPushButton()
         self.export_menu_bar = QPushButton()
-        self.new_graph_menu = QMenu("&New Graph", self)
         self.operations_menu = QMenu("&Operations", self)
+        self.new_graph_menu = QMenu(self)
         self.export_menu = QMenu(self)
 
         self.create_menu_bar()
@@ -73,6 +73,9 @@ class ProjectToolBar(QToolBar):
         self.save_button.setIcon(Icon("save"))
         self.delete_button.setIcon(Icon("delete"))
 
+        self.new_graph_menu_bar.setIcon(Icon("new_graph"))
+        self.new_graph_menu_bar.setIconSize(QtCore.QSize(30, 30))
+
         self.export_menu_bar.setIcon(Icon("export"))
         self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
 
@@ -103,9 +106,11 @@ class ProjectToolBar(QToolBar):
         self.operations_menu_bar.setMaximumSize(95, 28)
         self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                                "border: 1px solid gray;")
-        self.new_graph_menu_bar.setMaximumSize(98, 28)
-        self.new_graph_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                              "border: 1px solid gray;")
+        # self.new_graph_menu_bar.setMaximumSize(98, 28)
+        self.new_graph_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
+                                              "QPushButton::hover { "
+                                              "    background-color: blue;"
+                                              "}")
 
         # self.export_menu_bar.setGeometry(100, 40, 40, 100)
         self.export_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
@@ -114,7 +119,7 @@ class ProjectToolBar(QToolBar):
                                            "}")
 
         self.operations_menu_bar.addMenu(self.operations_menu)
-        self.new_graph_menu_bar.addMenu(self.new_graph_menu)
+        self.new_graph_menu_bar.setMenu(self.new_graph_menu)
         self.export_menu_bar.setMenu(self.export_menu)
 
         for operation in dict_name_operations_graph:
