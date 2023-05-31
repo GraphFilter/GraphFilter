@@ -53,14 +53,17 @@ class ProjectToolBar(QToolBar):
         self.combo_graphs.setMinimumWidth(200)
 
         self.features_info_button.setIcon(Icon("help"))
+        self.features_info_button.setToolTip('View graph editing features')
 
         self.right_button.setIcon(Icon("right_arrow_key"))
+        self.right_button.setToolTip('Go to next graph')
         self.right_button.setIconSize(QtCore.QSize(20, 20))
         self.right_button.setDisabled(False)
         self.right_button.setStyleSheet("background-color: #DCDCDC;"
                                         "border-radius: 10px;")
 
         self.left_button.setIcon(Icon("left_arrow_key"))
+        self.left_button.setToolTip('Go to previous graph')
         self.left_button.setIconSize(QtCore.QSize(20, 20))
         self.left_button.setDisabled(True)
         self.left_button.setStyleSheet("background-color: #DCDCDC;"
@@ -70,13 +73,18 @@ class ProjectToolBar(QToolBar):
         self.combo_operations.addItem(" Operations")
 
         self.universal_vertex_button.setIcon(Icon("universal_vertex"))
+        self.universal_vertex_button.setToolTip('Insert an universal vertex')
         self.save_button.setIcon(Icon("save"))
+        self.save_button.setToolTip('Save current graph changes')
         self.delete_button.setIcon(Icon("delete"))
+        self.delete_button.setToolTip('Delete current graph')
 
         self.new_graph_menu_bar.setIcon(Icon("new_graph"))
+        self.new_graph_menu_bar.setToolTip('Create a new graph')
         self.new_graph_menu_bar.setIconSize(QtCore.QSize(30, 30))
 
         self.export_menu_bar.setIcon(Icon("export"))
+        self.export_menu_bar.setToolTip('Export the current graph')
         self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
 
     def reset_combo_graphs(self):
