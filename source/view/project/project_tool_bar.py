@@ -12,7 +12,7 @@ class ProjectToolBar(QToolBar):
     def __init__(self):
         super().__init__()
 
-        self.filtered_graphs_label = QLabel("  Graph at \n selected file")
+        self.filtered_graphs_label = QLabel("  File \n selected file")
         self.features_info_label = QLabel(" Graph editing \n features")
 
         self.left_button = QPushButton()
@@ -143,6 +143,9 @@ class ProjectToolBar(QToolBar):
             return None
 
         return graphs[0]
+
+    def set_file_label(self, file_name):
+        self.filtered_graphs_label.setText(f"      File \n {file_name}")
 
 
 class EditingFeatures(QDialog):

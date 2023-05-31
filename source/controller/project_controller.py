@@ -74,6 +74,8 @@ class ProjectController:
             dlg.exec()
             self.visualize_graph_dock.plot_graph(nx.Graph())
 
+        self.project_tool_bar.set_file_label(project_information_store.get_file_name())
+
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
         self.project_window.showMaximized()
@@ -443,6 +445,7 @@ class ProjectController:
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
+        self.project_tool_bar.set_file_label(project_information_store.get_file_name())
         self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
