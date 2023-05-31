@@ -100,3 +100,15 @@ def set_new_vertex_positions(node_positions):
         new_y = random.uniform(0, 1)
 
     return new_x, new_y
+
+
+def add_vertex(graph, node_positions, new_vertex, univ=False):
+    graph.add_node(new_vertex)
+    node_positions[new_vertex] = set_new_vertex_positions(node_positions)
+
+    if univ:
+        for node in graph:
+            if node is not new_vertex:
+                graph.add_edge(new_vertex, node)
+
+    return graph, node_positions
