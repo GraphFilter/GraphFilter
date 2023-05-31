@@ -19,7 +19,7 @@ class ProjectToolBar(QToolBar):
         self.right_button = QPushButton()
         self.features_info_button = QAction()
         self.refresh_button = QAction()
-        self.graph_button = QAction()
+        self.universal_vertex_button = QAction()
         self.save_button = QAction()
         self.delete_button = QAction()
         self.revert_button = QAction()
@@ -69,7 +69,7 @@ class ProjectToolBar(QToolBar):
         self.refresh_button.setIcon(Icon("refresh"))
         self.combo_operations.addItem(" Operations")
 
-        self.graph_button.setIcon(Icon("graph"))
+        self.universal_vertex_button.setIcon(Icon("universal_vertex"))
         self.save_button.setIcon(Icon("save"))
         self.delete_button.setIcon(Icon("delete"))
 
@@ -91,10 +91,10 @@ class ProjectToolBar(QToolBar):
         self.addSeparator()
 
         self.addWidget(self.operations_menu_bar)
-        self.addWidget(self.new_graph_menu_bar)
+        self.addAction(self.universal_vertex_button)
         self.addSeparator()
 
-        self.addAction(self.graph_button)
+        self.addWidget(self.new_graph_menu_bar)
         self.addAction(self.save_button)
         self.addAction(self.delete_button)
         self.addWidget(self.export_menu_bar)
