@@ -24,3 +24,4 @@ scipy==1.9.3
 simpleeval==0.9.12
 six==1.16.0
 zipp==3.10.0
+fpdf2==2.7.4
