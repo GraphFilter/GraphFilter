@@ -47,7 +47,7 @@ class PDF(FPDF):
         self.multi_cell(0, 10, files_txt.strip())
         self.ln()
 
-    def information_about_graphs(self, filtered_graphs, method,num_graphs):
+    def information_about_graphs(self, filtered_graphs, method, num_graphs):
         percent = (len(filtered_graphs) / num_graphs) * 100
 
         self.set_fill_color(200, 220, 255)
