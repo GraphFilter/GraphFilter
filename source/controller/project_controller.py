@@ -224,6 +224,7 @@ class ProjectController:
         # self.on_visualize_tree()
 
     def on_change_graph(self):
+        self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
         else:
@@ -276,8 +277,10 @@ class ProjectController:
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    @staticmethod
-    def on_invalid_graph_display_alert():
+    def on_invalid_graph_display_alert(self):
+        index = self.project_tool_bar.combo_graphs.currentIndex()
+        self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index} - Invalid')
+        self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
         message_box = MessageBox("Invalid Graph")
         message_box.exec()
 
@@ -500,4 +503,5 @@ class ProjectController:
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
+        self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
         self.graph_information_dock.update_table(self.invariants_selected)
