@@ -74,6 +74,9 @@ class ProjectController:
             dlg.exec()
             self.visualize_graph_dock.plot_graph(nx.Graph())
 
+        if project_information_store.get_file_type() == '.gml':
+            self.project_tool_bar.combo_graphs.setDisabled(True)
+
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
 
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
@@ -416,6 +419,7 @@ class ProjectController:
             self.project_tool_bar.fill_combo_graphs(graph)
             self.on_change_graph()
             project_information_store.file_path = file_path
+            self.project_tool_bar.combo_graphs.setEnabled(True)
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
@@ -423,6 +427,7 @@ class ProjectController:
                 self.project_tool_bar.fill_combo_graphs(graph)
                 self.on_change_graph()
                 project_information_store.file_path = file_path
+            self.project_tool_bar.combo_graphs.setEnabled(True)
         if type_item == "gml File":
             project_information_store.file_path = file_path
             graph = import_gml_graph(file_path)
@@ -442,6 +447,7 @@ class ProjectController:
                 dlg.setWindowTitle("Invalid graph")
                 dlg.exec()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
+            self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
