@@ -30,27 +30,52 @@ class WizardController:
         self.method_page = MethodPage()
         self.graph_files_page = FilesPage()
         self.review_page = ReviewPage()
+        self.number_of_pages = 0
 
         self.set_up_window()
 
     def set_wizard_pages(self):
         self.wizard_window.addPage(self.method_page)
         self.wizard_window.addPage(self.project_files_page)
-
+        self.number_of_pages = 2
     def add_filter_wizard_pages(self):
-        self.wizard_window.addPage(self.equations_page)
-        self.wizard_window.addPage(self.conditions_page)
-        self.wizard_window.addPage(self.graph_files_page)
-        self.wizard_window.addPage(self.review_page)
+        if self.number_of_pages != 6:
+            try:
+                self.wizard_window.addPage(self.equations_page)
+                self.wizard_window.addPage(self.conditions_page)
+                self.wizard_window.addPage(self.graph_files_page)
+                self.wizard_window.addPage(self.review_page)
+                self.number_of_pages += 4
+            except:
+                pass
+        else:
+            pass
+        self.enable_method_page_buttons()
+
 
     def remove_filter_wizard_pages(self):
-        try:
-            self.wizard_window.removePage(2)
-            self.wizard_window.removePage(3)
-            self.wizard_window.removePage(4)
-            self.wizard_window.removePage(5)
-        except:
+        if self.number_of_pages != 2:
+            try:
+                self.wizard_window.removePage(2)
+                self.wizard_window.removePage(3)
+                self.wizard_window.removePage(4)
+                self.wizard_window.removePage(5)
+                self.number_of_pages -= 4
+            except:
+                pass
+        else:
             pass
+        self.enable_method_page_buttons()
+
+    def enable_method_page_buttons(self):
+        self.method_page.blank_project.setEnabled(True)
+        self.method_page.filter_button.setEnabled(True)
+        self.method_page.counter_example_button.setEnabled(True)
+
+    def disable_method_page_buttons(self):
+        self.method_page.blank_project.setDisabled(True)
+        self.method_page.filter_button.setDisabled(True)
+        self.method_page.counter_example_button.setDisabled(True)
 
     def set_up_window(self):
         self.set_wizard_pages()
@@ -321,21 +346,25 @@ class WizardController:
             self.project_files_page.setFinalPage(True)
             wizard_information_store.temp_method = 'blank'
             self.review_page.set_method('blank')
-            # self.wizard_window.next_button.setDisabled(True)
+            self.disable_method_page_buttons()
             self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
             self.project_files_page.setFinalPage(False)
             wizard_information_store.temp_method = 'filter'
             self.review_page.set_method('filter')
+            self.disable_method_page_buttons()
             self.add_filter_wizard_pages()
         if 'counterexample' in button.objectName():
             self.project_files_page.setFinalPage(False)
             wizard_information_store.temp_method = 'counterexample'
             self.review_page.set_method('counterexample')
+            self.disable_method_page_buttons()
             self.add_filter_wizard_pages()
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
         self.wizard_window.next_button.setToolTip('')
+
+
 
     def on_update_graph_file(self):
         file_dialog = QFileDialog()
