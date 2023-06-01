@@ -69,12 +69,12 @@ class WizardController:
     def enable_method_page_buttons(self):
         self.method_page.blank_project.setEnabled(True)
         self.method_page.filter_button.setEnabled(True)
-        self.method_page.counter_example_button.setEnabled(True)
+        self.method_page.find_example_button.setEnabled(True)
 
     def disable_method_page_buttons(self):
         self.method_page.blank_project.setDisabled(True)
         self.method_page.filter_button.setDisabled(True)
-        self.method_page.counter_example_button.setDisabled(True)
+        self.method_page.find_example_button.setDisabled(True)
 
     def set_up_window(self):
         self.set_wizard_pages()
