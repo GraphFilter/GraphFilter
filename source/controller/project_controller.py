@@ -75,6 +75,7 @@ class ProjectController:
             self.visualize_graph_dock.plot_graph(nx.Graph())
 
         if project_information_store.get_file_type() == '.gml':
+            self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
             self.project_tool_bar.combo_graphs.setDisabled(True)
 
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
@@ -450,6 +451,8 @@ class ProjectController:
                 dlg.setWindowTitle("Invalid graph")
                 dlg.exec()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
+            self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
+            self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
             self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
             pass
