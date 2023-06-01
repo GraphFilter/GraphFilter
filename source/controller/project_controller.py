@@ -6,6 +6,7 @@ from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
 from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file
+from source.store.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
 from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
@@ -42,6 +43,7 @@ class ProjectController:
 
         self.active_new_graph_action = None
         self.active_operation_action = None
+        self.active_export_action = None
 
         self.settings = QtCore.QSettings("project", "GraphFilter")
         self.connect_events()
@@ -107,8 +109,10 @@ class ProjectController:
 
         self.project_tool_bar.new_graph_menu.hovered.connect(self.set_active_new_graph_action)
         self.project_tool_bar.operations_menu.hovered.connect(self.set_active_operation_action)
+        self.project_tool_bar.export_menu.hovered.connect(self.set_active_export_action)
         self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
         self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
+        self.project_tool_bar.export_menu.triggered.connect(self.on_export_button)
         self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
 
     def tree_file_dock_events(self):
@@ -293,16 +297,17 @@ class ProjectController:
                 self.project_tool_bar.reset_combo_graphs()
                 self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
                 self.graph_information_dock.update_table(self.invariants_selected)
+                self.visualize_graph_dock.plot_graph(graph, layout)
+                change_gml_file(file_path)
 
             else:
                 self.project_tool_bar.combo_graphs.addItem(f'Graph {self.project_tool_bar.combo_graphs.count()}'
                                                            f' - {graph_g6}')
                 self.project_tool_bar.combo_graphs.setCurrentIndex(self.project_tool_bar.combo_graphs.count() - 1)
+                self.visualize_graph_dock.plot_graph(graph, layout)
                 self.on_save_graph()
 
-            self.visualize_graph_dock.plot_graph(graph, layout)
             self.visualize_graph_dock.setDisabled(False)
-            change_gml_file(file_path)
             new_graph_store.reset_attributes()
 
     def on_operations_button(self):
@@ -312,6 +317,9 @@ class ProjectController:
         if graph is not None:
             self.visualize_graph_dock.plot_graph(graph)
 
+    def on_export_button(self):
+        dict_name_export_graph_to[self.active_export_action].export()
+
     def set_active_new_graph_action(self):
         if self.project_tool_bar.new_graph_menu.activeAction() is not None:
             self.active_new_graph_action = self.project_tool_bar.new_graph_menu.activeAction().text()
@@ -319,6 +327,10 @@ class ProjectController:
     def set_active_operation_action(self):
         if self.project_tool_bar.operations_menu.activeAction() is not None:
             self.active_operation_action = self.project_tool_bar.operations_menu.activeAction().text()
+
+    def set_active_export_action(self):
+        if self.project_tool_bar.export_menu.activeAction() is not None:
+            self.active_export_action = self.project_tool_bar.export_menu.activeAction().text()
 
     def insert_universal_vertex(self):
         graph = project_information_store.current_graph
