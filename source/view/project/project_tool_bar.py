@@ -81,7 +81,7 @@ class ProjectToolBar(QToolBar):
 
         self.new_graph_menu_bar.setIcon(Icon("new_graph"))
         self.new_graph_menu_bar.setToolTip('Create a new graph')
-        self.new_graph_menu_bar.setIconSize(QtCore.QSize(30, 30))
+        self.new_graph_menu_bar.setIconSize(QtCore.QSize(35, 35))
 
         self.export_menu_bar.setIcon(Icon("export"))
         self.export_menu_bar.setToolTip('Export the current graph')
@@ -114,13 +114,11 @@ class ProjectToolBar(QToolBar):
         self.operations_menu_bar.setMaximumSize(95, 28)
         self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
                                                "border: 1px solid gray;")
-        # self.new_graph_menu_bar.setMaximumSize(98, 28)
         self.new_graph_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
                                               "QPushButton::hover { "
                                               "    background-color: blue;"
                                               "}")
 
-        # self.export_menu_bar.setGeometry(100, 40, 40, 100)
         self.export_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
                                            "QPushButton::hover { "
                                            "    background-color: blue;"
