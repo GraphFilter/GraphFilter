@@ -74,7 +74,8 @@ class ProjectToolBar(QToolBar):
 
         self.universal_vertex_button.setIcon(Icon("universal_vertex"))
         self.universal_vertex_button.setIconSize(QtCore.QSize(35, 35))
-        self.universal_vertex_button.setStyleSheet("border: none;")
+        self.set_button_style(self.universal_vertex_button)
+
         self.universal_vertex_button.setToolTip('Insert an universal vertex')
 
         self.save_button.setIcon(Icon("save"))
@@ -85,14 +86,17 @@ class ProjectToolBar(QToolBar):
         self.operations_menu_bar.setIcon(Icon("operations"))
         self.operations_menu_bar.setToolTip('Apply operation on the current graph  ')
         self.operations_menu_bar.setIconSize(QtCore.QSize(45, 45))
+        self.set_button_style(self.operations_menu_bar)
 
         self.new_graph_menu_bar.setIcon(Icon("new_graph"))
         self.new_graph_menu_bar.setToolTip('Create a new graph  ')
         self.new_graph_menu_bar.setIconSize(QtCore.QSize(35, 35))
+        self.set_button_style(self.new_graph_menu_bar)
 
         self.export_menu_bar.setIcon(Icon("export"))
         self.export_menu_bar.setToolTip('Export the current graph  ')
         self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
+        self.set_button_style(self.export_menu_bar)
 
     def reset_combo_graphs(self):
         self.combo_graphs.clear()
@@ -150,6 +154,18 @@ class ProjectToolBar(QToolBar):
 
     def set_file_label(self, file_name):
         self.filtered_graphs_label.setText(f"      File \n {file_name}")
+
+    @staticmethod
+    def set_button_style(button):
+        button.setStyleSheet("""
+            QPushButton {
+                background-color: #f0f0f0; 
+                border: 0px;
+            }
+            QPushButton:hover {
+                background-color:rgba(135,206,250, 0.2);
+            }
+        """)
 
 
 class EditingFeatures(QDialog):
