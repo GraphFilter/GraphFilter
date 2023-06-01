@@ -62,53 +62,31 @@ class Controller:
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.gml)"])
         file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.gml)")
-        formatted_file_path = file_path[0]
-        project_information_store.file_path = formatted_file_path
+        project_information_store.file_path = file_path[0]
+        file_type = project_information_store.get_file_type()
 
-        if file_path[0] == '':
+        if file_type == '':
             return
-        if file_path[0].endswith('.gml'):
-            project_information_store.fill_data({
-                'project_name': 'Visualization mode',
-                'project_location': os.path.dirname(os.path.abspath(file_path[0])),
-                'project_description': '',
-                'equation': '',
-                'conditions': {},
-                'method': '',
-                'graph_files': file_path[0],
-                'filtered_graphs': [project_information_store.get_file_name()]
-            })
-            project_information_store.current_graph = import_gml_graph(file_path[0])
+        if file_type == '.json':
+            with open(file_path[0]) as file:
+                content = file.read()
+                data = json.loads(content)
+                project_information_store.fill_data(data)
+            project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
         else:
-            if file_path[0].endswith('.json'):
-                with open(file_path[0]) as file:
-                    content = file.read()
-                    data = json.loads(content)
-                    project_information_store.fill_data(data)
-                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+            if file_type == '.gml':
+                project_information_store.temp_filtered_graphs = [project_information_store.get_file_name()]
+                project_information_store.current_graph = import_gml_graph(file_path[0])
             else:
                 with open(file_path[0]) as file:
-                    project_information_store.fill_data({
-                        'project_name': 'Visualization mode',
-                        'project_location': os.path.dirname(os.path.abspath(file_path[0])),
-                        'project_description': '',
-                        'equation': '',
-                        'conditions': {},
-                        'method': '',
-                        'graph_files': file_path[0],
-                        'filtered_graphs': file.read().splitlines()
-                    })
+                    project_information_store.temp_filtered_graphs = file.read().splitlines()
                 project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+
+            project_information_store.temp_graph_input_files = project_information_store.file_path
 
         if self.current_open_window == "project" and project_information_store.get_file_type() != ".gml":
             project_information_store.current_graph_pos = {}
         self.show_project_window()
-        # if self.current_open_window == "welcome":
-        #    self.show_project_window()
-        #    self.close_welcome_window()
-        # if self.current_open_window == "project":
-        #    self.show_project_window()
-        # self.current_open_window = "project"
         project_information_store.reset_store()
 
     def show_wizard_window(self):
