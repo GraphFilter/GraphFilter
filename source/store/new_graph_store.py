@@ -5,7 +5,7 @@ import os.path
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
-from source.domain.utils import validate_file_name
+from source.domain.utils import validate_file_name, add_vertex
 from source.view.components.new_graph_dialog import NewGraphDialog
 from source.store.project_information_store import project_information_store
 import networkx as nx
@@ -466,6 +466,53 @@ class CompleteBipartiteGraph(NewGraphStore):
                                                                  int(dialog.dict['n'].text())))
         new_graph_store.set_layout('bipartite')
         NewGraphStore.create_graph(dialog)
+
+
+class ThresholdGraph(NewGraphStore):
+    name = "Threshold Graph"
+    dict_attributes_names = {"b": "Binary sequence, b", "conditions": "size of b \u2264 60 and b be a binary sequence"}
+
+    @staticmethod
+    def open_dialog():
+        dialog = NewGraphDialog(ThresholdGraph.dict_attributes_names,
+                                name=ThresholdGraph.name, b='')
+        dialog.create_button.clicked.connect(lambda: ThresholdGraph.create_graph(dialog))
+        dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
+                                          ("https://en.wikipedia.org/wiki/Threshold_graph"))
+        dialog.dict['b'].textEdited.connect(lambda: ThresholdGraph.verify_binary_sequence(dialog))
+
+        NewGraphStore.open_new_dialog(dialog)
+
+    @staticmethod
+    def create_graph(dialog):
+        graph = nx.Graph()
+        node_positions = {}
+
+        for binary in dialog.dict['b'].text():
+            if binary == '1':
+                graph, node_positions = add_vertex(graph, node_positions, len(graph), univ=True)
+            if binary == '0':
+                graph, node_positions = add_vertex(graph, node_positions, len(graph))
+
+        new_graph_store.set_graph(graph)
+        NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_binary_sequence(dialog):
+        text = dialog.dict['b'].text()
+        size = len(text)
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        if size <= 60:
+            try:
+                int(text, 2)
+                dialog.create_button.setEnabled(True)
+                dialog.dict['b'].setStyleSheet('background-color: white;')
+                return
+            except ValueError:
+                pass
+        dialog.create_button.setDisabled(True)
+        dialog.dict['b'].setStyleSheet('background-color: #EF5350;')
 
 
 new_graph_store = NewGraphStore()
