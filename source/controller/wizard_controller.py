@@ -347,18 +347,21 @@ class WizardController:
             wizard_information_store.temp_method = 'blank'
             self.review_page.set_method('blank')
             self.disable_method_page_buttons()
+            self.project_files_page.project_description_input.setReadOnly(True)
             self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
             self.project_files_page.setFinalPage(False)
             wizard_information_store.temp_method = 'filter'
             self.review_page.set_method('filter')
             self.disable_method_page_buttons()
+            self.project_files_page.project_description_input.setReadOnly(False)
             self.add_filter_wizard_pages()
         if 'counterexample' in button.objectName():
             self.project_files_page.setFinalPage(False)
             wizard_information_store.temp_method = 'counterexample'
             self.review_page.set_method('counterexample')
             self.disable_method_page_buttons()
+            self.project_files_page.project_description_input.setReadOnly(True)
             self.add_filter_wizard_pages()
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
