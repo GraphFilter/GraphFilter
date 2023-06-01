@@ -76,6 +76,12 @@ class ProjectController:
             dlg.exec()
             self.visualize_graph_dock.plot_graph(nx.Graph())
 
+        if project_information_store.get_file_type() == '.gml':
+            self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
+            self.project_tool_bar.combo_graphs.setDisabled(True)
+
+        self.project_tool_bar.set_file_label(project_information_store.get_file_name())
+
         self.invariants_check_dock.create_conditions(dic_invariants_to_visualize, self.on_check_condition)
 
         self.project_window.showMaximized()
@@ -110,10 +116,10 @@ class ProjectController:
         self.project_tool_bar.new_graph_menu.hovered.connect(self.set_active_new_graph_action)
         self.project_tool_bar.operations_menu.hovered.connect(self.set_active_operation_action)
         self.project_tool_bar.export_menu.hovered.connect(self.set_active_export_action)
-        self.project_tool_bar.new_graph_menu_bar.triggered.connect(self.on_new_graph_button)
-        self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
+        self.project_tool_bar.new_graph_menu.triggered.connect(self.on_new_graph_button)
+        self.project_tool_bar.operations_menu.triggered.connect(self.on_operations_button)
         self.project_tool_bar.export_menu.triggered.connect(self.on_export_button)
-        self.project_tool_bar.graph_button.triggered.connect(self.insert_universal_vertex)
+        self.project_tool_bar.universal_vertex_button.clicked.connect(self.insert_universal_vertex)
 
     def tree_file_dock_events(self):
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)
@@ -221,6 +227,7 @@ class ProjectController:
         # self.on_visualize_tree()
 
     def on_change_graph(self):
+        self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
         else:
@@ -273,8 +280,10 @@ class ProjectController:
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
-    @staticmethod
-    def on_invalid_graph_display_alert():
+    def on_invalid_graph_display_alert(self):
+        index = self.project_tool_bar.combo_graphs.currentIndex()
+        self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index} - Invalid')
+        self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
         message_box = MessageBox("Invalid Graph")
         message_box.exec()
 
@@ -409,6 +418,7 @@ class ProjectController:
             self.project_tool_bar.fill_combo_graphs(graph)
             self.on_change_graph()
             project_information_store.file_path = file_path
+            self.project_tool_bar.combo_graphs.setEnabled(True)
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 graph = file.read().splitlines()
@@ -416,6 +426,7 @@ class ProjectController:
                 self.project_tool_bar.fill_combo_graphs(graph)
                 self.on_change_graph()
                 project_information_store.file_path = file_path
+            self.project_tool_bar.combo_graphs.setEnabled(True)
         if type_item == "gml File":
             project_information_store.file_path = file_path
             graph = import_gml_graph(file_path)
@@ -437,9 +448,13 @@ class ProjectController:
                 dlg.setWindowTitle("Invalid graph")
                 dlg.exec()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
+            self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
+            self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
+            self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
             pass
         self.visualize_graph_dock.setDisabled(False)
+        self.project_tool_bar.set_file_label(project_information_store.get_file_name())
         self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
@@ -488,4 +503,5 @@ class ProjectController:
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
+        self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
         self.graph_information_dock.update_table(self.invariants_selected)
