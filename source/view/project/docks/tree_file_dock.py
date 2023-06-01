@@ -19,7 +19,7 @@ class TreeFileDock(QDockWidget):
 
         self.export_png_action = QAction("Image (.png)")
         self.export_pdf_action = QAction("Image (.pdf)")
-        self.export_tikz_action = QAction("LaTeX (.tikz)")
+        self.export_tikz_action = QAction("LaTeX Tikz (.tex)")
         self.export_g6_action = QAction("graph6 list (.txt)")
         self.export_sheet_action = QAction("Sheet (.xlsx): graph6 and invariants")
 
