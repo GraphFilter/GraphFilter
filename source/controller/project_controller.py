@@ -115,9 +115,9 @@ class ProjectController:
         self.project_tool_bar.operations_menu.hovered.connect(self.set_active_operation_action)
         self.project_tool_bar.export_menu.hovered.connect(self.set_active_export_action)
         self.project_tool_bar.new_graph_menu.triggered.connect(self.on_new_graph_button)
-        self.project_tool_bar.operations_menu_bar.triggered.connect(self.on_operations_button)
+        self.project_tool_bar.operations_menu.triggered.connect(self.on_operations_button)
         self.project_tool_bar.export_menu.triggered.connect(self.on_export_button)
-        self.project_tool_bar.universal_vertex_button.triggered.connect(self.insert_universal_vertex)
+        self.project_tool_bar.universal_vertex_button.clicked.connect(self.insert_universal_vertex)
 
     def tree_file_dock_events(self):
         self.tree_file_dock.tree.doubleClicked.connect(self.handle_tree_double_click)

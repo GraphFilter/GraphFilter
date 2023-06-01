@@ -19,16 +19,16 @@ class ProjectToolBar(QToolBar):
         self.right_button = QPushButton()
         self.features_info_button = QAction()
         self.refresh_button = QAction()
-        self.universal_vertex_button = QAction()
+        self.universal_vertex_button = QPushButton()
         self.save_button = QAction()
         self.delete_button = QAction()
         self.revert_button = QAction()
         self.forward_button = QAction()
 
-        self.operations_menu_bar = QMenuBar()
+        self.operations_menu_bar = QPushButton()
         self.new_graph_menu_bar = QPushButton()
         self.export_menu_bar = QPushButton()
-        self.operations_menu = QMenu("&Operations", self)
+        self.operations_menu = QMenu(self)
         self.new_graph_menu = QMenu(self)
         self.export_menu = QMenu(self)
 
@@ -73,18 +73,25 @@ class ProjectToolBar(QToolBar):
         self.combo_operations.addItem(" Operations")
 
         self.universal_vertex_button.setIcon(Icon("universal_vertex"))
+        self.universal_vertex_button.setIconSize(QtCore.QSize(35, 35))
+        self.universal_vertex_button.setStyleSheet("border: none;")
         self.universal_vertex_button.setToolTip('Insert an universal vertex')
+
         self.save_button.setIcon(Icon("save"))
         self.save_button.setToolTip('Save current graph changes')
         self.delete_button.setIcon(Icon("delete"))
         self.delete_button.setToolTip('Delete current graph')
 
+        self.operations_menu_bar.setIcon(Icon("operations"))
+        self.operations_menu_bar.setToolTip('Apply operation on the current graph  ')
+        self.operations_menu_bar.setIconSize(QtCore.QSize(45, 45))
+
         self.new_graph_menu_bar.setIcon(Icon("new_graph"))
-        self.new_graph_menu_bar.setToolTip('Create a new graph')
+        self.new_graph_menu_bar.setToolTip('Create a new graph  ')
         self.new_graph_menu_bar.setIconSize(QtCore.QSize(35, 35))
 
         self.export_menu_bar.setIcon(Icon("export"))
-        self.export_menu_bar.setToolTip('Export the current graph')
+        self.export_menu_bar.setToolTip('Export the current graph  ')
         self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
 
     def reset_combo_graphs(self):
@@ -102,7 +109,7 @@ class ProjectToolBar(QToolBar):
         self.addSeparator()
 
         self.addWidget(self.operations_menu_bar)
-        self.addAction(self.universal_vertex_button)
+        self.addWidget(self.universal_vertex_button)
         self.addSeparator()
 
         self.addWidget(self.new_graph_menu_bar)
@@ -111,20 +118,11 @@ class ProjectToolBar(QToolBar):
         self.addWidget(self.export_menu_bar)
 
     def create_menu_bar(self):
-        self.operations_menu_bar.setMaximumSize(95, 28)
-        self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                               "border: 1px solid gray;")
-        self.new_graph_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
-                                              "QPushButton::hover { "
-                                              "    background-color: blue;"
-                                              "}")
+        self.operations_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;")
+        self.new_graph_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;")
+        self.export_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;")
 
-        self.export_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;"
-                                           "QPushButton::hover { "
-                                           "    background-color: blue;"
-                                           "}")
-
-        self.operations_menu_bar.addMenu(self.operations_menu)
+        self.operations_menu_bar.setMenu(self.operations_menu)
         self.new_graph_menu_bar.setMenu(self.new_graph_menu)
         self.export_menu_bar.setMenu(self.export_menu)
 
