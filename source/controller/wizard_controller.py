@@ -12,7 +12,6 @@ from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
 from source.domain.equation import Equation
 from source.domain.utils import *
-from pathlib import Path
 from PyQt5.QtCore import QStandardPaths as qs
 
 
@@ -152,7 +151,7 @@ class WizardController:
 
     def connect_method_page_events(self):
         self.method_page.filter_button.clicked.connect(self.on_button_method_clicked)
-        self.method_page.counter_example_button.clicked.connect(self.on_button_method_clicked)
+        self.method_page.find_example_button.clicked.connect(self.on_button_method_clicked)
         self.method_page.blank_project.clicked.connect(self.on_button_method_clicked)
 
     def connect_graph_files_page_events(self):
@@ -337,7 +336,7 @@ class WizardController:
 
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
-        self.method_page.counter_example_button.setChecked(False)
+        self.method_page.find_example_button.setChecked(False)
         self.method_page.blank_project.setChecked(False)
         button = QPushButton().sender()
         button.setChecked(True)
@@ -356,10 +355,10 @@ class WizardController:
             self.disable_method_page_buttons()
             self.project_files_page.project_description_input.setReadOnly(False)
             self.add_filter_wizard_pages()
-        if 'counterexample' in button.objectName():
+        if 'find_example' in button.objectName():
             self.project_files_page.setFinalPage(False)
-            wizard_information_store.temp_method = 'counterexample'
-            self.review_page.set_method('counterexample')
+            wizard_information_store.temp_method = 'find_example'
+            self.review_page.set_method('find_example')
             self.disable_method_page_buttons()
             self.project_files_page.project_description_input.setReadOnly(True)
             self.add_filter_wizard_pages()

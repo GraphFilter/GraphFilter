@@ -24,6 +24,8 @@ def import_gml_graph(file_path):
 
 
 def change_gml_file(file_path):
+    if project_information_store.get_file_type() != '.gml':
+        file_path = file_path + '.gml'
     graph = project_information_store.current_graph
     pos = project_information_store.current_graph_pos
 
@@ -32,6 +34,11 @@ def change_gml_file(file_path):
         graph.nodes[node]['y'] = float(y)
 
     nx.write_gml(graph, file_path)
+
+
+def create_g6_file(file_path, graph):
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.writelines(graph)
 
 
 def change_g6_file(file_path, new_g6, current_index):
