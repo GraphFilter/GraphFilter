@@ -84,17 +84,17 @@ class ProjectToolBar(QToolBar):
         self.delete_button.setToolTip('Delete current graph')
 
         self.operations_menu_bar.setIcon(Icon("operations"))
-        self.operations_menu_bar.setToolTip('Apply operation on the current graph  ')
+        self.operations_menu_bar.setToolTip('Apply operation on the current graph')
         self.operations_menu_bar.setIconSize(QtCore.QSize(45, 45))
         self.set_button_style(self.operations_menu_bar)
 
         self.new_graph_menu_bar.setIcon(Icon("new_graph"))
-        self.new_graph_menu_bar.setToolTip('Create a new graph  ')
+        self.new_graph_menu_bar.setToolTip('Create a new graph')
         self.new_graph_menu_bar.setIconSize(QtCore.QSize(35, 35))
         self.set_button_style(self.new_graph_menu_bar)
 
         self.export_menu_bar.setIcon(Icon("export"))
-        self.export_menu_bar.setToolTip('Export the current graph  ')
+        self.export_menu_bar.setToolTip('Export the current graph')
         self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
         self.set_button_style(self.export_menu_bar)
 
