@@ -33,16 +33,13 @@ class Helper:
     @staticmethod
     def run(file, expression, choices):
         ftl = FilterList()
-        return ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file),
-                                expression,
-                                choices)
+        ftl.start_filter(Helper.list_graphs_from('resources/graphs/' + file), expression, choices)
+        return float(len(ftl.list_out) / ftl.total)
 
     @staticmethod
-    def some_c_exem(file, expression, choices):
+    def find_example(file, expression, choices):
         ftl = FilterList()
-        boolean = ftl.start_find_counterexample(Helper.list_graphs_from('resources/graphs/' + file),
-                                                expression,
-                                                choices)
+        boolean = ftl.start_find_example(Helper.list_graphs_from('resources/graphs/' + file), expression, choices)
         return boolean, ftl.list_out
 
 
@@ -135,13 +132,12 @@ class DomainUnitTests(unittest.TestCase):
         self.assertTrue(UtilsToInvariants.is_integer(1))
         self.assertTrue(UtilsToInvariants.is_integer(1.000001))
         self.assertTrue(UtilsToInvariants.is_integer(0.999998))
-        L_integral = {inv_bool.IntegralL.name: 'true'}
-        self.assertEqual(1, Helper.run('graphs2.g6', '', L_integral))
+        l_integral = {inv_bool.IntegralL.name: 'true'}
+        self.assertEqual(1, Helper.run('graphs2.g6', '', l_integral))
 
     def test_inv_boolean_false(self):
         no_tree = {inv_bool.Tree.name: 'false'}
         self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
-
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
@@ -185,14 +181,14 @@ class DomainUnitTests(unittest.TestCase):
                         "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
                     )
 
-    def test_find_counterexample(self):
+    def test_find_example(self):
         diam = str(inv_num.Diameter.code)
-        l_integral = {inv_bool.IntegralL.name: 'true'}
-        tree = {inv_bool.Tree.name: 'true'}
-        self.assertFalse(Helper.some_c_exem('graphs2.g6', '', l_integral)[0])
-        self.assertTrue(Helper.some_c_exem('graphs9.g6', f'{diam}(G)<=4', {})[0])
+        l_integral = {inv_bool.IntegralL.name: 'false'}
+        no_tree = {inv_bool.Tree.name: 'false'}
+        self.assertFalse(Helper.find_example('graphs2.g6', '', l_integral)[0])
+        self.assertTrue(Helper.find_example('graphs9.g6', f'{diam}(G)>4', {})[0])
         graph_no_tree = 'ZGC?KA?_a?E??A?K?GWAQ?h?CA?GP?O@gH@CCg??WC?C?QOS?A@?@?]_A@r?'
-        self.assertEqual(Helper.some_c_exem('graphs1.g6', '', tree)[1][0], graph_no_tree)
+        self.assertEqual(Helper.find_example('graphs1.g6', '', no_tree)[1][0], graph_no_tree)
 
     def test_not_100percent_filter(self):
         diam = str(inv_num.Diameter.code)
@@ -209,17 +205,17 @@ class DomainUnitTests(unittest.TestCase):
         chi = str(inv_num.ChromaticNumber.code)
         self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{diam}(G)>0', {}))
         self.assertEqual(4 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
-        self.assertEqual(True, Helper.some_c_exem('graphs14.g6', f'{chi}(G)<8', {})[0])
+        self.assertEqual(True, Helper.find_example('graphs14.g6', f'{chi}(G)<8', {})[0])
 
-
-    def test_multiprocess_filter(self):
+    def test_multiprocess_find_example(self):
         ec = str(inv_num.EdgeConnectivity.code)
         planar_and_regular = {inv_bool.Planar.name: 'true', inv_bool.Regular.name: 'true'}
-        n = str(inv_num.NumberVertices.code)
-        # self.assertTrue(Helper.run('graphs4.g6', f'{ec}(G)==3', planar_and_regular)>=0)
-        graph_conterexample = 'I@`CJcnFw'
-        self.assertEqual(Helper.some_c_exem('graphs4.g6', f'{n}(G)==9',{})[1][0], graph_conterexample)
-
+        diam = str(inv_num.Diameter.code)
+        spnt = str(inv_num.NumberSpanningTree.code)
+        self.assertTrue(Helper.run('graphs4_mini.g6', f'{ec}(G)==3', planar_and_regular) >= 0)
+        graph_conterexample = 'H?qczZb'
+        self.assertEqual(Helper.find_example('graphs4_mini.g6', f'{spnt}(G)==3245', {})[1][0], graph_conterexample)
+        self.assertTrue(len(Helper.find_example('graphs9.g6', f'{diam}(G)==4', {})[1]) == 1)
 
 
 class MiscellaneousTests(unittest.TestCase):

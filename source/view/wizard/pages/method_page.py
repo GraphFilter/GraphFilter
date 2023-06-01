@@ -16,7 +16,7 @@ class MethodPage(QWizardPage):
         self.alert_text = help_button_text.method
 
         self.filter_button = QPushButton()
-        self.counter_example_button = QPushButton()
+        self.find_example_button = QPushButton()
         self.blank_project =QPushButton()
 
         self.set_content_attributes()
@@ -31,12 +31,12 @@ class MethodPage(QWizardPage):
         self.filter_button.setCheckable(True)
         self.filter_button.setObjectName('filter')
 
-        self.counter_example_button.setText("  Find Counterexample")
-        self.counter_example_button.setIcon(Icon("zoom"))
-        self.counter_example_button.setMinimumHeight(50)
-        self.counter_example_button.setMinimumWidth(50)
-        self.counter_example_button.setCheckable(True)
-        self.counter_example_button.setObjectName('counterexample')
+        self.find_example_button.setText("  Find a example")
+        self.find_example_button.setIcon(Icon("zoom"))
+        self.find_example_button.setMinimumHeight(50)
+        self.find_example_button.setMinimumWidth(50)
+        self.find_example_button.setCheckable(True)
+        self.find_example_button.setObjectName('find_example')
 
         self.blank_project.setText(" Blank project \n "
                                    " Drawn your own graphs")
@@ -52,7 +52,7 @@ class MethodPage(QWizardPage):
 
         button_layout = QHBoxLayout()
         button_layout.addWidget(self.filter_button)
-        button_layout.addWidget(self.counter_example_button)
+        button_layout.addWidget(self.find_example_button)
 
 
         second_button_layout = QHBoxLayout()

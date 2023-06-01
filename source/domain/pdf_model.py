@@ -47,16 +47,16 @@ class PDF(FPDF):
         self.multi_cell(0, 10, files_txt.strip())
         self.ln()
 
-    def information_about_graphs(self, filtered_graphs, method,num_graphs):
+    def information_about_graphs(self, filtered_graphs, method, num_graphs):
         percent = (len(filtered_graphs) / num_graphs) * 100
 
         self.set_fill_color(200, 220, 255)
-        self.cell(0, 10, f"Number of inputted graphs: {num_graphs}", ln=True)
+        self.cell(0, 10, f"Number of input graphs: {num_graphs}", ln=True)
         if method == 'filter':
             self.cell(0, 10, f"Number of filtered graphs: {len(filtered_graphs)}", ln=True)
             self.cell(0, 10, f"Percentage of success: {round(percent,5)}%")
         else:
-            if filtered_graphs >= 0:
-                self.cell(0, 10, "An example was found")
+            if len(filtered_graphs) > 0:
+                self.cell(0, 10, "An example graph was found.")
             else:
-                self.cell(0, 10, "No example found")
+                self.cell(0, 10, "No example graphs found.")

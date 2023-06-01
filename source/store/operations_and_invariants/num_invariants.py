@@ -1090,7 +1090,7 @@ class NumberSpanningTree(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return la.det(NumberSpanningTree.submatrix(nx.laplacian_matrix(graph)))
+        return int(la.det(NumberSpanningTree.submatrix(nx.laplacian_matrix(graph))))
 
     @staticmethod
     def print(graph, precision):
