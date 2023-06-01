@@ -65,8 +65,9 @@ class ExportToG6(ExportGraphTo):
             return ExportGraphTo.same_format_alert_box()
         export = ExportGraphTo.export()
         if export is not False:
-            create_g6_file(export_graph_to.file_path + ".g6", nx.to_graph6_bytes
-                           (project_information_store.current_graph, header=False).decode('utf-8'))
+            create_g6_file(export_graph_to.file_path + ".g6",
+                           nx.to_graph6_bytes(project_information_store.current_graph, header=False).decode('utf-8')
+                           )
             ExportGraphTo.success_export_alert_box('graph6')
 
 
@@ -79,8 +80,9 @@ class ExportToTXT(ExportGraphTo):
             return ExportGraphTo.same_format_alert_box()
         export = ExportGraphTo.export()
         if export is not False:
-            create_g6_file(export_graph_to.file_path + ".txt", nx.to_graph6_bytes
-                           (project_information_store.current_graph, header=False).decode('utf-8'))
+            create_g6_file(export_graph_to.file_path + ".txt",
+                           nx.to_graph6_bytes(project_information_store.current_graph, header=False).decode('utf-8')
+                           )
             ExportGraphTo.success_export_alert_box('txt')
 
 
@@ -91,10 +93,27 @@ class ExportToPNG(ExportGraphTo):
     def export():
         export = ExportGraphTo.export()
         if export is not False:
-            nx.draw_networkx(project_information_store.current_graph, pos=project_information_store.current_graph_pos)
+            nx.draw_networkx(project_information_store.current_graph,
+                             pos=project_information_store.current_graph_pos,
+                             node_color='#EEF25C')
             plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
             plt.close()
             ExportGraphTo.success_export_alert_box('png')
+
+
+class ExportToPDF(ExportGraphTo):
+    name = "Image (.pdf)"
+
+    @staticmethod
+    def export():
+        export = ExportGraphTo.export()
+        if export is not False:
+            nx.draw_networkx(project_information_store.current_graph,
+                             pos=project_information_store.current_graph_pos,
+                             node_color='#EEF25C')
+            plt.savefig(f"{export_graph_to.file_path}.pdf", format="PDF")
+            plt.close()
+            ExportGraphTo.success_export_alert_box('pdf')
 
 
 class ExportToTikZ(ExportGraphTo):

@@ -9,7 +9,9 @@ from source.store.operations_invariants import dic_invariants_to_visualize as di
 
 def export_g6_to_png(g6code, folder, count):
     graph = nx.from_graph6_bytes(g6code.encode('utf-8'))
-    nx.draw_networkx(graph)
+    nx.draw_networkx(graph,
+                     node_color='#EEF25C',
+                     labels={item: item for item in nx.nodes(graph)})
     plt.savefig(f"{folder}\Graph_{count}.png", format="PNG")
     plt.close()
 
@@ -22,13 +24,13 @@ def export_g6_to_tikz(g6code, folder, count):
     nxtikz.plot(graph, f"{folder}\Graph_{count}.tex", layout='fr', node_size=0.4, **style)
 
 
-
 def export_g6_to_pdf(g6code, folder, count):
     graph = nx.from_graph6_bytes(g6code.encode('utf-8'))
-    nx.draw(graph)
+    nx.draw_networkx(graph,
+                     node_color='#EEF25C',
+                     labels={item: item for item in nx.nodes(graph)})
     plt.savefig(f"{folder}\Graph_{count}.pdf", format="PDF")
     plt.close()
-
 
 
 def export_g6_to_sheet(graph_list, invariants, file_name, update_progress):
