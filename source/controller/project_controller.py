@@ -408,30 +408,16 @@ class ProjectController:
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
-
         type_item = self.tree_file_dock.model.type(index)
-        if type_item == "json File":
-            f = open(file_path)
-            data = json.load(f)
-            graph = tuple(data['filtered_graphs'])
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs(graph)
-            self.on_change_graph()
-            project_information_store.file_path = file_path
-            self.project_tool_bar.combo_graphs.setEnabled(True)
-        if type_item == "g6 File" or type_item == "txt File":
-            with open(file_path) as file:
-                graph = file.read().splitlines()
-                self.project_tool_bar.reset_combo_graphs()
-                self.project_tool_bar.fill_combo_graphs(graph)
-                self.on_change_graph()
-                project_information_store.file_path = file_path
-            self.project_tool_bar.combo_graphs.setEnabled(True)
+
+        if type_item == "File Folder":
+            return
+
+        project_information_store.file_path = file_path
+
         if type_item == "gml File":
-            project_information_store.file_path = file_path
             graph = import_gml_graph(file_path)
-            self.project_tool_bar.reset_combo_graphs()
-            self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
+            graphs = [project_information_store.get_file_name()]
             if graph is not None:
                 if len(project_information_store.current_graph_pos) != 0:
                     self.visualize_graph_dock.plot_graph(graph,
@@ -448,11 +434,19 @@ class ProjectController:
                 dlg.setWindowTitle("Invalid graph")
                 dlg.exec()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
-            self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
-            self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
-            self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
-            pass
+            if type_item == "json File":
+                f = open(file_path)
+                data = json.load(f)
+                graphs = tuple(data['filtered_graphs'])
+            else:
+                with open(file_path) as file:
+                    graphs = file.read().splitlines()
+            self.visualize_graph_dock.plot_graph(graphs[0])
+            self.project_tool_bar.combo_graphs.setEnabled(True)
+
+        self.project_tool_bar.reset_combo_graphs()
+        self.project_tool_bar.fill_combo_graphs(graphs)
         self.visualize_graph_dock.setDisabled(False)
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
         self.project_window.set_title_bar(project_information_store.get_file_name())
@@ -475,8 +469,6 @@ class ProjectController:
         file_name, file_type = os.path.splitext(file_path)
         current_graph = project_information_store.current_graph
         graph = None
-        new_g6 = ""
-        replaced_line = ""
 
         if current_graph is None:
             return

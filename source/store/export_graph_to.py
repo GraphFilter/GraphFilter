@@ -123,9 +123,7 @@ class ExportToTikZ(ExportGraphTo):
     def export():
         export = ExportGraphTo.export()
         if export is not False:
-            style = {}
-            style['node_label'] = list(project_information_store.current_graph_pos.keys())
-            style['node_color'] = "white"
+            style = {'node_label': list(project_information_store.current_graph_pos.keys()), 'node_color': "white"}
             nxtikz.plot(project_information_store.current_graph,
                         f"{export_graph_to.file_path}.tex",
                         layout=project_information_store.current_graph_pos,
