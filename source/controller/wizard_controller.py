@@ -347,8 +347,6 @@ class WizardController:
             self.review_page.set_method('blank')
             self.disable_method_page_buttons()
             self.project_files_page.project_description_input.setDisabled(True)
-            self.project_files_page.project_description_input.setText(
-                "(The project description is only available for the filtering methods: 'Filter' or 'Find a example')")
             self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
             self.project_files_page.setFinalPage(False)
