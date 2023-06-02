@@ -5,7 +5,9 @@ import re
 import networkx as nx
 import gzip
 
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QApplication, QMessageBox
+
+from source.view.components.message_box import MessageBox
 
 
 def validate_path(path):
@@ -112,3 +114,15 @@ def add_vertex(graph, node_positions, new_vertex, univ=False):
                 graph.add_edge(new_vertex, node)
 
     return graph, node_positions
+
+
+def trigger_message_box(text, icon=QMessageBox.Information, window_title='Information'):
+    message_box = MessageBox(text, icon, window_title)
+    message_box.exec()
+
+
+def handle_invalid_graph_open():
+    trigger_message_box("The file you tried to open contains an invalid graph. \n"
+                        "Open another file in the tree or in the menu option"
+                        "(If you edit the graph, the changes will replace the"
+                        " invalid graph by clicking on save button)", window_title="Invalid graph")

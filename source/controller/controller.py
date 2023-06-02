@@ -6,6 +6,7 @@ from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
 from source.controller.project_controller import ProjectController
+from source.domain.utils import trigger_message_box
 from source.domain.utils_file import import_gml_graph, create_gml_file
 from source.store.project_information_store import update_project_store
 from PyQt5.QtWidgets import *
@@ -99,7 +100,8 @@ class Controller:
 
     def start_project(self):
         if not project_information_store.temp_filtered_graphs:
-            self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
+            trigger_message_box("No graph in the input list satisfies the chosen conditions.",
+                                window_title="Empty filtering")
             self.show_wizard_window()
         else:
             self.show_project_window()

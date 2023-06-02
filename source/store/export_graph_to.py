@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 from matplotlib import pyplot as plt
 import network2tikz as nxtikz
 
+from source.domain.utils import trigger_message_box
 from source.domain.utils_file import change_gml_file, create_g6_file
 from source.store.project_information_store import project_information_store
 
@@ -27,20 +28,13 @@ class ExportGraphTo:
 
     @staticmethod
     def success_export_alert_box(file_type):
-        dlg = QMessageBox()
-        dlg.setIcon(QMessageBox.Information)
-        dlg.setText(f"The graph was exported to the {file_type} format and saved in the following directory: \n"
-                    f"{export_graph_to.file_path}")
-        dlg.setWindowTitle("Exported successfully")
-        dlg.exec()
+        trigger_message_box(f"The graph was exported to the {file_type} format and saved in the following directory: \n"
+                            f"{export_graph_to.file_path}", window_title="Exported successfully")
 
     @staticmethod
     def same_format_alert_box():
-        dlg = QMessageBox()
-        dlg.setIcon(QMessageBox.Warning)
-        dlg.setText("The graph is already in this format, please try another format")
-        dlg.setWindowTitle("Same format")
-        dlg.exec()
+        trigger_message_box("The graph is already in this format, please try another format",
+                            window_title="Same format")
 
 
 class ExportToGML(ExportGraphTo):

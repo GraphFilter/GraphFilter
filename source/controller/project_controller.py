@@ -18,8 +18,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, set_new_vertex_positions, add_vertex
-from source.view.components.message_box import MessageBox
+from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
 
@@ -66,14 +65,7 @@ class ProjectController:
             else:
                 self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
         else:
-            dlg = QMessageBox()
-            dlg.setIcon(QMessageBox.Information)
-            dlg.setText("The file you tried to open contains an invalid graph. \n"
-                        "Open another file in the tree or in the menu option"
-                        "(If you edit the graph, the changes will replace the"
-                        " invalid graph by clicking on save button)")
-            dlg.setWindowTitle("Invalid graph")
-            dlg.exec()
+            handle_invalid_graph_open()
             self.visualize_graph_dock.plot_graph(nx.Graph())
 
         if project_information_store.get_file_type() == '.gml':
@@ -284,8 +276,7 @@ class ProjectController:
         index = self.project_tool_bar.combo_graphs.currentIndex()
         self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index} - Invalid')
         self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
-        message_box = MessageBox("Invalid Graph")
-        message_box.exec()
+        trigger_message_box("Invalid Graph", window_title="Invalid Graph")
 
     def on_new_graph_button(self):
         new_graph_dict_name[self.active_new_graph_action].open_dialog()
@@ -391,12 +382,8 @@ class ProjectController:
                     self.on_change_graph()
                     self.visualize_graph_dock.setDisabled(True)
                     project_information_store.file_path = os.path.dirname(file_path)
-                    dlg = QMessageBox()
-                    dlg.setIcon(QMessageBox.Information)
-                    dlg.setText("You erased the current file. To continue, please create a new graph or select another"
-                                " file in the directory.")
-                    dlg.setWindowTitle("Select another file")
-                    dlg.exec()
+                    trigger_message_box("You erased the current file. To continue, please create a new graph or select "
+                                        "another file in the directory.", window_title="Select another file")
             except FileNotFoundError:
                 return
             except PermissionError:
@@ -425,14 +412,7 @@ class ProjectController:
                 else:
                     self.visualize_graph_dock.plot_graph(graph)
             else:
-                dlg = QMessageBox()
-                dlg.setIcon(QMessageBox.Information)
-                dlg.setText("The file you tried to open contains an invalid graph. \n"
-                            "Open another file in the tree or in the menu option"
-                            "(If you edit the graph, the changes will replace the"
-                            " invalid graph by clicking on save button)")
-                dlg.setWindowTitle("Invalid graph")
-                dlg.exec()
+                handle_invalid_graph_open()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
         else:
             if type_item == "json File":
@@ -478,15 +458,12 @@ class ProjectController:
         if file_type == ".g6" or file_type == ".txt":
             graph = change_g6_file(file_path, new_g6, current_index)
         if file_type == ".json":
-            dlg = QMessageBox()
-            dlg.setIcon(QMessageBox.Information)
-            dlg.setText("Graph editing is not allowed in .json format, only in .g6, .txt and .gml formats. "
-                        "To allow manipulation and saving: \n"
-                        "  I. You can export the entire list of graphs list of graphs to g6 by pressing "
-                        "right button on the desired file. \n"
-                        "  II. Or you can convert this specific graph with the options available in the toolbar")
-            dlg.setWindowTitle("Invalid save format")
-            dlg.exec()
+            trigger_message_box("Graph editing is not allowed in .json format, only in .g6, .txt and .gml formats. "
+                                "To allow manipulation and saving: \n"
+                                "  I. You can export the entire list of graphs list of graphs to g6 by pressing "
+                                "right button on the desired file. \n"
+                                "  II. Or you can convert this specific graph with the options available in the "
+                                "toolbar", window_title="Invalid save format")
             return
         if file_type == ".gml":
             graph = [project_information_store.get_file_name()]
