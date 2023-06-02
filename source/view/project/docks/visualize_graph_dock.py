@@ -9,11 +9,15 @@ import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
 
+from source.domain.utils import fix_graph_nodes
+from source.store.project_information_store import project_information_store
+
 matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
-    any_signal = QtCore.pyqtSignal(object)
+    any_signal = QtCore.pyqtSignal()
+    invalid_graph_signal = QtCore.pyqtSignal()
 
     def __init__(self):
         super().__init__()
@@ -30,22 +34,25 @@ class VisualizeGraphDock(QDockWidget):
         self.setFeatures(
             QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
-    def plot_graph(self, graph):
+    def plot_graph(self, graph, layout='spring'):
         try:
             self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
         except AttributeError:
             self.current_graph = graph
-        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change)
+        except nx.NetworkXError:
+            self.invalid_graph_signal.emit()
+            self.current_graph = nx.Graph()
+        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change, layout)
         self.canvas.setFocusPolicy(Qt.ClickFocus)
         self.canvas.setFocus()
         self.setWidget(self.canvas)
 
-    def synchronize_change(self, new_graph):
-        self.any_signal.emit(new_graph)
+    def synchronize_change(self):
+        self.any_signal.emit()
 
 
 class MplCanvas(FigureCanvasQTAgg):
-    def __init__(self, parent=None, graph=None, synchronize_change=None, width=8, height=4, dpi=100, ):
+    def __init__(self, parent=None, graph=None, synchronize_change=None, layout='spring', width=8, height=4, dpi=100, ):
         super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
         self.setParent(parent)
         self.ax = self.figure.add_subplot(111)
@@ -54,7 +61,7 @@ class MplCanvas(FigureCanvasQTAgg):
         if graph is None:
             return
         self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True,
-                                            node_label_fontdict=dict(size=8))
+                                            node_label_fontdict=dict(size=8), node_layout=layout)
 
 
 class ResizableGraph(EditableGraph):
@@ -64,14 +71,18 @@ class ResizableGraph(EditableGraph):
 
         kwargs.setdefault('origin', (0., 0.))
         kwargs.setdefault('scale', (1., 1.))
+        self.node_labels = {}
         self.origin = kwargs["origin"]
         self.scale = kwargs["scale"]
         self.figure_width = self.fig.bbox.width
         self.figure_height = self.fig.bbox.height
         self.synchronize_change = synchronize_change
         self.fig.canvas.mpl_connect('resize_event', self._on_resize)
+        self.restart_label()
 
     def _on_resize(self, event, pad=0.05):
+        node_positions = {}
+
         # determine ratio new : old
         scale_x_by = self.fig.bbox.width / self.figure_width
         scale_y_by = self.fig.bbox.height / self.figure_height
@@ -81,9 +92,12 @@ class ResizableGraph(EditableGraph):
 
         # rescale node positions
         for node, (x, y) in self.node_positions.items():
+            node_positions[self.node_labels[node]] = (x, y)
             new_x = ((x - self.origin[0]) * scale_x_by) + self.origin[0]
             new_y = ((y - self.origin[1]) * scale_y_by) + self.origin[1]
             self.node_positions[node] = np.array([new_x, new_y])
+
+        project_information_store.current_graph_pos = node_positions
 
         # update axis dimensions
         self.scale = (scale_x_by * self.scale[0],
@@ -101,25 +115,46 @@ class ResizableGraph(EditableGraph):
         self._update_edge_label_positions(self.edges)
         self.fig.canvas.draw()
 
+    def restart_label(self):
+        try:
+            self.node_labels = {node: i for i, node in enumerate(self.nodes)}
+            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
+            self.draw_node_labels(self.node_labels, self.node_label_fontdict)
+
+            new_graph = nx.Graph()
+            new_graph.add_nodes_from(self.nodes)
+            new_graph.add_edges_from(self.edges)
+            new_graph = fix_graph_nodes(new_graph)
+        except IndexError:
+            new_graph = nx.Graph()
+            pass
+
+        project_information_store.current_graph = new_graph
+        self.synchronize_change()
+
+    def set_node_positions_store(self):
+        node_positions = {}
+
+        for node, (x, y) in self.node_positions.items():
+            node_positions[self.node_labels[node]] = (x / 1.575, y / 1.75)
+
+        project_information_store.current_graph_pos = node_positions
+
     def _on_key_press(self, event):
         if event.key == "enter" or event.key == "alt+enter":
             return
         super()._on_key_press(event)
 
-        if event.key == "insert" or event.key == "+":
-            node_labels = {node: node for node in self.nodes}
-            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
-            self.draw_node_labels(node_labels, self.node_label_fontdict)
+        self.restart_label()
+        self.set_node_positions_store()
 
-        new_graph = nx.Graph(self.edges)
-        new_graph.add_nodes_from(self.nodes)
-        self.synchronize_change(new_graph)
+    def _on_motion(self, event):
+        super()._on_motion(event)
+        self.set_node_positions_store()
 
     def _on_press(self, event):
         super()._on_press(event)
-        new_graph = nx.Graph(self.edges)
-        new_graph.add_nodes_from(self.nodes)
-        self.synchronize_change(new_graph)
+        self.restart_label()
 
     def _add_or_remove_nascent_edge(self, event):
         for node, artist in self.node_artists.items():
@@ -134,10 +169,7 @@ class ResizableGraph(EditableGraph):
             x, y = self.node_positions[node]
             dx, dy = self.node_label_offset[node]
 
-            if str(node).find("(") >= 0:
-                artist = self.ax.text(x + dx, y + dy, i, **node_label_fontdict)
-            else:
-                artist = self.ax.text(x+dx, y+dy, label, **node_label_fontdict)
+            artist = self.ax.text(x + dx, y + dy, label, **node_label_fontdict)
 
             if node in self.node_label_artists:
                 self.node_label_artists[node].remove()

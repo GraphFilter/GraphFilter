@@ -29,7 +29,7 @@ AND	Claw-Free = true
 
 graphs4
 all graphs connected with 4 vertices
-
+there is a graph with 3245 spanning trees: H?qczZb
 -----------------------------
 
 graphs5

@@ -1,5 +1,10 @@
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
+
+from source.store.export_graph_to import dict_name_export_graph_to
+from source.store.operations_graph import dict_name_operations_graph
 from source.view.components.icon import Icon
+from source.store.new_graph_store import *
 from PyQt5 import QtCore
 
 
@@ -7,26 +12,25 @@ class ProjectToolBar(QToolBar):
     def __init__(self):
         super().__init__()
 
-        self.filtered_graphs_label = QLabel("  Graph at \n selected file")
+        self.filtered_graphs_label = QLabel("  File \n selected file")
         self.features_info_label = QLabel(" Graph editing \n features")
 
         self.left_button = QPushButton()
         self.right_button = QPushButton()
         self.features_info_button = QAction()
         self.refresh_button = QAction()
-        self.graph_button = QAction()
+        self.universal_vertex_button = QPushButton()
         self.save_button = QAction()
         self.delete_button = QAction()
         self.revert_button = QAction()
         self.forward_button = QAction()
 
-        self.operations_menu_bar = QMenuBar()
-        self.insert_menu_bar = QMenuBar()
-
-        self.line_graph = QAction("Line Graph")
-        self.inverse_line_graph = QAction("Inverse Line Graph")
-        self.complement = QAction("Complement")
-        self.clique_graph = QAction("Clique Graph")
+        self.operations_menu_bar = QPushButton()
+        self.new_graph_menu_bar = QPushButton()
+        self.export_menu_bar = QPushButton()
+        self.operations_menu = QMenu(self)
+        self.new_graph_menu = QMenu(self)
+        self.export_menu = QMenu(self)
 
         self.create_menu_bar()
 
@@ -49,14 +53,17 @@ class ProjectToolBar(QToolBar):
         self.combo_graphs.setMinimumWidth(200)
 
         self.features_info_button.setIcon(Icon("help"))
+        self.features_info_button.setToolTip('View graph editing features')
 
         self.right_button.setIcon(Icon("right_arrow_key"))
+        self.right_button.setToolTip('Go to next graph')
         self.right_button.setIconSize(QtCore.QSize(20, 20))
         self.right_button.setDisabled(False)
         self.right_button.setStyleSheet("background-color: #DCDCDC;"
                                         "border-radius: 10px;")
 
         self.left_button.setIcon(Icon("left_arrow_key"))
+        self.left_button.setToolTip('Go to previous graph')
         self.left_button.setIconSize(QtCore.QSize(20, 20))
         self.left_button.setDisabled(True)
         self.left_button.setStyleSheet("background-color: #DCDCDC;"
@@ -65,13 +72,31 @@ class ProjectToolBar(QToolBar):
         self.refresh_button.setIcon(Icon("refresh"))
         self.combo_operations.addItem(" Operations")
 
-        self.graph_button.setIcon(Icon("graph"))
-        self.save_button.setIcon(Icon("save"))
-        self.delete_button.setIcon(Icon("delete"))
+        self.universal_vertex_button.setIcon(Icon("universal_vertex"))
+        self.universal_vertex_button.setIconSize(QtCore.QSize(35, 35))
+        self.set_button_style(self.universal_vertex_button)
 
-        self.revert_button.setIcon(Icon("revert"))
-        self.forward_button.setIcon(Icon("forward"))
-        self.forward_button.setDisabled(True)
+        self.universal_vertex_button.setToolTip('Insert an universal vertex')
+
+        self.save_button.setIcon(Icon("save"))
+        self.save_button.setToolTip('Save current graph changes')
+        self.delete_button.setIcon(Icon("delete"))
+        self.delete_button.setToolTip('Delete current graph')
+
+        self.operations_menu_bar.setIcon(Icon("operations"))
+        self.operations_menu_bar.setToolTip('Apply operation on the current graph')
+        self.operations_menu_bar.setIconSize(QtCore.QSize(45, 45))
+        self.set_button_style(self.operations_menu_bar)
+
+        self.new_graph_menu_bar.setIcon(Icon("new_graph"))
+        self.new_graph_menu_bar.setToolTip('Create a new graph')
+        self.new_graph_menu_bar.setIconSize(QtCore.QSize(35, 35))
+        self.set_button_style(self.new_graph_menu_bar)
+
+        self.export_menu_bar.setIcon(Icon("export"))
+        self.export_menu_bar.setToolTip('Export the current graph')
+        self.export_menu_bar.setIconSize(QtCore.QSize(30, 30))
+        self.set_button_style(self.export_menu_bar)
 
     def reset_combo_graphs(self):
         self.combo_graphs.clear()
@@ -88,39 +113,31 @@ class ProjectToolBar(QToolBar):
         self.addSeparator()
 
         self.addWidget(self.operations_menu_bar)
-        self.addWidget(self.insert_menu_bar)
+        self.addWidget(self.universal_vertex_button)
         self.addSeparator()
 
-        self.addAction(self.graph_button)
+        self.addWidget(self.new_graph_menu_bar)
         self.addAction(self.save_button)
         self.addAction(self.delete_button)
-        self.addAction(self.revert_button)
-        self.addAction(self.forward_button)
+        self.addWidget(self.export_menu_bar)
 
     def create_menu_bar(self):
-        self.operations_menu_bar.setMaximumSize(95, 28)
-        self.operations_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                               "border: 1px solid gray;")
+        self.operations_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;")
+        self.new_graph_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;")
+        self.export_menu_bar.setStyleSheet("background-color: none; border: none; margin-left: -10px;")
 
-        file_menu = QMenu("&Operations", self)
-        self.operations_menu_bar.addMenu(file_menu)
+        self.operations_menu_bar.setMenu(self.operations_menu)
+        self.new_graph_menu_bar.setMenu(self.new_graph_menu)
+        self.export_menu_bar.setMenu(self.export_menu)
 
-        file_menu.addAction(self.line_graph)
-        file_menu.addAction(self.inverse_line_graph)
-        file_menu.addAction(self.complement)
-        file_menu.addAction(self.clique_graph)
+        for operation in dict_name_operations_graph:
+            self.operations_menu.addAction(operation)
 
-        self.insert_menu_bar.setMaximumSize(93, 28)
-        self.insert_menu_bar.setStyleSheet("background-color: none; font-size: 16px;"
-                                           "border: 1px solid gray;")
+        for new_graph in new_graph_dict_name:
+            self.new_graph_menu.addAction(new_graph)
 
-        file_insert_menu = QMenu("&Insert         ", self)
-        self.insert_menu_bar.addMenu(file_insert_menu)
-
-        file_insert_menu.addAction(QAction("Button 1"))
-        file_insert_menu.addAction(QAction("Button 2"))
-        file_insert_menu.addAction(QAction("Button 3"))
-        file_insert_menu.addAction(QAction("Button 4"))
+        for formats in dict_name_export_graph_to:
+            self.export_menu.addAction(formats)
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
@@ -134,6 +151,21 @@ class ProjectToolBar(QToolBar):
             return None
 
         return graphs[0]
+
+    def set_file_label(self, file_name):
+        self.filtered_graphs_label.setText(f"      File \n {file_name}")
+
+    @staticmethod
+    def set_button_style(button):
+        button.setStyleSheet("""
+            QPushButton {
+                background-color: #f0f0f0; 
+                border: 0px;
+            }
+            QPushButton:hover {
+                background-color:rgba(135,206,250, 0.2);
+            }
+        """)
 
 
 class EditingFeatures(QDialog):

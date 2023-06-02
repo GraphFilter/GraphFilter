@@ -25,6 +25,12 @@ class ReviewPage(QWizardPage):
         self.graph_files = []
         self.method = QLabel()
         self.equation = QLabel('<i>none</i>')
+        self.info = QLabel(
+            'After the filtering is performed, two files will be generated:\n'
+            '• A graph6 containing the list of graphs that meet the requested conditions,'
+            ' this will be opened in Graph Filter.\n'
+            '• A text file in PDF with the summary of the information entered.')
+        self.info.setStyleSheet("font-weight: bold;")
 
         self.scroll_area = QScrollArea()
         self.project_layout = QFormLayout()
@@ -47,6 +53,8 @@ class ReviewPage(QWizardPage):
         self.project_layout.addRow("<b>(In)equations:</b>", self.equation)
         self.project_layout.addRow("<b>Conditions:</b>", self.conditions_layout)
         self.project_layout.addRow("<b>Graph files:</b>", self.graph_files_layout)
+        self.project_layout.addRow("<b>Info: </b>",
+                                   self.info )
 
         self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
 
@@ -77,7 +85,7 @@ class ReviewPage(QWizardPage):
         self.project_description.setText(project_description)
 
     def set_method(self, method):
-        self.method.setText(f"{'Filter Graphs' if method == 'filter' else 'Find Counter Example'}")
+        self.method.setText(f"{'Filter Graphs' if method == 'filter' else 'Find a Example'}")
 
     def set_equation(self, equation):
         self.equation.setWordWrap(True)

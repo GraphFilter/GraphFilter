@@ -357,7 +357,7 @@ class Largest1EigenA(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.LargestEigen(inv_other.AdjacencyMatrix.calculate(graph))
+        return Utils.largest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -371,7 +371,7 @@ class Largest1EigenL(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.LargestEigen(inv_other.LaplacianMatrix.calculate(graph))
+        return Utils.largest_eigen(inv_other.LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -385,7 +385,7 @@ class Largest1EigenQ(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.LargestEigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
+        return Utils.largest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -399,7 +399,7 @@ class Largest1EigenN(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.LargestEigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
+        return Utils.largest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -413,7 +413,7 @@ class Largest1EigenS(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.LargestEigen(inv_other.SeidelMatrix.calculate(graph))
+        return Utils.largest_eigen(inv_other.SeidelMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -428,7 +428,7 @@ class Largest1EigenD(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.LargestEigen(inv_other.DistanceMatrix.calculate(graph))
+            return Utils.largest_eigen(inv_other.DistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -445,7 +445,7 @@ class Largest1EigenDL(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.LargestEigen(inv_other.LaplacianDistanceMatrix.calculate(graph))
+            return Utils.largest_eigen(inv_other.LaplacianDistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -462,13 +462,30 @@ class Largest1EigenDQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.LargestEigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
+            return Utils.largest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
         else:
             return 10 ** 10
 
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(Largest1EigenDQ.calculate(graph), precision)
+
+
+class Largest1EigenE(InvariantNum):
+    name = "Largest E-eigenvalue"
+    code = "\u03b5\u2081"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.largest_eigen(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest1EigenE.calculate(graph), precision)
 
 
 class Largest2EigenA(InvariantNum):
@@ -479,7 +496,7 @@ class Largest2EigenA(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.LargestEigen(inv_other.AdjacencyMatrix.calculate(graph))
+            return Utils.largest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
         else:
             return 0
 
@@ -496,7 +513,7 @@ class Largest2EigenL(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.SecondLargestEigen(inv_other.LaplacianMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.LaplacianMatrix.calculate(graph))
         else:
             return 0
 
@@ -513,7 +530,7 @@ class Largest2EigenQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.SecondLargestEigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
         else:
             return 0
 
@@ -530,7 +547,7 @@ class Largest2EigenS(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.SecondLargestEigen(inv_other.SeidelMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.SeidelMatrix.calculate(graph))
         else:
             return 0
 
@@ -547,7 +564,7 @@ class Largest2EigenN(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.number_of_nodes(graph) > 1:
-            return Utils.SecondLargestEigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
         else:
             return 0
 
@@ -566,7 +583,7 @@ class Largest2EigenD(InvariantNum):
         if nx.number_of_nodes(graph) < 2:
             return 0
         elif nx.is_connected(graph):
-            return Utils.SecondLargestEigen(inv_other.DistanceMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.DistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -583,7 +600,7 @@ class Largest2EigenDL(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.SecondLargestEigen(inv_other.LaplacianDistanceMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.LaplacianDistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -600,13 +617,183 @@ class Largest2EigenDQ(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.SecondLargestEigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
+            return Utils.second_largest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
         else:
             return 10 ** 10
 
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(Largest2EigenDQ.calculate(graph), precision)
+
+
+class Largest2EigenE(InvariantNum):
+    name = "2th Largest E-eigenvalue"
+    code = "\u03b5\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.second_largest_eigen(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest2EigenE.calculate(graph), precision)
+
+
+class SmallestEigenA(InvariantNum):
+    name = "Smallest A-eigenvalue"
+    code = "\u03b5\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenA.calculate(graph), precision)
+
+
+class SmallestEigenL(InvariantNum):
+    name = "Smallest L-eigenvalue"
+    code = "\u03bc\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.LaplacianMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenL.calculate(graph), precision)
+
+
+class SmallestEigenQ(InvariantNum):
+    name = "Smallest Q-eigenvalue"
+    code = "q\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenQ.calculate(graph), precision)
+
+
+class SmallestEigenN(InvariantNum):
+    name = "Smallest N-eigenvalue"
+    code = "\u03bc\u207f\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenN.calculate(graph), precision)
+
+
+class SmallestEigenS(InvariantNum):
+    name = "Smallest S-eigenvalue"
+    code = "\u03bb\u002a\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.SeidelMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenS.calculate(graph), precision)
+
+
+class SmallestEigenD(InvariantNum):
+    name = "Smallest D-eigenvalue"
+    code = "\u0398\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.DistanceMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenD.calculate(graph), precision)
+
+
+class SmallestEigenDL(InvariantNum):
+    name = "Smallest DL-eigenvalue"
+    code = "\u03bb L\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.LaplacianDistanceMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenDL.calculate(graph), precision)
+
+
+class SmallestEigenDQ(InvariantNum):
+    name = "Smallest DQ-eigenvalue"
+    code = "\u03bb Q\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.SignlessLaplacianDistanceMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenDQ.calculate(graph), precision)
+
+
+class SmallestEigenE(InvariantNum):
+    name = "Smallest E-eigenvalue"
+    code = "\u03bb\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.smallest_eigen(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenE.calculate(graph), precision)
 
 
 class AdjacencyEnergy(InvariantNum):
@@ -616,7 +803,7 @@ class AdjacencyEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Energy(inv_other.AdjacencyMatrix.calculate(graph))
+        return Utils.energy(inv_other.AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -630,7 +817,7 @@ class LaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Energy(inv_other.LaplacianMatrix.calculate(graph))
+        return Utils.energy(inv_other.LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -644,7 +831,7 @@ class SignlessLaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Energy(inv_other.SignlessLaplacianMatrix.calculate(graph))
+        return Utils.energy(inv_other.SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -658,7 +845,7 @@ class NormalizedLaplacianEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Energy(inv_other.NormalizedLaplacianMatrix.calculate(graph))
+        return Utils.energy(inv_other.NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -672,7 +859,7 @@ class SeidelEnergy(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Energy(inv_other.SeidelMatrix.calculate(graph))
+        return Utils.energy(inv_other.SeidelMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -687,7 +874,7 @@ class DistanceEnergy(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Energy(inv_other.DistanceMatrix.calculate(graph))
+            return Utils.energy(inv_other.DistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -704,7 +891,7 @@ class LaplacianDistanceEnergy(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Energy(inv_other.LaplacianDistanceMatrix.calculate(graph))
+            return Utils.energy(inv_other.LaplacianDistanceMatrix.calculate(graph))
         else:
             return 10 ** 10
 
@@ -721,13 +908,30 @@ class SignlessLaplacianDistanceEnergy(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Energy(inv_other.SignlessLaplacianMatrix.calculate(graph))
+            return Utils.energy(inv_other.SignlessLaplacianMatrix.calculate(graph))
         else:
             return 10 ** 10
 
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(SignlessLaplacianDistanceEnergy.calculate(graph), precision)
+
+
+class EccentricityEnergy(InvariantNum):
+    name = 'E-Energy'
+    code = 'E\u03b5'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.energy(inv_other.EccentricityMatrix.calculate(graph))
+        else:
+            return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(EccentricityEnergy.calculate(graph), precision)
 
 
 class AlgebraicConnectivity(InvariantNum):
@@ -886,7 +1090,7 @@ class NumberSpanningTree(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return la.det(NumberSpanningTree.submatrix(nx.laplacian_matrix(graph)))
+        return int(la.det(NumberSpanningTree.submatrix(nx.laplacian_matrix(graph))))
 
     @staticmethod
     def print(graph, precision):
@@ -914,7 +1118,7 @@ class MainEigenvalueAdjacency(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(Utils.MainEigenvalue(inv_other.AdjacencyMatrix.calculate(graph)))
+        return len(Utils.main_eigenvalue(inv_other.AdjacencyMatrix.calculate(graph)))
 
     @staticmethod
     def print(graph, precision):
@@ -929,7 +1133,7 @@ class MainEigenvalueDistance(InvariantNum):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return len(Utils.MainEigenvalue(inv_other.DistanceMatrix.calculate(graph)))
+            return len(Utils.main_eigenvalue(inv_other.DistanceMatrix.calculate(graph)))
         else:
             return 0
 
@@ -945,7 +1149,7 @@ class MainEigenvalueSignlessLaplacian(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(Utils.MainEigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)))
+        return len(Utils.main_eigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)))
 
     @staticmethod
     def print(graph, precision):
@@ -959,7 +1163,7 @@ class MainEigenvalueSeidel(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(Utils.MainEigenvalue(inv_other.SeidelMatrix.calculate(graph)))
+        return len(Utils.main_eigenvalue(inv_other.SeidelMatrix.calculate(graph)))
 
     @staticmethod
     def print(graph, precision):
@@ -1172,3 +1376,19 @@ class DeterminantNormalizedLaplacian(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(DeterminantNormalizedLaplacian.calculate(graph), precision)
+
+
+class DeterminantEccentricityMatrix(InvariantNum):
+    name = 'Determinant E'
+    code = 'det\u03b5'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.approx_to_int(la.det(inv_other.EccentricityMatrix.calculate(graph)))
+        return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(DeterminantEccentricityMatrix.calculate(graph), precision)

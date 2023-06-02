@@ -1,14 +1,12 @@
-import os
-
-import networkx as nx
-from simpleeval import simple_eval
-from source.store.operations_invariants import *
-from source.domain.equation import Equation
-import numpy as np
 import multiprocessing as mp
-from ctypes import c_char_p
-import time
+import os
 import random
+import time
+
+from simpleeval import simple_eval
+
+from source.domain.equation import Equation
+from source.store.operations_invariants import *
 
 
 class FilterList:
@@ -43,7 +41,8 @@ class FilterList:
 
     def start_filter(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
-        if self.need_multiprocess(list_g6_in):
+        number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
+        if self.need_multiprocess(list_g6_in, number_cores):
             manager_class = mp.Manager()
             number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
             list_broken_in = self.subdivide_input_list(number_cores)
@@ -58,12 +57,12 @@ class FilterList:
                 self.update_to_progress_bar.value = self.total
             for list_in in list_broken_out:
                 self.list_out += list_in
-            return float(len(self.list_out) / self.total)
+            return
         else:
             list_out = [None] * 1
             self.filter_multiprocess(self.list_g6_in, 0, list_out)
             self.list_out = list_out[0]
-            return float(len(self.list_out) / self.total)
+            return
 
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []
@@ -80,46 +79,55 @@ class FilterList:
                 continue
         list_out[i] = list_out_temp
 
-    def start_find_counterexample(self, list_g6_in, expression, list_inv_bool_choices):
+    def start_find_example(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
-        manager = mp.Manager()
-        graph_out = manager.Value(c_char_p, '')
-        if self.need_multiprocess(list_g6_in):
-            cores = int(np.ceil((1 / 3) * os.cpu_count()))
-            list_breaked_in = self.subdivide_input_list(cores)
-            list_process = []
-            for i, list in enumerate(list_breaked_in):
-                process = mp.Process(target=self.find_counterexample_multiprocess, args=(list, graph_out))
-                list_process.append(process)
-                process.start()
-            for process in list_process:
-                process.join()
-        else:
-            self.find_counterexample_multiprocess(self.list_g6_in, graph_out)
-        if graph_out.value:
-            self.list_out.append(graph_out.value)
-            return True
-        else:
+        number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
+        if self.need_multiprocess(list_g6_in,number_cores):
+            manager_class = mp.Manager()
+            list_broken_in = self.subdivide_input_list(number_cores)
+            list_broken_out = manager_class.list(range(number_cores))
+            list_of_process = []
+            for k, list_in in enumerate(list_broken_in):
+                single_process = mp.Process(target=self.find_example_multiprocess, args=(list_in, k, list_broken_out,))
+                list_of_process.append(single_process)
+                single_process.start()
+            for single_process in list_of_process:
+                single_process.join()
+                self.update_to_progress_bar.value = self.total
+            for element in list_broken_out:
+                if element != "":
+                    self.list_out.append(element)
+                    return True
             return False
-
-    def find_counterexample_multiprocess(self, list_g6_in, graph_out):
-        for g6code in list_g6_in:
-            if graph_out.value != '':
+        else:
+            list_out = [None] * 1
+            self.find_example_multiprocess(self.list_g6_in, 0, list_out)
+            if list_out[0] == "":
+                return False
+            else:
+                self.list_out.append(list_out[0])
                 return True
+
+    def find_example_multiprocess(self, list_g6_in, i, list_out):
+        list_out[i] = ""
+        for g6code in list_g6_in:
+            if self.update_to_progress_bar == self.total:
+                return
+            self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1
             if g6code == '' or g6code == ' ':
                 continue
             try:
                 g = nx.from_graph6_bytes(g6code.encode('utf-8'))
-                if not self.graph_satisfies_equation(g):
-                    graph_out.value = g6code
-                    return True
-                else:
-                    if not self.graph_satisfies_conditions(g):
-                        graph_out.value = g6code
-                        return True
+                if self.graph_satisfies_equation(g):
+                    if self.graph_satisfies_conditions(g):
+                        # list_out_temp.append(g6code)
+                        list_out[i] = g6code
+                        self.update_to_progress_bar.value = self.total
+                        return
+                        # break
             except Exception:
                 continue
-        return ''
+        # list_out[i] = list_out_temp
 
     def subdivide_input_list(self, parts):
         n_sub = int(np.ceil(self.total / parts))
@@ -152,8 +160,11 @@ class FilterList:
                 return False
         return True
 
-    def need_multiprocess(self, list_g6_in):
+    def need_multiprocess(self, list_g6_in, number_process):
+        if len(list_g6_in) < number_process:
+            return False
         graph_is_valid = False
+        fails = 0
         while not graph_is_valid:
             choices = random.choices(population=list_g6_in, k=2)
             try:
@@ -162,6 +173,9 @@ class FilterList:
                 graph_is_valid = True
             except Exception:
                 graph_is_valid = False
+                fails += 1
+                if fails > 10:
+                    return False
 
         start = time.time()
         self.graph_satisfies_equation(g1)

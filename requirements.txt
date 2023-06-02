@@ -12,9 +12,8 @@ grandalf==0.7
 grinpy==19.7a0
 kiwisolver==1.4.4
 matplotlib==3.6.2
-netgraph==4.12.6
-network2tikz==0.1.8
-networkx==2.8.8
+netgraph==4.12.11
+networkx==3.1
 numpy==1.23.4
 packaging==21.3
 pyparsing==3.0.9
@@ -24,3 +23,5 @@ scipy==1.9.3
 simpleeval==0.9.12
 six==1.16.0
 zipp==3.10.0
+network2tikz==0.1.8
+fpdf2==2.7.4
