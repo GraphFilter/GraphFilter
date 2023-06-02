@@ -37,6 +37,7 @@ class WizardController:
         self.wizard_window.addPage(self.method_page)
         self.wizard_window.addPage(self.project_files_page)
         self.number_of_pages = 2
+
     def add_filter_wizard_pages(self):
         if self.number_of_pages != 6:
             try:
@@ -50,7 +51,6 @@ class WizardController:
         else:
             pass
         self.enable_method_page_buttons()
-
 
     def remove_filter_wizard_pages(self):
         if self.number_of_pages != 2:
@@ -332,7 +332,7 @@ class WizardController:
         self.update_conditions_page()
         self.conditions_page.completeChanged.emit()
 
-        #print(wizard_information_store.temp_conditions)
+        # print(wizard_information_store.temp_conditions)
 
     def on_button_method_clicked(self):
         self.method_page.filter_button.setChecked(False)
@@ -341,12 +341,14 @@ class WizardController:
         button = QPushButton().sender()
         button.setChecked(True)
 
-        if 'blank'in button.objectName():
+        if 'blank' in button.objectName():
             self.project_files_page.setFinalPage(True)
             wizard_information_store.temp_method = 'blank'
             self.review_page.set_method('blank')
             self.disable_method_page_buttons()
             self.project_files_page.project_description_input.setDisabled(True)
+            self.project_files_page.project_description_input.setText(
+                "(The project description is only available for the filtering methods: 'Filter' or 'Find a example')")
             self.remove_filter_wizard_pages()
         if 'filter' in button.objectName():
             self.project_files_page.setFinalPage(False)
@@ -360,20 +362,20 @@ class WizardController:
             wizard_information_store.temp_method = 'find_example'
             self.review_page.set_method('find_example')
             self.disable_method_page_buttons()
-            self.project_files_page.project_description_input.setDisabled(True)
+            self.project_files_page.project_description_input.setDisabled(False)
             self.add_filter_wizard_pages()
         self.method_page.complete = True
         self.method_page.completeChanged.emit()
         self.wizard_window.next_button.setToolTip('')
-
-
 
     def on_update_graph_file(self):
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
         # self.graph_files_page.tr("Text files (*.g6)")
         file_path = file_dialog.getOpenFileName(
-            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;Text files (*.txt *.txt.gz);;Graph6 files (*.g6 *.g6.gz)"
+            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;"
+                   "Text files (*.txt *.txt.gz);;"
+                   "Graph6 files (*.g6 *.g6.gz)"
         )
 
         self.save_graph_file_path(file_path[0], input_file[-1])
@@ -397,7 +399,7 @@ class WizardController:
             self.graph_files_page.complete = True
         else:
             self.graph_files_page.complete = False
-        #print(wizard_information_store.temp_graph_input_files)
+        # print(wizard_information_store.temp_graph_input_files)
         self.update_complete_graph_files_page()
 
     def on_add_graph_file_input(self):
@@ -435,7 +437,9 @@ class WizardController:
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
         file_path = file_dialog.getOpenFileNames(
-            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;Text files (*.txt *.txt.gz);;Graph6 files (*.g6 *.g6.gz)"
+            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;"
+                   "Text files (*.txt *.txt.gz);;"
+                   "Graph6 files (*.g6 *.g6.gz)"
         )
         for file_name in file_path[0]:
             duplicate_file = False
