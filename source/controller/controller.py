@@ -104,6 +104,7 @@ class Controller:
                                 window_title="Empty filtering")
             self.show_wizard_window()
         else:
+            project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
             self.show_project_window()
             project_information_store.reset_store()
 
