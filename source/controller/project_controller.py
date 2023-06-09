@@ -144,8 +144,11 @@ class ProjectController:
         else:
             next_index = 0
         if file_type == ".gml":
-            delete_all_gml_nodes(project_information_store.file_path)
-            self.on_change_graph()
+            try:
+                self.visualize_graph_dock.plot_graph(delete_all_gml_nodes(project_information_store.file_path))
+            except:
+                pass
+
         if file_type == ".g6" or file_type == ".txt":
             file = open(file_path, "r")
             changed_data = file.readlines()

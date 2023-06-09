@@ -45,6 +45,7 @@ def delete_all_gml_nodes(file_path):
     e = list(graph.nodes)
     graph.remove_nodes_from(e)
     nx.write_gml(graph, file_path)
+    return graph
 
 def change_g6_file(file_path, new_g6, current_index):
     file = open(file_path, "r")
