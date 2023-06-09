@@ -20,6 +20,8 @@ def import_gml_graph(file_path):
 
         project_information_store.current_graph_pos = nx.get_node_attributes(graph, 'pos')
 
+    project_information_store.current_graph_pos = {}
+
     return graph
 
 
