@@ -126,3 +126,9 @@ def handle_invalid_graph_open():
                         "Open another file in the tree or in the menu option"
                         "(If you edit the graph, the changes will replace the"
                         " invalid graph by clicking on save button)", window_title="Invalid graph")
+
+
+def handle_invalid_export_format():
+    trigger_message_box("We do not support exporting in the tree in this format. \n"
+                        "To export it, please open the file and use the export tool in the main menu",
+                        icon=QMessageBox.Warning, window_title="Invalid export format")

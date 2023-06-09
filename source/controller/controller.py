@@ -6,7 +6,7 @@ from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
 from source.controller.project_controller import ProjectController
-from source.domain.utils import trigger_message_box
+from source.domain.utils import trigger_message_box, handle_invalid_export_format
 from source.domain.utils_file import import_gml_graph, create_gml_file
 from source.store.project_information_store import update_project_store
 from PyQt5.QtWidgets import *
@@ -167,15 +167,22 @@ class Controller:
             f = open(file_path)
             data = json.load(f)
             return tuple(data['filtered_graphs'])
-        else:
+        if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 return file.read().splitlines()
+
+        return None
 
     def export_to_png(self):
         try:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -193,6 +200,11 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -210,6 +222,11 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -227,6 +244,11 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_name = self.get_name_from_save_dialog('g6')
         if file_name:
             self.show_loading_window(len(graph_to_export))
@@ -242,14 +264,19 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_name = self.get_name_from_save_dialog('xlsx')
         if file_name:
             self.show_loading_window(len(graph_to_export))
             try:
                 export_g6_to_sheet(graph_list=graph_to_export,
-                               invariants=self.project_controller.invariants_selected,
-                               file_name=file_name,
-                               update_progress=self.update_loading_window)
+                                   invariants=self.project_controller.invariants_selected,
+                                   file_name=file_name,
+                                   update_progress=self.update_loading_window)
             except:
                 pass
             self.loading_window.close()
