@@ -40,6 +40,11 @@ def create_g6_file(file_path, graph):
     with open(file_path, "w", encoding="utf-8") as file:
         file.writelines(graph)
 
+def delete_all_gml_nodes(file_path):
+    graph = project_information_store.current_graph
+    e = list(graph.nodes)
+    graph.remove_nodes_from(e)
+    nx.write_gml(graph, file_path)
 
 def change_g6_file(file_path, new_g6, current_index):
     file = open(file_path, "r")

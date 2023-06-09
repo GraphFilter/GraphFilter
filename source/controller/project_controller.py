@@ -5,7 +5,8 @@ from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
-from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file
+from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file, \
+    delete_all_gml_nodes
 from source.store.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
 from source.view.project.project_tool_bar import EditingFeatures
@@ -142,7 +143,9 @@ class ProjectController:
             next_index = current_index - 1
         else:
             next_index = 0
-
+        if file_type == ".gml":
+            delete_all_gml_nodes(project_information_store.file_path)
+            self.on_change_graph()
         if file_type == ".g6" or file_type == ".txt":
             file = open(file_path, "r")
             changed_data = file.readlines()
@@ -403,7 +406,6 @@ class ProjectController:
                 return
             except OSError:
                 return
-        # File Folder
 
     def handle_tree_double_click(self):
         index = self.tree_file_dock.tree.currentIndex()
