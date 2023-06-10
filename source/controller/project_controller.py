@@ -12,6 +12,7 @@ from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
+from source.view.loading.loading_gif import LoadingGif
 from source.view.project.docks.graph_information_dock import GraphInformationDock
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from source.view.project.docks.tree_file_dock import TreeFileDock
@@ -36,6 +37,8 @@ class ProjectController:
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
         self.tree_file_dock = TreeFileDock()
+
+        self.loading_gif = LoadingGif()
 
         self.editing_features = EditingFeatures()
 
@@ -406,6 +409,10 @@ class ProjectController:
         # File Folder
 
     def handle_tree_double_click(self):
+        self.loading_gif.show()
+        self.project_window.setDisabled(True)
+        QApplication.processEvents()
+
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
 
@@ -453,6 +460,10 @@ class ProjectController:
             self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
             pass
+
+        self.loading_gif.close()
+        self.project_window.setDisabled(False)
+
         self.visualize_graph_dock.setDisabled(False)
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
         self.project_window.set_title_bar(project_information_store.get_file_name())
