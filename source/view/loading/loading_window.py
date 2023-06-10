@@ -1,3 +1,5 @@
+import sys
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
@@ -26,8 +28,11 @@ class LoadingWindow(QDialog):
         self.progressBar.setValue(value)
 
     def closeEvent(self, event):
-        self.filter_complete_signal.emit(1)
-        event.accept()
+        if event.spontaneous():
+            sys.exit()
+        else:
+            self.filter_complete_signal.emit(1)
+            event.accept()
 
     def set_maximum(self, value):
         self.progressBar.setMaximum(value)
