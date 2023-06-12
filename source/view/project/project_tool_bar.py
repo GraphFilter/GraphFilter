@@ -153,7 +153,7 @@ class ProjectToolBar(QToolBar):
         return graphs[0]
 
     def set_file_label(self, file_name):
-        self.filtered_graphs_label.setMaximumWidth(75)
+        self.filtered_graphs_label.setFixedWidth(75)
         self.filtered_graphs_label.setText(f"      File \n {file_name}")
         self.filtered_graphs_label.setToolTip(f"{file_name}")
 
