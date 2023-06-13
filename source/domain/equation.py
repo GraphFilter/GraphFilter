@@ -51,4 +51,4 @@ class Equation:
         g = nx.path_graph(2)
         names = {**{"G": g, "g": g}, **dic_math_const}
         type_ex = type(simple_eval(expression, functions=dic_function_to_eval, names=names))
-        return type_ex == numpy.bool or type_ex == numpy.bool_ or type_ex == bool
+        return type_ex == numpy.bool_ or type_ex == bool

@@ -136,8 +136,8 @@ class DomainUnitTests(unittest.TestCase):
         self.assertEqual(1, Helper.run('graphs2.g6', '', l_integral))
 
     def test_inv_boolean_false(self):
-        no_tree = {inv_bool.Tree.name: 'false'}
-        self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
+        l_integral = {inv_bool.IntegralL.name: 'true'}
+        self.assertEqual(1, Helper.run('graphs2.g6', '', l_integral))
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
@@ -178,7 +178,8 @@ class DomainUnitTests(unittest.TestCase):
                                     )
 
                     self.assertEqual(
-                        "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
+                        "",
+                        Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
                     )
 
     def test_find_example(self):
