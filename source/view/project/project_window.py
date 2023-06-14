@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import *
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 from source.domain.utils import set_view_size
 
 
