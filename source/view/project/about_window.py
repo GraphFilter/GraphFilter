@@ -55,6 +55,9 @@ class AboutWindow(QDialog):
         about_page = QLabel(self.data_page)
         about_github = QLabel(self.data_github)
 
+        # self.logo.setPixmap(QPixmap("resources/logos/graph_filter.png").scaled(120, 120, QtCore.Qt.KeepAspectRatio,
+        #                                                                        QtCore.Qt.SmoothTransformation))
+
         about_layout = QVBoxLayout()
         about_layout.addWidget(about_title)
         about_layout.addWidget(about_text)

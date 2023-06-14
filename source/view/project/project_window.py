@@ -8,7 +8,7 @@ class ProjectWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.icon = Icon("hexagon")
+        self.icon = Icon("graph_filter_logo")
 
         self.width = 0
         self.height = 0

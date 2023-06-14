@@ -9,7 +9,7 @@ class WelcomeWindow(QMainWindow):
         super().__init__()
 
         self.title_bar = "Graph Filter"
-        self.icon = Icon("hexagon")
+        self.icon = Icon("graph_filter_logo")
 
         self.width = 0
         self.height = 0

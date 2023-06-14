@@ -7,7 +7,7 @@ class Icon(QIcon):
         super().__init__()
         self.addFile(f"resources/icons/{name}.png")
 
-class Logo(QPixmap):
-    def __init__(self, name):
-        super().__init__()
-        self.addFile(f"resources/logos/{name}.png")
+@staticmethod
+class Logo():
+    def get_logo(self, name):
+        return f"resources/logos/{name}.png"
