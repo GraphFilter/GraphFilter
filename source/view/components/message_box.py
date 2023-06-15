@@ -1,3 +1,4 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from source.view.components.icon import Icon
 
@@ -11,3 +12,4 @@ class MessageBox(QMessageBox):
         self.setIcon(icon)
         self.setWindowIcon(Icon("info"))
         self.setText(text)
+        self.setWindowFlag(Qt.WindowStaysOnTopHint)
