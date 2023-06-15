@@ -340,7 +340,10 @@ class ProjectController:
         node_positions = project_information_store.current_graph_pos
         graph, node_positions = add_vertex(graph, node_positions, len(graph), univ=True)
 
-        self.visualize_graph_dock.plot_graph(graph, node_positions)
+        if len(graph) == 1:
+            self.visualize_graph_dock.plot_graph(graph)
+        else:
+            self.visualize_graph_dock.plot_graph(graph, node_positions)
 
     def tree_context_menu_events(self):
         self.tree_file_dock.load_file.triggered.connect(self.handle_tree_double_click)
@@ -422,7 +425,6 @@ class ProjectController:
                 handle_invalid_graph_open()
                 self.visualize_graph_dock.plot_graph(nx.Graph())
         else:
-            pass
             if type_item == "json File":
                 f = open(file_path)
                 data = json.load(f)

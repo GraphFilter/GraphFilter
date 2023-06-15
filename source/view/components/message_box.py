@@ -12,4 +12,5 @@ class MessageBox(QMessageBox):
         self.setIcon(icon)
         self.setWindowIcon(Icon("info"))
         self.setText(text)
+
         self.setWindowFlag(Qt.WindowStaysOnTopHint)
