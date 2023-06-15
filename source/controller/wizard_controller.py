@@ -6,7 +6,6 @@ from source.view.wizard.pages.files_page import FilesPage
 from source.view.wizard.pages.review_page import ReviewPage
 from source.store.project_information_store import wizard_information_store
 from source.view.wizard.wizard_window import WizardWindow
-from source.view.components.message_box import MessageBox
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
@@ -224,14 +223,22 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 
     def set_equations_tabs(self):
+        n = len(dic_num_inv_spectral_names)
+        dic_num_inv_spectral_names1 = dict(list(dic_num_inv_spectral_names.items())[0: 27])
+        dic_num_inv_spectral_names2 = dict(list(dic_num_inv_spectral_names.items())[27: n])
+
         tab_num_structural_invariants = TabOperations(self.add_button_input_to_equation_text,
                                                       dic_num_inv_structural_names)
-        tab_num_spectral_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_inv_spectral_names)
+        tab_num_spectral_invariants1 = TabOperations(self.add_button_input_to_equation_text,
+                                                     dic_num_inv_spectral_names1)
+        tab_num_spectral_invariants2 = TabOperations(self.add_button_input_to_equation_text,
+                                                     dic_num_inv_spectral_names2)
         tab_graph_operations = TabOperations(self.add_button_input_to_equation_text, dic_graph_operations_names)
         tab_math_operations = TabOperations(self.add_button_input_to_equation_text, dic_math_and_basic_operations_names)
 
-        self.equations_page.math_tab.addTab(tab_num_structural_invariants, "Numeric Structural Invariants")
-        self.equations_page.math_tab.addTab(tab_num_spectral_invariants, "Numeric Spectral Invariants")
+        self.equations_page.math_tab.addTab(tab_num_structural_invariants, "Structural Invariants")
+        self.equations_page.math_tab.addTab(tab_num_spectral_invariants1, "Spectral Invariants [1]")
+        self.equations_page.math_tab.addTab(tab_num_spectral_invariants2, "Spectral Invariants [2]")
         self.equations_page.math_tab.addTab(tab_graph_operations, "Graph Operations")
         self.equations_page.math_tab.addTab(tab_math_operations, "Math Operations")
 
