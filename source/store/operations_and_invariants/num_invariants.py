@@ -100,21 +100,7 @@ class IndependenceNumber(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return CliqueNumber.print(nx.complement(graph), precision)
-
-
-class TotalDominationNumber(InvariantNum):
-    name = "Total domination number"
-    code = '\u0194\u209c'
-    type = "number_structural"
-
-    @staticmethod
-    def calculate(graph):
-        return gp.total_domination_number(graph)
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_numeric(TotalDominationNumber.calculate(graph), precision)
+        return Utils.print_set(set(nx.max_weight_clique(nx.complement(graph), weight=None)[0]), precision)
 
 
 class DominationNumber(InvariantNum):
@@ -124,25 +110,11 @@ class DominationNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.domination_number(graph)
+        return len(nx.dominating_set(graph))
 
     @staticmethod
     def print(graph, precision):
         return Utils.print_set(nx.dominating_set(graph), precision)
-
-
-class ConnectedDominationNumber(InvariantNum):
-    name = "Connected domination number"
-    code = '\u0194c'
-    type = "number_structural"
-
-    @staticmethod
-    def calculate(graph):
-        return gp.connected_domination_number(graph)
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_numeric(ConnectedDominationNumber.calculate(graph), precision)
 
 
 class GirthNumber(InvariantNum):
@@ -162,6 +134,34 @@ class GirthNumber(InvariantNum):
         return Utils.print_numeric(GirthNumber.calculate(graph), precision)
 
 
+# class TotalDominationNumber(InvariantNum):
+#     name = "Total domination number"
+#     code = '\u0194\u209c'
+#     type = "number_structural"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return gp.total_domination_number(graph)
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_numeric(TotalDominationNumber.calculate(graph), precision)
+#
+#
+# class ConnectedDominationNumber(InvariantNum):
+#     name = "Connected domination number"
+#     code = '\u0194c'
+#     type = "number_structural"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return gp.connected_domination_number(graph)
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_numeric(ConnectedDominationNumber.calculate(graph), precision)
+#
+#
 # class IndependentDominationNumber(InvariantNum):
 #     name = "Independent Domination Number"
 #     code = 'idom'
@@ -219,11 +219,11 @@ class MatchingNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.matching_number(graph)
+        return IndependenceNumber.calculate(nx.line_graph(graph))
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_matching(graph, weight=None)), precision)
+        return IndependenceNumber.print(nx.line_graph(graph), precision)
 
 
 class NumberComponnents(InvariantNum):
