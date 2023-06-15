@@ -45,9 +45,16 @@ def export_g6_to_sheet(graph_list, invariants, file_name, update_progress):
         sheet.write(step + 1, 1, graph)
         for k, invariant in enumerate(invariants):
             if dic[invariant].type in ["number_structural", "number_spectral"]:
-                sheet.write_number(step + 1, k + 2, float(dic[invariant].print(convert_g6_to_nx(graph), precision=5)))
+                try:
+                    sheet.write_number(step + 1, k + 2,
+                                       float(dic[invariant].print(convert_g6_to_nx(graph), precision=5)))
+                except:
+                    sheet.write_string(step + 1, k + 2, "ERROR in calculation, please report problem.")
             elif dic[invariant].type in ['bool_structural', 'bool_spectral']:
-                sheet.write_string(step + 1, k + 2, dic[invariant].print(convert_g6_to_nx(graph), precision=5))
+                try:
+                    sheet.write_string(step + 1, k + 2, dic[invariant].print(convert_g6_to_nx(graph), precision=5))
+                except:
+                    sheet.write_string(step + 1, k + 2, "ERROR in calculation, please report problem.")
             else:
                 sheet.write(step + 1, k + 2, 'no data')
         update_progress(step)
