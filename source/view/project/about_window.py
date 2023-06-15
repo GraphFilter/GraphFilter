@@ -1,12 +1,12 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 
 
 class AboutWindow(QDialog):
     def __init__(self):
         super().__init__()
-
         self.data_title = r"<h1>Graph Filter</h1>"
         self.data_version = r"<h2>Version 3.0.0</h2>"
         self.data_text = r" <p align='justify'> The goal of this software is to help researchers of Graph Theory and " \
@@ -15,13 +15,18 @@ class AboutWindow(QDialog):
                          r"invariants. It also allows performing graph filtering according to properties given by " \
                          r"the user. </p>"
         self.data_page = \
-            r'<h3> Page <\h3> <br> <a href={0}>{0}</a>'.format('sistemas.jf.ifsudestemg.edu.br/graphfilter')
+            r"<h3> Page <\h3> <br> " \
+            r"<a href='http://sistemas.jf.ifsudestemg.edu.br/graphfilter/'>" \
+            r"sistemas.jf.ifsudestemg.edu.br/graphfilter</a>"
+
         self.data_github = \
-            r'<h3> GitHub <\h3>  <br> <a href={0}>{0}</a>'.format('github.com/GraphFilter/GraphFilter.py')
+            r"<h3> GitHub <\h3>  <br> " \
+            r"<a href='https://github.com/GraphFilter/GraphFilter/'>" \
+            r"github.com/GraphFilter/GraphFilter</a>"
 
         self.data_authors = r"<b>Authors</b>" \
                                  r"<ul> <li>Átila A. Jones </b><i>(v1.0 forward)</i> -" \
-                            r" atila.jones@ifsudestemg.edu.br </li>"\
+                            r"<a href='mailto:atila.jones@ifsudestemg.edu.br'> atila.jones@ifsudestemg.edu.br</a></li>"\
                                  r"<li>Lavínia Beghini de Castro </b><i>(v2.0 forward)</i> </li>" \
                                  r"<li>Fernando S. Pimenta </b><i>(v2.0 forward)</i> </li>" \
                                  r"<li>Igor Rosa F. Pinto </b><i>(v2.0 forward)</i> </li>" \
@@ -45,19 +50,26 @@ class AboutWindow(QDialog):
         self.setMinimumHeight(200)
 
         self.setWindowFlag(QtCore.Qt.Tool)
-
-        # self.about.setWindowFlags(QtCore.Qt.WindowFlags(
-        # QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
-        # )
+        self.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint)
 
     def set_up_layout(self):
         about_title = QLabel(self.data_title)
         about_version = QLabel(self.data_version)
         about_text = QLabel(self.data_text)
-        about_authors = QLabel(self.data_authors)
         about_text.setWordWrap(True)
+
+        about_authors = QLabel(self.data_authors)
+        about_authors.setOpenExternalLinks(True)
+        about_authors.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
+
         about_page = QLabel(self.data_page)
+        about_page.setOpenExternalLinks(True)
+        about_page.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
+
         about_github = QLabel(self.data_github)
+        about_github.setOpenExternalLinks(True)
+        about_github.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse)
+
         about_text2 = QLabel(self.data_text2)
         about_text2.setWordWrap(True)
 

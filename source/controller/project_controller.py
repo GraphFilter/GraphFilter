@@ -98,6 +98,7 @@ class ProjectController:
         self.project_window.visualize_tree_action.triggered.connect(self.on_visualize_tree)
 
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
+        self.project_window.new_issue_action.triggered.connect(self.on_new_issues)
 
         self.project_window.restore_layout_action.triggered.connect(self.on_restore)
 
@@ -256,6 +257,9 @@ class ProjectController:
     def on_dictionary():
         QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/wiki/Dictionary"))
 
+    @staticmethod
+    def on_new_issues():
+        QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/issues/new"))
     def on_check_condition(self):
         check = QCheckBox().sender()
         graph = project_information_store.current_graph
