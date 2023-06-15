@@ -1,6 +1,5 @@
 import os.path
 
-import networkx as nx
 from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
@@ -18,7 +17,7 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, set_new_vertex_positions, add_vertex
+from source.domain.utils import match_graph_code, add_vertex
 from source.view.components.message_box import MessageBox
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
@@ -260,6 +259,7 @@ class ProjectController:
     @staticmethod
     def on_new_issues():
         QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/issues/new"))
+
     def on_check_condition(self):
         check = QCheckBox().sender()
         graph = project_information_store.current_graph
@@ -385,7 +385,7 @@ class ProjectController:
             except PermissionError:
                 return
             except OSError:
-                return''
+                return ''
         else:
             try:
                 os.remove(file_path)

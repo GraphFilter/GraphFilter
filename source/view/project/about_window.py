@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import Qt
 
 
 class AboutWindow(QDialog):
@@ -10,10 +9,10 @@ class AboutWindow(QDialog):
         self.data_title = r"<h1>Graph Filter</h1>"
         self.data_version = r"<h2>Version 3.0.0</h2>"
         self.data_text = r" <p align='justify'> The goal of this software is to help researchers of Graph Theory and " \
-                         r"Graph Spectral Theory establish or refute conjectures. The program allows, in an intuitive " \
-                         r"way, the visualization and manipulation of graphs, using operations and a diversity of " \
-                         r"invariants. It also allows performing graph filtering according to properties given by " \
-                         r"the user. </p>"
+                         r"Graph Spectral Theory establish or refute conjectures. The program allows, in an " \
+                         r"intuitive way, the visualization and manipulation of graphs, using operations and a " \
+                         r"diversity of invariants. It also allows performing graph filtering according to " \
+                         r"properties given by the user. </p>"
         self.data_page = \
             r"<h3> Page <\h3> <br> " \
             r"<a href='http://sistemas.jf.ifsudestemg.edu.br/graphfilter/'>" \
@@ -25,12 +24,12 @@ class AboutWindow(QDialog):
             r"github.com/GraphFilter/GraphFilter</a>"
 
         self.data_authors = r"<b>Authors</b>" \
-                                 r"<ul> <li>Átila A. Jones </b><i>(v1.0 forward)</i> -" \
+                            r"<ul> <li>Átila A. Jones </b><i>(v1.0 forward)</i> -" \
                             r"<a href='mailto:atila.jones@ifsudestemg.edu.br'> atila.jones@ifsudestemg.edu.br</a></li>"\
-                                 r"<li>Lavínia Beghini de Castro </b><i>(v2.0 forward)</i> </li>" \
-                                 r"<li>Fernando S. Pimenta </b><i>(v2.0 forward)</i> </li>" \
-                                 r"<li>Igor Rosa F. Pinto </b><i>(v2.0 forward)</i> </li>" \
-                                 r"<li>Denilson P. O. Ribeiro </b><i>(v1.0)</i> </ul>"
+                            r"<li>Lavínia Beghini de Castro </b><i>(v2.0 forward)</i> </li>" \
+                            r"<li>Fernando S. Pimenta </b><i>(v2.0 forward)</i> </li>" \
+                            r"<li>Igor Rosa F. Pinto </b><i>(v2.0 forward)</i> </li>" \
+                            r"<li>Denilson P. O. Ribeiro </b><i>(v1.0)</i> </ul>"
 
         self.data_text2 = r"<p align='justify'> This program is the result of research projects at Instituto Federal " \
                           r"do Sudeste de Minas Gerais, Juiz de Fora - MG, Brazil. With financial support from the " \
@@ -73,13 +72,12 @@ class AboutWindow(QDialog):
         about_text2 = QLabel(self.data_text2)
         about_text2.setWordWrap(True)
 
-
         self.logo_cnpq.setPixmap(QPixmap("resources/logos/cnpq.png").scaled(190, 190, QtCore.Qt.KeepAspectRatio,
-                                                                              QtCore.Qt.SmoothTransformation))
+                                                                            QtCore.Qt.SmoothTransformation))
         self.logo_fapemig.setPixmap(QPixmap("resources/logos/fapemig.png").scaled(160, 160, QtCore.Qt.KeepAspectRatio,
-                                                                            QtCore.Qt.SmoothTransformation))
+                                                                                  QtCore.Qt.SmoothTransformation))
         self.logo_if.setPixmap(QPixmap("resources/logos/if_sudeste_mg.png").scaled(220, 220, QtCore.Qt.KeepAspectRatio,
-                                                                            QtCore.Qt.SmoothTransformation))
+                                                                                   QtCore.Qt.SmoothTransformation))
 
         about_layout = QVBoxLayout()
         about_layout.addWidget(about_title)
