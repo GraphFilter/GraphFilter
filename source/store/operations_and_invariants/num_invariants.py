@@ -40,11 +40,11 @@ class ChromaticNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(set(nx.greedy_color(graph).values()))
+        return gp.chromatic_number(graph)
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_dict(dict(sorted(nx.greedy_color(graph).items())), precision)
+        return Utils.print_numeric(gp.chromatic_number(graph), precision)
 
 
 class NumberVertices(InvariantNum):
