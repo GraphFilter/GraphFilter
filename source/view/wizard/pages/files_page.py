@@ -49,7 +49,7 @@ class FilesPage(QWizardPage):
         buttons = QVBoxLayout()
         buttons.addWidget(self.add_file)
         buttons.addWidget(self.remove_file)
-        buttons.addWidget(self.update_file)
+        # buttons.addWidget(self.update_file)
         buttons.addWidget(self.remove_all_files)
         buttons.addStretch(5)
         buttons.addWidget(self.label_download)

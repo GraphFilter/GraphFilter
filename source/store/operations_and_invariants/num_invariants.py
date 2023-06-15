@@ -538,6 +538,22 @@ class Largest2EigenQ(InvariantNum):
     def print(graph, precision):
         return Utils.print_numeric(Largest2EigenQ.calculate(graph), precision)
 
+class Largest2EigenN(InvariantNum):
+    name = "2th Largest N-eigenvalue"
+    code = "\u03bc\u207f\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.number_of_nodes(graph) > 1:
+            return Utils.second_largest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
+        else:
+            return 0
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest2EigenN.calculate(graph), precision)
+
 
 class Largest2EigenS(InvariantNum):
     name = "2th Largest S-eigenvalue"
@@ -556,21 +572,7 @@ class Largest2EigenS(InvariantNum):
         return Utils.print_numeric(Largest2EigenS.calculate(graph), precision)
 
 
-class Largest2EigenN(InvariantNum):
-    name = "2th Largest N-eigenvalue"
-    code = "\u03bc\u207f\u2082"
-    type = "number_spectral"
 
-    @staticmethod
-    def calculate(graph):
-        if nx.number_of_nodes(graph) > 1:
-            return Utils.second_largest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
-        else:
-            return 0
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_numeric(Largest2EigenN.calculate(graph), precision)
 
 
 class Largest2EigenD(InvariantNum):
