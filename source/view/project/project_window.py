@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import *
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 from source.domain.utils import set_view_size
 
 
@@ -8,7 +8,7 @@ class ProjectWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.icon = Icon("hexagon")
+        self.icon = Icon("graph_filter_logo")
 
         self.width = 0
         self.height = 0
@@ -32,6 +32,7 @@ class ProjectWindow(QMainWindow):
         self.visualize_tree_action = QAction("Files")
 
         self.dictionary_action = QAction("Dictionary")
+        self.new_issue_action = QAction("Problems and suggestions?")
         self.about_action = QAction("About...")
 
         self.restore_layout_action = QAction("Restore default layout")
@@ -67,4 +68,5 @@ class ProjectWindow(QMainWindow):
 
         help_menu = menu_bar.addMenu("Help")
         help_menu.addAction(self.dictionary_action)
+        help_menu.addAction(self.new_issue_action)
         help_menu.addAction(self.about_action)
