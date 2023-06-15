@@ -102,8 +102,9 @@ class UtilsToInvariants:
         return str(value)
 
     @staticmethod
-    def print_set(value, precision):
-        return np.array2string(np.array(value), precision=precision, separator=" , ")
+    def print_set(set, precision):
+        return f"value= {len(set)}, set= " + np.array2string(np.array(set), precision=precision, separator=" , ")
+
 
     @staticmethod
     def max_line_of_string(text: str):

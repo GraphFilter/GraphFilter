@@ -137,7 +137,7 @@ class DomainUnitTests(unittest.TestCase):
 
     def test_inv_boolean_false(self):
         no_tree = {inv_bool.Tree.name: 'false'}
-        self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
+        self.assertEqual(1/265, Helper.run('graphs1.g6', '', no_tree))
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
@@ -231,8 +231,8 @@ class MiscellaneousTests(unittest.TestCase):
         chordal = {inv_bool.Chordal.name: 'true'}
         regular_clawfree = {inv_bool.Regular.name: 'true', inv_bool.ClawFree.name: 'true'}
         self.assertEqual(
-            1, Helper.run('graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
-                          regular_clawfree))
+             1, Helper.run('graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
+                           regular_clawfree))
 
         self.assertEqual(1,
                          Helper.run('graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1_a}(G)',

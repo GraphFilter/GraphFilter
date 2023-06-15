@@ -33,20 +33,6 @@ class InvariantNum(Invariant):
         pass
 
 
-class ChromaticNumber(InvariantNum):
-    name = "Chromatic number"
-    code = '\u03c7'
-    type = "number_structural"
-
-    @staticmethod
-    def calculate(graph):
-        return len(set(nx.greedy_color(graph).values()))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_dict(dict(sorted(nx.greedy_color(graph).items())), precision)
-
-
 class NumberVertices(InvariantNum):
     name = "Number of vertices"
     code = 'n'
@@ -86,7 +72,7 @@ class CliqueNumber(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(CliqueNumber.calculate(graph), precision)
+        return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
 
 
 class IndependenceNumber(InvariantNum):
@@ -100,7 +86,7 @@ class IndependenceNumber(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(nx.complement(graph), weight=None)[0]), precision)
+        return CliqueNumber.print(nx.complement(graph), precision)
 
 
 class DominationNumber(InvariantNum):
@@ -110,11 +96,26 @@ class DominationNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return len(nx.dominating_set(graph))
+        return gp.domination_number(graph)
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(nx.dominating_set(graph), precision)
+        return Utils.print_numeric(gp.domination_number(graph), precision)
+
+
+class ChromaticNumber(InvariantNum):
+    name = "Chromatic number (aproximate)"
+    code = '\u03c7'
+    type = "number_structural"
+
+    @staticmethod
+    def calculate(graph):
+        return len(set(nx.greedy_color(graph).values()))
+
+    @staticmethod
+    def print(graph, precision):
+        colors = nx.greedy_color(graph)
+        return f"value= {len(set(colors.values()))}, set= "+Utils.print_dict(dict(sorted(colors.items())), precision)
 
 
 class GirthNumber(InvariantNum):
@@ -1124,7 +1125,7 @@ class MainEigenvalueAdjacency(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueAdjacency.calculate(graph), precision)
+        return Utils.print_set(Utils.main_eigenvalue(inv_other.AdjacencyMatrix.calculate(graph)), precision)
 
 
 class MainEigenvalueDistance(InvariantNum):
@@ -1141,8 +1142,10 @@ class MainEigenvalueDistance(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueDistance.calculate(graph), precision)
-
+        if nx.is_connected(graph):
+            return Utils.print_set(Utils.main_eigenvalue(inv_other.DistanceMatrix.calculate(graph)), precision)
+        else:
+            return 0
 
 class MainEigenvalueSignlessLaplacian(InvariantNum):
     name = 'Number main Q-eigen'
@@ -1155,7 +1158,7 @@ class MainEigenvalueSignlessLaplacian(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueSignlessLaplacian.calculate(graph), precision)
+        return Utils.print_set(Utils.main_eigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)), precision)
 
 
 class MainEigenvalueSeidel(InvariantNum):
@@ -1169,7 +1172,7 @@ class MainEigenvalueSeidel(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueSeidel.calculate(graph), precision)
+        return Utils.print_set(Utils.main_eigenvalue(inv_other.SeidelMatrix.calculate(graph)), precision)
 
 
 class RankAdjacency(InvariantNum):
