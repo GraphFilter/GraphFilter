@@ -441,7 +441,10 @@ class ProjectController:
             if len(graph) == 0:
                 self.invariants_selected[key] = "Null Graph"
             else:
-                self.invariants_selected[key] = dic_invariants_to_visualize[key].print(graph, precision=5)
+                try:
+                    self.invariants_selected[key] = dic_invariants_to_visualize[key].print(graph, precision=5)
+                except:
+                    self.invariants_selected[key] = "ERROR in calculation, please report problem."
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
@@ -467,10 +470,11 @@ class ProjectController:
                                 "right button on the desired file. \n"
                                 "  II. Or you can convert this specific graph with the options available in the "
                                 "toolbar", window_title="Invalid save format")
-            return
         if file_type == ".gml":
-            graph = [project_information_store.get_file_name()]
-            change_gml_file(file_path)
+            graph = change_gml_file(file_path)
+
+        if graph is None:
+            return
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)

@@ -1,5 +1,7 @@
 import networkx as nx
+from PyQt5.QtWidgets import QMessageBox
 
+from source.domain.utils import trigger_message_box
 from source.store.project_information_store import project_information_store
 from source.domain.pdf_model import PDF
 
@@ -35,7 +37,12 @@ def change_gml_file(file_path):
         graph.nodes[node]['x'] = float(x)
         graph.nodes[node]['y'] = float(y)
 
-    nx.write_gml(graph, file_path)
+    try:
+        nx.write_gml(graph, file_path)
+        return [project_information_store.get_file_name()]
+    except:
+        handle_invalid_file_open()
+        return None
 
 
 def create_g6_file(file_path, graph):
@@ -44,8 +51,12 @@ def create_g6_file(file_path, graph):
 
 
 def change_g6_file(file_path, new_g6, current_index):
-    file = open(file_path, "r")
-    changed_data = file.readlines()
+    try:
+        with open(file_path, "r") as file:
+            changed_data = file.readlines()
+    except:
+        handle_invalid_file_open()
+        return None
 
     try:
         changed_data[current_index] = new_g6 + "\n"
@@ -81,3 +92,8 @@ def generate_pdf_report(name, method, equation, conditions, input_graph_file, fi
     pdf.information_about_graphs(filtered_graphs, method, num_graphs)
     pdf.output(project_information_store.get_file_directory() +
                '\\' + f'{name}{name_modifier}.pdf')
+
+
+def handle_invalid_file_open():
+    trigger_message_box("Invalid file to save or delete. Check if the file still exists.", icon=QMessageBox.Warning,
+                        window_title="Invalid File")
