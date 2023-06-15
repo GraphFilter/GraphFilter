@@ -5,7 +5,7 @@ from source.domain.utils import extract_files_to_list
 
 class PDF(FPDF):
     def header(self):
-        self.image("resources/icons/hexagon.png", 10, 8, 25)
+        self.image("resources/icons/graph_filter.png", 10, 8, 25)
 
         self.set_font("Helvetica", 'B', 20)
 

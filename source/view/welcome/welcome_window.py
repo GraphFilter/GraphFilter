@@ -1,6 +1,6 @@
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 from source.domain.utils import set_view_size
 
 class WelcomeWindow(QMainWindow):
@@ -9,7 +9,7 @@ class WelcomeWindow(QMainWindow):
         super().__init__()
 
         self.title_bar = "Graph Filter"
-        self.icon = Icon("hexagon")
+        self.icon = Icon("graph_filter_logo")
 
         self.width = 0
         self.height = 0
