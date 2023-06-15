@@ -467,6 +467,17 @@ class MaximumClique(InvariantOther):
     def print(graph, precision):
         return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
 
+class MaximumIndependentSet(InvariantOther):
+    name = "Maximum Independent Set"
+    type = 'set'
+
+    @staticmethod
+    def calculate(graph):
+        return MaximumClique.calculate(nx.complement(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return MaximumClique.print(nx.complement(graph), precision)
 
 class MainEigenvalueAdjacency(InvariantOther):
     name = 'Main A-eigenvalues (set)'

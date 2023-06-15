@@ -82,11 +82,11 @@ class CliqueNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.clique_number(graph)
+        return len(set(nx.max_weight_clique(graph, weight=None)[0]))
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
+        return Utils.print_numeric(CliqueNumber.calculate(graph), precision)
 
 
 class IndependenceNumber(InvariantNum):
@@ -96,11 +96,11 @@ class IndependenceNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.independence_number(graph)
+        return CliqueNumber.calculate(nx.complement(graph))
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(nx.complement(graph), weight=None)[0]), precision)
+        return CliqueNumber.print(nx.complement(graph), precision)
 
 
 class TotalDominationNumber(InvariantNum):
