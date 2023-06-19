@@ -1,3 +1,5 @@
+import multiprocessing
+
 from source.domain.filter_list import FilterList
 from source.domain.utils import *
 from source.domain.utils_file import *
@@ -12,6 +14,7 @@ class FilterController:
     def __init__(self):
         self.filter_list = None
         self.loading_window = None
+        self.is_complete_filtering = False
 
     def start_filter(self):
         self.filter_list = FilterList()
@@ -32,11 +35,23 @@ class FilterController:
         single_thread.start()
         is_running = True
         while is_running:
+            if self.loading_window.is_forced_to_close:
+                self.filter_list.is_forced_to_terminate.value = 1.0
+                active = multiprocessing.active_children()
+                for child in active:
+                    child.kill()
+                single_thread.join()
+                return
+                # if len(multiprocessing.active_children()) == 0:
+                #    print(multiprocessing.current_process())
+                #    single_thread.join()
+                #    return
             value = int(((self.filter_list.update_to_progress_bar.value / number_imput_graphs) * 100))
             self.update(value)
             if value == 100:
                 is_running = False
 
+        self.is_complete_filtering = True
         single_thread.join()
         project_information_store.temp_filtered_graphs = self.filter_list.list_out
         generate_pdf_report(project_information_store.temp_project_name, project_information_store.temp_method,

@@ -137,7 +137,11 @@ class Controller:
             create_gml_file(graph, project_information_store.file_path)
         else:
             self.filter_controller.start_filter()
-        self.start_project()
+
+        if self.filter_controller.is_complete_filtering:
+            self.start_project()
+        else:
+            self.show_welcome_window()
 
     def show_project_window(self):
         self.project_controller.show_window()

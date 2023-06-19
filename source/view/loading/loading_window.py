@@ -1,3 +1,4 @@
+import multiprocessing
 import sys
 
 from PyQt5.QtWidgets import *
@@ -12,6 +13,7 @@ class LoadingWindow(QDialog):
         self.progressBar = QProgressBar(self)
         self.set_content_attributes()
         self.set_up_layout()
+        self.is_forced_to_close = False
 
     def set_content_attributes(self):
         self.setWindowTitle("Loading...")
@@ -29,7 +31,8 @@ class LoadingWindow(QDialog):
 
     def closeEvent(self, event):
         if event.spontaneous():
-            sys.exit()
+            self.is_forced_to_close = True
+        #    sys.exit()
         else:
             self.filter_complete_signal.emit(1)
             event.accept()

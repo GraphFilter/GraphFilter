@@ -1,3 +1,4 @@
+import multiprocessing
 import multiprocessing as mp
 import os
 import random
@@ -23,6 +24,7 @@ class FilterList:
         self.operations_graph = None
         self.AND_OR = None
         self.total = 0
+        self.is_forced_to_terminate = mp.Value("d", 0.0, lock=True)
 
         self.update_to_progress_bar = mp.Value("d", 0.0, lock=True)
 
@@ -49,6 +51,8 @@ class FilterList:
             list_broken_out = manager_class.list(range(number_cores))
             list_of_process = []
             for k, list_in in enumerate(list_broken_in):
+                if self.is_forced_to_terminate.value == 1.0:
+                    return
                 single_process = mp.Process(target=self.filter_multiprocess, args=(list_in, k, list_broken_out,))
                 list_of_process.append(single_process)
                 single_process.start()
@@ -67,6 +71,12 @@ class FilterList:
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []
         for g6code in list_g6_in:
+            #if self.is_forced_to_terminate.value == 1.0:
+            #    try:
+            #        multiprocessing.current_process().kill()
+            #        return
+            #    except AttributeError:
+            #        return
             self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1
             if g6code == '' or g6code == ' ':
                 continue
@@ -111,6 +121,12 @@ class FilterList:
     def find_example_multiprocess(self, list_g6_in, i, list_out):
         list_out[i] = ""
         for g6code in list_g6_in:
+            # if self.is_forced_to_terminate.value == 1.0:
+            #    try:
+            #        multiprocessing.current_process().kill()
+            #        return
+            #    except AttributeError:
+            #        return
             if self.update_to_progress_bar == self.total:
                 return
             self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1
