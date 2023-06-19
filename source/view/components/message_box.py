@@ -1,14 +1,13 @@
 from PyQt5.QtWidgets import *
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 
 
 class MessageBox(QMessageBox):
 
-    def __init__(self, text):
+    def __init__(self, text, icon=QMessageBox.Information, window_title='Information'):
         super().__init__()
 
-        self.setWindowTitle("Information")
-        self.setIcon(QMessageBox.Information)
+        self.setWindowTitle(window_title)
+        self.setIcon(icon)
         self.setWindowIcon(Icon("info"))
         self.setText(text)
-

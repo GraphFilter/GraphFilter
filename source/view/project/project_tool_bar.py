@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 
 from source.store.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 from source.store.new_graph_store import *
 from PyQt5 import QtCore
 
@@ -153,7 +153,9 @@ class ProjectToolBar(QToolBar):
         return graphs[0]
 
     def set_file_label(self, file_name):
+        self.filtered_graphs_label.setFixedWidth(75)
         self.filtered_graphs_label.setText(f"      File \n {file_name}")
+        self.filtered_graphs_label.setToolTip(f"{file_name}")
 
     @staticmethod
     def set_button_style(button):

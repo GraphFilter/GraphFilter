@@ -2,7 +2,7 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from source.store import help_button_text
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 
 
 class FilesPage(QWizardPage):
@@ -49,7 +49,7 @@ class FilesPage(QWizardPage):
         buttons = QVBoxLayout()
         buttons.addWidget(self.add_file)
         buttons.addWidget(self.remove_file)
-        buttons.addWidget(self.update_file)
+        # buttons.addWidget(self.update_file)
         buttons.addWidget(self.remove_all_files)
         buttons.addStretch(5)
         buttons.addWidget(self.label_download)

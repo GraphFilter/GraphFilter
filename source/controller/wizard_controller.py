@@ -6,7 +6,6 @@ from source.view.wizard.pages.files_page import FilesPage
 from source.view.wizard.pages.review_page import ReviewPage
 from source.store.project_information_store import wizard_information_store
 from source.view.wizard.wizard_window import WizardWindow
-from source.view.components.message_box import MessageBox
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import QUrl, QDesktopServices
 from source.store.operations_invariants import *
@@ -156,7 +155,7 @@ class WizardController:
 
     def connect_graph_files_page_events(self):
 
-        self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
+        # self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_file.clicked.connect(self.on_add_graph_file)
         self.graph_files_page.remove_file.clicked.connect(self.on_remove_graph_file)
         self.graph_files_page.remove_all_files.clicked.connect(self.on_remove_all_files)
@@ -178,11 +177,8 @@ class WizardController:
         self.connect_method_page_events()
         self.connect_graph_files_page_events()
 
-    def open_message_box(self, text=None):
-        if text is not None and type(text) is not bool:
-            message_box = MessageBox(text)
-        else:
-            message_box = MessageBox(self.wizard_window.currentPage().alert_text)
+    def open_message_box(self):
+        message_box = MessageBox(self.wizard_window.currentPage().alert_text)
         message_box.exec()
 
     def verify_and_save_project_name(self):
@@ -227,14 +223,22 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('Invalid Project Name')
 
     def set_equations_tabs(self):
+        n = len(dic_num_inv_spectral_names)
+        dic_num_inv_spectral_names1 = dict(list(dic_num_inv_spectral_names.items())[0: 27])
+        dic_num_inv_spectral_names2 = dict(list(dic_num_inv_spectral_names.items())[27: n])
+
         tab_num_structural_invariants = TabOperations(self.add_button_input_to_equation_text,
                                                       dic_num_inv_structural_names)
-        tab_num_spectral_invariants = TabOperations(self.add_button_input_to_equation_text, dic_num_inv_spectral_names)
+        tab_num_spectral_invariants1 = TabOperations(self.add_button_input_to_equation_text,
+                                                     dic_num_inv_spectral_names1)
+        tab_num_spectral_invariants2 = TabOperations(self.add_button_input_to_equation_text,
+                                                     dic_num_inv_spectral_names2)
         tab_graph_operations = TabOperations(self.add_button_input_to_equation_text, dic_graph_operations_names)
         tab_math_operations = TabOperations(self.add_button_input_to_equation_text, dic_math_and_basic_operations_names)
 
-        self.equations_page.math_tab.addTab(tab_num_structural_invariants, "Numeric Structural Invariants")
-        self.equations_page.math_tab.addTab(tab_num_spectral_invariants, "Numeric Spectral Invariants")
+        self.equations_page.math_tab.addTab(tab_num_structural_invariants, "Structural Invariants")
+        self.equations_page.math_tab.addTab(tab_num_spectral_invariants1, "Spectral Invariants [1]")
+        self.equations_page.math_tab.addTab(tab_num_spectral_invariants2, "Spectral Invariants [2]")
         self.equations_page.math_tab.addTab(tab_graph_operations, "Graph Operations")
         self.equations_page.math_tab.addTab(tab_math_operations, "Math Operations")
 
@@ -366,10 +370,11 @@ class WizardController:
         self.method_page.completeChanged.emit()
         self.wizard_window.next_button.setToolTip('')
 
+    """
     def on_update_graph_file(self):
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
-        # self.graph_files_page.tr("Text files (*.g6)")
+        self.graph_files_page.tr("Text files (*.g6)")
         file_path = file_dialog.getOpenFileName(
             filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;"
                    "Text files (*.txt *.txt.gz);;"
@@ -377,6 +382,7 @@ class WizardController:
         )
 
         self.save_graph_file_path(file_path[0], input_file[-1])
+    """""
 
     def on_insert_graph_file_path(self):
         line_input = QLineEdit().sender()
@@ -398,37 +404,6 @@ class WizardController:
         else:
             self.graph_files_page.complete = False
         # print(wizard_information_store.temp_graph_input_files)
-        self.update_complete_graph_files_page()
-
-    def on_add_graph_file_input(self):
-        button_clicked = QPushButton().sender()
-        form = button_clicked.parentWidget()
-        input_file = form.findChildren(QLineEdit)
-        if input_file[-1].text() != '':
-            input_file = QLineEdit()
-            input_file.textEdited.connect(self.on_insert_graph_file_path)
-
-            button = QPushButton("...")
-            remove = QPushButton("-")
-
-            button.clicked.connect(self.on_update_graph_file)
-
-            layout = QHBoxLayout()
-            layout.addWidget(QLabel("Graph .g6 file:"))
-            layout.addWidget(input_file)
-            layout.addWidget(button)
-            layout.addWidget(remove)
-
-        for i in range(self.graph_files_page.list_files_input.count()):
-            if self.graph_files_page.list_files_input.item(i).text() == file_path[0]:
-                return
-
-        list_files = self.graph_files_page.list_files_input
-        k = list_files.currentRow()
-        list_files.takeItem(k)
-        list_files.insertItem(k, file_path[0])
-        self.graph_files_page.remove_file.setEnabled(False)
-        self.graph_files_page.update_file.setEnabled(False)
         self.update_complete_graph_files_page()
 
     def on_add_graph_file(self):

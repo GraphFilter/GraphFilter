@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="http://sistemas.jf.ifsudestemg.edu.br/graphfilter/home"><img src="/resources/icons/hexagon.png" alt="Graph Filter" width="180"></a>
+  <a href="http://sistemas.jf.ifsudestemg.edu.br/graphfilter/home"><img src="/resources/icons/graph_filter_logo.png" alt="Graph Filter" width="180"></a>
   <br>
   Graph Filter
   <br>

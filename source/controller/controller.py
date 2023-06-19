@@ -6,6 +6,7 @@ from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
 from source.controller.project_controller import ProjectController
+from source.domain.utils import trigger_message_box, handle_invalid_export_format
 from source.domain.utils_file import import_gml_graph, create_gml_file
 from source.store.project_information_store import update_project_store
 from PyQt5.QtWidgets import *
@@ -62,53 +63,31 @@ class Controller:
         file_dialog = QFileDialog()
         file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.gml)"])
         file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.gml)")
-        formatted_file_path = file_path[0]
-        project_information_store.file_path = formatted_file_path
+        project_information_store.file_path = file_path[0]
+        file_type = project_information_store.get_file_type()
 
-        if file_path[0] == '':
+        if file_type == '':
             return
-        if file_path[0].endswith('.gml'):
-            project_information_store.fill_data({
-                'project_name': 'Visualization mode',
-                'project_location': os.path.dirname(os.path.abspath(file_path[0])),
-                'project_description': '',
-                'equation': '',
-                'conditions': {},
-                'method': '',
-                'graph_files': file_path[0],
-                'filtered_graphs': [project_information_store.get_file_name()]
-            })
-            project_information_store.current_graph = import_gml_graph(file_path[0])
+        if file_type == '.json':
+            with open(file_path[0]) as file:
+                content = file.read()
+                data = json.loads(content)
+                project_information_store.fill_data(data)
+            project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
         else:
-            if file_path[0].endswith('.json'):
-                with open(file_path[0]) as file:
-                    content = file.read()
-                    data = json.loads(content)
-                    project_information_store.fill_data(data)
-                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+            if file_type == '.gml':
+                project_information_store.temp_filtered_graphs = [project_information_store.get_file_name()]
+                project_information_store.current_graph = import_gml_graph(file_path[0])
             else:
                 with open(file_path[0]) as file:
-                    project_information_store.fill_data({
-                        'project_name': 'Visualization mode',
-                        'project_location': os.path.dirname(os.path.abspath(file_path[0])),
-                        'project_description': '',
-                        'equation': '',
-                        'conditions': {},
-                        'method': '',
-                        'graph_files': file_path[0],
-                        'filtered_graphs': file.read().splitlines()
-                    })
+                    project_information_store.temp_filtered_graphs = file.read().splitlines()
                 project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+
+            project_information_store.temp_graph_input_files = project_information_store.file_path
 
         if self.current_open_window == "project" and project_information_store.get_file_type() != ".gml":
             project_information_store.current_graph_pos = {}
         self.show_project_window()
-        # if self.current_open_window == "welcome":
-        #    self.show_project_window()
-        #    self.close_welcome_window()
-        # if self.current_open_window == "project":
-        #    self.show_project_window()
-        # self.current_open_window = "project"
         project_information_store.reset_store()
 
     def show_wizard_window(self):
@@ -121,9 +100,11 @@ class Controller:
 
     def start_project(self):
         if not project_information_store.temp_filtered_graphs:
-            self.wizard_controller.open_message_box("No graph in the input list satisfies the chosen conditions.")
+            trigger_message_box("No graph in the input list satisfies the chosen conditions.",
+                                window_title="Empty filtering")
             self.show_wizard_window()
         else:
+            project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
             self.show_project_window()
             project_information_store.reset_store()
 
@@ -190,15 +171,22 @@ class Controller:
             f = open(file_path)
             data = json.load(f)
             return tuple(data['filtered_graphs'])
-        else:
+        if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 return file.read().splitlines()
+
+        return None
 
     def export_to_png(self):
         try:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -216,6 +204,11 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -233,6 +226,11 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
                                                         caption="Select Directory"))
         if file_dir:
@@ -250,6 +248,11 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_name = self.get_name_from_save_dialog('g6')
         if file_name:
             self.show_loading_window(len(graph_to_export))
@@ -265,14 +268,19 @@ class Controller:
             graph_to_export = self.get_graph_from_tree()
         except:
             return
+
+        if graph_to_export is None:
+            handle_invalid_export_format()
+            return
+
         file_name = self.get_name_from_save_dialog('xlsx')
         if file_name:
             self.show_loading_window(len(graph_to_export))
             try:
                 export_g6_to_sheet(graph_list=graph_to_export,
-                               invariants=self.project_controller.invariants_selected,
-                               file_name=file_name,
-                               update_progress=self.update_loading_window)
+                                   invariants=self.project_controller.invariants_selected,
+                                   file_name=file_name,
+                                   update_progress=self.update_loading_window)
             except:
                 pass
             self.loading_window.close()
