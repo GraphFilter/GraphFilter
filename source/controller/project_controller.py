@@ -313,6 +313,7 @@ class ProjectController:
                 self.project_tool_bar.fill_combo_graphs([project_information_store.get_file_name()])
                 self.graph_information_dock.update_table(self.invariants_selected)
                 self.visualize_graph_dock.plot_graph(graph, layout)
+                self.project_tool_bar.combo_graphs.setDisabled(True)
                 change_gml_file(file_path)
 
             else:
@@ -452,6 +453,7 @@ class ProjectController:
             else:
                 handle_invalid_graph_open()
                 project_information_store.current_graph = nx.Graph()
+            self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
             if type_item == "json File":
                 f = open(file_path)
