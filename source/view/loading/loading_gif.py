@@ -14,22 +14,22 @@ class LoadingGif(QDialog):
         self.label = QLabel()
         self.set_content_attributes()
         self.set_up_layout()
-        self.startAnimation()
 
     def set_content_attributes(self):
         self.setWindowTitle("Loading...")
-        self.setFixedSize(250,250)
+        self.setFixedSize(250, 250)
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.WindowContextHelpButtonHint | Qt.WindowCloseButtonHint)
+        self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
 
     def set_up_layout(self):
         self.label = QLabel(self.central_widget)
-        self.label.setGeometry(QRect(25,25,200,200))
+        self.label.setGeometry(QRect(25, 25, 200, 200))
         self.label.setMovie(self.movie)
         layout = QHBoxLayout()
         layout.addWidget(self.label)
         self.setLayout(layout)
 
-    def startAnimation(self):
+    def start_animation(self):
         self.movie.start()
 
     def closeEvent(self, event):

@@ -22,6 +22,8 @@ from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
+import threading as td
+from time import sleep
 
 
 class ProjectController:
@@ -38,6 +40,7 @@ class ProjectController:
         self.tree_file_dock = TreeFileDock()
 
         self.loading_gif = LoadingGif()
+        self.is_gif_in_progress = False
 
         self.editing_features = EditingFeatures()
 
@@ -399,10 +402,29 @@ class ProjectController:
         # File Folder
 
     def handle_tree_double_click(self):
+        single_thread = td.Thread(target=self.open_tree_file_graphs)
+        single_thread.start()
+        self.loading_gif.start_animation()
         self.loading_gif.show()
+        self.is_gif_in_progress = True
         self.project_window.setDisabled(True)
-        QApplication.processEvents()
 
+        while self.is_gif_in_progress:
+            QApplication.processEvents()
+
+        single_thread.join()
+        self.loading_gif.close()
+
+        self.project_tool_bar.combo_graphs.setCurrentIndex(0)
+        self.project_window.set_title_bar(project_information_store.get_file_name())
+        self.update_graph_to_table()
+        if len(project_information_store.current_graph_pos) != 0:
+            self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
+                                                 project_information_store.current_graph_pos)
+        else:
+            self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
+
+    def open_tree_file_graphs(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
         type_item = self.tree_file_dock.model.type(index)
@@ -411,19 +433,16 @@ class ProjectController:
             return
 
         project_information_store.file_path = file_path
+        project_information_store.current_graph_pos = {}
 
         if type_item == "gml File":
             graph = import_gml_graph(file_path)
             graphs = [project_information_store.get_file_name()]
             if graph is not None:
-                if len(project_information_store.current_graph_pos) != 0:
-                    self.visualize_graph_dock.plot_graph(graph,
-                                                         project_information_store.current_graph_pos)
-                else:
-                    self.visualize_graph_dock.plot_graph(graph)
+                project_information_store.current_graph = graph
             else:
                 handle_invalid_graph_open()
-                self.visualize_graph_dock.plot_graph(nx.Graph())
+                project_information_store.current_graph = nx.Graph()
         else:
             if type_item == "json File":
                 f = open(file_path)
@@ -432,18 +451,17 @@ class ProjectController:
             else:
                 with open(file_path) as file:
                     graphs = file.read().splitlines()
-            self.visualize_graph_dock.plot_graph(graphs[0])
+            project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
             self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graphs)
 
-        self.loading_gif.close()
         self.project_window.setDisabled(False)
 
+        self.is_gif_in_progress = False
         self.visualize_graph_dock.setDisabled(False)
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
-        self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
         graph = project_information_store.current_graph
