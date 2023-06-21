@@ -92,7 +92,7 @@ class FilterList:
     def start_find_example(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
-        if self.need_multiprocess(list_g6_in,number_cores):
+        if self.need_multiprocess(list_g6_in, number_cores):
             manager_class = mp.Manager()
             list_broken_in = self.subdivide_input_list(number_cores)
             list_broken_out = manager_class.list(range(number_cores))

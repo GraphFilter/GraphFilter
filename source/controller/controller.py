@@ -1,20 +1,19 @@
-import os
+import json
 
 import networkx as nx
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import *
 
-from source.controller.welcome_controller import WelcomeController
-from source.controller.wizard_controller import WizardController
 from source.controller.filter_controller import FilterController
 from source.controller.project_controller import ProjectController
+from source.controller.welcome_controller import WelcomeController
+from source.controller.wizard_controller import WizardController
+from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.domain.utils import trigger_message_box, handle_invalid_export_format
 from source.domain.utils_file import import_gml_graph, create_gml_file
-from source.store.project_information_store import update_project_store
-from PyQt5.QtWidgets import *
 from source.store.project_information_store import project_information_store
-import json
-from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
+from source.store.project_information_store import update_project_store
 from source.view.loading.loading_window import LoadingWindow
-from PyQt5 import QtCore
 
 
 class Controller:

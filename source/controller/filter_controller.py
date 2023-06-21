@@ -1,5 +1,3 @@
-import multiprocessing
-
 from source.domain.filter_list import FilterList
 from source.domain.utils import *
 from source.domain.utils_file import *
@@ -20,7 +18,7 @@ class FilterController:
         self.filter_list = FilterList()
         self.loading_window = LoadingWindow()
         g6_list = extract_files_to_list(project_information_store.temp_graph_input_files)
-        number_imput_graphs = len(g6_list)
+        number_input_graphs = len(g6_list)
         self.loading_window.set_maximum(100)
         self.loading_window.show()
 
@@ -43,7 +41,7 @@ class FilterController:
                 #    print(multiprocessing.current_process())
                 #    single_thread.join()
                 #    return
-            value = int(((self.filter_list.update_to_progress_bar.value / number_imput_graphs) * 100))
+            value = int(((self.filter_list.update_to_progress_bar.value / number_input_graphs) * 100))
             self.update(value)
             if value == 100:
                 is_running = False
@@ -54,7 +52,7 @@ class FilterController:
         generate_pdf_report(project_information_store.temp_project_name, project_information_store.temp_method,
                             project_information_store.temp_equation, project_information_store.temp_conditions,
                             project_information_store.temp_graph_input_files,
-                            project_information_store.temp_filtered_graphs, '_report', number_imput_graphs,
+                            project_information_store.temp_filtered_graphs, '_report', number_input_graphs,
                             project_information_store.temp_project_description)
 
         create_g6_file(project_information_store.get_file_directory(),

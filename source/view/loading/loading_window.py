@@ -1,6 +1,3 @@
-import multiprocessing
-import sys
-
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
@@ -32,7 +29,6 @@ class LoadingWindow(QDialog):
     def closeEvent(self, event):
         if event.spontaneous():
             self.is_forced_to_close = True
-        #    sys.exit()
         else:
             self.filter_complete_signal.emit(1)
             event.accept()
