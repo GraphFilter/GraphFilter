@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QIcon
+
 from PyQt5.QtWidgets import *
 
 from source.store.export_graph_to import dict_name_export_graph_to

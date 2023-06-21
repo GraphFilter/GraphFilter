@@ -12,6 +12,7 @@ from source.view.project.project_tool_bar import EditingFeatures
 from source.view.project.project_window import ProjectWindow
 from source.view.project.project_tool_bar import ProjectToolBar
 from source.view.project.about_window import AboutWindow
+from source.view.loading.loading_gif import LoadingGif
 from source.view.project.docks.graph_information_dock import GraphInformationDock
 from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
 from source.view.project.docks.tree_file_dock import TreeFileDock
@@ -21,6 +22,7 @@ from source.store.new_graph_store import *
 from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
+import threading as td
 
 
 class ProjectController:
@@ -35,6 +37,9 @@ class ProjectController:
         self.invariants_check_dock = InvariantsCheckDock()
         self.visualize_graph_dock = VisualizeGraphDock()
         self.tree_file_dock = TreeFileDock()
+
+        self.loading_gif = LoadingGif()
+        self.is_gif_in_progress = False
 
         self.editing_features = EditingFeatures()
 
@@ -225,7 +230,7 @@ class ProjectController:
         # self.on_visualize_tree()
 
     def on_change_graph(self):
-        self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
+        # self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
         else:
@@ -285,7 +290,7 @@ class ProjectController:
     def on_invalid_graph_display_alert(self):
         index = self.project_tool_bar.combo_graphs.currentIndex()
         self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index} - Invalid')
-        self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
+        # self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
         trigger_message_box("Invalid Graph", window_title="Invalid Graph")
 
     def on_new_graph_button(self):
@@ -406,6 +411,31 @@ class ProjectController:
                 return
 
     def handle_tree_double_click(self):
+        single_thread = td.Thread(target=self.open_tree_file_graphs)
+        single_thread.start()
+        self.loading_gif.start_animation()
+        self.loading_gif.show()
+        self.is_gif_in_progress = True
+        self.project_window.setDisabled(True)
+
+        while self.is_gif_in_progress:
+            QApplication.processEvents()
+
+        single_thread.join()
+        self.loading_gif.close()
+
+        self.project_tool_bar.combo_graphs.setCurrentIndex(0)
+        self.project_window.set_title_bar(project_information_store.get_file_name())
+        self.update_graph_to_table()
+        if len(project_information_store.current_graph_pos) != 0 and \
+                project_information_store.get_file_type() == ".gml":
+            self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
+                                                 project_information_store.current_graph_pos)
+        else:
+            project_information_store.current_graph_pos = {}
+            self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
+
+    def open_tree_file_graphs(self):
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
         type_item = self.tree_file_dock.model.type(index)
@@ -419,14 +449,10 @@ class ProjectController:
             graph = import_gml_graph(file_path)
             graphs = [project_information_store.get_file_name()]
             if graph is not None:
-                if len(project_information_store.current_graph_pos) != 0:
-                    self.visualize_graph_dock.plot_graph(graph,
-                                                         project_information_store.current_graph_pos)
-                else:
-                    self.visualize_graph_dock.plot_graph(graph)
+                project_information_store.current_graph = graph
             else:
                 handle_invalid_graph_open()
-                self.visualize_graph_dock.plot_graph(nx.Graph())
+                project_information_store.current_graph = nx.Graph()
             self.project_tool_bar.combo_graphs.setDisabled(True)
         else:
             if type_item == "json File":
@@ -436,14 +462,17 @@ class ProjectController:
             else:
                 with open(file_path) as file:
                     graphs = file.read().splitlines()
-            self.visualize_graph_dock.plot_graph(graphs[0])
+            project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
             self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graphs)
+
+        self.project_window.setDisabled(False)
+
+        self.is_gif_in_progress = False
         self.visualize_graph_dock.setDisabled(False)
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
-        self.project_window.set_title_bar(project_information_store.get_file_name())
 
     def update_graph_to_table(self):
         graph = project_information_store.current_graph
@@ -490,5 +519,5 @@ class ProjectController:
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
-        self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
+        # self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
         self.graph_information_dock.update_table(self.invariants_selected)
