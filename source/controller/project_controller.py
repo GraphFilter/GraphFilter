@@ -230,7 +230,7 @@ class ProjectController:
         # self.on_visualize_tree()
 
     def on_change_graph(self):
-        self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
+        # self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
         if self.project_tool_bar.combo_graphs.currentIndex() == 0:
             self.project_tool_bar.left_button.setDisabled(True)
         else:
@@ -290,7 +290,7 @@ class ProjectController:
     def on_invalid_graph_display_alert(self):
         index = self.project_tool_bar.combo_graphs.currentIndex()
         self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index} - Invalid')
-        self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
+        # self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
         trigger_message_box("Invalid Graph", window_title="Invalid Graph")
 
     def on_new_graph_button(self):
@@ -426,10 +426,12 @@ class ProjectController:
         self.project_tool_bar.combo_graphs.setCurrentIndex(0)
         self.project_window.set_title_bar(project_information_store.get_file_name())
         self.update_graph_to_table()
-        if len(project_information_store.current_graph_pos) != 0:
+        if len(project_information_store.current_graph_pos) != 0 and \
+                project_information_store.get_file_type() == ".gml":
             self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
                                                  project_information_store.current_graph_pos)
         else:
+            project_information_store.current_graph_pos = {}
             self.visualize_graph_dock.plot_graph(project_information_store.current_graph)
 
     def open_tree_file_graphs(self):
@@ -441,7 +443,6 @@ class ProjectController:
             return
 
         project_information_store.file_path = file_path
-        project_information_store.current_graph_pos = {}
 
         if type_item == "gml File":
             graph = import_gml_graph(file_path)
@@ -516,5 +517,5 @@ class ProjectController:
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
         self.project_tool_bar.combo_graphs.setCurrentIndex(current_index)
-        self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
+        # self.project_tool_bar.combo_graphs.setStyleSheet('color: black;')
         self.graph_information_dock.update_table(self.invariants_selected)
