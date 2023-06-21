@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 
 
 class MessageBox(QMessageBox):

@@ -1,11 +1,11 @@
 import os.path
 
-import networkx as nx
 from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
-from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file
+from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file, \
+    delete_all_gml_nodes
 from source.store.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
 from source.view.project.project_tool_bar import EditingFeatures
@@ -96,6 +96,7 @@ class ProjectController:
         self.project_window.visualize_tree_action.triggered.connect(self.on_visualize_tree)
 
         self.project_window.dictionary_action.triggered.connect(self.on_dictionary)
+        self.project_window.new_issue_action.triggered.connect(self.on_new_issues)
 
         self.project_window.restore_layout_action.triggered.connect(self.on_restore)
 
@@ -140,6 +141,11 @@ class ProjectController:
             next_index = current_index - 1
         else:
             next_index = 0
+        if file_type == ".gml":
+            try:
+                self.visualize_graph_dock.plot_graph(delete_all_gml_nodes(project_information_store.file_path))
+            except:
+                pass
 
         if file_type == ".g6" or file_type == ".txt":
             file = open(file_path, "r")
@@ -253,6 +259,10 @@ class ProjectController:
     @staticmethod
     def on_dictionary():
         QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/wiki/Dictionary"))
+
+    @staticmethod
+    def on_new_issues():
+        QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/issues/new"))
 
     def on_check_condition(self):
         check = QCheckBox().sender()
@@ -381,7 +391,7 @@ class ProjectController:
             except PermissionError:
                 return
             except OSError:
-                return''
+                return ''
         else:
             try:
                 os.remove(file_path)
@@ -399,7 +409,6 @@ class ProjectController:
                 return
             except OSError:
                 return
-        # File Folder
 
     def handle_tree_double_click(self):
         single_thread = td.Thread(target=self.open_tree_file_graphs)
@@ -470,7 +479,10 @@ class ProjectController:
             if len(graph) == 0:
                 self.invariants_selected[key] = "Null Graph"
             else:
-                self.invariants_selected[key] = dic_invariants_to_visualize[key].print(graph, precision=5)
+                try:
+                    self.invariants_selected[key] = dic_invariants_to_visualize[key].print(graph, precision=5)
+                except:
+                    self.invariants_selected[key] = "ERROR in calculation, please report problem."
 
         self.graph_information_dock.update_table(self.invariants_selected)
 
@@ -496,10 +508,11 @@ class ProjectController:
                                 "right button on the desired file. \n"
                                 "  II. Or you can convert this specific graph with the options available in the "
                                 "toolbar", window_title="Invalid save format")
-            return
         if file_type == ".gml":
-            graph = [project_information_store.get_file_name()]
-            change_gml_file(file_path)
+            graph = change_gml_file(file_path)
+
+        if graph is None:
+            return
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graph)
