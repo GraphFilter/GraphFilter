@@ -44,7 +44,7 @@ class FilterList:
     def start_filter(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)
         number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
-        if self.need_multiprocess(list_g6_in, number_cores):
+        if self.need_multiprocess(list_g6_in, number_cores) and self.is_forced_to_terminate != 1.0:
             manager_class = mp.Manager()
             number_cores = int(np.ceil((1 / 3) * os.cpu_count()))
             list_broken_in = self.subdivide_input_list(number_cores)
@@ -71,12 +71,12 @@ class FilterList:
     def filter_multiprocess(self, list_g6_in, i, list_out):
         list_out_temp = []
         for g6code in list_g6_in:
-            #if self.is_forced_to_terminate.value == 1.0:
-            #    try:
-            #        multiprocessing.current_process().kill()
-            #        return
-            #    except AttributeError:
-            #        return
+            if self.is_forced_to_terminate.value == 1.0:
+                try:
+                    multiprocessing.current_process().terminate()
+                    return
+                except AttributeError:
+                    return
             self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1
             if g6code == '' or g6code == ' ':
                 continue
@@ -121,12 +121,12 @@ class FilterList:
     def find_example_multiprocess(self, list_g6_in, i, list_out):
         list_out[i] = ""
         for g6code in list_g6_in:
-            # if self.is_forced_to_terminate.value == 1.0:
-            #    try:
-            #        multiprocessing.current_process().kill()
-            #        return
-            #    except AttributeError:
-            #        return
+            if self.is_forced_to_terminate.value == 1.0:
+                try:
+                    multiprocessing.current_process().terminate()
+                    return
+                except AttributeError:
+                    return
             if self.update_to_progress_bar == self.total:
                 return
             self.update_to_progress_bar.value = self.update_to_progress_bar.value + 1

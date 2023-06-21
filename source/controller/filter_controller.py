@@ -37,9 +37,6 @@ class FilterController:
         while is_running:
             if self.loading_window.is_forced_to_close:
                 self.filter_list.is_forced_to_terminate.value = 1.0
-                active = multiprocessing.active_children()
-                for child in active:
-                    child.kill()
                 single_thread.join()
                 return
                 # if len(multiprocessing.active_children()) == 0:
