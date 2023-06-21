@@ -33,14 +33,20 @@ def export_g6_to_pdf(g6code, folder, count):
     plt.close()
 
 
-def export_g6_to_sheet(graph_list, invariants, file_name, update_progress):
+def export_g6_to_sheet(graph_list, invariants, file_name, update_progress, loading_window):
     workbook = xlsxwriter.Workbook(filename=file_name)
     sheet = workbook.add_worksheet()
     sheet.write(0, 0, 'id')
     sheet.write(0, 1, 'g6 code')
     for i, invariant in enumerate(invariants):
+        if loading_window.is_forced_to_close:
+            loading_window.is_forced_to_close = False
+            return
         sheet.write(0, i + 2, invariant)
     for step, graph in enumerate(graph_list):
+        if loading_window.is_forced_to_close:
+            loading_window.is_forced_to_close = False
+            return
         sheet.write(step + 1, 0, step)
         sheet.write(step + 1, 1, graph)
         for k, invariant in enumerate(invariants):
