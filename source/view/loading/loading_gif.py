@@ -1,7 +1,6 @@
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QMovie
+from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtGui import QMovie
 from PyQt5.QtWidgets import QDialog, QWidget, QLabel, QHBoxLayout, QApplication
 
 
@@ -17,16 +16,18 @@ class LoadingGif(QDialog):
 
     def set_content_attributes(self):
         self.setWindowTitle("Loading...")
-        self.setFixedSize(250, 250)
+        # self.setFixedSize(250, 250)
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.WindowContextHelpButtonHint | Qt.WindowCloseButtonHint)
+        self.setWindowFlag(QtCore.Qt.FramelessWindowHint)
         self.setWindowFlag(QtCore.Qt.WindowCloseButtonHint, False)
 
     def set_up_layout(self):
         self.label = QLabel(self.central_widget)
-        self.label.setGeometry(QRect(25, 25, 200, 200))
+        self.label.setGeometry(QRect(25, 25, 100, 100))
         self.label.setMovie(self.movie)
         layout = QHBoxLayout()
         layout.addWidget(self.label)
+        self.adjustSize()
         self.setLayout(layout)
 
     def start_animation(self):

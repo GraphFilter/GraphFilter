@@ -23,7 +23,6 @@ from source.domain.utils import match_graph_code, add_vertex, handle_invalid_gra
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
 import threading as td
-from time import sleep
 
 
 class ProjectController:
