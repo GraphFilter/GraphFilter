@@ -113,6 +113,7 @@ class Controller:
 
     def finish_wizard(self):
         update_project_store()
+        project_information_store.current_graph_pos = {}
         if project_information_store.temp_method == 'blank':
             graph = nx.Graph()
             project_information_store.file_path = \
