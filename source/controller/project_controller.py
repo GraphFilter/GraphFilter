@@ -261,7 +261,9 @@ class ProjectController:
 
     @staticmethod
     def on_new_issues():
-        QDesktopServices.openUrl(QUrl("https://github.com/GraphFilter/GraphFilter/issues/new"))
+        QDesktopServices.openUrl(QUrl(
+            "https://github.com/GraphFilter/GraphFilter/wiki/User-Guide#problems-and-suggestions"
+        ))
 
     def on_check_condition(self):
         check = QCheckBox().sender()
