@@ -63,6 +63,7 @@ class Controller:
         file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.gml)"])
         file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.gml)")
         project_information_store.file_path = file_path[0]
+        project_information_store.current_graph_pos = {}
         file_type = project_information_store.get_file_type()
 
         if file_type == '':
