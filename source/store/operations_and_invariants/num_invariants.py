@@ -1,7 +1,11 @@
 import grinpy as gp
 import networkx as nx
-import numpy as np
 import numpy.linalg as la
+import numpy as np
+import sys
+import trampoline
+
+
 from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 from source.store.operations_and_invariants.invariants import Invariant
 import source.store.operations_and_invariants.other_invariants as inv_other
@@ -107,15 +111,79 @@ class ChromaticNumber(InvariantNum):
     name = "Chromatic number (aproximate)"
     code = '\u03c7'
     type = "number_structural"
-
+    # Algorithm from: Szwarcfiter, J. L.. Teoria computacional de grafos: Os Algoritmos. Elsevier Brasil, 2018.
     @staticmethod
-    def calculate(graph):
-        return len(set(nx.greedy_color(graph).values()))
+    def calculate(graph: nx.Graph):
+        sys.setrecursionlimit(5000)
+
+        if nx.is_bipartite(graph):
+            return 2
+
+        # chromatic_num = len(graph)
+        #
+        # def color(g: nx.Graph):
+        #     global chromatic_num
+        #
+        #     n = len(g)
+        #     m = len(g.edges)
+        #     if m == n * (n - 1) / 2:
+        #         chromatic_num = min(chromatic_num, n)
+        #     else:
+        #         (v, w) = get_non_edges(g)
+        #
+        #         #Alfa-function
+        #         # color(alfa(v, w, g))
+        #         g_alfa = graph.copy()
+        #         g_alfa.add_edge(v, w)
+        #         color(g_alfa)
+        #         #Beta-function
+        #         # color(beta(v, w, g))
+        #         g_beta=nx.contracted_edge(g, v, w, copy=True)
+        #         color(g_beta)
+        #     return
+
+        # def color(g: nx.Graph):
+        #     n = len(g)
+        #     m = len(g.edges)
+        #     if m == n * (n - 1) / 2:
+        #         return n
+        #     else:
+        #         v, w = get_non_edges(g)
+        #         g_alfa = g.copy()
+        #         g_alfa.add_edge(v, w, copy=True)
+        #         g_beta = nx.contracted_nodes(g, v, w, copy=True)
+        #         return min(color(g_alfa), color(g_beta))
+
+
+        def color(g: nx.Graph):
+            n = len(g)
+            m = len(g.edges)
+            if m == n * (n - 1) / 2:
+                return n
+            else:
+                v, w = get_non_edges(g)
+                g_alfa = g.copy()
+                g_alfa.add_edge(v, w, copy=True)
+                g_beta = nx.contracted_nodes(g, v, w, copy=True)
+                return min(color(g_alfa), color(g_beta))
+
+
+
+
+        def get_non_edges(g: nx.Graph):
+            for v in g.nodes:
+                for w in g.nodes:
+                    if v != w:
+                        if not g.has_edge(v, w):
+                            return v, w
+            return None
+
+
+        return color(graph)
 
     @staticmethod
     def print(graph, precision):
-        colors = nx.greedy_color(graph)
-        return f"value= {len(set(colors.values()))}, set= "+Utils.print_dict(dict(sorted(colors.items())), precision)
+        return Utils.print_numeric(ChromaticNumber.calculate(graph), precision)
 
 
 class GirthNumber(InvariantNum):
@@ -1397,3 +1465,7 @@ class DeterminantEccentricityMatrix(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(DeterminantEccentricityMatrix.calculate(graph), precision)
+
+
+if __name__ == '__main__':
+    print(ChromaticNumber.calculate(nx.cycle_graph(5)))

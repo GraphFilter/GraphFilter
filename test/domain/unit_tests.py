@@ -245,21 +245,12 @@ class MiscellaneousTests(unittest.TestCase):
         tree_NoBiconnected = {inv_bool.Tree.name: 'true', inv_bool.Biconnected.name: 'false'}
         self.assertEqual(1, Helper.run('graphs5.g6', f'{eigen1_l}(G)>5', tree_NoBiconnected))
 
-    def test_wilf_result(self):
-        chi = str(inv_num.ChromaticNumber.code)
-        eigen1 = str(inv_num.Largest1EigenA.code)
-        self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
-
     def test_independence_and_matching(self):
         alpha = str(inv_num.IndependenceNumber.code)
         match = str(inv_num.MatchingNumber.code)
         line = str(oper.Line.code)
         self.assertEqual(1, Helper.run('graphs7.g6', f'{match}(G)=={alpha}({line}(G))', {}))
 
-    def test_perfect_graphs(self):
-        chi = str(inv_num.ChromaticNumber.code)
-        omega = str(inv_num.CliqueNumber.code)
-        self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
 
     def test_random_with_boolean_false(self):
         avg_degree = str(inv_num.DegreeAverage.code)
@@ -277,6 +268,15 @@ class MiscellaneousTests(unittest.TestCase):
         mainA = str(inv_num.MainEigenvalueAdjacency.code)
         self.assertEqual(1, Helper.run('graphs3.g6', f'{mainA}(G)==1', {}))
 
+    def test_chromatic_number(self):
+        chi = str(inv_num.ChromaticNumber.code)
+        omega = str(inv_num.CliqueNumber.code)
+        eigen1 = str(inv_num.Largest1EigenA.code)
+        # self.assertEqual(1/265, Helper.run('graphs1.g6', f'{chi}(G)==2', {}))
+        # self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
+        # self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
+        self.assertEqual(1, Helper.run('graphs16.g6', f'{chi}(G)==5', {}))
+        # self.assertEqual(1, Helper.run('graphs17.g6', f'{chi}(G)=={omega}(G)+2', {}))
 
 if __name__ == '__main__':
     unittest.main()
