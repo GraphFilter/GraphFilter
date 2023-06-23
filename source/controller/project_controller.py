@@ -65,7 +65,8 @@ class ProjectController:
             self.project_tool_bar.fill_combo_graphs(project_information_store.temp_filtered_graphs)
 
         if project_information_store.current_graph is not None:
-            if len(project_information_store.current_graph_pos) != 0:
+            if len(project_information_store.current_graph_pos) != 0 and \
+                    project_information_store.get_file_type() == ".gml":
                 self.visualize_graph_dock.plot_graph(project_information_store.current_graph,
                                                      project_information_store.current_graph_pos)
             else:

@@ -63,6 +63,7 @@ class Controller:
         file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.gml)"])
         file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.gml)")
         project_information_store.file_path = file_path[0]
+        project_information_store.current_graph_pos = {}
         file_type = project_information_store.get_file_type()
 
         if file_type == '':
@@ -103,25 +104,30 @@ class Controller:
                                 window_title="Empty filtering")
             self.show_wizard_window()
         else:
-            project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+            if project_information_store.temp_method == 'blank':
+                project_information_store.current_graph = nx.Graph()
+            else:
+                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
             self.show_project_window()
             project_information_store.reset_store()
 
     def finish_wizard(self):
         update_project_store()
+        project_information_store.current_graph_pos = {}
         if project_information_store.temp_method == 'blank':
             graph = nx.Graph()
             project_information_store.file_path = \
                 project_information_store.file_path + "/" + project_information_store.temp_project_name + ".gml"
             project_information_store.temp_filtered_graphs = [project_information_store.temp_project_name]
             create_gml_file(graph, project_information_store.file_path)
+            self.start_project()
         else:
             self.filter_controller.start_filter()
 
-        if self.filter_controller.is_complete_filtering:
-            self.start_project()
-        else:
-            self.show_welcome_window()
+            if self.filter_controller.is_complete_filtering:
+                self.start_project()
+            else:
+                self.show_welcome_window()
 
     def show_project_window(self):
         self.project_controller.show_window()
