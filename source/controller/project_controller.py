@@ -1,5 +1,6 @@
 import os.path
 
+import networkx
 from PyQt5.QtGui import QCursor
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
@@ -413,6 +414,13 @@ class ProjectController:
                 return
 
     def handle_tree_double_click(self):
+        index = self.tree_file_dock.tree.currentIndex()
+        type_item = self.tree_file_dock.model.type(index)
+
+        if type_item == "File Folder":
+            self.is_gif_in_progress = False
+            return
+
         single_thread = td.Thread(target=self.open_tree_file_graphs)
         single_thread.start()
         self.loading_gif.start_animation()
@@ -426,6 +434,7 @@ class ProjectController:
         single_thread.join()
         self.loading_gif.close()
 
+        self.project_window.setDisabled(False)
         self.project_tool_bar.combo_graphs.setCurrentIndex(0)
         self.project_window.set_title_bar(project_information_store.get_file_name())
         self.update_graph_to_table()
@@ -441,9 +450,6 @@ class ProjectController:
         index = self.tree_file_dock.tree.currentIndex()
         file_path = self.tree_file_dock.model.filePath(index)
         type_item = self.tree_file_dock.model.type(index)
-
-        if type_item == "File Folder":
-            return
 
         project_information_store.file_path = file_path
 
@@ -464,13 +470,14 @@ class ProjectController:
             else:
                 with open(file_path) as file:
                     graphs = file.read().splitlines()
-            project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
+            try:
+                project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
+            except networkx.NetworkXError:
+                project_information_store.current_graph = graphs[0]
             self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graphs)
-
-        self.project_window.setDisabled(False)
 
         self.is_gif_in_progress = False
         self.visualize_graph_dock.setDisabled(False)
