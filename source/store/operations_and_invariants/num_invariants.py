@@ -1,14 +1,11 @@
 import grinpy as gp
 import networkx as nx
-import numpy.linalg as la
 import numpy as np
-import sys
-import trampoline
+import numpy.linalg as la
 
-
-from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
-from source.store.operations_and_invariants.invariants import Invariant
 import source.store.operations_and_invariants.other_invariants as inv_other
+from source.store.operations_and_invariants.invariants import Invariant
+from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 
 
 class InvariantNum(Invariant):
@@ -111,37 +108,23 @@ class ChromaticNumber(InvariantNum):
     name = "Chromatic number (aproximate)"
     code = '\u03c7'
     type = "number_structural"
-    # Algorithm from: Szwarcfiter, J. L.. Teoria computacional de grafos: Os Algoritmos. Elsevier Brasil, 2018.
+
     @staticmethod
     def calculate(graph: nx.Graph):
-        sys.setrecursionlimit(5000)
-
+        n = len(graph.nodes())
+        m = len(graph.edges())
+        if m == 0:
+            return 1
+        if m == n * (n - 1) / 2:
+            return n
+        if m == (n * (n - 1) / 2)-1:
+            return n-1
         if nx.is_bipartite(graph):
             return 2
 
-        # chromatic_num = len(graph)
-        #
-        # def color(g: nx.Graph):
-        #     global chromatic_num
-        #
-        #     n = len(g)
-        #     m = len(g.edges)
-        #     if m == n * (n - 1) / 2:
-        #         chromatic_num = min(chromatic_num, n)
-        #     else:
-        #         (v, w) = get_non_edges(g)
-        #
-        #         #Alfa-function
-        #         # color(alfa(v, w, g))
-        #         g_alfa = graph.copy()
-        #         g_alfa.add_edge(v, w)
-        #         color(g_alfa)
-        #         #Beta-function
-        #         # color(beta(v, w, g))
-        #         g_beta=nx.contracted_edge(g, v, w, copy=True)
-        #         color(g_beta)
-        #     return
+        # return gp.chromatic_number(graph)
 
+        ############### OPTION 1: FROM BOOK
         # def color(g: nx.Graph):
         #     n = len(g)
         #     m = len(g.edges)
@@ -154,32 +137,52 @@ class ChromaticNumber(InvariantNum):
         #         g_beta = nx.contracted_nodes(g, v, w, copy=True)
         #         return min(color(g_alfa), color(g_beta))
 
+        ############### OPTION 2: greedy wikipedia + permutation
+        # def greedy_color(g, order):
+        #     """Find the greedy coloring of G in the given order.
+        #     The representation of G is assumed to be like https://www.python.org/doc/essays/graphs/
+        #     in allowing neighbors of a node/vertex to be iterated over by "for w in G[node]".
+        #     The return value is a dictionary mapping vertices to their colors."""
+        #     color = dict()
+        #     for node in order:
+        #         used_neighbour_colors = [color[nbr] for nbr in g.neighbors(node) if nbr in color]
+        #         color[node] = first_available(used_neighbour_colors)
+        #     return color
+        #
+        # def first_available(color_list):
+        #     """Return smallest non-negative integer not in the given list of colors."""
+        #     color_set = set(color_list)
+        #     count = 0
+        #     while True:
+        #         if count not in color_set:
+        #             return count
+        #         count += 1
+        #
+        # all_orders = permutations(graph.nodes())
+        # best_coloring = None
+        # min_colors = len(graph)
+        # for order in all_orders:
+        #     coloring = greedy_color(graph, order=order)
+        #     num_colors = max(coloring.values()) + 1
+        #     if num_colors < min_colors:
+        #         min_colors = num_colors
+        #         best_coloring = coloring
+        #
+        ############### OPTION 3: nx.greedy + permutation
+        # for order in all_orders:
+        #     coloring = nx.greedy_color(graph.subgraph(order), strategy='DSATUR')
+        #     num_colors = max(coloring.values()) + 1
+        #     if num_colors < min_colors:
+        #         min_colors = num_colors
+        #         best_coloring = coloring
+        # return min_colors
 
-        def color(g: nx.Graph):
-            n = len(g)
-            m = len(g.edges)
-            if m == n * (n - 1) / 2:
-                return n
-            else:
-                v, w = get_non_edges(g)
-                g_alfa = g.copy()
-                g_alfa.add_edge(v, w, copy=True)
-                g_beta = nx.contracted_nodes(g, v, w, copy=True)
-                return min(color(g_alfa), color(g_beta))
-
-
-
-
-        def get_non_edges(g: nx.Graph):
-            for v in g.nodes:
-                for w in g.nodes:
-                    if v != w:
-                        if not g.has_edge(v, w):
-                            return v, w
-            return None
-
-
-        return color(graph)
+        ############### OPTION 4: nx.greedy with DSATUR, Largest First and Smallest Last (NO permutation)
+        strategy1 = max(nx.greedy_color(graph, strategy='DSATUR').values()) + 1
+        strategy2 = max(nx.greedy_color(graph, strategy='largest_first', interchange=True).values()) + 1
+        strategy3 = max(nx.greedy_color(graph, strategy='smallest_last', interchange=True).values()) + 1
+        strategy4 = max(nx.greedy_color(graph, strategy='random_sequential', interchange=True).values()) + 1
+        return min(strategy1, strategy2, strategy3, strategy4)
 
     @staticmethod
     def print(graph, precision):
@@ -607,6 +610,7 @@ class Largest2EigenQ(InvariantNum):
     def print(graph, precision):
         return Utils.print_numeric(Largest2EigenQ.calculate(graph), precision)
 
+
 class Largest2EigenN(InvariantNum):
     name = "2th Largest N-eigenvalue"
     code = "\u03bc\u207f\u2082"
@@ -639,9 +643,6 @@ class Largest2EigenS(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(Largest2EigenS.calculate(graph), precision)
-
-
-
 
 
 class Largest2EigenD(InvariantNum):
@@ -1215,6 +1216,7 @@ class MainEigenvalueDistance(InvariantNum):
         else:
             return 0
 
+
 class MainEigenvalueSignlessLaplacian(InvariantNum):
     name = 'Number main Q-eigen'
     code = 'mainQ'
@@ -1468,4 +1470,7 @@ class DeterminantEccentricityMatrix(InvariantNum):
 
 
 if __name__ == '__main__':
-    print(ChromaticNumber.calculate(nx.cycle_graph(5)))
+    # g = nx.from_graph6_bytes("X?CO_?FAoYIGcOKOPCaGbHCiCSAPAXPChAJc_bQPC[c]F??zo??".encode('utf-8'))
+    g = nx.from_graph6_bytes("g_??OGOGDwRal_koS[AXaVCHBwBFGARcAK`C_[aDQ?WQQAPHh?Q\?GXBIOSBPI?_PeG?LRGOQC?OoF_?`FOk?bAHMG@aHB__GboS?HSCqD?bOEWTO?XDg]?_@gedOO?keQh".encode('utf-8'))
+
+    print(ChromaticNumber.calculate(g))

@@ -112,9 +112,7 @@ Disconnected graphs.
 -----------------------------
 
 graphs16
-graphs with chromatic number 5
-(connected and no)
-
+graphs with chromatic number 4
 -----------------------------
 graphs17
 A graph with chi(G)=omega(G)+2 

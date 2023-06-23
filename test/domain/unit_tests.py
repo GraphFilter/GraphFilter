@@ -204,7 +204,7 @@ class DomainUnitTests(unittest.TestCase):
         diam = str(inv_num.Diameter.code)
         chi = str(inv_num.ChromaticNumber.code)
         self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{diam}(G)>0', {}))
-        self.assertEqual(4 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
+        self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
         self.assertEqual(True, Helper.find_example('graphs14.g6', f'{chi}(G)<8', {})[0])
 
     def test_multiprocess_find_example(self):
@@ -272,11 +272,11 @@ class MiscellaneousTests(unittest.TestCase):
         chi = str(inv_num.ChromaticNumber.code)
         omega = str(inv_num.CliqueNumber.code)
         eigen1 = str(inv_num.Largest1EigenA.code)
-        # self.assertEqual(1/265, Helper.run('graphs1.g6', f'{chi}(G)==2', {}))
-        # self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
-        # self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
-        self.assertEqual(1, Helper.run('graphs16.g6', f'{chi}(G)==5', {}))
-        # self.assertEqual(1, Helper.run('graphs17.g6', f'{chi}(G)=={omega}(G)+2', {}))
+        self.assertEqual(1/265, Helper.run('graphs1.g6', f'{chi}(G)>2', {}))
+        self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
+        self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
+        self.assertEqual(1, Helper.run('graphs16.g6', f'{chi}(G)==4', {}))
+        self.assertEqual(1, Helper.run('graphs17.g6', f'{chi}(G)=={omega}(G)+2', {}))
 
 if __name__ == '__main__':
     unittest.main()
