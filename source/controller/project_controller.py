@@ -418,7 +418,7 @@ class ProjectController:
         index = self.tree_file_dock.tree.currentIndex()
         type_item = self.tree_file_dock.model.type(index)
 
-        if type_item == "File Folder":
+        if type_item == "File Folder" or type_item == "Folder":
             self.is_gif_in_progress = False
             return
 
