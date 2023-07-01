@@ -11,7 +11,7 @@ from source.view.components.message_box import MessageBox
 
 
 def validate_path(path):
-    forbidden_chars = ['.', '\\', '/', ":"]
+    forbidden_chars = ['.', '\\', ":"]
     if len(path) != 0:
         if path[0] in forbidden_chars:
             return False
