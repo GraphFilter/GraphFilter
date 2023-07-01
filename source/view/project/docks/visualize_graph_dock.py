@@ -143,6 +143,11 @@ class ResizableGraph(EditableGraph):
     def _on_key_press(self, event):
         if event.key == "enter" or event.key == "alt+enter":
             return
+        if event.key == '=':
+            self._add_node(event)
+        if event.key == 'backspace':
+            self._delete_nodes()
+            self._delete_edges()
         super()._on_key_press(event)
 
         self.restart_label()

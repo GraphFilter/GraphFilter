@@ -191,8 +191,8 @@ class EditingFeatures(QDialog):
 
         self.tableWidget.setHorizontalHeaderLabels(["Keymap", "Function"])
 
-        label_list = [" Insert or +", " Delete or -", " Control + Left-Click", " Left-Click", " Left-Click",
-                      " Left-Click"]
+        label_list = [" Insert or + or =", " Delete or - or Backspace", " Control + Left-Click", " Left-Click",
+                      " Left-Click", " Left-Click"]
 
         for i, label_item in enumerate(label_list):
             label = QLabel(label_item)
