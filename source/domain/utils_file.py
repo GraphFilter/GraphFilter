@@ -81,7 +81,7 @@ def create_g6_file(path_to_save, graph_list, name_file=None, name_modifier=''):
             file.writelines(graph_list)
         return
 
-    with open(f"{path_to_save}\\{name_file}{name_modifier}.g6", 'w') as fp:
+    with open(f"{path_to_save}/{name_file}{name_modifier}.g6", 'w') as fp:
         for graph in graph_list:
             fp.write(f"{graph}\n")
 
