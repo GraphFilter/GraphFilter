@@ -201,8 +201,13 @@ class ProjectController:
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.graph_information_dock)
         # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
+        # TODO: Recalculate the following sizes of the docks
         self.graph_information_dock.setMaximumHeight(250)
-        self.tree_file_dock.setMaximumWidth(250)
+        self.invariants_check_dock.setMaximumWidth(int(self.invariants_check_dock.frameGeometry().width() * 0.3))
+        self.tree_file_dock.setMaximumWidth(int(self.tree_file_dock.frameGeometry().width() * 0.4))
+        self.visualize_graph_dock.setMinimumWidth(int(self.project_window.frameGeometry().width() * 0.4))
+        self.visualize_graph_dock.setMinimumHeight(int(self.project_window.frameGeometry().height() * 0.4))
+
         self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock,
                                             QtCore.Qt.Horizontal)
 
