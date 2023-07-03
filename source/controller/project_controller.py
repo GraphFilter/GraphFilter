@@ -201,12 +201,11 @@ class ProjectController:
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.graph_information_dock)
         # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
-        # TODO: Recalculate the following sizes of the docks
-        self.graph_information_dock.setMaximumHeight(250)
-        self.invariants_check_dock.setMaximumWidth(int(self.invariants_check_dock.frameGeometry().width() * 0.3))
-        self.tree_file_dock.setMaximumWidth(int(self.tree_file_dock.frameGeometry().width() * 0.4))
-        self.visualize_graph_dock.setMinimumWidth(int(self.project_window.frameGeometry().width() * 0.4))
-        self.visualize_graph_dock.setMinimumHeight(int(self.project_window.frameGeometry().height() * 0.4))
+        self.graph_information_dock.setMinimumHeight(int(self.project_window.frameGeometry().height() * 0.2))
+        self.invariants_check_dock.setMinimumWidth(int(self.project_window.frameGeometry().width() * 0.15))
+        self.tree_file_dock.setMinimumWidth(int(self.project_window.frameGeometry().width() * 0.25))
+        self.visualize_graph_dock.setMinimumWidth(int(self.project_window.frameGeometry().width() * 0.7))
+        self.visualize_graph_dock.setMinimumHeight(int(self.project_window.frameGeometry().height() * 0.6))
 
         self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock,
                                             QtCore.Qt.Horizontal)
@@ -234,7 +233,7 @@ class ProjectController:
 
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
-        # self.on_visualize_tree()
+        self.on_visualize_tree()
 
     def on_change_graph(self):
         # self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
