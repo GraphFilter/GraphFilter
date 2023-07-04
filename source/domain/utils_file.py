@@ -16,13 +16,13 @@ def import_gml_graph(file_path):
     except nx.NetworkXError:
         return None
 
+    project_information_store.current_graph_pos = {}
+
     if len(nx.get_node_attributes(graph, 'x')) != 0:
         for node in graph.nodes:
             graph.nodes[node]['pos'] = (graph.nodes[node]['x'], graph.nodes[node]['y'])
 
         project_information_store.current_graph_pos = nx.get_node_attributes(graph, 'pos')
-
-    project_information_store.current_graph_pos = {}
 
     return graph
 
