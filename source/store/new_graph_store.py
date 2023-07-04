@@ -39,6 +39,8 @@ class NewGraphStore:
     def reset_attributes(self):
         self.graph = None
         self.file_path = None
+        self.layout = 'spring'
+        self.radio_option = 0
 
     @staticmethod
     def open_url(url):
@@ -271,7 +273,6 @@ class TuranGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.turan_graph(int(dialog.dict['n'].text()), int(dialog.dict['r'].text())))
-        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
     @staticmethod
@@ -402,7 +403,8 @@ class RandomRegularGraph(NewGraphStore):
         if NewGraphStore.is_other_params_empty(dialog):
             return
         if dialog.dict['d'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
-                (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0:
+                (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0 and \
+                0 <= int(dialog.dict['d'].text()) < int(dialog.dict['n'].text()):
             dialog.create_button.setEnabled(True)
             dialog.dict['d'].setStyleSheet('background-color: white;')
             dialog.dict['n'].setStyleSheet('background-color: white;')
