@@ -178,11 +178,14 @@ class ChromaticNumber(InvariantNum):
         # return min_colors
 
         ############### OPTION 4: nx.greedy with DSATUR, Largest First and Smallest Last (NO permutation)
-        strategy1 = max(nx.greedy_color(graph, strategy='DSATUR').values()) + 1
-        strategy2 = max(nx.greedy_color(graph, strategy='largest_first', interchange=True).values()) + 1
-        strategy3 = max(nx.greedy_color(graph, strategy='smallest_last', interchange=True).values()) + 1
-        strategy4 = max(nx.greedy_color(graph, strategy='random_sequential', interchange=True).values()) + 1
-        return min(strategy1, strategy2, strategy3, strategy4)
+        strategies = [max(nx.greedy_color(graph, strategy='DSATUR').values()),
+                      max(nx.greedy_color(graph, strategy='largest_first', interchange=True).values()),
+                      max(nx.greedy_color(graph, strategy='smallest_last', interchange=True).values()),
+                      max(nx.greedy_color(graph, strategy='random_sequential', interchange=True).values()),
+                      max(nx.greedy_color(graph, strategy='independent_set').values()),
+                      max(nx.greedy_color(graph, strategy='connected_sequential_bfs', interchange=True).values()),
+                      max(nx.greedy_color(graph, strategy='connected_sequential_dfs', interchange=True).values())]
+        return min(strategies)+1
 
     @staticmethod
     def print(graph, precision):
@@ -1470,7 +1473,7 @@ class DeterminantEccentricityMatrix(InvariantNum):
 
 
 if __name__ == '__main__':
-    # g = nx.from_graph6_bytes("X?CO_?FAoYIGcOKOPCaGbHCiCSAPAXPChAJc_bQPC[c]F??zo??".encode('utf-8'))
-    g = nx.from_graph6_bytes("g_??OGOGDwRal_koS[AXaVCHBwBFGARcAK`C_[aDQ?WQQAPHh?Q\?GXBIOSBPI?_PeG?LRGOQC?OoF_?`FOk?bAHMG@aHB__GboS?HSCqD?bOEWTO?XDg]?_@gedOO?keQh".encode('utf-8'))
+    g = nx.from_graph6_bytes("X?CO_?FAoYIGcOKOPCaGbHCiCSAPAXPChAJc_bQPC[c]F??zo??".encode('utf-8'))
+    # g = nx.from_graph6_bytes("bs?pATWBc@?o?SK?H?EOiiH_qaqIqWmPqEb__\WA[U?eJcD]B_Ke`g_Phg_AcrO?WLoO?dio?COGLOy?aQNK_aPTqC_IajGIOhaq_".encode('utf-8'))
 
     print(ChromaticNumber.calculate(g))
