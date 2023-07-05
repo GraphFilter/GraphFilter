@@ -380,7 +380,7 @@ class PetersenGraph(NewGraphStore):
 class RandomRegularGraph(NewGraphStore):
     name = "Random Regular Graph"
     dict_attributes_names = {"d": "Degree of nodes, d", "n": "Number of nodes, n", "conditions":
-                             "1 \u2264 d,n \u2264 60 & d \u00d7 n = even"}
+                             "1 \u2264 d < n \u2264 60 & d \u00d7 n = even"}
 
     @staticmethod
     def open_dialog():
