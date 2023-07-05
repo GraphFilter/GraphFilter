@@ -21,7 +21,7 @@ class Invariant:
 class UtilsToInvariants:
 
     @staticmethod
-    def approx_to_int(number, error=0.00001):
+    def approx_to_int(number, error=10**-8):
         if abs(round(number) - number) <= error:
             return float(round(number, ndigits=5))
         else:
@@ -73,9 +73,9 @@ class UtilsToInvariants:
             return value
         for i, x in enumerate(value[0]):
             if UtilsToInvariants.is_integer(x):
-                spectrum = spectrum + f"{int(x)} \u2192 V{i} ={vectors[:][i].tolist()} \n"
+                spectrum = spectrum + f"{round(x)} \u2192 V{i} ={vectors[:,i].tolist()} \n"
             else:
-                spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 V{i}={vectors[:][i].tolist()} \n'
+                spectrum = spectrum + f'{np.around(x, decimals=precision)} \u2192 V{i}={vectors[:,i].tolist()} \n'
         return spectrum
 
     @staticmethod
@@ -85,7 +85,7 @@ class UtilsToInvariants:
             return value
         for x in value:
             if UtilsToInvariants.is_integer(x):
-                values.append(int(x))
+                values.append(round(x))
             else:
                 values.append(np.around(x, decimals=precision))
         return str(values)
@@ -102,8 +102,9 @@ class UtilsToInvariants:
         return str(value)
 
     @staticmethod
-    def print_set(value, precision):
-        return np.array2string(np.array(value), precision=precision, separator=" , ")
+    def print_set(set, precision):
+        return f"value= {len(set)}, set= " + np.array2string(np.array(set), precision=precision, separator=" , ")
+
 
     @staticmethod
     def max_line_of_string(text: str):

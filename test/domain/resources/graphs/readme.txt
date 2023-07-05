@@ -109,4 +109,12 @@ valid: 5; invalid: 3
 graphs15
 Disconnected graphs.
 
+-----------------------------
+
+graphs16
+graphs with chromatic number 4
+-----------------------------
+graphs17
+A graph with chi(G)=omega(G)+2 
+
 

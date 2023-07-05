@@ -455,72 +455,83 @@ class EccentricityEigenvectors(InvariantOther):
         return Utils.print_eigenvectors_and_eigenvalues(EccentricityEigenvectors.calculate(graph), precision)
 
 
-class MaximumClique(InvariantOther):
-    name = "Maximum Clique"
-    type = 'set'
+# class MaximumClique(InvariantOther):
+#     name = "Maximum Clique"
+#     type = 'set'
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return set(nx.max_weight_clique(graph, weight=None)[0])
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
+#
+# class MaximumIndependentSet(InvariantOther):
+#     name = "Maximum Independent Set"
+#     type = 'set'
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return MaximumClique.calculate(nx.complement(graph))
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return MaximumClique.print(nx.complement(graph), precision)
 
-    @staticmethod
-    def calculate(graph):
-        return set(nx.max_weight_clique(graph, weight=None)[0])
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
-
-
-class MainEigenvalueAdjacency(InvariantOther):
-    name = 'Main A-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.main_eigenvalue(AdjacencyMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueAdjacency.calculate(graph), precision)
-
-
-class MainEigenvalueDistance(InvariantOther):
-    name = 'Main D-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return list(Utils.main_eigenvalue(DistanceMatrix.calculate(graph)))
-        else:
-            return 'Disconnected graph'
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueDistance.calculate(graph), precision)
-
-
-class MainEigenvalueSignlessLaplacian(InvariantOther):
-    name = 'Main Q-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.main_eigenvalue(SignlessLaplacianMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueSignlessLaplacian.calculate(graph), precision)
-
-
-class MainEigenvalueSeidel(InvariantOther):
-    name = 'Main S-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.main_eigenvalue(SeidelMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueSeidel.calculate(graph), precision)
+# class MainEigenvalueAdjacency(InvariantOther):
+#     name = 'Main A-eigenvalues (set)'
+#     type = "set"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return list(Utils.main_eigenvalue(AdjacencyMatrix.calculate(graph)))
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_set(MainEigenvalueAdjacency.calculate(graph), precision)
+#
+#
+# class MainEigenvalueDistance(InvariantOther):
+#     name = 'Main D-eigenvalues (set)'
+#     type = "set"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         if nx.is_connected(graph):
+#             return list(Utils.main_eigenvalue(DistanceMatrix.calculate(graph)))
+#         else:
+#             return 'Disconnected graph'
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_set(MainEigenvalueDistance.calculate(graph), precision)
+#
+#
+# class MainEigenvalueSignlessLaplacian(InvariantOther):
+#     name = 'Main Q-eigenvalues (set)'
+#     type = "set"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return list(Utils.main_eigenvalue(SignlessLaplacianMatrix.calculate(graph)))
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_set(MainEigenvalueSignlessLaplacian.calculate(graph), precision)
+#
+#
+# class MainEigenvalueSeidel(InvariantOther):
+#     name = 'Main S-eigenvalues (set)'
+#     type = "set"
+#
+#     @staticmethod
+#     def calculate(graph):
+#         return list(Utils.main_eigenvalue(SeidelMatrix.calculate(graph)))
+#
+#     @staticmethod
+#     def print(graph, precision):
+#         return Utils.print_set(MainEigenvalueSeidel.calculate(graph), precision)
 
 
 class DegreeCentrality(InvariantOther):
