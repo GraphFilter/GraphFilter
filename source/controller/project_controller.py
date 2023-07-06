@@ -475,6 +475,8 @@ class ProjectController:
                 project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
             except networkx.NetworkXError:
                 project_information_store.current_graph = graphs[0]
+            except IndexError:
+                project_information_store.current_graph = None
             self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.reset_combo_graphs()
