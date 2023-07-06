@@ -33,6 +33,7 @@ class InvariantNum(Invariant):
     def calculate(graph):
         pass
 
+
 class NumberVertices(InvariantNum):
     name = "Number of vertices"
     code = 'n'
@@ -104,87 +105,30 @@ class DominationNumber(InvariantNum):
 
 
 class ChromaticNumber(InvariantNum):
-    name = "Chromatic number (aproximate)"
+    name = "Chromatic number (estimated)"
     code = '\u03c7'
     type = "number_structural"
 
     @staticmethod
-    def calculate(graph: nx.Graph):
+    def calculate(graph):
         n = len(graph.nodes())
         m = len(graph.edges())
         if m == 0:
             return 1
         if m == n * (n - 1) / 2:
             return n
-        if m == (n * (n - 1) / 2)-1:
-            return n-1
+        if m == (n * (n - 1) / 2) - 1:
+            return n - 1
         if nx.is_bipartite(graph):
             return 2
 
-        # return gp.chromatic_number(graph)
-
-        ############### OPTION 1: FROM BOOK
-        # def color(g: nx.Graph):
-        #     n = len(g)
-        #     m = len(g.edges)
-        #     if m == n * (n - 1) / 2:
-        #         return n
-        #     else:
-        #         v, w = get_non_edges(g)
-        #         g_alfa = g.copy()
-        #         g_alfa.add_edge(v, w, copy=True)
-        #         g_beta = nx.contracted_nodes(g, v, w, copy=True)
-        #         return min(color(g_alfa), color(g_beta))
-
-        ############### OPTION 2: greedy wikipedia + permutation
-        # def greedy_color(g, order):
-        #     """Find the greedy coloring of G in the given order.
-        #     The representation of G is assumed to be like https://www.python.org/doc/essays/graphs/
-        #     in allowing neighbors of a node/vertex to be iterated over by "for w in G[node]".
-        #     The return value is a dictionary mapping vertices to their colors."""
-        #     color = dict()
-        #     for node in order:
-        #         used_neighbour_colors = [color[nbr] for nbr in g.neighbors(node) if nbr in color]
-        #         color[node] = first_available(used_neighbour_colors)
-        #     return color
-        #
-        # def first_available(color_list):
-        #     """Return smallest non-negative integer not in the given list of colors."""
-        #     color_set = set(color_list)
-        #     count = 0
-        #     while True:
-        #         if count not in color_set:
-        #             return count
-        #         count += 1
-        #
-        # all_orders = permutations(graph.nodes())
-        # best_coloring = None
-        # min_colors = len(graph)
-        # for order in all_orders:
-        #     coloring = greedy_color(graph, order=order)
-        #     num_colors = max(coloring.values()) + 1
-        #     if num_colors < min_colors:
-        #         min_colors = num_colors
-        #         best_coloring = coloring
-        #
-        ############### OPTION 3: nx.greedy + permutation
-        # for order in all_orders:
-        #     coloring = nx.greedy_color(graph.subgraph(order), strategy='DSATUR')
-        #     num_colors = max(coloring.values()) + 1
-        #     if num_colors < min_colors:
-        #         min_colors = num_colors
-        #         best_coloring = coloring
-        # return min_colors
-
-        ############### OPTION 4: nx.greedy with DSATUR, Largest First and Smallest Last (NO permutation)
         strategies = [max(nx.greedy_color(graph, strategy='DSATUR').values()),
                       max(nx.greedy_color(graph, strategy='largest_first', interchange=True).values()),
                       max(nx.greedy_color(graph, strategy='smallest_last', interchange=True).values()),
-                      max(nx.greedy_color(graph, strategy='random_sequential', interchange=True).values()),
-                      max(nx.greedy_color(graph, strategy='independent_set').values()),
-                      max(nx.greedy_color(graph, strategy='connected_sequential_bfs', interchange=True).values()),
-                      max(nx.greedy_color(graph, strategy='connected_sequential_dfs', interchange=True).values())]
-        return min(strategies)+1
+                      max(nx.greedy_color(graph, strategy='random_sequential', interchange=True).values())
+                      ]
+
+        return round(min(strategies) + 1)
 
     @staticmethod
     def print(graph, precision):
@@ -1073,7 +1017,7 @@ class MinimumEdgeCover(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.number_of_isolates(graph) < 1 and nx.number_of_nodes(graph) > 1:
+        if nx.number_of_isolates(graph) < 1 < nx.number_of_nodes(graph):
             return len(nx.algorithms.covering.min_edge_cover(graph))
         else:
             return 10 ** 10
@@ -1469,10 +1413,3 @@ class DeterminantEccentricityMatrix(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(DeterminantEccentricityMatrix.calculate(graph), precision)
-
-
-if __name__ == '__main__':
-    g = nx.from_graph6_bytes("X?CO_?FAoYIGcOKOPCaGbHCiCSAPAXPChAJc_bQPC[c]F??zo??".encode('utf-8'))
-    # g = nx.from_graph6_bytes("bs?pATWBc@?o?SK?H?EOiiH_qaqIqWmPqEb__\WA[U?eJcD]B_Ke`g_Phg_AcrO?WLoO?dio?COGLOy?aQNK_aPTqC_IajGIOhaq_".encode('utf-8'))
-
-    print(ChromaticNumber.calculate(g))
