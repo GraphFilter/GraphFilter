@@ -26,7 +26,7 @@ class WelcomeContent(QWidget):
         self.version.setText("<h2>version 3.0</h2>")
         self.version.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.logo.setPixmap(QPixmap("resources/logos/graph_filter.png").scaled(120, 120, QtCore.Qt.KeepAspectRatio,
+        self.logo.setPixmap(QPixmap("resources/logos/graph_filter.png").scaled(150, 150, QtCore.Qt.KeepAspectRatio,
                                                                           QtCore.Qt.SmoothTransformation))
         self.logo.setAlignment(QtCore.Qt.AlignCenter)
 

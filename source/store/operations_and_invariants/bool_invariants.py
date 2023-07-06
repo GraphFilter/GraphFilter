@@ -92,7 +92,7 @@ class Eulerian(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return gp.is_eulerian(graph)
+        return nx.is_eulerian(graph)
 
     @staticmethod
     def print(graph, precision):
@@ -105,7 +105,7 @@ class Chordal(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return gp.is_chordal(graph)
+        return nx.is_chordal(graph)
 
     @staticmethod
     def print(graph, precision):
@@ -144,7 +144,7 @@ class Regular(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return gp.is_regular(graph)
+        return nx.is_regular(graph)
 
     @staticmethod
     def print(graph, precision):
@@ -196,7 +196,7 @@ class Cubic(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        return gp.is_k_regular(graph, k=3)
+        return nx.is_k_regular(graph, k=3)
 
     @staticmethod
     def print(graph, precision):
@@ -217,7 +217,7 @@ class HasBridge(InvariantBool):
 
 
 class Threshold(InvariantBool):
-    name = 'Is threshold'
+    name = 'Threshold'
     type = 'bool_structural'
 
     @staticmethod

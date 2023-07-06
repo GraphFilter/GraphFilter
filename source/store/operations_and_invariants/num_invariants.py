@@ -2,9 +2,10 @@ import grinpy as gp
 import networkx as nx
 import numpy as np
 import numpy.linalg as la
-from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
-from source.store.operations_and_invariants.invariants import Invariant
+
 import source.store.operations_and_invariants.other_invariants as inv_other
+from source.store.operations_and_invariants.invariants import Invariant
+from source.store.operations_and_invariants.invariants import UtilsToInvariants as Utils
 
 
 class InvariantNum(Invariant):
@@ -31,20 +32,6 @@ class InvariantNum(Invariant):
     @staticmethod
     def calculate(graph):
         pass
-
-
-class ChromaticNumber(InvariantNum):
-    name = "Chromatic number"
-    code = '\u03c7'
-    type = "number_structural"
-
-    @staticmethod
-    def calculate(graph):
-        return len(set(nx.greedy_color(graph).values()))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_dict(dict(sorted(nx.greedy_color(graph).items())), precision)
 
 
 class NumberVertices(InvariantNum):
@@ -82,7 +69,7 @@ class CliqueNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.clique_number(graph)
+        return len(set(nx.max_weight_clique(graph, weight=None)[0]))
 
     @staticmethod
     def print(graph, precision):
@@ -96,25 +83,11 @@ class IndependenceNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.independence_number(graph)
+        return CliqueNumber.calculate(nx.complement(graph))
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(nx.complement(graph), weight=None)[0]), precision)
-
-
-class TotalDominationNumber(InvariantNum):
-    name = "Total domination number"
-    code = '\u0194\u209c'
-    type = "number_structural"
-
-    @staticmethod
-    def calculate(graph):
-        return gp.total_domination_number(graph)
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_numeric(TotalDominationNumber.calculate(graph), precision)
+        return CliqueNumber.print(nx.complement(graph), precision)
 
 
 class DominationNumber(InvariantNum):
@@ -128,21 +101,38 @@ class DominationNumber(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(nx.dominating_set(graph), precision)
+        return Utils.print_numeric(gp.domination_number(graph), precision)
 
 
-class ConnectedDominationNumber(InvariantNum):
-    name = "Connected domination number"
-    code = '\u0194c'
+class ChromaticNumber(InvariantNum):
+    name = "Chromatic number (estimated)"
+    code = '\u03c7'
     type = "number_structural"
 
     @staticmethod
     def calculate(graph):
-        return gp.connected_domination_number(graph)
+        n = len(graph.nodes())
+        m = len(graph.edges())
+        if m == 0:
+            return 1
+        if m == n * (n - 1) / 2:
+            return n
+        if m == (n * (n - 1) / 2) - 1:
+            return n - 1
+        if nx.is_bipartite(graph):
+            return 2
+
+        strategies = [max(nx.greedy_color(graph, strategy='DSATUR').values()),
+                      max(nx.greedy_color(graph, strategy='largest_first', interchange=True).values()),
+                      max(nx.greedy_color(graph, strategy='smallest_last', interchange=True).values()),
+                      max(nx.greedy_color(graph, strategy='random_sequential', interchange=True).values())
+                      ]
+
+        return round(min(strategies) + 1)
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(ConnectedDominationNumber.calculate(graph), precision)
+        return Utils.print_numeric(ChromaticNumber.calculate(graph), precision)
 
 
 class GirthNumber(InvariantNum):
@@ -162,56 +152,6 @@ class GirthNumber(InvariantNum):
         return Utils.print_numeric(GirthNumber.calculate(graph), precision)
 
 
-# class IndependentDominationNumber(InvariantNum):
-#     name = "Independent Domination Number"
-#     code = 'idom'
-#     type = "number"
-#
-#     @staticmethod
-#     def calculate(graph):
-#         return gp.independent_domination_number(graph)
-
-#
-# class PowerDominationNumber(InvariantNum):
-#     name = "Power Domination Number"
-#     code = ['pdom']
-#     type = "number"
-#
-#     @staticmethod
-#     def calculate(graph):
-#         return gp.power_domination_number(graph)
-
-
-# class ZeroForcingNumber(InvariantNum):
-#     name = "Zero Forcing Number"
-#     code = ['zeroForcing']
-#     type = "number"
-#
-#     @staticmethod
-#     def calculate(graph):
-#         return gp.zero_forcing_number(graph)
-
-
-# class TotalZeroForcingNumber(InvariantNum):
-#     name = "Total Zero Forcing Number"
-#     code = ['tZeroForcing']
-#     type = "number"
-#
-#     @staticmethod
-#     def calculate(graph):
-#         return gp.total_zero_forcing_number(graph)
-
-
-# class ConnectedZeroForcingNumber(InvariantNum):
-#     name = "Connected zero Forcing Number"
-#     code = ['cZeroForcing']
-#     type = "number"
-#
-#     @staticmethod
-#     def calculate(graph):
-#         return gp.connected_zero_forcing_number(graph)
-
-
 class MatchingNumber(InvariantNum):
     name = "Matching number"
     code = '\u03bd'
@@ -219,11 +159,11 @@ class MatchingNumber(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        return gp.matching_number(graph)
+        return IndependenceNumber.calculate(nx.line_graph(graph))
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_matching(graph, weight=None)), precision)
+        return IndependenceNumber.print(nx.line_graph(graph), precision)
 
 
 class NumberComponnents(InvariantNum):
@@ -538,6 +478,7 @@ class Largest2EigenQ(InvariantNum):
     def print(graph, precision):
         return Utils.print_numeric(Largest2EigenQ.calculate(graph), precision)
 
+
 class Largest2EigenN(InvariantNum):
     name = "2th Largest N-eigenvalue"
     code = "\u03bc\u207f\u2082"
@@ -570,9 +511,6 @@ class Largest2EigenS(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(Largest2EigenS.calculate(graph), precision)
-
-
-
 
 
 class Largest2EigenD(InvariantNum):
@@ -1001,7 +939,7 @@ class MinimumEdgeCover(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.number_of_isolates(graph) < 1 and nx.number_of_nodes(graph) > 1:
+        if nx.number_of_isolates(graph) < 1 < nx.number_of_nodes(graph):
             return len(nx.algorithms.covering.min_edge_cover(graph))
         else:
             return 10 ** 10
@@ -1124,7 +1062,7 @@ class MainEigenvalueAdjacency(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueAdjacency.calculate(graph), precision)
+        return Utils.print_set(Utils.main_eigenvalue(inv_other.AdjacencyMatrix.calculate(graph)), precision)
 
 
 class MainEigenvalueDistance(InvariantNum):
@@ -1141,7 +1079,10 @@ class MainEigenvalueDistance(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueDistance.calculate(graph), precision)
+        if nx.is_connected(graph):
+            return Utils.print_set(Utils.main_eigenvalue(inv_other.DistanceMatrix.calculate(graph)), precision)
+        else:
+            return 0
 
 
 class MainEigenvalueSignlessLaplacian(InvariantNum):
@@ -1155,7 +1096,7 @@ class MainEigenvalueSignlessLaplacian(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueSignlessLaplacian.calculate(graph), precision)
+        return Utils.print_set(Utils.main_eigenvalue(inv_other.SignlessLaplacianMatrix.calculate(graph)), precision)
 
 
 class MainEigenvalueSeidel(InvariantNum):
@@ -1169,7 +1110,7 @@ class MainEigenvalueSeidel(InvariantNum):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_numeric(MainEigenvalueSeidel.calculate(graph), precision)
+        return Utils.print_set(Utils.main_eigenvalue(inv_other.SeidelMatrix.calculate(graph)), precision)
 
 
 class RankAdjacency(InvariantNum):
