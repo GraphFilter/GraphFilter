@@ -335,6 +335,9 @@ class ProjectController:
             calculate(project_information_store.current_graph)
 
         if graph is not None:
+            if self.active_operation_action == 'Complement':
+                self.visualize_graph_dock.plot_graph(graph, project_information_store.current_graph_pos)
+                return
             self.visualize_graph_dock.plot_graph(graph)
 
     def on_export_button(self):
