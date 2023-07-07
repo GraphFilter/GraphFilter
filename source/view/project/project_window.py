@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import *
+from PyQt5 import QtCore
 from source.view.components.image import Icon
 from source.domain.utils import set_view_size
 
@@ -12,7 +13,7 @@ class ProjectWindow(QMainWindow):
 
         self.width = 0
         self.height = 0
-        set_view_size(self, 1.4)
+        set_view_size(self, 1)
 
         self.new_action = QAction("New Project")
         self.open_action = QAction("Open...")
@@ -42,8 +43,11 @@ class ProjectWindow(QMainWindow):
 
     def set_content_attributes(self):
         self.setWindowIcon(self.icon)
+        self.setWindowFlags(QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowCloseButtonHint
+                            | QtCore.Qt.WindowMaximizeButtonHint)
 
-        self.setMinimumSize(self.width, self.height)
+        self.setFixedSize(self.width, self.height)
+
 
     def set_title_bar(self, project_name):
         self.setWindowTitle(f"Graph Filter - {project_name}")
