@@ -48,7 +48,6 @@ class ProjectWindow(QMainWindow):
 
         self.setFixedSize(self.width, self.height)
 
-
     def set_title_bar(self, project_name):
         self.setWindowTitle(f"Graph Filter - {project_name}")
 
