@@ -44,7 +44,7 @@ class ProjectWindow(QMainWindow):
     def set_content_attributes(self):
         self.setWindowIcon(self.icon)
         self.setWindowFlags(QtCore.Qt.CustomizeWindowHint | QtCore.Qt.WindowCloseButtonHint
-                            | QtCore.Qt.WindowMaximizeButtonHint)
+                            | QtCore.Qt.WindowMinMaxButtonsHint)
 
         self.setFixedSize(self.width, self.height)
 
