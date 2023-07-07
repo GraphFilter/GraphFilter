@@ -20,7 +20,8 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box
+from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box, \
+    fix_graph_nodes
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
 import threading as td
@@ -302,11 +303,10 @@ class ProjectController:
 
     def on_new_graph_button(self):
         new_graph_dict_name[self.active_new_graph_action].open_dialog()
-        graph = new_graph_store.graph
-        layout = new_graph_store.layout
         file_path = new_graph_store.file_path
 
-        if graph is not None:
+        if new_graph_store.graph is not None:
+            graph, layout = fix_graph_nodes(new_graph_store.graph, new_graph_store.layout)
             try:
                 graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
             except AttributeError:
@@ -481,6 +481,8 @@ class ProjectController:
                 project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
             except networkx.NetworkXError:
                 project_information_store.current_graph = graphs[0]
+            except IndexError:
+                project_information_store.current_graph = None
             self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.reset_combo_graphs()

@@ -39,6 +39,8 @@ class NewGraphStore:
     def reset_attributes(self):
         self.graph = None
         self.file_path = None
+        self.layout = 'spring'
+        self.radio_option = 0
 
     @staticmethod
     def open_url(url):
@@ -271,7 +273,6 @@ class TuranGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.turan_graph(int(dialog.dict['n'].text()), int(dialog.dict['r'].text())))
-        new_graph_store.set_layout('circular')
         NewGraphStore.create_graph(dialog)
 
     @staticmethod
@@ -379,7 +380,7 @@ class PetersenGraph(NewGraphStore):
 class RandomRegularGraph(NewGraphStore):
     name = "Random Regular Graph"
     dict_attributes_names = {"d": "Degree of nodes, d", "n": "Number of nodes, n", "conditions":
-                             "1 \u2264 d,n \u2264 60 & d \u00d7 n = even"}
+                             "1 \u2264 d < n \u2264 60 & d \u00d7 n = even"}
 
     @staticmethod
     def open_dialog():
@@ -402,7 +403,8 @@ class RandomRegularGraph(NewGraphStore):
         if NewGraphStore.is_other_params_empty(dialog):
             return
         if dialog.dict['d'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
-                (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0:
+                (int(dialog.dict['d'].text()) * int(dialog.dict['n'].text())) % 2 == 0 and \
+                0 <= int(dialog.dict['d'].text()) < int(dialog.dict['n'].text()):
             dialog.create_button.setEnabled(True)
             dialog.dict['d'].setStyleSheet('background-color: white;')
             dialog.dict['n'].setStyleSheet('background-color: white;')
@@ -446,7 +448,7 @@ class RandomCograph(NewGraphStore):
 class CompleteBipartiteGraph(NewGraphStore):
     name = "Complete Bipartite Graph"
     dict_attributes_names = {"m": "Number of nodes for set A, m", "n": "Number of nodes for set B, n",
-                             "conditions": "1 \u2264 m,n \u2264 60"}
+                             "conditions": "1 \u2264 m + n \u2264 60"}
 
     @staticmethod
     def open_dialog():
@@ -455,8 +457,8 @@ class CompleteBipartiteGraph(NewGraphStore):
         dialog.create_button.clicked.connect(lambda: CompleteBipartiteGraph.create_graph(dialog))
         dialog.graph_link.clicked.connect(lambda: NewGraphStore.open_url
                                           ("https://en.wikipedia.org/wiki/Complete_bipartite_graph"))
-        dialog.dict['m'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'm'))
-        dialog.dict['n'].textEdited.connect(lambda: NewGraphStore.verify_natural_number(dialog, 'n'))
+        dialog.dict['m'].textEdited.connect(lambda: CompleteBipartiteGraph.verify_m_plus_n(dialog))
+        dialog.dict['n'].textEdited.connect(lambda: CompleteBipartiteGraph.verify_m_plus_n(dialog))
 
         NewGraphStore.open_new_dialog(dialog)
 
@@ -466,6 +468,20 @@ class CompleteBipartiteGraph(NewGraphStore):
                                                                  int(dialog.dict['n'].text())))
         new_graph_store.set_layout('bipartite')
         NewGraphStore.create_graph(dialog)
+
+    @staticmethod
+    def verify_m_plus_n(dialog):
+        if NewGraphStore.is_other_params_empty(dialog):
+            return
+        if dialog.dict['m'].text().isnumeric() and dialog.dict['n'].text().isnumeric() and \
+                0 <= int(dialog.dict['m'].text()) + int(dialog.dict['n'].text()) <= 60:
+            dialog.create_button.setEnabled(True)
+            dialog.dict['m'].setStyleSheet('background-color: white;')
+            dialog.dict['n'].setStyleSheet('background-color: white;')
+        else:
+            dialog.create_button.setDisabled(True)
+            dialog.dict['m'].setStyleSheet('background-color: #EF5350;')
+            dialog.dict['n'].setStyleSheet('background-color: #EF5350;')
 
 
 class ThresholdGraph(NewGraphStore):

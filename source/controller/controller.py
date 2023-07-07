@@ -81,7 +81,10 @@ class Controller:
             else:
                 with open(file_path[0]) as file:
                     project_information_store.temp_filtered_graphs = file.read().splitlines()
-                project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+                try:
+                    project_information_store.current_graph = project_information_store.temp_filtered_graphs[0]
+                except IndexError:
+                    project_information_store.current_graph = None
 
             project_information_store.temp_graph_input_files = project_information_store.file_path
 

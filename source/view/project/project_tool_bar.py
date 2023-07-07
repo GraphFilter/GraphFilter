@@ -81,7 +81,7 @@ class ProjectToolBar(QToolBar):
         self.save_button.setIcon(Icon("save"))
         self.save_button.setToolTip('Save current graph changes')
         self.delete_button.setIcon(Icon("delete"))
-        self.delete_button.setToolTip('Delete current graph')
+        self.delete_button.setToolTip('Erase current graph. \nIn a list (g6), will remove the current graph')
 
         self.operations_menu_bar.setIcon(Icon("operations"))
         self.operations_menu_bar.setToolTip('Apply operation on the current graph')
