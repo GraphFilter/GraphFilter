@@ -81,7 +81,7 @@ def create_g6_file(path_to_save, graph_list, name_file=None, name_modifier=''):
             file.writelines(graph_list)
         return
 
-    with open(f"{path_to_save}\\{name_file}{name_modifier}.g6", 'w') as fp:
+    with open(f"{path_to_save}/{name_file}{name_modifier}.g6", 'w') as fp:
         for graph in graph_list:
             fp.write(f"{graph}\n")
 
@@ -99,7 +99,7 @@ def generate_pdf_report(name, method, equation, conditions, input_graph_file, fi
                                     input_graph_file)
     pdf.information_about_graphs(filtered_graphs, method, num_graphs)
     pdf.output(project_information_store.get_file_directory() +
-               '\\' + f'{name}{name_modifier}.pdf')
+               '/' + f'{name}{name_modifier}.pdf')
 
 
 def handle_invalid_file_open():

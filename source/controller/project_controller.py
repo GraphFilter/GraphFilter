@@ -201,8 +201,11 @@ class ProjectController:
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.graph_information_dock)
         # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
-        self.graph_information_dock.setMaximumHeight(250)
-        self.tree_file_dock.setMaximumWidth(250)
+        self.visualize_graph_dock.setMinimumSize(int(self.project_window.frameGeometry().width() * 0.65),
+                                                 int(self.project_window.frameGeometry().height() * 0.50))
+        self.invariants_check_dock.setMinimumSize(int(self.project_window.frameGeometry().width() * 0.15),
+                                                  int(self.project_window.frameGeometry().height() * 0.50))
+
         self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock,
                                             QtCore.Qt.Horizontal)
 
@@ -229,7 +232,7 @@ class ProjectController:
 
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
-        # self.on_visualize_tree()
+        self.on_visualize_tree()
 
     def on_change_graph(self):
         # self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
@@ -421,7 +424,7 @@ class ProjectController:
         index = self.tree_file_dock.tree.currentIndex()
         type_item = self.tree_file_dock.model.type(index)
 
-        if type_item == "File Folder":
+        if type_item == "File Folder" or type_item == "Folder":
             self.is_gif_in_progress = False
             return
 
