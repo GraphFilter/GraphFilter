@@ -79,6 +79,8 @@ class ProjectController:
         if project_information_store.get_file_type() == '.gml':
             self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
             self.project_tool_bar.combo_graphs.setDisabled(True)
+        else:
+            self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
 
