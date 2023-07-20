@@ -169,6 +169,7 @@ class DomainUnitTests(unittest.TestCase):
             self.assertTrue(isinstance(inv.print(g, precision=5), str))
 
     def test_all_operations(self):
+        long_equation = ""
         for opg in oper.GraphOperations().all:
             for opm in oper.MathOperations().all:
                 for inv in inv_num.InvariantNum().all:
@@ -176,10 +177,11 @@ class DomainUnitTests(unittest.TestCase):
                     self.assertTrue(Helper.run('single_graph.g6',
                                                f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0', {}) >= 0
                                     )
-
+                    long_equation = long_equation + f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0 AND '
                     self.assertEqual(
                         "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
                     )
+        self.assertTrue(Helper.run('single_graph.g6', long_equation[:-5], {}) >= 0)
 
     def test_find_example(self):
         diam = str(inv_num.Diameter.code)

@@ -922,14 +922,18 @@ class EdgeConnectivity(InvariantNum):
         return Utils.print_numeric(EdgeConnectivity.calculate(graph), precision)
 
 
-# class ChromaticIndex(InvariantNum):
-#     name = "Chromatic Index"
-#     code = "\u03c7'"
-#     type = "number_structural"
-#
-#     @staticmethod
-#     def calculate(graph):
-#         return len(set(nx.greedy_color(nx.line_graph(graph)).values()))
+class ChromaticIndex(InvariantNum):
+     name = "Chromatic Index (estimated)"
+     code = "\u03c7'"
+     type = "number_structural"
+
+     @staticmethod
+     def calculate(graph):
+         return ChromaticNumber.calculate(nx.line_graph(graph))
+
+     @staticmethod
+     def print(graph, precision):
+         return Utils.print_numeric(ChromaticIndex.calculate(graph), precision)
 
 
 class MinimumEdgeCover(InvariantNum):
