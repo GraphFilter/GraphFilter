@@ -585,7 +585,7 @@ class Largest2EigenE(InvariantNum):
 
 class SmallestEigenA(InvariantNum):
     name = "Smallest A-eigenvalue"
-    code = "\u03b5\u2099"
+    code = "\u03bb\u2099"
     type = "number_spectral"
 
     @staticmethod
@@ -721,7 +721,7 @@ class SmallestEigenDQ(InvariantNum):
 
 class SmallestEigenE(InvariantNum):
     name = "Smallest E-eigenvalue"
-    code = "\u03bb\u2099"
+    code = "\u03b5\u2099"
     type = "number_spectral"
 
     @staticmethod

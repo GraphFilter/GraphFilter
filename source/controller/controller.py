@@ -60,8 +60,8 @@ class Controller:
 
     def show_open_project_window(self):
         file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Project File or Graph6 File(*.json *.g6 *.txt *.gml)"])
-        file_path = file_dialog.getOpenFileName(filter="Project File or Graph6 File(*.json *.g6 *.txt *.gml)")
+        file_dialog.setNameFilters(["Graph File (*.gml *.g6 *.txt *.json)"])
+        file_path = file_dialog.getOpenFileName(filter="Graph File (*.gml *.g6 *.txt *.json)")
         project_information_store.file_path = file_path[0]
         project_information_store.current_graph_pos = {}
         file_type = project_information_store.get_file_type()
