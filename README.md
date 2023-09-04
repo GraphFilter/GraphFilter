@@ -9,7 +9,7 @@
 <a href="https://doi.org/10.5281/zenodo.8208909"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.8208909.svg" alt="DOI"></a>
 </p>
 
-<h4 align="center"> Software to help Graph researchers providing filtering and visualization to a given list of graphs.</h4>
+<h4 align="center"> Software for manipulating and searching graphs.</h4>
 
 <p align="center">
   <a href="#about">About</a> •
