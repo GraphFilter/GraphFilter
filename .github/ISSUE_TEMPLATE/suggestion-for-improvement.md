@@ -2,7 +2,7 @@
 name: Suggestion for improvement
 about: Suggest an idea for this project
 title: Improvement
-labels: enhancement
+labels: enhancement, external user
 assignees: ''
 
 ---

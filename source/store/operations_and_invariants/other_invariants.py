@@ -31,7 +31,7 @@ class InvariantOther(Invariant):
 
 
 class AdjacencyMatrix(InvariantOther):
-    name = "Adjacency Matrix"
+    name = "Adjacency A-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -44,7 +44,7 @@ class AdjacencyMatrix(InvariantOther):
 
 
 class IncidenceMatrix(InvariantOther):
-    name = "Incidence Matrix"
+    name = "Incidence I-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -57,7 +57,7 @@ class IncidenceMatrix(InvariantOther):
 
 
 class LaplacianMatrix(InvariantOther):
-    name = "Laplacian Matrix"
+    name = "Laplacian L-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -70,7 +70,7 @@ class LaplacianMatrix(InvariantOther):
 
 
 class SignlessLaplacianMatrix(InvariantOther):
-    name = "Signless Laplacian Matrix"
+    name = "Signless Laplacian Q-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -83,7 +83,7 @@ class SignlessLaplacianMatrix(InvariantOther):
 
 
 class NormalizedLaplacianMatrix(InvariantOther):
-    name = "Normalized Laplacian Matrix"
+    name = "Normalized Laplacian N-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -96,7 +96,7 @@ class NormalizedLaplacianMatrix(InvariantOther):
 
 
 class DistanceMatrix(InvariantOther):
-    name = "Distance Matrix"
+    name = "Distance D-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -109,7 +109,7 @@ class DistanceMatrix(InvariantOther):
 
 
 class SeidelMatrix(InvariantOther):
-    name = "Seidel Matrix"
+    name = "Seidel S-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -125,7 +125,7 @@ class SeidelMatrix(InvariantOther):
 
 
 class LaplacianDistanceMatrix(InvariantOther):
-    name = "Laplacian Distance Matrix"
+    name = "Laplacian Distance DL-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -142,7 +142,7 @@ class LaplacianDistanceMatrix(InvariantOther):
 
 
 class SignlessLaplacianDistanceMatrix(InvariantOther):
-    name = "Signless Laplacian Distance Matrix"
+    name = "Signless Laplacian Distance DQ-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -158,7 +158,7 @@ class SignlessLaplacianDistanceMatrix(InvariantOther):
 
 
 class EccentricityMatrix(InvariantOther):
-    name = "Eccentricity Matrix"
+    name = "Eccentricity \u03b5-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -183,7 +183,7 @@ class EccentricityMatrix(InvariantOther):
 
 
 class AdjacencySpectrum(InvariantOther):
-    name = "Adjacency Spectrum"
+    name = "Adjacency A-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -196,7 +196,7 @@ class AdjacencySpectrum(InvariantOther):
 
 
 class LaplacianSpectrum(InvariantOther):
-    name = "Laplacian Spectrum"
+    name = "Laplacian L-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -209,7 +209,7 @@ class LaplacianSpectrum(InvariantOther):
 
 
 class SignlessLaplacianSpectrum(InvariantOther):
-    name = "Signless Laplacian Spectrum"
+    name = "Signless Laplacian Q-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -222,7 +222,7 @@ class SignlessLaplacianSpectrum(InvariantOther):
 
 
 class NormalizedLaplacianSpectrum(InvariantOther):
-    name = "Normalized Laplacian Spectrum"
+    name = "Normalized Laplacian N-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -236,7 +236,7 @@ class NormalizedLaplacianSpectrum(InvariantOther):
 
 
 class DistanceSpectrum(InvariantOther):
-    name = "Distance Spectrum"
+    name = "Distance D-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -252,7 +252,7 @@ class DistanceSpectrum(InvariantOther):
 
 
 class SeidelSpectrum(InvariantOther):
-    name = "Seidel Spectrum"
+    name = "Seidel S-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -266,7 +266,7 @@ class SeidelSpectrum(InvariantOther):
 
 
 class LaplacianDistanceSpectrum(InvariantOther):
-    name = "Laplacian Distance Spectrum"
+    name = "Laplacian Distance DL-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -282,7 +282,7 @@ class LaplacianDistanceSpectrum(InvariantOther):
 
 
 class SignlessLaplacianDistanceSpectrum(InvariantOther):
-    name = "Signless Laplacian Distance Spectrum"
+    name = "Signless Laplacian Distance DQ-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -298,7 +298,7 @@ class SignlessLaplacianDistanceSpectrum(InvariantOther):
 
 
 class EccentricitySpectrum(InvariantOther):
-    name = "Eccentricity Spectrum"
+    name = "Eccentricity \u03b5-Spectrum"
     type = 'list'
 
     @staticmethod
@@ -455,73 +455,6 @@ class EccentricityEigenvectors(InvariantOther):
         return Utils.print_eigenvectors_and_eigenvalues(EccentricityEigenvectors.calculate(graph), precision)
 
 
-class MaximumClique(InvariantOther):
-    name = "Maximum Clique"
-    type = 'set'
-
-    @staticmethod
-    def calculate(graph):
-        return set(nx.max_weight_clique(graph, weight=None)[0])
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
-
-
-class MainEigenvalueAdjacency(InvariantOther):
-    name = 'Main A-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.main_eigenvalue(AdjacencyMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueAdjacency.calculate(graph), precision)
-
-
-class MainEigenvalueDistance(InvariantOther):
-    name = 'Main D-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        if nx.is_connected(graph):
-            return list(Utils.main_eigenvalue(DistanceMatrix.calculate(graph)))
-        else:
-            return 'Disconnected graph'
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueDistance.calculate(graph), precision)
-
-
-class MainEigenvalueSignlessLaplacian(InvariantOther):
-    name = 'Main Q-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.main_eigenvalue(SignlessLaplacianMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueSignlessLaplacian.calculate(graph), precision)
-
-
-class MainEigenvalueSeidel(InvariantOther):
-    name = 'Main S-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.main_eigenvalue(SeidelMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueSeidel.calculate(graph), precision)
-
 
 class DegreeCentrality(InvariantOther):
     name = "Degree Centrality"
@@ -609,3 +542,16 @@ class Transmission(InvariantOther):
     @staticmethod
     def print(graph, precision):
         return Utils.print_dict(Transmission.calculate(graph), precision)
+
+
+class CoreNumber(InvariantOther):
+    name = "Core number"
+    type = "dict"
+
+    @staticmethod
+    def calculate(graph):
+        return nx.core_number(graph)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_dict(CoreNumber.calculate(graph), precision)

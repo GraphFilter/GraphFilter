@@ -20,7 +20,8 @@ from source.view.project.docks.tree_file_dock import TreeFileDock
 from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
 from source.store.operations_invariants import *
 from source.store.new_graph_store import *
-from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box
+from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box, \
+    fix_graph_nodes
 from PyQt5.Qt import QUrl, QDesktopServices
 import json
 import threading as td
@@ -78,6 +79,8 @@ class ProjectController:
         if project_information_store.get_file_type() == '.gml':
             self.project_tool_bar.combo_graphs.setItemText(0, 'Graph - ' + project_information_store.get_file_name())
             self.project_tool_bar.combo_graphs.setDisabled(True)
+        else:
+            self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
 
@@ -201,8 +204,11 @@ class ProjectController:
         self.project_window.addDockWidget(QtCore.Qt.RightDockWidgetArea, self.graph_information_dock)
         # self.project_window.setTabPosition(QtCore.Qt.RightDockWidgetArea, QTabWidget.East)
 
-        self.graph_information_dock.setMaximumHeight(250)
-        self.tree_file_dock.setMaximumWidth(250)
+        self.visualize_graph_dock.setMinimumSize(int(self.project_window.frameGeometry().width() * 0.65),
+                                                 int(self.project_window.frameGeometry().height() * 0.50))
+        self.invariants_check_dock.setMinimumSize(int(self.project_window.frameGeometry().width() * 0.15),
+                                                  int(self.project_window.frameGeometry().height() * 0.50))
+
         self.project_window.splitDockWidget(self.visualize_graph_dock, self.invariants_check_dock,
                                             QtCore.Qt.Horizontal)
 
@@ -229,7 +235,7 @@ class ProjectController:
 
     def on_restore(self):
         self.project_window.restoreState(self.settings.value("state"))
-        # self.on_visualize_tree()
+        self.on_visualize_tree()
 
     def on_change_graph(self):
         # self.project_tool_bar.combo_graphs.setStyleSheet('color: black')
@@ -299,11 +305,10 @@ class ProjectController:
 
     def on_new_graph_button(self):
         new_graph_dict_name[self.active_new_graph_action].open_dialog()
-        graph = new_graph_store.graph
-        layout = new_graph_store.layout
         file_path = new_graph_store.file_path
 
-        if graph is not None:
+        if new_graph_store.graph is not None:
+            graph, layout = fix_graph_nodes(new_graph_store.graph, new_graph_store.layout)
             try:
                 graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
             except AttributeError:
@@ -335,6 +340,9 @@ class ProjectController:
             calculate(project_information_store.current_graph)
 
         if graph is not None:
+            if self.active_operation_action == 'Complement':
+                self.visualize_graph_dock.plot_graph(graph, project_information_store.current_graph_pos)
+                return
             self.visualize_graph_dock.plot_graph(graph)
 
     def on_export_button(self):
@@ -418,7 +426,7 @@ class ProjectController:
         index = self.tree_file_dock.tree.currentIndex()
         type_item = self.tree_file_dock.model.type(index)
 
-        if type_item == "File Folder":
+        if type_item == "File Folder" or type_item == "Folder":
             self.is_gif_in_progress = False
             return
 
@@ -475,6 +483,8 @@ class ProjectController:
                 project_information_store.current_graph = nx.from_graph6_bytes(graphs[0].encode('utf-8'))
             except networkx.NetworkXError:
                 project_information_store.current_graph = graphs[0]
+            except IndexError:
+                project_information_store.current_graph = None
             self.project_tool_bar.combo_graphs.setEnabled(True)
 
         self.project_tool_bar.reset_combo_graphs()

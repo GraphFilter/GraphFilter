@@ -6,10 +6,10 @@
 </h1>
 
 <p align="center">
-<a href="https://doi.org/10.5281/zenodo.4047103"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4047103.svg" alt="DOI"></a>
+<a href="https://doi.org/10.5281/zenodo.8208909"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.8208909.svg" alt="DOI"></a>
 </p>
 
-<h4 align="center"> Software to help Graph researchers providing filtering and visualization to a given list of graphs.</h4>
+<h4 align="center"> Software for manipulating and searching graphs.</h4>
 
 <p align="center">
   <a href="#about">About</a> •
@@ -46,11 +46,18 @@ The software has the purpose of filtering a list of graphs through conditions cu
 |    Calculations of invariants                   |   GUI development                                           |  Utilities                                               |
 | :------------:                                  | :---------:                                                 | :---------:                                              |
 | [Networkx](https://networkx.org/)               | [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
-| [Grinpy](https://github.com/somacdivad/grinpy)  | [PyQtGraph](http://www.pyqtgraph.org/)                      | [network2tikz](https://github.com/hackl/network2tikz)    |
-| [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval)  |
+| [Grinpy](https://github.com/somacdivad/grinpy)  | [Netgraph](https://github.com/paulbrodersen/netgraph)       | [network2tikz](https://github.com/hackl/network2tikz)    |
+| [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval) |
 
 ## Installation
-You can run the program from the source code or from an executable file.
+You can run the program from an executable file or from the source code.
+
+### Release
+Download the compact file from the release that matches your Operational System.
+
+- [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
+- [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
+- [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ### Source code
 To from the source code, you have to:
@@ -60,13 +67,6 @@ To from the source code, you have to:
 - Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#virtual-environment) (optional)
 - [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#install-required-libraries)
 - Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#running) from the project's source folder
-
-### Release
-Download the compact file from the release that matches your Operational System.
-
-- [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
-- [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
-- [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ## Getting started
 
@@ -131,8 +131,8 @@ To navigate between the graphs returned from the filtering, you can use the comb
 In the `File > Export to` menu, you can export the graphs returned in the filtering to other formats: 
 - PDF
 - PNG
-- TikZ
-- graph6
+- Latex (TikZ)
+- graph6 (.g6 or .txt)
 - xlsx
 
 ## More

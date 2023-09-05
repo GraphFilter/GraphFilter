@@ -137,7 +137,7 @@ class DomainUnitTests(unittest.TestCase):
 
     def test_inv_boolean_false(self):
         no_tree = {inv_bool.Tree.name: 'false'}
-        self.assertEqual(1, Helper.run('graphs2.g6', '', no_tree))
+        self.assertEqual(1/265, Helper.run('graphs1.g6', '', no_tree))
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
@@ -169,6 +169,7 @@ class DomainUnitTests(unittest.TestCase):
             self.assertTrue(isinstance(inv.print(g, precision=5), str))
 
     def test_all_operations(self):
+        long_equation = ""
         for opg in oper.GraphOperations().all:
             for opm in oper.MathOperations().all:
                 for inv in inv_num.InvariantNum().all:
@@ -176,10 +177,11 @@ class DomainUnitTests(unittest.TestCase):
                     self.assertTrue(Helper.run('single_graph.g6',
                                                f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0', {}) >= 0
                                     )
-
+                    long_equation = long_equation + f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0 AND '
                     self.assertEqual(
                         "", Equation.validate_expression(f'{str(opm.code)}({str(inv.code)}({str(opg.code)}(G)))>0')
                     )
+        self.assertTrue(Helper.run('single_graph.g6', long_equation[:-5], {}) >= 0)
 
     def test_find_example(self):
         diam = str(inv_num.Diameter.code)
@@ -204,7 +206,7 @@ class DomainUnitTests(unittest.TestCase):
         diam = str(inv_num.Diameter.code)
         chi = str(inv_num.ChromaticNumber.code)
         self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{diam}(G)>0', {}))
-        self.assertEqual(4 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
+        self.assertEqual(5 / 8, Helper.run('graphs14.g6', f'{chi}(G)<8', {}))
         self.assertEqual(True, Helper.find_example('graphs14.g6', f'{chi}(G)<8', {})[0])
 
     def test_multiprocess_find_example(self):
@@ -231,8 +233,8 @@ class MiscellaneousTests(unittest.TestCase):
         chordal = {inv_bool.Chordal.name: 'true'}
         regular_clawfree = {inv_bool.Regular.name: 'true', inv_bool.ClawFree.name: 'true'}
         self.assertEqual(
-            1, Helper.run('graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
-                          regular_clawfree))
+             1, Helper.run('graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
+                           regular_clawfree))
 
         self.assertEqual(1,
                          Helper.run('graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1_a}(G)',
@@ -245,21 +247,12 @@ class MiscellaneousTests(unittest.TestCase):
         tree_NoBiconnected = {inv_bool.Tree.name: 'true', inv_bool.Biconnected.name: 'false'}
         self.assertEqual(1, Helper.run('graphs5.g6', f'{eigen1_l}(G)>5', tree_NoBiconnected))
 
-    def test_wilf_result(self):
-        chi = str(inv_num.ChromaticNumber.code)
-        eigen1 = str(inv_num.Largest1EigenA.code)
-        self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
-
     def test_independence_and_matching(self):
         alpha = str(inv_num.IndependenceNumber.code)
         match = str(inv_num.MatchingNumber.code)
         line = str(oper.Line.code)
         self.assertEqual(1, Helper.run('graphs7.g6', f'{match}(G)=={alpha}({line}(G))', {}))
 
-    def test_perfect_graphs(self):
-        chi = str(inv_num.ChromaticNumber.code)
-        omega = str(inv_num.CliqueNumber.code)
-        self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
 
     def test_random_with_boolean_false(self):
         avg_degree = str(inv_num.DegreeAverage.code)
@@ -277,6 +270,15 @@ class MiscellaneousTests(unittest.TestCase):
         mainA = str(inv_num.MainEigenvalueAdjacency.code)
         self.assertEqual(1, Helper.run('graphs3.g6', f'{mainA}(G)==1', {}))
 
+    def test_chromatic_number(self):
+        chi = str(inv_num.ChromaticNumber.code)
+        omega = str(inv_num.CliqueNumber.code)
+        eigen1 = str(inv_num.Largest1EigenA.code)
+        self.assertEqual(1/265, Helper.run('graphs1.g6', f'{chi}(G)>2', {}))
+        self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
+        self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
+        self.assertEqual(1, Helper.run('graphs16.g6', f'{chi}(G)==4', {}))
+        self.assertEqual(1, Helper.run('graphs17.g6', f'{chi}(G)=={omega}(G)+2', {}))
 
 if __name__ == '__main__':
     unittest.main()

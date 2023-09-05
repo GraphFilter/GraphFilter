@@ -11,7 +11,7 @@ from source.view.components.message_box import MessageBox
 
 
 def validate_path(path):
-    forbidden_chars = ['.', '\\', '/', ":"]
+    forbidden_chars = ['.', '\\', ":"]
     if len(path) != 0:
         if path[0] in forbidden_chars:
             return False
@@ -68,10 +68,14 @@ def set_view_size(self, p):
     self.height = int(rect.height() / p)
 
 
-def fix_graph_nodes(graph):
+def fix_graph_nodes(graph, node_positions=None):
     new_dict = {}
     new_edges = []
+    new_pos = {}
     new_graph = nx.Graph()
+
+    if graph is None:
+        return
 
     for i, node in enumerate(graph):
         new_dict[node] = i
@@ -81,6 +85,13 @@ def fix_graph_nodes(graph):
         new_edges.append((new_dict[edge[0]], new_dict[edge[1]]))
 
     new_graph.add_edges_from(new_edges)
+
+    if node_positions is not None:
+        if type(node_positions) is dict:
+            for node, positions in node_positions.items():
+                new_pos[new_dict[node]] = positions
+            return new_graph, new_pos
+        return new_graph, node_positions
 
     return new_graph
 
