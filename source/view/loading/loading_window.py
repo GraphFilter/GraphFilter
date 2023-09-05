@@ -2,10 +2,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 
 
-class External(QThread):
-    countChanged = pyqtSignal(int)
-
-
 class LoadingWindow(QDialog):
     filter_complete_signal = pyqtSignal(int)
 
@@ -14,6 +10,7 @@ class LoadingWindow(QDialog):
         self.progressBar = QProgressBar(self)
         self.set_content_attributes()
         self.set_up_layout()
+        self.is_forced_to_close = False
 
     def set_content_attributes(self):
         self.setWindowTitle("Loading...")
@@ -30,5 +27,11 @@ class LoadingWindow(QDialog):
         self.progressBar.setValue(value)
 
     def closeEvent(self, event):
-        self.filter_complete_signal.emit(1)
-        event.accept()
+        if event.spontaneous():
+            self.is_forced_to_close = True
+        else:
+            self.filter_complete_signal.emit(1)
+            event.accept()
+
+    def set_maximum(self, value):
+        self.progressBar.setMaximum(value)

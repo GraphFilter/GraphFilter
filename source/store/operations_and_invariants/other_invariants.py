@@ -31,7 +31,7 @@ class InvariantOther(Invariant):
 
 
 class AdjacencyMatrix(InvariantOther):
-    name = "Adjacency Matrix"
+    name = "Adjacency A-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -44,7 +44,7 @@ class AdjacencyMatrix(InvariantOther):
 
 
 class IncidenceMatrix(InvariantOther):
-    name = "Incidence Matrix"
+    name = "Incidence I-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -57,7 +57,7 @@ class IncidenceMatrix(InvariantOther):
 
 
 class LaplacianMatrix(InvariantOther):
-    name = "Laplacian Matrix"
+    name = "Laplacian L-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -70,7 +70,7 @@ class LaplacianMatrix(InvariantOther):
 
 
 class SignlessLaplacianMatrix(InvariantOther):
-    name = "Signless Laplacian Matrix"
+    name = "Signless Laplacian Q-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -83,7 +83,7 @@ class SignlessLaplacianMatrix(InvariantOther):
 
 
 class NormalizedLaplacianMatrix(InvariantOther):
-    name = "Normalized Laplacian Matrix"
+    name = "Normalized Laplacian N-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -96,7 +96,7 @@ class NormalizedLaplacianMatrix(InvariantOther):
 
 
 class DistanceMatrix(InvariantOther):
-    name = "Distance Matrix"
+    name = "Distance D-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -109,7 +109,7 @@ class DistanceMatrix(InvariantOther):
 
 
 class SeidelMatrix(InvariantOther):
-    name = "Seidel Matrix"
+    name = "Seidel S-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -125,7 +125,7 @@ class SeidelMatrix(InvariantOther):
 
 
 class LaplacianDistanceMatrix(InvariantOther):
-    name = "Laplacian Distance Matrix"
+    name = "Laplacian Distance DL-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -142,7 +142,7 @@ class LaplacianDistanceMatrix(InvariantOther):
 
 
 class SignlessLaplacianDistanceMatrix(InvariantOther):
-    name = "Signless Laplacian Distance Matrix"
+    name = "Signless Laplacian Distance DQ-Matrix"
     type = 'matrix'
 
     @staticmethod
@@ -157,13 +157,38 @@ class SignlessLaplacianDistanceMatrix(InvariantOther):
         return Utils.print_matrix(SignlessLaplacianDistanceMatrix.calculate(graph), precision)
 
 
+class EccentricityMatrix(InvariantOther):
+    name = "Eccentricity \u03b5-Matrix"
+    type = 'matrix'
+
+    @staticmethod
+    def calculate(graph):
+        distance_matrix = nx.algorithms.shortest_paths.floyd_warshall_numpy(graph)
+        if float('inf') not in distance_matrix:
+            size = len(graph.nodes)
+            eccentricity_matrix = np.zeros((size, size))
+            for i in range(size):
+                for j in range(i + 1, size):
+                    min_eccentricity = min(max(distance_matrix[i]), max(distance_matrix[j]))
+                    if min_eccentricity == distance_matrix[i][j]:
+                        eccentricity_matrix[i][j] = min_eccentricity
+                        eccentricity_matrix[j][i] = min_eccentricity
+            return eccentricity_matrix
+
+        return 'Disconnected graph'
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_matrix(EccentricityMatrix.calculate(graph), precision)
+
+
 class AdjacencySpectrum(InvariantOther):
-    name = "Adjacency Spectrum"
+    name = "Adjacency A-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
-        return Utils.Spectrum(AdjacencyMatrix.calculate(graph))
+        return Utils.spectrum(AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -171,12 +196,12 @@ class AdjacencySpectrum(InvariantOther):
 
 
 class LaplacianSpectrum(InvariantOther):
-    name = "Laplacian Spectrum"
+    name = "Laplacian L-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
-        return Utils.Spectrum(LaplacianMatrix.calculate(graph))
+        return Utils.spectrum(LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -184,12 +209,12 @@ class LaplacianSpectrum(InvariantOther):
 
 
 class SignlessLaplacianSpectrum(InvariantOther):
-    name = "Signless Laplacian Spectrum"
+    name = "Signless Laplacian Q-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
-        return Utils.Spectrum(SignlessLaplacianMatrix.calculate(graph))
+        return Utils.spectrum(SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -197,12 +222,12 @@ class SignlessLaplacianSpectrum(InvariantOther):
 
 
 class NormalizedLaplacianSpectrum(InvariantOther):
-    name = "Normalized Laplacian Spectrum"
+    name = "Normalized Laplacian N-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
-        return Utils.Spectrum(NormalizedLaplacianMatrix.calculate(graph))
+        return Utils.spectrum(NormalizedLaplacianMatrix.calculate(graph))
         # return Utils.approx_array_to_int(nx.linalg.spectrum.normalized_laplacian_spectrum(graph).tolist())
 
     @staticmethod
@@ -211,13 +236,13 @@ class NormalizedLaplacianSpectrum(InvariantOther):
 
 
 class DistanceSpectrum(InvariantOther):
-    name = "Distance Spectrum"
+    name = "Distance D-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Spectrum(nx.floyd_warshall_numpy(graph))
+            return Utils.spectrum(nx.floyd_warshall_numpy(graph))
         else:
             return 'Disconnected graph'
 
@@ -227,12 +252,12 @@ class DistanceSpectrum(InvariantOther):
 
 
 class SeidelSpectrum(InvariantOther):
-    name = "Seidel Spectrum"
+    name = "Seidel S-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
-        return Utils.Spectrum(SeidelMatrix.calculate(graph))
+        return Utils.spectrum(SeidelMatrix.calculate(graph))
         # return Utils.approx_array_to_int(nx.linalg.spectrum.normalized_laplacian_spectrum(graph).tolist())
 
     @staticmethod
@@ -241,13 +266,13 @@ class SeidelSpectrum(InvariantOther):
 
 
 class LaplacianDistanceSpectrum(InvariantOther):
-    name = "Laplacian Distance Spectrum"
+    name = "Laplacian Distance DL-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Spectrum(LaplacianDistanceMatrix.calculate(graph))
+            return Utils.spectrum(LaplacianDistanceMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
@@ -257,19 +282,35 @@ class LaplacianDistanceSpectrum(InvariantOther):
 
 
 class SignlessLaplacianDistanceSpectrum(InvariantOther):
-    name = "Signless Laplacian Distance Spectrum"
+    name = "Signless Laplacian Distance DQ-Spectrum"
     type = 'list'
 
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Spectrum(SignlessLaplacianDistanceMatrix.calculate(graph))
+            return Utils.spectrum(SignlessLaplacianDistanceMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
     @staticmethod
     def print(graph, precision):
         return Utils.print_list(SignlessLaplacianDistanceSpectrum.calculate(graph), precision)
+
+
+class EccentricitySpectrum(InvariantOther):
+    name = "Eccentricity \u03b5-Spectrum"
+    type = 'list'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return Utils.spectrum(EccentricityMatrix.calculate(graph))
+        else:
+            return 'Disconnected graph'
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_list(EccentricitySpectrum.calculate(graph), precision)
 
 
 class DegreeSequence(InvariantOther):
@@ -291,7 +332,7 @@ class AdjacencyEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Eigenvectors(AdjacencyMatrix.calculate(graph))
+        return Utils.eigenvectors(AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -304,7 +345,7 @@ class LaplacianEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Eigenvectors(LaplacianMatrix.calculate(graph))
+        return Utils.eigenvectors(LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -317,7 +358,7 @@ class SignlessLaplacianEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Eigenvectors(SignlessLaplacianMatrix.calculate(graph))
+        return Utils.eigenvectors(SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -330,7 +371,7 @@ class NormalizedLaplacianEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Eigenvectors(NormalizedLaplacianMatrix.calculate(graph))
+        return Utils.eigenvectors(NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -343,7 +384,7 @@ class SeidelEigenvectors(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return Utils.Eigenvectors(SeidelMatrix.calculate(graph))
+        return Utils.eigenvectors(SeidelMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -357,7 +398,7 @@ class DistanceEigenvectors(InvariantOther):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Eigenvectors(DistanceMatrix.calculate(graph))
+            return Utils.eigenvectors(DistanceMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
@@ -373,7 +414,7 @@ class LaplacianDistanceEigenvectors(InvariantOther):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Eigenvectors(LaplacianDistanceMatrix.calculate(graph))
+            return Utils.eigenvectors(LaplacianDistanceMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
@@ -389,7 +430,7 @@ class SignlessLaplacianDistanceEigenvectors(InvariantOther):
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return Utils.Eigenvectors(SignlessLaplacianMatrix.calculate(graph))
+            return Utils.eigenvectors(SignlessLaplacianMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
@@ -397,72 +438,22 @@ class SignlessLaplacianDistanceEigenvectors(InvariantOther):
     def print(graph, precision):
         return Utils.print_eigenvectors_and_eigenvalues(SignlessLaplacianEigenvectors.calculate(graph), precision)
 
-class MaximumClique(InvariantOther):
-    name = "Maximum Clique"
-    type = 'set'
 
-    @staticmethod
-    def calculate(graph):
-        return set(nx.max_weight_clique(graph, weight=None)[0])
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(set(nx.max_weight_clique(graph, weight=None)[0]), precision)
-
-
-class MainEigenvalueAdjacency(InvariantOther):
-    name = 'Main A-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.MainEigenvalue(AdjacencyMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueAdjacency.calculate(graph), precision)
-
-
-class MainEigenvalueDistance(InvariantOther):
-    name = 'Main D-eigenvalues (set)'
-    type = "set"
+class EccentricityEigenvectors(InvariantOther):
+    name = 'Eccentricity Eigenvectors'
+    type = 'list_and_matrix'
 
     @staticmethod
     def calculate(graph):
         if nx.is_connected(graph):
-            return list(Utils.MainEigenvalue(DistanceMatrix.calculate(graph)))
+            return Utils.eigenvectors(EccentricityMatrix.calculate(graph))
         else:
             return 'Disconnected graph'
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_set(MainEigenvalueDistance.calculate(graph), precision)
+        return Utils.print_eigenvectors_and_eigenvalues(EccentricityEigenvectors.calculate(graph), precision)
 
-
-class MainEigenvalueSignlessLaplacian(InvariantOther):
-    name = 'Main Q-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.MainEigenvalue(SignlessLaplacianMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueSignlessLaplacian.calculate(graph), precision)
-
-
-class MainEigenvalueSeidel(InvariantOther):
-    name = 'Main S-eigenvalues (set)'
-    type = "set"
-
-    @staticmethod
-    def calculate(graph):
-        return list(Utils.MainEigenvalue(SeidelMatrix.calculate(graph)))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_set(MainEigenvalueSeidel.calculate(graph), precision)
 
 
 class DegreeCentrality(InvariantOther):
@@ -484,7 +475,10 @@ class EigenvectorCentrality(InvariantOther):
 
     @staticmethod
     def calculate(graph):
-        return dict(sorted(nx.eigenvector_centrality(graph).items(), key=lambda x: x[1]))
+        try:
+            return dict(sorted(nx.eigenvector_centrality_numpy(graph).items(), key=lambda x: x[1]))
+        except TypeError:
+            return dict(sorted(nx.eigenvector_centrality(graph).items(), key=lambda x: x[1]))
 
     @staticmethod
     def print(graph, precision):
@@ -548,3 +542,16 @@ class Transmission(InvariantOther):
     @staticmethod
     def print(graph, precision):
         return Utils.print_dict(Transmission.calculate(graph), precision)
+
+
+class CoreNumber(InvariantOther):
+    name = "Core number"
+    type = "dict"
+
+    @staticmethod
+    def calculate(graph):
+        return nx.core_number(graph)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_dict(CoreNumber.calculate(graph), precision)

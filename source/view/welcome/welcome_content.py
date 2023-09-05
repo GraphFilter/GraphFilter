@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap
-from source.view.components.icon import Icon
+from source.view.components.image import Icon
 from PyQt5 import QtCore
 
 
@@ -23,10 +23,10 @@ class WelcomeContent(QWidget):
         self.title.setText("<h1>Graph Filter</h1>")
         self.title.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.version.setText("<h2>version 2.0</h2>")
+        self.version.setText("<h2>version 3.1.2</h2>")
         self.version.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.logo.setPixmap(QPixmap("resources/icons/hexagon.png").scaled(120, 120, QtCore.Qt.KeepAspectRatio,
+        self.logo.setPixmap(QPixmap("resources/logos/graph_filter.png").scaled(150, 150, QtCore.Qt.KeepAspectRatio,
                                                                           QtCore.Qt.SmoothTransformation))
         self.logo.setAlignment(QtCore.Qt.AlignCenter)
 

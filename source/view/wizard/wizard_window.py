@@ -1,6 +1,7 @@
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore
-
+from source.domain.utils import set_view_size
 
 class WizardWindow(QWizard):
 
@@ -9,8 +10,9 @@ class WizardWindow(QWizard):
     def __init__(self):
         super().__init__()
 
-        self.width = 900
-        self.height = 600
+        self.width = 0
+        self.height = 0
+        set_view_size(self,1.7)
 
         self.window_title = "New Project"
 
@@ -25,9 +27,9 @@ class WizardWindow(QWizard):
 
     def set_content_attributes(self):
         self.setWindowTitle(self.window_title)
-
-        self.setFixedSize(self.width, self.height)
-        self.setWindowFlag(QtCore.Qt.WindowContextHelpButtonHint, False)
+        self.setFixedSize(self.width,self.height)
+        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
+        self.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
 
         self.setOption(QWizard.HaveHelpButton, True)
         self.setOption(QWizard.HelpButtonOnRight, False)

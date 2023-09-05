@@ -28,10 +28,8 @@ AND	Claw-Free = true
 -----------------------------
 
 graphs4
-	Edge Connectivity = 3.0
-AND	Planar = true
-AND	Regular = true
-
+all graphs connected with 4 vertices
+there is a graph with 3245 spanning trees: H?qczZb
 -----------------------------
 
 graphs5
@@ -110,5 +108,13 @@ valid: 5; invalid: 3
 
 graphs15
 Disconnected graphs.
+
+-----------------------------
+
+graphs16
+graphs with chromatic number 4
+-----------------------------
+graphs17
+A graph with chi(G)=omega(G)+2 
 
 

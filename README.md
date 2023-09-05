@@ -1,15 +1,15 @@
 <h1 align="center">
-  <a href="http://sistemas.jf.ifsudestemg.edu.br/graphfilter/home"><img src="/resources/icons/hexagon.png" alt="Graph Filter" width="180"></a>
+  <a href="http://sistemas.jf.ifsudestemg.edu.br/graphfilter/home"><img src="/resources/icons/graph_filter_logo.png" alt="Graph Filter" width="180"></a>
   <br>
   Graph Filter
   <br>
 </h1>
 
 <p align="center">
-<a href="https://doi.org/10.5281/zenodo.4047103"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.4047103.svg" alt="DOI"></a>
+<a href="https://doi.org/10.5281/zenodo.8208909"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.8208909.svg" alt="DOI"></a>
 </p>
 
-<h4 align="center"> Software to help Graph researchers providing filtering and visualization to a given list of graphs.</h4>
+<h4 align="center"> Software for manipulating and searching graphs.</h4>
 
 <p align="center">
   <a href="#about">About</a> •
@@ -46,11 +46,18 @@ The software has the purpose of filtering a list of graphs through conditions cu
 |    Calculations of invariants                   |   GUI development                                           |  Utilities                                               |
 | :------------:                                  | :---------:                                                 | :---------:                                              |
 | [Networkx](https://networkx.org/)               | [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
-| [Grinpy](https://github.com/somacdivad/grinpy)  | [PyQtGraph](http://www.pyqtgraph.org/)                      | [network2tikz](https://github.com/hackl/network2tikz)    |
-| [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval)  |
+| [Grinpy](https://github.com/somacdivad/grinpy)  | [Netgraph](https://github.com/paulbrodersen/netgraph)       | [network2tikz](https://github.com/hackl/network2tikz)    |
+| [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval) |
 
 ## Installation
-You can run the program from the source code or from an executable file.
+You can run the program from an executable file or from the source code.
+
+### Release
+Download the compact file from the release that matches your Operational System.
+
+- [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
+- [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
+- [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ### Source code
 To from the source code, you have to:
@@ -60,13 +67,6 @@ To from the source code, you have to:
 - Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#virtual-environment) (optional)
 - [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#install-required-libraries)
 - Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#running) from the project's source folder
-
-### Release
-Download the compact file from the release that matches your Operational System.
-
-- [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
-- [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
-- [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ## Getting started
 
@@ -107,7 +107,7 @@ The user decides which filtering method: if he wants to filter all the graphs, a
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
 
 <h4 align="center">
-<image src="/resources/images/wizard_input_graphs.png" width="800">
+<image src="/resources/gifs/wizard_input_graphs.gif" width="800">
 </h4>
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But you do not have to understand how this fortat works. You can find files in this format for different classes of graphs on the pages: 
@@ -131,8 +131,9 @@ To navigate between the graphs returned from the filtering, you can use the comb
 In the `File > Export to` menu, you can export the graphs returned in the filtering to other formats: 
 - PDF
 - PNG
-- TikZ
-- graph6
+- Latex (TikZ)
+- graph6 (.g6 or .txt)
+- xlsx
 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.

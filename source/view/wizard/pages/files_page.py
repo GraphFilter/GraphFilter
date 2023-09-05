@@ -1,7 +1,8 @@
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from source.store import help_button_text
-from source.view.components.icon import Icon
-from PyQt5 import QtCore
+from source.view.components.image import Icon
 
 
 class FilesPage(QWizardPage):
@@ -20,15 +21,21 @@ class FilesPage(QWizardPage):
         self.remove_file = QPushButton("Remove files")
         self.update_file = QPushButton("Change file")
         self.remove_all_files = QPushButton("Remove all")
-        self.download_button = QPushButton(" Download .g6 graph")
+        self.download_button_hog = QPushButton("House of Graphs")
+        self.download_button_mckay = QPushButton("By Brendan McKay")
+        self.label_download = QLabel("Download graphs \n in g6 code", )
 
         self.set_content_attributes()
         self.set_up_layout()
 
     def set_content_attributes(self):
-        self.download_button.setIcon(Icon('download'))
-        self.download_button.setFixedHeight(40)
+        self.download_button_hog.setIcon(Icon('download'))
+        self.download_button_hog.setFixedHeight(40)
+        self.download_button_mckay.setIcon(Icon('download'))
+        self.download_button_mckay.setFixedHeight(40)
 
+        self.label_download.setFont(QFont('Arial', 10))
+        self.label_download.setAlignment(Qt.AlignCenter)
         self.remove_file.setEnabled(False)
         self.update_file.setEnabled(False)
         self.remove_all_files.setEnabled(False)
@@ -42,10 +49,12 @@ class FilesPage(QWizardPage):
         buttons = QVBoxLayout()
         buttons.addWidget(self.add_file)
         buttons.addWidget(self.remove_file)
-        buttons.addWidget(self.update_file)
+        # buttons.addWidget(self.update_file)
         buttons.addWidget(self.remove_all_files)
         buttons.addStretch(5)
-        buttons.addWidget(self.download_button)
+        buttons.addWidget(self.label_download)
+        buttons.addWidget(self.download_button_hog)
+        buttons.addWidget(self.download_button_mckay)
         layout.addLayout(buttons)
 
         # layout.addStretch(10)

@@ -1,21 +1,29 @@
 from PyQt5.QtWidgets import *
 import matplotlib
-import networkx as nx
-import numpy as np
-import pyqtgraph as pg
-from source.domain.graph import Graph
 
-matplotlib.use('Qt5Agg')
+import networkx as nx
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.figure import Figure
+from netgraph import EditableGraph
+import numpy as np
+from PyQt5.QtCore import Qt
+from PyQt5 import QtCore
+
+from source.domain.utils import fix_graph_nodes
+from source.store.project_information_store import project_information_store
+
+matplotlib.use("Qt5Agg")
 
 
 class VisualizeGraphDock(QDockWidget):
+    any_signal = QtCore.pyqtSignal()
+    invalid_graph_signal = QtCore.pyqtSignal()
 
     def __init__(self):
         super().__init__()
-        self.graphic_layout_widget = pg.GraphicsLayoutWidget(show=True)
-        self.view_box = self.graphic_layout_widget.addViewBox()
 
-        self.graph = Graph()
+        self.canvas = None
+        self.current_graph = None
 
         self.set_content_attributes()
 
@@ -23,43 +31,151 @@ class VisualizeGraphDock(QDockWidget):
         self.setWindowTitle("Visualize")
         self.setObjectName("Visualize")
 
-        self.graphic_layout_widget.setBackground('w')
+        self.setFeatures(
+            QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
 
-        self.view_box.setAspectLocked()
+    def plot_graph(self, graph, layout='spring'):
+        try:
+            self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
+        except AttributeError:
+            self.current_graph = graph
+        except nx.NetworkXError:
+            self.invalid_graph_signal.emit()
+            self.current_graph = nx.Graph()
+        self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change, layout)
+        self.canvas.setFocusPolicy(Qt.ClickFocus)
+        self.canvas.setFocus()
+        self.setWidget(self.canvas)
 
-        self.setFeatures(QDockWidget.DockWidgetFloatable | QDockWidget.DockWidgetMovable | QDockWidget.DockWidgetClosable)
+    def synchronize_change(self):
+        self.any_signal.emit()
 
-        self.setWidget(self.graphic_layout_widget)
 
-    def plot_graph(self, graph):
+class MplCanvas(FigureCanvasQTAgg):
+    def __init__(self, parent=None, graph=None, synchronize_change=None, layout='spring', width=8, height=4, dpi=100, ):
+        super(MplCanvas, self).__init__(Figure(figsize=(width, height), dpi=dpi))
+        self.setParent(parent)
+        self.ax = self.figure.add_subplot(111)
+        self.ax.set_position([0, 0, 1, 1])
+        self.ax.clear()
         if graph is None:
-            self.view_box.removeItem(self.graph)
             return
+        self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True,
+                                            node_label_fontdict=dict(size=8), node_layout=layout)
 
-        g = nx.from_graph6_bytes(graph.encode('utf-8'))
-        self.view_box.addItem(self.graph)
-        self.define_graph(g)
 
-    def define_graph(self, graph):
-        position = []
-        adjacency = []
-        indexes = []
+class ResizableGraph(EditableGraph):
 
-        points = nx.drawing.layout.spring_layout(graph)
-        for i, point in enumerate(points.values()):
-            aux = [point[0] * 10 // 1, point[1] * 10 // 1]
-            position.append(aux)
-            indexes.append(i)
+    def __init__(self, synchronize_change, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
-        edges = graph.edges(data=True)
-        for edge in edges:
-            aux = [edge[0], edge[1]]
-            if not reversed(aux) in adjacency:
-                adjacency.append(aux)
+        kwargs.setdefault('origin', (0., 0.))
+        kwargs.setdefault('scale', (1., 1.))
+        self.node_labels = {}
+        self.origin = kwargs["origin"]
+        self.scale = kwargs["scale"]
+        self.figure_width = self.fig.bbox.width
+        self.figure_height = self.fig.bbox.height
+        self.synchronize_change = synchronize_change
+        self.fig.canvas.mpl_connect('resize_event', self._on_resize)
+        self.restart_label()
 
-        pos = np.array(position, dtype=float)
-        adj = np.array(adjacency)
+    def _on_resize(self, event, pad=0.05):
+        node_positions = {}
 
-        texts = ["%d" % i for i in indexes]
+        # determine ratio new : old
+        scale_x_by = self.fig.bbox.width / self.figure_width
+        scale_y_by = self.fig.bbox.height / self.figure_height
 
-        self.graph.setData(pos=pos, adj=adj, size=1, pxMode=False, text=texts)
+        self.figure_width = self.fig.bbox.width
+        self.figure_height = self.fig.bbox.height
+
+        # rescale node positions
+        for node, (x, y) in self.node_positions.items():
+            node_positions[self.node_labels[node]] = (x, y)
+            new_x = ((x - self.origin[0]) * scale_x_by) + self.origin[0]
+            new_y = ((y - self.origin[1]) * scale_y_by) + self.origin[1]
+            self.node_positions[node] = np.array([new_x, new_y])
+
+        project_information_store.current_graph_pos = node_positions
+
+        # update axis dimensions
+        self.scale = (scale_x_by * self.scale[0],
+                      scale_y_by * self.scale[1])
+        xmin = self.origin[0] - pad * self.scale[0]
+        ymin = self.origin[1] - pad * self.scale[1]
+        xmax = self.origin[0] + self.scale[0] + pad * self.scale[0]
+        ymax = self.origin[1] + self.scale[1] + pad * self.scale[1]
+        self.ax.axis([xmin, xmax, ymin, ymax])
+
+        # redraw
+        self._update_node_artists(self.nodes)
+        self._update_node_label_positions()
+        self._update_edges(self.edges)
+        self._update_edge_label_positions(self.edges)
+        self.fig.canvas.draw()
+
+    def restart_label(self):
+        try:
+            self.node_labels = {node: i for i, node in enumerate(self.nodes)}
+            self.node_label_offset[self.nodes[len(self.nodes) - 1]] = (0.0, 0.0)
+            self.draw_node_labels(self.node_labels, self.node_label_fontdict)
+
+            new_graph = nx.Graph()
+            new_graph.add_nodes_from(self.nodes)
+            new_graph.add_edges_from(self.edges)
+            new_graph = fix_graph_nodes(new_graph)
+        except IndexError:
+            new_graph = nx.Graph()
+            pass
+
+        project_information_store.current_graph = new_graph
+        self.synchronize_change()
+
+    def set_node_positions_store(self):
+        node_positions = {}
+
+        for node, (x, y) in self.node_positions.items():
+            node_positions[self.node_labels[node]] = (x / 1.575, y / 1.75)
+
+        project_information_store.current_graph_pos = node_positions
+
+    def _on_key_press(self, event):
+        if event.key == "enter" or event.key == "alt+enter":
+            return
+        if event.key == '=':
+            self._add_node(event)
+        if event.key == 'backspace':
+            self._delete_nodes()
+            self._delete_edges()
+        super()._on_key_press(event)
+
+        self.restart_label()
+        self.set_node_positions_store()
+
+    def _on_motion(self, event):
+        super()._on_motion(event)
+        self.set_node_positions_store()
+
+    def _on_press(self, event):
+        super()._on_press(event)
+        self.restart_label()
+
+    def _add_or_remove_nascent_edge(self, event):
+        for node, artist in self.node_artists.items():
+            if artist.contains(event)[0]:
+                if self._nascent_edge:
+                    if self._nascent_edge.source == node:
+                        return
+        super()._add_or_remove_nascent_edge(event)
+
+    def draw_node_labels(self, node_labels, node_label_fontdict):
+        for i, (node, label) in enumerate(node_labels.items()):
+            x, y = self.node_positions[node]
+            dx, dy = self.node_label_offset[node]
+
+            artist = self.ax.text(x + dx, y + dy, label, **node_label_fontdict)
+
+            if node in self.node_label_artists:
+                self.node_label_artists[node].remove()
+            self.node_label_artists[node] = artist
