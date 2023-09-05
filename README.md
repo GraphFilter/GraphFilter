@@ -128,13 +128,30 @@ Here you can see a visualization of the graph, allowing the movement in the vert
 </h4>
 To navigate between the graphs returned from the filtering, you can use the combo box or navigation arrows at the top of the window.
 
-In the `File > Export to` menu, you can export the graphs returned in the filtering to other formats: 
-- PDF
-- PNG
-- Latex (TikZ)
-- graph6 (.g6 or .txt)
-- xlsx
+#### Tool Bar
+  Lorem ipsum
+  
+#### File Tree
+  In the left-hand corner you can see a tree of files, opened in the directory previously selected in Open or New Project. 
+In the tree you can double-click with the left button to open the folder or file, or right-click to display the menu with the following options:
+- Load File: This will load the file into the window, if they are graphs they will be plotted.
+- Export all graphs: Export all the graphs in the file in one of the selected file types.
+- Delete: Delete the file or empty folder
 
+#### File Types and Exports
+  The software accepts the following file types:
+- .g6 and .txt : Responsible for storing a list of graphs.
+- .gml: Able to store just one graph, but in more detail, such as the position of the vertices. 
+- .json: The result of the old way the software worked, there are still json files that store a list of graphs, but this type will be deprecated.
+
+The software can export graphs in the following file types:
+> When export is selected via the tool bar only the open graph will be exported, whereas when the export option is selected via the tree all the graphs in the file will be exported.
+- .pdf
+- .gml
+- .tex
+- .xlsx
+> In the case of files exported in .xlsx, the data from the information dock will be exported to the table.
+ 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
 
