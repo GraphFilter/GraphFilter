@@ -121,15 +121,21 @@ Here you can load the graphs for filtering. The file format of the entry is .g6 
 After these steps, the program will analyze all the conditions and the filtering will be performed. When finished, a window will open for viewing and analyzing each graph returned in the filtering.
 
 ### Project Main Window
-Here you can see a visualization of the graph, allowing the movement in the vertices with the mouse cursor. There is also a List of invariants to be calculated in the displayed graph, just mark the desired invariants and they will appear in the Info dock, which can be resized or even seen as a separate window, for a better visualization. In the dictionary tab you can see a short definition of each invariant implemented in the program.
+Here you can visualize, [draw](https://github.com/GraphFilter/GraphFilter/wiki/Features#graph-editing-features) and manipulate the graph on the screen. There is also a List of invariants to be calculated in the displayed graph, just mark the desired invariants and they will appear in the Info dock, which can be resized or even seen as a separate window, for a better visualization. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#invariants) you can see a short definition of each invariant implemented in the program.
 
 <h4 align="center">
-<image src="/resources/gifs/project_window.gif" width="1280">
+<image src="/resources/gifs/project_visualize.gif" width="800">
 </h4>
-To navigate between the graphs returned from the filtering, you can use the combo box or navigation arrows at the top of the window.
+
+  > To navigate between the graphs returned from the filtering or opened from a .g6, .txt file, you can use the combo box or navigation arrows at the top of the window.
 
 #### Tool Bar
-  Lorem ipsum
+
+The toolbar gives you access to some of the software's features, such as applying certain [operations](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), exporting, inserting a [universal vertex](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), saving the edited graph or deleting it. These functions refer to the graph on the screen. You can also create a new commonly used graph to work with the software. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#graphs), you can see all the new graphs options with their definitions and parameters.
+
+<h4 align="center">
+<image src="/resources/gifs/project_toolbar.gif" width="800">
+</h4>
   
 #### File Tree
   In the left-hand corner you can see a tree of files, opened in the directory previously selected in Open or New Project. 
@@ -137,6 +143,10 @@ In the tree you can double-click with the left button to open the folder or file
 - Load File: This will load the file into the window, if they are graphs they will be plotted.
 - Export all graphs: Export all the graphs in the file in one of the selected file types.
 - Delete: Delete the file or empty folder
+
+<h4 align="center">
+<image src="/resources/gifs/project_tree.gif" width="800">
+</h4>
 
 #### File Types and Exports
   The software accepts the following file types:
