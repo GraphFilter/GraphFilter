@@ -30,8 +30,7 @@ providing for visualization a filtered list of graphs according to the propertie
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
 > * Graph Filter v2.0 was published in [Anais do LIII Simpósio Brasileiro de Pesquisa Operacional, 2021](https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br).
 
-The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
-
+In version 2.0 and before the software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice. Now in version 3.0, the software has received updates to improve usability, such as a file tree for handling graph files, on-screen graph drawing functions, saving and deleting, and the creation of empty projects as well as the creation of graphs with known definitions.
 
 ## Features
 + Filter graphs with conditions customizable by the user;
@@ -40,6 +39,9 @@ The software has the purpose of filtering a list of graphs through conditions cu
 + Intuitive layout, does not require programming knowledge;
 + Support for several graph invariants;
 + It helps the researcher in Graphs to test conjectures and results.
++ Visualize, draw and manipulate Graphs
++ Create well-known Graph layouts
++ Manipulate files with an file tree
 
 ## Used libraries 
 
@@ -131,7 +133,7 @@ Here you can visualize, [draw](https://github.com/GraphFilter/GraphFilter/wiki/F
 
 #### Tool Bar
 
-The toolbar gives you access to some of the software's features, such as applying certain [operations](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), exporting, inserting a [universal vertex](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), saving the edited graph or deleting it. These functions refer to the graph on the screen. You can also create a new commonly used graph to work with the software. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#graphs), you can see all the new graphs options with their definitions and parameters.
+The toolbar gives you access to some of the software's features, such as applying certain [operations](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), exporting, inserting a [universal vertex](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), saving the edited graph or deleting it. These functions refer to the graph on the screen. You can also create a new well-known used graph to work with the software. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#graphs), you can see all the new graphs options with their definitions and parameters.
 
 <h4 align="center">
 <image src="/resources/gifs/project_toolbar.gif" width="800">
