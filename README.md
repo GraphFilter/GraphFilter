@@ -30,7 +30,7 @@ providing for visualization a filtered list of graphs according to the propertie
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
 > * Graph Filter v2.0 was published in [Anais do LIII Simpósio Brasileiro de Pesquisa Operacional, 2021](https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br).
 
-In version 2.0 and before the software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice. Now in version 3.0, the software has received updates to improve usability, such as a file tree for handling graph files, on-screen graph drawing functions, saving and deleting, and the creation of empty projects as well as the creation of graphs with known definitions.
+The software has the function of filtering a list of graphs using conditions customized by the user, without requiring programming knowledge. It also has the function of manipulating, drawing and creating graphs following known patterns. After filtering, the software will open the list of filtered graphs to be analyzed according to your scientific research and have invariants applied to them, as well as being able to manipulate these graphs or create new ones.
 
 ## Features
 + Filter graphs with conditions customizable by the user;
@@ -41,7 +41,7 @@ In version 2.0 and before the software has the purpose of filtering a list of gr
 + It helps the researcher in Graphs to test conjectures and results.
 + Visualize, draw and manipulate Graphs
 + Create well-known Graph layouts
-+ Manipulate files with an file tree
++ Manipulate files with an tree file manager
 
 ## Used libraries 
 
