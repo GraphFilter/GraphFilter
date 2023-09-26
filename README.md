@@ -30,7 +30,11 @@ providing for visualization a filtered list of graphs according to the propertie
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
 > * Graph Filter v2.0 was published in [Anais do LIII Simpósio Brasileiro de Pesquisa Operacional, 2021](https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br).
 
-The software has the function of filtering a list of graphs using conditions customized by the user, without requiring programming knowledge. It also has the function of manipulating, drawing and creating graphs following known patterns. After filtering, the software will open the list of filtered graphs to be analyzed according to your scientific research and have invariants applied to them, as well as being able to manipulate these graphs or create new ones.
+The Graph Filter is a software to help graph researchers, with a simple and intuitive interface. It allows you to draw, save and manipulate graphs with the mouse and keyboard. It provides more than 170 invariants (spectral and structural) and some graph operations, which are calculated in a few clicks.
+
+Another purpose of the software is to filter graphs: the user enters conditions and equations, attaches a list of up to thousands of graphs, then the program filters the graphs that meet the conditions. An important tool for drawing up results and finding counterexamples. You can also export your graphs in the following formats: gml, graph6, png, pdf or latex.
+
+The program is supported by any Windows, Linux and Mac. No installation is required, [just download and run](http://sistemas.jf.ifsudestemg.edu.br/graphfilter/download).
 
 ## Features
 + Filter graphs with conditions customizable by the user;
