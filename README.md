@@ -32,7 +32,7 @@ providing for visualization a filtered list of graphs according to the propertie
 
 The Graph Filter is a software to help graph researchers, with a simple and intuitive interface. It allows you to draw, save and manipulate graphs with the mouse and keyboard. It provides more than 170 invariants (spectral and structural) and some graph operations, which are calculated in a few clicks.
 
-Another purpose of the software is to filter graphs: the user enters conditions and equations, attaches a list of up to thousands of graphs, then the program filters the graphs that meet the conditions. An important tool for drawing up results and finding counterexamples. You can also export your graphs in the following formats: Graph(.gml), Graph6(.g6 or .txt), Image(.png or .pdf), Latex Tikz(.tex) or Sheets with ghrap(.xlsx).
+Another purpose of the software is to filter graphs: the user enters conditions and equations, attaches a list of up to thousands of graphs, then the program filters the graphs that meet the conditions. An important tool for drawing up results and finding counterexamples. You can also export the graphs in different formats.
 
 The program is supported by any Windows, Linux and Mac. No installation is required, [just download and run](http://sistemas.jf.ifsudestemg.edu.br/graphfilter/download).
 
@@ -58,14 +58,14 @@ The program is supported by any Windows, Linux and Mac. No installation is requi
 ## Installation
 You can run the program from an executable file or from the source code.
 
-### run from an executable (release)
+### Run from an executable (release)
 Download the compact file from the release that matches your Operational System.
 
 - [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
 - [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
 - [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
-### Source code
+### Run from source code
 To from the source code, you have to:
 
 - Install [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.io/en/stable/installing/).  
@@ -162,11 +162,13 @@ In the tree you can double-click with the left button to open the folder or file
 
 The software can export graphs in the following file types:
 > When export is selected via the tool bar only the open graph will be exported, whereas when the export option is selected via the tree all the graphs in the file will be exported.
-- .pdf
-- .gml
-- .tex
-- .xlsx
-> In the case of files exported in .xlsx, the data from the information dock will be exported to the table.
+- Graph(.gml),
+- Graph6(.g6 ou .txt),
+- Image(.png ou .pdf),
+- Latex Tikz(.tex), or
+- Sheets with ghrap (.xlsx
+
+> In the case of files exported in .xlsx, the numerical and boolean data from the information dock will be exported to the table.
  
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
