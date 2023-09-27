@@ -32,7 +32,7 @@ providing for visualization a filtered list of graphs according to the propertie
 
 The Graph Filter is a software to help graph researchers, with a simple and intuitive interface. It allows you to draw, save and manipulate graphs with the mouse and keyboard. It provides more than 170 invariants (spectral and structural) and some graph operations, which are calculated in a few clicks.
 
-Another purpose of the software is to filter graphs: the user enters conditions and equations, attaches a list of up to thousands of graphs, then the program filters the graphs that meet the conditions. An important tool for drawing up results and finding counterexamples. You can also export your graphs in the following formats: gml, graph6, png, pdf or latex.
+Another purpose of the software is to filter graphs: the user enters conditions and equations, attaches a list of up to thousands of graphs, then the program filters the graphs that meet the conditions. An important tool for drawing up results and finding counterexamples. You can also export your graphs in the following formats: Graph(.gml), Graph6(.g6 or .txt), Image(.png or .pdf), Latex Tikz(.tex) or Sheets with ghrap(.xlsx).
 
 The program is supported by any Windows, Linux and Mac. No installation is required, [just download and run](http://sistemas.jf.ifsudestemg.edu.br/graphfilter/download).
 
@@ -58,7 +58,7 @@ The program is supported by any Windows, Linux and Mac. No installation is requi
 ## Installation
 You can run the program from an executable file or from the source code.
 
-### Release
+### run from an executable (release)
 Download the compact file from the release that matches your Operational System.
 
 - [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
