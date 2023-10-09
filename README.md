@@ -30,8 +30,11 @@ providing for visualization a filtered list of graphs according to the propertie
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
 > * Graph Filter v2.0 was published in [Anais do LIII Simpósio Brasileiro de Pesquisa Operacional, 2021](https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br).
 
-The software has the purpose of filtering a list of graphs through conditions customized by the user, without requiring programming knowledge. After the process, the filtered graphs are returned and the user can analyze them according to his cientific research. This user will have access to plot of the graphs and the calculation of several invariants, at the user's choice.
+The Graph Filter is a software to help graph researchers, with a simple and intuitive interface. It allows you to draw, save and manipulate graphs with the mouse and keyboard. It provides more than 170 invariants (spectral and structural) and some graph operations, which are calculated in a few clicks.
 
+Another purpose of the software is to filter graphs: the user enters conditions and equations, attaches a list of up to thousands of graphs, then the program filters the graphs that meet the conditions. An important tool for drawing up results and finding counterexamples. You can also export the graphs in different formats.
+
+The program is supported by any Windows, Linux and Mac. No installation is required, [just download and run](http://sistemas.jf.ifsudestemg.edu.br/graphfilter/download).
 
 ## Features
 + Filter graphs with conditions customizable by the user;
@@ -40,6 +43,9 @@ The software has the purpose of filtering a list of graphs through conditions cu
 + Intuitive layout, does not require programming knowledge;
 + Support for several graph invariants;
 + It helps the researcher in Graphs to test conjectures and results.
++ Visualize, draw and manipulate Graphs
++ Create well-known Graph layouts
++ Manipulate files with an tree file manager
 
 ## Used libraries 
 
@@ -52,14 +58,14 @@ The software has the purpose of filtering a list of graphs through conditions cu
 ## Installation
 You can run the program from an executable file or from the source code.
 
-### Release
+### Run from an executable (release)
 Download the compact file from the release that matches your Operational System.
 
 - [Windows](https://github.com/GraphFilter/GraphFilter/wiki/Windows-Configurations#executing)
 - [Linux](https://github.com/GraphFilter/GraphFilter/wiki/Linux-Configurations#executing)
 - [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
-### Source code
+### Run from source code
 To from the source code, you have to:
 
 - Install [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.io/en/stable/installing/).  
@@ -121,20 +127,49 @@ Here you can load the graphs for filtering. The file format of the entry is .g6 
 After these steps, the program will analyze all the conditions and the filtering will be performed. When finished, a window will open for viewing and analyzing each graph returned in the filtering.
 
 ### Project Main Window
-Here you can see a visualization of the graph, allowing the movement in the vertices with the mouse cursor. There is also a List of invariants to be calculated in the displayed graph, just mark the desired invariants and they will appear in the Info dock, which can be resized or even seen as a separate window, for a better visualization. In the dictionary tab you can see a short definition of each invariant implemented in the program.
+Here you can visualize, [draw](https://github.com/GraphFilter/GraphFilter/wiki/Features#graph-editing-features) and manipulate the graph on the screen. There is also a List of invariants to be calculated in the displayed graph, just mark the desired invariants and they will appear in the Info dock, which can be resized or even seen as a separate window, for a better visualization. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#invariants) you can see a short definition of each invariant implemented in the program.
 
 <h4 align="center">
-<image src="/resources/gifs/project_window.gif" width="1280">
+<image src="/resources/gifs/project_visualize.gif" width="800">
 </h4>
-To navigate between the graphs returned from the filtering, you can use the combo box or navigation arrows at the top of the window.
 
-In the `File > Export to` menu, you can export the graphs returned in the filtering to other formats: 
-- PDF
-- PNG
-- Latex (TikZ)
-- graph6 (.g6 or .txt)
-- xlsx
+  > To navigate between the graphs returned from the filtering or opened from a .g6, .txt file, you can use the combo box or navigation arrows at the top of the window.
 
+#### Tool Bar
+
+The toolbar gives you access to some of the software's features, such as applying certain [operations](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), exporting, inserting a [universal vertex](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), saving the edited graph or deleting it. These functions refer to the graph on the screen. You can also create a new well-known used graph to work with the software. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#graphs), you can see all the new graphs options with their definitions and parameters.
+
+<h4 align="center">
+<image src="/resources/gifs/project_toolbar.gif" width="800">
+</h4>
+  
+#### File Tree
+  In the left-hand corner you can see a tree of files, opened in the directory previously selected in Open or New Project. 
+In the tree you can double-click with the left button to open the folder or file, or right-click to display the menu with the following options:
+- Load File: This will load the file into the window, if they are graphs they will be plotted.
+- Export all graphs: Export all the graphs in the file in one of the selected file types.
+- Delete: Delete the file or empty folder
+
+<h4 align="center">
+<image src="/resources/gifs/project_tree.gif" width="800">
+</h4>
+
+#### File Types and Exports
+  The software accepts the following file types:
+- .g6 and .txt : Responsible for storing a list of graphs.
+- .gml: Able to store just one graph, but in more detail, such as the position of the vertices. 
+- .json: The result of the old way the software worked, there are still json files that store a list of graphs, but this type will be deprecated.
+
+The software can export graphs in the following file types:
+> When export is selected via the tool bar only the open graph will be exported, whereas when the export option is selected via the tree all the graphs in the file will be exported.
+- Graph(.gml),
+- Graph6(.g6 ou .txt),
+- Image(.png ou .pdf),
+- Latex Tikz(.tex), or
+- Sheets with ghrap (.xlsx
+
+> In the case of files exported in .xlsx, the numerical and boolean data from the information dock will be exported to the table.
+ 
 ## More
 For further information on how to use the program, please go to the [Wiki](https://github.com/GraphFilter/GraphFilter/wiki) page.
 
