@@ -166,7 +166,7 @@ The software can export graphs in the following file types:
 - Graph6(.g6 ou .txt),
 - Image(.png ou .pdf),
 - Latex Tikz(.tex), or
-- Sheets with ghrap (.xlsx
+- Sheets with invariants (.xlsx
 
 > In the case of files exported in .xlsx, the numerical and boolean data from the information dock will be exported to the table.
  
