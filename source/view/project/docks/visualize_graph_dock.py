@@ -39,7 +39,7 @@ class VisualizeGraphDock(QDockWidget):
             self.current_graph = nx.from_graph6_bytes(graph.encode('utf-8'))
         except AttributeError:
             self.current_graph = graph
-        except nx.NetworkXError:
+        except (nx.NetworkXError, IndexError):
             self.invalid_graph_signal.emit()
             self.current_graph = nx.Graph()
         self.canvas = MplCanvas(self, self.current_graph, self.synchronize_change, layout)
