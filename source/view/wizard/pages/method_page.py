@@ -31,7 +31,7 @@ class MethodPage(QWizardPage):
         self.filter_button.setCheckable(True)
         self.filter_button.setObjectName('filter')
 
-        self.find_example_button.setText("  Find a example")
+        self.find_example_button.setText("  Find an example")
         self.find_example_button.setIcon(Icon("zoom"))
         self.find_example_button.setMinimumHeight(50)
         self.find_example_button.setMinimumWidth(50)
@@ -39,7 +39,7 @@ class MethodPage(QWizardPage):
         self.find_example_button.setObjectName('find_example')
 
         self.blank_project.setText(" Blank project \n "
-                                   " Drawn your own graphs")
+                                   "Draw your own graphs")
         
         self.blank_project.setIcon(Icon("edit"))
         self.blank_project.setMinimumHeight(50)
