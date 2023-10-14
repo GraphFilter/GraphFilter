@@ -31,6 +31,9 @@ class InverseLineGraph(OperationsGraph):
         except nx.NetworkXError:
             message_box = MessageBox("The drawn graph is not a line graph of any graph")
             message_box.exec()
+        except:
+            message_box = MessageBox("There was an error when calculating the inverse line graph")
+            message_box.exec()
 
         return None
 
