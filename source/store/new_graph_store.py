@@ -307,9 +307,6 @@ class Grid2dGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text())))
-        # layout = {(x, y): (((1.93 / (int(dialog.dict['m'].text()) - 0.99)) * x) + 0.05, y /
-        #                   (int(dialog.dict['n'].text()) - 0.99))
-        #          for x, y in new_graph_store.graph.nodes()}
         layout = {(x, y): (((1.93 / (int(dialog.dict['m'].text()) - 0.99)) * x) + 0.05, (0.96 /
                            (int(dialog.dict['n'].text()) - 0.99) * y) + 0.02)
                   for x, y in new_graph_store.graph.nodes()}
