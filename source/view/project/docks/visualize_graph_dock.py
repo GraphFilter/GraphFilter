@@ -5,7 +5,6 @@ import networkx as nx
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from netgraph import EditableGraph
-import numpy as np
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
 
@@ -61,7 +60,8 @@ class MplCanvas(FigureCanvasQTAgg):
         if graph is None:
             return
         self.plot_instance = ResizableGraph(synchronize_change, graph, scale=(2, 1), ax=self.ax, node_labels=True,
-                                            node_label_fontdict=dict(size=8), node_layout=layout)
+                                            node_label_fontdict=dict(size=8), node_layout=layout, node_size=2,
+                                            edge_width=0.5)
 
 
 class ResizableGraph(EditableGraph):
@@ -69,51 +69,10 @@ class ResizableGraph(EditableGraph):
     def __init__(self, synchronize_change, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        kwargs.setdefault('origin', (0., 0.))
-        kwargs.setdefault('scale', (1., 1.))
         self.node_labels = {}
-        self.origin = kwargs["origin"]
-        self.scale = kwargs["scale"]
-        self.figure_width = self.fig.bbox.width
-        self.figure_height = self.fig.bbox.height
         self.synchronize_change = synchronize_change
-        self.fig.canvas.mpl_connect('resize_event', self._on_resize)
         self.restart_label()
-
-    def _on_resize(self, event, pad=0.05):
-        node_positions = {}
-
-        # determine ratio new : old
-        scale_x_by = self.fig.bbox.width / self.figure_width
-        scale_y_by = self.fig.bbox.height / self.figure_height
-
-        self.figure_width = self.fig.bbox.width
-        self.figure_height = self.fig.bbox.height
-
-        # rescale node positions
-        for node, (x, y) in self.node_positions.items():
-            node_positions[self.node_labels[node]] = (x, y)
-            new_x = ((x - self.origin[0]) * scale_x_by) + self.origin[0]
-            new_y = ((y - self.origin[1]) * scale_y_by) + self.origin[1]
-            self.node_positions[node] = np.array([new_x, new_y])
-
-        project_information_store.current_graph_pos = node_positions
-
-        # update axis dimensions
-        self.scale = (scale_x_by * self.scale[0],
-                      scale_y_by * self.scale[1])
-        xmin = self.origin[0] - pad * self.scale[0]
-        ymin = self.origin[1] - pad * self.scale[1]
-        xmax = self.origin[0] + self.scale[0] + pad * self.scale[0]
-        ymax = self.origin[1] + self.scale[1] + pad * self.scale[1]
-        self.ax.axis([xmin, xmax, ymin, ymax])
-
-        # redraw
-        self._update_node_artists(self.nodes)
-        self._update_node_label_positions()
-        self._update_edges(self.edges)
-        self._update_edge_label_positions(self.edges)
-        self.fig.canvas.draw()
+        self.set_node_positions_store()
 
     def restart_label(self):
         try:
@@ -136,7 +95,7 @@ class ResizableGraph(EditableGraph):
         node_positions = {}
 
         for node, (x, y) in self.node_positions.items():
-            node_positions[self.node_labels[node]] = (x / 1.575, y / 1.75)
+            node_positions[self.node_labels[node]] = (x, y)
 
         project_information_store.current_graph_pos = node_positions
 
@@ -163,7 +122,7 @@ class ResizableGraph(EditableGraph):
 
     def _add_or_remove_nascent_edge(self, event):
         for node, artist in self.node_artists.items():
-            if artist.contains(event)[0]:
+            if artist.contains(event)[0]:   
                 if self._nascent_edge:
                     if self._nascent_edge.source == node:
                         return

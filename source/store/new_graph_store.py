@@ -307,7 +307,8 @@ class Grid2dGraph(NewGraphStore):
     @staticmethod
     def create_graph(dialog):
         new_graph_store.set_graph(nx.grid_2d_graph(int(dialog.dict['m'].text()), int(dialog.dict['n'].text())))
-        layout = {(x, y): ((2 / (int(dialog.dict['m'].text()) - 0.99)) * x, y / (int(dialog.dict['n'].text()) - 0.99))
+        layout = {(x, y): (((1.93 / (int(dialog.dict['m'].text()) - 0.99)) * x) + 0.05, (0.96 /
+                           (int(dialog.dict['n'].text()) - 0.99) * y) + 0.02)
                   for x, y in new_graph_store.graph.nodes()}
         if len(new_graph_store.graph.nodes) == 1:
             layout = {(0, 0): (1, 1), 0: (1, 1)}
@@ -339,8 +340,8 @@ class TriangularLatticeGraph(NewGraphStore):
                                                               int(dialog.dict['n'].text())))
         layout = nx.get_node_attributes(new_graph_store.graph, 'pos')
         for key, value in layout.items():
-            layout[key] = ((3 / (0.75 * (int(dialog.dict['n'].text()) + 1))) * value[0],
-                           (1.1 / int(dialog.dict['m'].text())) * value[1])
+            layout[key] = (((3 / (0.8 * (int(dialog.dict['n'].text()) + 1))) * value[0]) + 0.05,
+                           ((1.1 / int(dialog.dict['m'].text())) * value[1]) + 0.02)
         new_graph_store.set_layout(layout)
         NewGraphStore.create_graph(dialog)
 
@@ -371,8 +372,8 @@ class PetersenGraph(NewGraphStore):
 
         for i in range(5):
             theta = 2 * math.pi * i / 5 + math.pi / 2
-            pos[i] = ((2 * math.cos(theta) + 2) * 0.5, (2 * math.sin(theta) + 2) * 0.25)
-            pos[5 + i] = ((math.cos(theta) + 2) * 0.5, (math.sin(theta) + 2) * 0.25)
+            pos[i] = (((2 * math.cos(theta) + 2) * 0.25) + 0.5, (2 * math.sin(theta) + 2) * 0.24)
+            pos[5 + i] = (((math.cos(theta) + 2) * 0.25) + 0.5, (math.sin(theta) + 2) * 0.24)
 
         return pos
 
