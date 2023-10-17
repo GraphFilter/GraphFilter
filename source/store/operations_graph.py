@@ -27,7 +27,13 @@ class InverseLineGraph(OperationsGraph):
     @staticmethod
     def calculate(graph):
         try:
-            return nx.inverse_line_graph(graph)
+            if nx.is_connected(graph):
+                return nx.inverse_line_graph(graph)
+            else:
+                root_graphs = []
+                for comp in nx.connected_components(graph):
+                    root_graphs.append(nx.inverse_line_graph(graph.subgraph(comp)))
+                return nx.disjoint_union_all(root_graphs)
         except nx.NetworkXError:
             message_box = MessageBox("The drawn graph is not a line graph of any graph")
             message_box.exec()
@@ -36,7 +42,6 @@ class InverseLineGraph(OperationsGraph):
             message_box.exec()
 
         return None
-
 
 class Complement(OperationsGraph):
     name = "Complement"
