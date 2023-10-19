@@ -143,6 +143,7 @@ class DomainUnitTests(unittest.TestCase):
         trivial = nx.trivial_graph()
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32, numpy.int64)))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, int, bool)))
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(trivial), bool))
         for inv in inv_other.InvariantOther().all:
@@ -155,6 +156,7 @@ class DomainUnitTests(unittest.TestCase):
         discon_graph = nx.from_graph6_bytes('J????OC?wF_'.encode('utf-8'))
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(discon_graph), (float, int, numpy.int32, numpy.int64)))
+            self.assertTrue(isinstance(inv.print(discon_graph, precision=5), (str,int,bool)))
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(discon_graph), bool))
         for inv in inv_other.InvariantOther().all:

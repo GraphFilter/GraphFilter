@@ -224,8 +224,8 @@ class WizardController:
 
     def set_equations_tabs(self):
         n = len(dic_num_inv_spectral_names)
-        dic_num_inv_spectral_names1 = dict(list(dic_num_inv_spectral_names.items())[0: 27])
-        dic_num_inv_spectral_names2 = dict(list(dic_num_inv_spectral_names.items())[27: n])
+        dic_num_inv_spectral_names1 = dict(list(dic_num_inv_spectral_names.items())[0: 30])
+        dic_num_inv_spectral_names2 = dict(list(dic_num_inv_spectral_names.items())[30: n])
 
         tab_num_structural_invariants = TabOperations(self.add_button_input_to_equation_text,
                                                       dic_num_inv_structural_names)

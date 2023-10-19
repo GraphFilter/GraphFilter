@@ -358,6 +358,19 @@ class SomeEigenIntegerE(InvariantBool):
         return Utils.print_boolean(SomeEigenIntegerE.calculate(graph), precision)
 
 
+class SomeEigenIntegerR(InvariantBool):
+    name = "Some R-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_there_integer(inv_other.RandicSpectrum.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerR.calculate(graph), precision)
+
+
 class IntegralA(InvariantBool):
     name = "Adjacency integral"
     type = 'bool_spectral'
@@ -490,6 +503,19 @@ class IntegralE(InvariantBool):
         return Utils.print_boolean(IntegralE.calculate(graph), precision)
 
 
+class IntegralR(InvariantBool):
+    name = "Randic integral"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.integral(inv_other.RandicSpectrum.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(IntegralR.calculate(graph), precision)
+
+
 class LargestEigenIntegerA(InvariantBool):
     name = "Largest A-eigen is integer"
     type = 'bool_spectral'
@@ -591,7 +617,6 @@ class LargestEigenIntegerS(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerS.calculate(graph), precision)
 
 
-
 class LargestEigenIntegerN(InvariantBool):
     name = "Largest N-eigen is integer"
     type = 'bool_spectral'
@@ -618,6 +643,19 @@ class LargestEigenIntegerE(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(LargestEigenIntegerE.calculate(graph), precision)
+
+
+class LargestEigenIntegerR(InvariantBool):
+    name = "Largest R-eigen is integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_integer(inv_other.RandicSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(LargestEigenIntegerR.calculate(graph), precision)
 
 
 class RegularTransmission(InvariantBool):
@@ -724,6 +762,7 @@ class InvertibleMatrixDQ(InvariantBool):
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixDQ.calculate(graph), precision)
 
+
 class InvertibleMatrixN(InvariantBool):
     name = "N matrix is invertible"
     type = 'bool_spectral'
@@ -763,3 +802,16 @@ class InvertibleMatrixE(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixE.calculate(graph), precision)
+
+
+class InvertibleMatrixR(InvariantBool):
+    name = "R matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.RandicMatrix.calculate(graph))) != 0)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(InvertibleMatrixR.calculate(graph), precision)
