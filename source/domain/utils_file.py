@@ -118,3 +118,8 @@ def get_name_from_save_dialog(format_file):
         if not QtCore.QFileInfo(file_name).suffix():
             file_name += f".{format_file}"
     return file_name
+
+
+def get_directory_name_from_existing_directory():
+    return str(QFileDialog.getExistingDirectory(caption="Select Directory",
+                                                directory=project_information_store.get_file_directory()))
