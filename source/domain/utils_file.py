@@ -1,5 +1,6 @@
 import networkx as nx
-from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
+from PyQt5 import QtCore
 
 from source.domain.utils import trigger_message_box
 from source.store.project_information_store import project_information_store
@@ -44,7 +45,7 @@ def change_gml_file(file_path):
         handle_invalid_file_open()
         return None
 
-    
+
 def delete_all_gml_nodes(file_path):
     graph = project_information_store.current_graph
     e = list(graph.nodes)
@@ -52,7 +53,7 @@ def delete_all_gml_nodes(file_path):
     nx.write_gml(graph, file_path)
     return graph
 
-  
+
 def change_g6_file(file_path, new_g6, current_index):
     try:
         with open(file_path, "r") as file:
@@ -87,7 +88,7 @@ def create_g6_file(path_to_save, graph_list, name_file=None, name_modifier=''):
 
 
 def generate_pdf_report(name, method, equation, conditions, input_graph_file, filtered_graphs, name_modifier,
-                        num_graphs,description):
+                        num_graphs, description):
     pdf = PDF('P', 'mm', 'A4')
     pdf.add_page()
 
@@ -105,3 +106,15 @@ def generate_pdf_report(name, method, equation, conditions, input_graph_file, fi
 def handle_invalid_file_open():
     trigger_message_box("Invalid file to save or delete. Check if the file still exists.", icon=QMessageBox.Warning,
                         window_title="Invalid File")
+
+
+def get_name_from_save_dialog(format_file):
+    file_name = QFileDialog.getSaveFileName(caption=f"Export graph(s) to {format_file} file",
+                                            filter=f"Files (*.{format_file})", directory=
+                                            f"{project_information_store.get_file_name_without_extension()}"
+                                            f"."f"{format_file}"
+                                            )[0]
+    if file_name:
+        if not QtCore.QFileInfo(file_name).suffix():
+            file_name += f".{format_file}"
+    return file_name
