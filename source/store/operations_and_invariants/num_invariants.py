@@ -923,17 +923,17 @@ class EdgeConnectivity(InvariantNum):
 
 
 class ChromaticIndex(InvariantNum):
-     name = "Chromatic Index (estimated)"
-     code = "\u03c7'"
-     type = "number_structural"
+    name = "Chromatic Index (estimated)"
+    code = "\u03c7'"
+    type = "number_structural"
 
-     @staticmethod
-     def calculate(graph):
-         return ChromaticNumber.calculate(nx.line_graph(graph))
+    @staticmethod
+    def calculate(graph):
+        return ChromaticNumber.calculate(nx.line_graph(graph))
 
-     @staticmethod
-     def print(graph, precision):
-         return Utils.print_numeric(ChromaticIndex.calculate(graph), precision)
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(ChromaticIndex.calculate(graph), precision)
 
 
 class MinimumEdgeCover(InvariantNum):
@@ -1339,3 +1339,37 @@ class DeterminantEccentricityMatrix(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(DeterminantEccentricityMatrix.calculate(graph), precision)
+
+
+class KirchhoffIndex(InvariantNum):
+    name = 'Kirchhoff Index'
+    code = 'Kf'
+    type = 'number_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            lEigen = inv_other.LaplacianSpectrum.calculate(graph)
+            return nx.number_of_nodes(graph) * sum(1 / x for x in lEigen[1:])
+        return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(KirchhoffIndex.calculate(graph), precision)
+
+
+class DegreeKirchhoffIndex(InvariantNum):
+    name = 'Degree Kirchhoff Index'
+    code = 'K\uff07f'
+    type = 'number_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            nEigen = inv_other.NormalizedLaplacianSpectrum.calculate(graph)
+            return 2 * nx.number_of_edges(graph) * sum(1 / x for x in nEigen[1:])
+        return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(DegreeKirchhoffIndex.calculate(graph), precision)
