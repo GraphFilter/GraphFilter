@@ -12,7 +12,7 @@ def export_g6_to_png(g6code, folder, count):
     nx.draw_networkx(graph,
                      node_color='#EEF25C',
                      labels={item: item for item in nx.nodes(graph)})
-    plt.savefig(f"{folder}\Graph_{count}.png", format="PNG")
+    plt.savefig(f"{folder}\Graph_{count + 1}.png", format="PNG")
     plt.close()
 
 
@@ -27,7 +27,7 @@ def export_g6_to_pdf(g6code, folder, count):
     nx.draw_networkx(graph,
                      node_color='#EEF25C',
                      labels={item: item for item in nx.nodes(graph)})
-    plt.savefig(f"{folder}\Graph_{count}.pdf", format="PDF")
+    plt.savefig(f"{folder}\Graph_{count + 1}.pdf", format="PDF")
     plt.close()
 
 
