@@ -268,32 +268,6 @@ class SomeEigenIntegerQ(InvariantBool):
         return Utils.print_boolean(SomeEigenIntegerQ.calculate(graph), precision)
 
 
-class SomeEigenIntegerS(InvariantBool):
-    name = "Some S-eigenvalue integer"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        return Utils.is_there_integer(inv_other.SeidelSpectrum.calculate(graph))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(SomeEigenIntegerS.calculate(graph), precision)
-
-
-class SomeEigenIntegerN(InvariantBool):
-    name = "Some N-eigenvalue integer"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        return Utils.is_there_integer(inv_other.NormalizedLaplacianSpectrum.calculate(graph))
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(SomeEigenIntegerN.calculate(graph), precision)
-
-
 class SomeEigenIntegerD(InvariantBool):
     name = "Some D-eigenvalue integer"
     type = 'bool_spectral'
@@ -342,6 +316,32 @@ class SomeEigenIntegerDQ(InvariantBool):
         return Utils.print_boolean(SomeEigenIntegerDQ.calculate(graph), precision)
 
 
+class SomeEigenIntegerS(InvariantBool):
+    name = "Some S-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_there_integer(inv_other.SeidelSpectrum.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerS.calculate(graph), precision)
+
+
+class SomeEigenIntegerN(InvariantBool):
+    name = "Some N-eigenvalue integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_there_integer(inv_other.NormalizedLaplacianSpectrum.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(SomeEigenIntegerN.calculate(graph), precision)
+
+
 class SomeEigenIntegerE(InvariantBool):
     name = "Some E-eigenvalue integer"
     type = 'bool_spectral'
@@ -359,7 +359,7 @@ class SomeEigenIntegerE(InvariantBool):
 
 
 class IntegralA(InvariantBool):
-    name = "A-integral (Adjacency)"
+    name = "Adjacency integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -372,7 +372,7 @@ class IntegralA(InvariantBool):
 
 
 class IntegralL(InvariantBool):
-    name = "L-integral (Laplacian)"
+    name = "Laplacian integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -385,7 +385,7 @@ class IntegralL(InvariantBool):
 
 
 class IntegralQ(InvariantBool):
-    name = "Q-integral (Signless Laplacian)"
+    name = "Signless Laplacian integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -398,7 +398,7 @@ class IntegralQ(InvariantBool):
 
 
 class IntegralN(InvariantBool):
-    name = "N-integral (Normalized Laplacian)"
+    name = "Normalized Laplacian integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -414,7 +414,7 @@ class IntegralN(InvariantBool):
 
 
 class IntegralS(InvariantBool):
-    name = "S-integral (Signless Laplacian)"
+    name = "Signless Laplacian integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -427,7 +427,7 @@ class IntegralS(InvariantBool):
 
 
 class IntegralD(InvariantBool):
-    name = "D-integral (Distance)"
+    name = "Distance integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -443,7 +443,7 @@ class IntegralD(InvariantBool):
 
 
 class IntegralDL(InvariantBool):
-    name = "DL-integral (Distance)"
+    name = "Laplacian Distance integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -459,7 +459,7 @@ class IntegralDL(InvariantBool):
 
 
 class IntegralDQ(InvariantBool):
-    name = "DQ-integral (Distance)"
+    name = "Signless Laplacian Distance integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -475,7 +475,7 @@ class IntegralDQ(InvariantBool):
 
 
 class IntegralE(InvariantBool):
-    name = "E-integral (Eccentricity)"
+    name = "Eccentricity integral"
     type = 'bool_spectral'
 
     @staticmethod
@@ -529,19 +529,6 @@ class LargestEigenIntegerQ(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerQ.calculate(graph), precision)
 
 
-class LargestEigenIntegerS(InvariantBool):
-    name = "Largest S-eigen is integer"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        return Utils.is_integer(inv_other.SeidelSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(LargestEigenIntegerS.calculate(graph), precision)
-
-
 class LargestEigenIntegerD(InvariantBool):
     name = "Largest D-eigen is integer"
     type = 'bool_spectral'
@@ -591,8 +578,22 @@ class LargestEigenIntegerDQ(InvariantBool):
         return Utils.print_boolean(LargestEigenIntegerDQ.calculate(graph), precision)
 
 
+class LargestEigenIntegerS(InvariantBool):
+    name = "Largest S-eigen is integer"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.is_integer(inv_other.SeidelSpectrum.calculate(graph)[nx.number_of_nodes(graph) - 1])
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(LargestEigenIntegerS.calculate(graph), precision)
+
+
+
 class LargestEigenIntegerN(InvariantBool):
-    name = "Largest N-eigenvalue is integer"
+    name = "Largest N-eigen is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -605,7 +606,7 @@ class LargestEigenIntegerN(InvariantBool):
 
 
 class LargestEigenIntegerE(InvariantBool):
-    name = "Largest E-eigenvalue is integer"
+    name = "Largest E-eigen is integer"
     type = 'bool_spectral'
 
     @staticmethod
@@ -638,7 +639,7 @@ class RegularTransmission(InvariantBool):
 
 
 class InvertibleMatrixA(InvariantBool):
-    name = "A is invertible"
+    name = "A matrix is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -651,7 +652,7 @@ class InvertibleMatrixA(InvariantBool):
 
 
 class InvertibleMatrixL(InvariantBool):
-    name = "L is invertible"
+    name = "L matrix is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -664,7 +665,7 @@ class InvertibleMatrixL(InvariantBool):
 
 
 class InvertibleMatrixQ(InvariantBool):
-    name = "Q is invertible"
+    name = "Q matrix is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -676,21 +677,8 @@ class InvertibleMatrixQ(InvariantBool):
         return Utils.print_boolean(InvertibleMatrixQ.calculate(graph), precision)
 
 
-class InvertibleMatrixN(InvariantBool):
-    name = "N is invertible"
-    type = 'bool_spectral'
-
-    @staticmethod
-    def calculate(graph):
-        return bool(Utils.approx_to_int(la.det(inv_other.NormalizedLaplacianMatrix.calculate(graph))) != 0)
-
-    @staticmethod
-    def print(graph, precision):
-        return Utils.print_boolean(InvertibleMatrixN.calculate(graph), precision)
-
-
 class InvertibleMatrixD(InvariantBool):
-    name = "D is invertible"
+    name = "D matrix is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -705,8 +693,52 @@ class InvertibleMatrixD(InvariantBool):
         return Utils.print_boolean(InvertibleMatrixD.calculate(graph), precision)
 
 
+class InvertibleMatrixDL(InvariantBool):
+    name = "DL matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return bool(Utils.approx_to_int(la.det(inv_other.LaplacianDistanceMatrix.calculate(graph))) != 0)
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(InvertibleMatrixDL.calculate(graph), precision)
+
+
+class InvertibleMatrixDQ(InvariantBool):
+    name = "DQ matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            return bool(Utils.approx_to_int(la.det(inv_other.SignlessLaplacianDistanceMatrix.calculate(graph))) != 0)
+        else:
+            return False
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(InvertibleMatrixDQ.calculate(graph), precision)
+
+class InvertibleMatrixN(InvariantBool):
+    name = "N matrix is invertible"
+    type = 'bool_spectral'
+
+    @staticmethod
+    def calculate(graph):
+        return bool(Utils.approx_to_int(la.det(inv_other.NormalizedLaplacianMatrix.calculate(graph))) != 0)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(InvertibleMatrixN.calculate(graph), precision)
+
+
 class InvertibleMatrixS(InvariantBool):
-    name = "S is invertible"
+    name = "S matrix is invertible"
     type = 'bool_spectral'
 
     @staticmethod
@@ -719,7 +751,7 @@ class InvertibleMatrixS(InvariantBool):
 
 
 class InvertibleMatrixE(InvariantBool):
-    name = "E is invertible"
+    name = "E matrix is invertible"
     type = 'bool_spectral'
 
     @staticmethod
