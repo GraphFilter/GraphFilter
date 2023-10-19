@@ -182,9 +182,7 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
-                                                        caption="Select Directory",
-                                                        directory=project_information_store.get_file_directory()))
+        file_dir = utils_file.get_directory_name_from_existing_directory()
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
@@ -232,9 +230,7 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
-                                                        caption="Select Directory",
-                                                        directory=project_information_store.get_file_directory()))
+        file_dir = utils_file.get_directory_name_from_existing_directory()
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):

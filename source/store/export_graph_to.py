@@ -1,5 +1,4 @@
 import networkx as nx
-from PyQt5.QtWidgets import QFileDialog
 from matplotlib import pyplot as plt
 import network2tikz as nxtikz
 
