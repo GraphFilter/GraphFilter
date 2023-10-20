@@ -62,7 +62,10 @@ class UtilsToInvariants:
 
     @staticmethod
     def print_dict(value, precision):
-        return ' | '.join(f'{x}: {np.around(y, decimals=precision)}' for x, y in value.items())
+        if type(value) is str:
+            return value
+        else:
+            return ' | '.join(f'{x}: {np.around(y, decimals=precision)}' for x, y in value.items())
 
     @staticmethod
     def print_eigenvectors_and_eigenvalues(value, precision):

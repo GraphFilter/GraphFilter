@@ -67,6 +67,9 @@ class ProjectInformationStore:
     def get_file_name(self):
         return os.path.basename(self.file_path)
 
+    def get_file_name_without_extension(self):
+        return os.path.basename(self.file_path).split('.')[0]
+
     def get_file_type(self):
         file_name, file_type = os.path.splitext(self.file_path)
         return file_type

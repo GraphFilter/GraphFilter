@@ -621,10 +621,7 @@ class SmallestEigenA(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -638,10 +635,7 @@ class SmallestEigenL(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.LaplacianMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -655,10 +649,7 @@ class SmallestEigenQ(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -723,10 +714,7 @@ class SmallestEigenN(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -740,10 +728,7 @@ class SmallestEigenS(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.SeidelMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.SeidelMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -774,10 +759,7 @@ class SmallestEigenR(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.RandicMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.RandicMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):

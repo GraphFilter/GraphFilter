@@ -1,8 +1,8 @@
 import networkx as nx
-from PyQt5.QtWidgets import QFileDialog
 from matplotlib import pyplot as plt
 import network2tikz as nxtikz
 
+from source.domain import utils_file
 from source.domain.utils import trigger_message_box
 from source.domain.utils_file import change_gml_file, create_g6_file
 from source.store.project_information_store import project_information_store
@@ -19,10 +19,9 @@ class ExportGraphTo:
         self.file_path = None
 
     @staticmethod
-    def export():
-        file_dialog = QFileDialog()
-        file_path = file_dialog.getSaveFileName(directory=project_information_store.get_file_name())
-        export_graph_to.file_path = file_path[0].strip(project_information_store.get_file_type())
+    def set_export_file_path(format_file):
+        file_path = utils_file.get_name_from_save_dialog(format_file)
+        export_graph_to.file_path = file_path
         if export_graph_to.file_path == '':
             return False
 
@@ -44,9 +43,9 @@ class ExportToGML(ExportGraphTo):
     def export():
         if project_information_store.get_file_type() == '.gml':
             return ExportGraphTo.same_format_alert_box()
-        export = ExportGraphTo.export()
+        export = ExportGraphTo.set_export_file_path('gml')
         if export is not False:
-            change_gml_file(export_graph_to.file_path)
+            change_gml_file(export_graph_to.file_path.strip('.gml'))
             ExportGraphTo.success_export_alert_box('gml')
 
 
@@ -57,9 +56,9 @@ class ExportToG6(ExportGraphTo):
     def export():
         if project_information_store.get_file_type() == '.g6':
             return ExportGraphTo.same_format_alert_box()
-        export = ExportGraphTo.export()
+        export = ExportGraphTo.set_export_file_path('g6')
         if export is not False:
-            create_g6_file(export_graph_to.file_path + ".g6",
+            create_g6_file(export_graph_to.file_path,
                            nx.to_graph6_bytes(project_information_store.current_graph, header=False).decode('utf-8')
                            )
             ExportGraphTo.success_export_alert_box('graph6')
@@ -72,9 +71,9 @@ class ExportToTXT(ExportGraphTo):
     def export():
         if project_information_store.get_file_type() == '.txt':
             return ExportGraphTo.same_format_alert_box()
-        export = ExportGraphTo.export()
+        export = ExportGraphTo.set_export_file_path('txt')
         if export is not False:
-            create_g6_file(export_graph_to.file_path + ".txt",
+            create_g6_file(export_graph_to.file_path,
                            nx.to_graph6_bytes(project_information_store.current_graph, header=False).decode('utf-8')
                            )
             ExportGraphTo.success_export_alert_box('txt')
@@ -85,12 +84,12 @@ class ExportToPNG(ExportGraphTo):
 
     @staticmethod
     def export():
-        export = ExportGraphTo.export()
+        export = ExportGraphTo.set_export_file_path('png')
         if export is not False:
             nx.draw_networkx(project_information_store.current_graph,
                              pos=project_information_store.current_graph_pos,
                              node_color='#EEF25C')
-            plt.savefig(f"{export_graph_to.file_path}.png", format="PNG")
+            plt.savefig(f"{export_graph_to.file_path}", format="PNG")
             plt.close()
             ExportGraphTo.success_export_alert_box('png')
 
@@ -100,12 +99,12 @@ class ExportToPDF(ExportGraphTo):
 
     @staticmethod
     def export():
-        export = ExportGraphTo.export()
+        export = ExportGraphTo.set_export_file_path('pdf')
         if export is not False:
             nx.draw_networkx(project_information_store.current_graph,
                              pos=project_information_store.current_graph_pos,
                              node_color='#EEF25C')
-            plt.savefig(f"{export_graph_to.file_path}.pdf", format="PDF")
+            plt.savefig(f"{export_graph_to.file_path}", format="PDF")
             plt.close()
             ExportGraphTo.success_export_alert_box('pdf')
 
@@ -115,11 +114,11 @@ class ExportToTikZ(ExportGraphTo):
 
     @staticmethod
     def export():
-        export = ExportGraphTo.export()
+        export = ExportGraphTo.set_export_file_path('tex')
         if export is not False:
             style = {'node_label': list(project_information_store.current_graph_pos.keys()), 'node_color': "white"}
             nxtikz.plot(project_information_store.current_graph,
-                        f"{export_graph_to.file_path}.tex",
+                        f"{export_graph_to.file_path}",
                         layout=project_information_store.current_graph_pos,
                         node_size=0.4,
                         **style)
