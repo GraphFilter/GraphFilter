@@ -134,6 +134,7 @@ class Controller:
 
     def show_project_window(self):
         self.project_controller.show_window()
+        self.project_controller.project_window.set_title_bar(project_information_store.get_file_name())
         self.close_welcome_window()
         self.current_open_window = "project"
 
