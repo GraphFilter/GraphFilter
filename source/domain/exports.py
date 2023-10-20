@@ -12,7 +12,7 @@ def export_g6_to_png(g6code, folder, count):
     nx.draw_networkx(graph,
                      node_color='#EEF25C',
                      labels={item: item for item in nx.nodes(graph)})
-    plt.savefig(f"{folder}\Graph_{count}.png", format="PNG")
+    plt.savefig(f"{folder}\Graph_{count + 1}.png", format="PNG")
     plt.close()
 
 
@@ -27,7 +27,7 @@ def export_g6_to_pdf(g6code, folder, count):
     nx.draw_networkx(graph,
                      node_color='#EEF25C',
                      labels={item: item for item in nx.nodes(graph)})
-    plt.savefig(f"{folder}\Graph_{count}.pdf", format="PDF")
+    plt.savefig(f"{folder}\Graph_{count + 1}.pdf", format="PDF")
     plt.close()
 
 
@@ -45,7 +45,7 @@ def export_g6_to_sheet(graph_list, invariants, file_name, update_progress, loadi
         if loading_window.is_forced_to_close:
             loading_window.is_forced_to_close = False
             return
-        sheet.write(step + 1, 0, step)
+        sheet.write(step + 1, 0, step + 1)
         sheet.write(step + 1, 1, graph)
         for k, invariant in enumerate(invariants):
             if dic[invariant].type in ["number_structural", "number_spectral"]:
