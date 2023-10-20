@@ -141,7 +141,7 @@ class ProjectToolBar(QToolBar):
 
     def fill_combo_graphs(self, graphs):
         for i, line in enumerate(graphs):
-            self.combo_graphs.addItem(f'Graph {i} - {line}')
+            self.combo_graphs.addItem(f'Graph {i + 1} - {line}')
         if self.combo_graphs.count() < 2:
             self.left_button.setDisabled(True)
             self.right_button.setDisabled(True)
