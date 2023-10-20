@@ -143,10 +143,14 @@ class DomainUnitTests(unittest.TestCase):
         trivial = nx.trivial_graph()
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32, numpy.int64)))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, float, int, numpy.int32, numpy.int64)))
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(trivial), bool))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, bool)))
         for inv in inv_other.InvariantOther().all:
-            self.assertTrue(isinstance(inv.calculate(trivial), (numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.calculate(trivial), (str, numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5),
+                                       (str, numpy.ndarray, list, tuple, dict, str, set)))
         for op in oper.GraphOperations().all:
             self.assertTrue(isinstance(op.calculate(trivial), nx.Graph))
 
@@ -155,10 +159,15 @@ class DomainUnitTests(unittest.TestCase):
         discon_graph = nx.from_graph6_bytes('J????OC?wF_'.encode('utf-8'))
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(discon_graph), (float, int, numpy.int32, numpy.int64)))
+            self.assertTrue(isinstance(inv.print(discon_graph, precision=5), (str, float, int, numpy.int32, numpy.int64)))
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(discon_graph), bool))
+            self.assertTrue(isinstance(inv.print(discon_graph, precision=5), (str, bool)))
         for inv in inv_other.InvariantOther().all:
-            self.assertTrue(isinstance(inv.calculate(discon_graph), (numpy.ndarray, list, tuple, dict, str, set)))
+            print(inv.name)
+            self.assertTrue(isinstance(inv.calculate(discon_graph), (str, numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.print(discon_graph, precision=5),
+                                       (str, numpy.ndarray, list, tuple, dict, str, set)))
         for op in oper.GraphOperations().all:
             self.assertTrue(isinstance(op.calculate(discon_graph), nx.Graph))
 
