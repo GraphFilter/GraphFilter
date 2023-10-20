@@ -66,13 +66,15 @@ Download the compact file from the release that matches your Operational System.
 - [Mac](https://github.com/GraphFilter/GraphFilter/wiki/Mac-Configurations#executing)
 
 ### Run from source code
-To from the source code, you have to:
+To run from the source code, you have to:
 
-- Install [Python](https://www.python.org/downloads/) and [Pip](https://pip.pypa.io/en/stable/installing/).  
-- [Clone this project using git](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#cloning) or [Download the source code from the release](https://github.com/GraphFilter/GraphFilter/wiki/Configurations#downloading)
-- Create and activate a [Virtual Environment](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#virtual-environment) (optional)
-- [Install the requirements](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#install-required-libraries)
-- Then, [run the ```app.py```](https://github.com/GraphFilter/GraphFilter/wiki/General-Configurations#running) from the project's source folder
+- Install Python and Pip.
+- Clone this project using git or Download the source code from the release
+- Create and activate a Virtual Environment (optional)
+- Install the requirements
+- Then, run the ```app.py``` from the project's source folder
+
+You can see more details about these steps clicking [here](https://github.com/GraphFilter/GraphFilter/wiki/Run-project-from-source-code)
 
 ## Getting started
 
@@ -91,9 +93,9 @@ When starting a new project, you will be guided through a wizard to select the f
   ### At the Equations page, insert the equation you want to use to filter graphs.
 You can insert the (in)equations involving the [invariants](https://github.com/GraphFilter/GraphFilter/wiki/Invariants-and-Operations#numeric-invariants) and [operations](https://github.com/GraphFilter/GraphFilter/wiki/Invariants-and-Operations#operations)of your choice, using either the keyboard or the buttons to assist in the insertion. You can also leave it empty, but in the next step you will have to choose a least one Condition to filter.
 
-<h4 align="center">
+<p align="center">
 <image src="/resources/gifs/wizard_equations.gif" width="800">
-</h4> 
+</p> 
   
 ### Choose a condition to the filter
 You can check the [Boolean conditions](https://github.com/GraphFilter/GraphFilter/wiki/Invariants-and-Operations#boolean-invariants) you want to impose on your filtering. When you mark TRUE on an invariant, the program will only filter those that satisfy the condition. Respectively check FALSE if you do not want graphs that satisfy that condition. If you are indifferent, just don't check that invariant.
@@ -112,9 +114,9 @@ The user decides which filtering method: if he wants to filter all the graphs, a
 ### Input the files with the graphs you want to filter
 Here you can load the graphs for filtering. The file format of the entry is .g6 or .txt containing a list of graphs in graph6. Note that the user can insert more than one file.
 
-<h4 align="center">
+<p align="center">
 <image src="/resources/gifs/wizard_input_graphs.gif" width="800">
-</h4>
+</p>
 
 > Graph6 is a compact format file, created by [D. McKay](https://users.cecs.anu.edu.au/~bdm/data/formats.txt). But you do not have to understand how this fortat works. You can find files in this format for different classes of graphs on the pages: 
 > * [House of graphs](https://hog.grinvin.org/MetaDirectory.action)
@@ -129,9 +131,9 @@ After these steps, the program will analyze all the conditions and the filtering
 ### Project Main Window
 Here you can visualize, [draw](https://github.com/GraphFilter/GraphFilter/wiki/Features#graph-editing-features) and manipulate the graph on the screen. There is also a List of invariants to be calculated in the displayed graph, just mark the desired invariants and they will appear in the Info dock, which can be resized or even seen as a separate window, for a better visualization. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#invariants) you can see a short definition of each invariant implemented in the program.
 
-<h4 align="center">
+<p align="center">
 <image src="/resources/gifs/project_visualize.gif" width="800">
-</h4>
+</p>
 
   > To navigate between the graphs returned from the filtering or opened from a .g6, .txt file, you can use the combo box or navigation arrows at the top of the window.
 
@@ -139,9 +141,9 @@ Here you can visualize, [draw](https://github.com/GraphFilter/GraphFilter/wiki/F
 
 The toolbar gives you access to some of the software's features, such as applying certain [operations](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), exporting, inserting a [universal vertex](https://github.com/GraphFilter/GraphFilter/wiki/Features#operations), saving the edited graph or deleting it. These functions refer to the graph on the screen. You can also create a new well-known used graph to work with the software. In the [dictionary tab](https://github.com/GraphFilter/GraphFilter/wiki/Dictionary#graphs), you can see all the new graphs options with their definitions and parameters.
 
-<h4 align="center">
+<p align="center">
 <image src="/resources/gifs/project_toolbar.gif" width="800">
-</h4>
+</p>
   
 #### File Tree
   In the left-hand corner you can see a tree of files, opened in the directory previously selected in Open or New Project. 
@@ -150,9 +152,9 @@ In the tree you can double-click with the left button to open the folder or file
 - Export all graphs: Export all the graphs in the file in one of the selected file types.
 - Delete: Delete the file or empty folder
 
-<h4 align="center">
+<p align="center">
 <image src="/resources/gifs/project_tree.gif" width="800">
-</h4>
+</p>
 
 #### File Types and Exports
   The software accepts the following file types:
