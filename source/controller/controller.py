@@ -1,13 +1,13 @@
 import json
 
 import networkx as nx
-from PyQt5 import QtCore
 from PyQt5.QtWidgets import *
 
 from source.controller.filter_controller import FilterController
 from source.controller.project_controller import ProjectController
 from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
+from source.domain import utils_file
 from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
 from source.domain.utils import trigger_message_box, handle_invalid_export_format
 from source.domain.utils_file import import_gml_graph, create_gml_file
@@ -157,19 +157,6 @@ class Controller:
     def close_project_window(self):
         self.wizard_controller.close_window()
 
-    def get_name_from_save_dialog(self, format_file):
-        file_name = QFileDialog.getSaveFileName(parent=self.project_controller.project_window,
-                                                caption=self.project_controller.project_window.tr
-                                                (f"Export graphs to {format_file} file"),
-                                                filter=self.project_controller.project_window.tr
-                                                (f"Files (*.{format_file})"),
-                                                directory=f"{project_information_store.temp_project_name}.{format_file}"
-                                                )[0]
-        if file_name:
-            if not QtCore.QFileInfo(file_name).suffix():
-                file_name += f".{format_file}"
-        return file_name
-
     def get_graph_from_tree(self):
         index = self.project_controller.tree_file_dock.tree.currentIndex()
         file_path = self.project_controller.tree_file_dock.model.filePath(index)
@@ -195,8 +182,7 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
-                                                        caption="Select Directory"))
+        file_dir = utils_file.get_directory_name_from_existing_directory()
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
@@ -220,16 +206,15 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
-                                                        caption="Select Directory"))
-        if file_dir:
+        file_name = utils_file.get_name_from_save_dialog('tex')
+        if file_name:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
                 if self.loading_window.is_forced_to_close:
                     self.loading_window.is_forced_to_close = False
                     return
                 try:
-                    export_g6_to_tikz(graph, file_dir, step)
+                    export_g6_to_tikz(graph, file_name, step)
                 except:
                     pass
                 self.update_loading_window(step)
@@ -245,8 +230,7 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_dir = str(QFileDialog.getExistingDirectory(parent=self.project_controller.project_window,
-                                                        caption="Select Directory"))
+        file_dir = utils_file.get_directory_name_from_existing_directory()
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
@@ -270,7 +254,7 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_name = self.get_name_from_save_dialog('g6')
+        file_name = utils_file.get_name_from_save_dialog('g6')
         if file_name:
             self.show_loading_window(len(graph_to_export))
             file = open(file_name, 'w')
@@ -293,7 +277,7 @@ class Controller:
             handle_invalid_export_format()
             return
 
-        file_name = self.get_name_from_save_dialog('xlsx')
+        file_name = utils_file.get_name_from_save_dialog('xlsx')
         if file_name:
             self.show_loading_window(len(graph_to_export))
             try:
