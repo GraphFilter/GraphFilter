@@ -7,8 +7,9 @@ equation = "<p> On this screen, you can insert a condition like as mathematical 
                "to find out more about each invariant.</p>"
 
 method = "<p> The 'Filter graphs'' will filter a list of graphs and return all those that satisfy the conditions " \
-             "marked in the previous screens. <br> The 'Find an example' will run until it finds a first graph that " \
-             "does meet the conditions, if any. <br> The 'Blank project' will allow you to draw your own graphs. "
+             "which will be marked on the next screens. <br> The 'Find an example' will run until it finds a first " \
+             "graph that does meet the conditions, if any. <br> The 'Blank project' will allow you to draw your " \
+             "own graphs. "
 
 conditions = "<p> In this screen you will enter the conditions of the true/false type. If you want filtering to " \
                  "satisfy condition X, then mark it as true. If you want X not to be satisfied, check false. If it is" \
