@@ -730,7 +730,6 @@ class SmallestEigenS(InvariantNum):
     def calculate(graph):
         return Utils.smallest_eigen(inv_other.SeidelMatrix.calculate(graph))
 
-
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(SmallestEigenS.calculate(graph), precision)

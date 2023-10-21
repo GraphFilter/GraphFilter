@@ -427,7 +427,7 @@ class IntegralN(InvariantBool):
 
 
 class IntegralS(InvariantBool):
-    name = "Signless Laplacian integral"
+    name = "Seidel integral"
     type = 'bool_spectral'
 
     @staticmethod

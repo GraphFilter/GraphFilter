@@ -306,6 +306,7 @@ class SeidelSpectrum(InvariantOther):
     def print(graph, precision):
         return Utils.print_list(SeidelSpectrum.calculate(graph), precision)
 
+
 class RandicSpectrum(InvariantOther):
     name = "Randic Spectrum"
     type = 'list'
