@@ -1,3 +1,5 @@
+import math
+
 import grinpy as gp
 import networkx as nx
 import numpy as np
@@ -182,6 +184,29 @@ class EccentricityMatrix(InvariantOther):
         return Utils.print_matrix(EccentricityMatrix.calculate(graph), precision)
 
 
+class RandicMatrix(InvariantOther):
+    name = "Randic Matrix"
+    type = 'matrix'
+
+    @staticmethod
+    def calculate(graph):
+        adj = nx.adjacency_matrix(graph)
+        size = len(graph.nodes)
+        randic = np.zeros((size, size))
+        degree = gp.degree_sequence(graph)
+
+        for i in range(size):
+            for j in range(i + 1, size):
+                if adj[i, j] == 1:
+                    randic[i][j] = 1 / math.sqrt(degree[i] * degree[j])
+                    randic[j][i] = randic[i][j]
+        return randic
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_matrix(RandicMatrix.calculate(graph), precision)
+
+
 class AdjacencySpectrum(InvariantOther):
     name = "Adjacency Spectrum"
     type = 'list'
@@ -281,6 +306,17 @@ class SeidelSpectrum(InvariantOther):
     def print(graph, precision):
         return Utils.print_list(SeidelSpectrum.calculate(graph), precision)
 
+class RandicSpectrum(InvariantOther):
+    name = "Randic Spectrum"
+    type = 'list'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.spectrum(RandicMatrix.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_list(RandicSpectrum.calculate(graph), precision)
 
 
 class NormalizedLaplacianSpectrum(InvariantOther):
@@ -454,6 +490,18 @@ class EccentricityEigenvectors(InvariantOther):
     def print(graph, precision):
         return Utils.print_eigenvectors_and_eigenvalues(EccentricityEigenvectors.calculate(graph), precision)
 
+
+class RandicEigenvectors(InvariantOther):
+    name = "Randic Eigenvectors"
+    type = 'list_and_matrix'
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.eigenvectors(RandicMatrix.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_eigenvectors_and_eigenvalues(RandicEigenvectors.calculate(graph), precision)
 
 
 class DegreeCentrality(InvariantOther):

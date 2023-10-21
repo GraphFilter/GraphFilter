@@ -428,6 +428,20 @@ class Largest1EigenE(InvariantNum):
         return Utils.print_numeric(Largest1EigenE.calculate(graph), precision)
 
 
+class Largest1EigenR(InvariantNum):
+    name = "Largest R-eigenvalue"
+    code = "r\u2081"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.largest_eigen(inv_other.RandicMatrix.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest1EigenR.calculate(graph), precision)
+
+
 class Largest2EigenA(InvariantNum):
     name = "2th Largest A-eigenvalue"
     code = "\u03bb\u2082"
@@ -583,6 +597,23 @@ class Largest2EigenE(InvariantNum):
         return Utils.print_numeric(Largest2EigenE.calculate(graph), precision)
 
 
+class Largest2EigenR(InvariantNum):
+    name = "2th Largest R-eigenvalue"
+    code = "r\u2082"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        if nx.number_of_nodes(graph) > 1:
+            return Utils.largest_eigen(inv_other.RandicMatrix.calculate(graph))
+        else:
+            return 0
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(Largest2EigenR.calculate(graph), precision)
+
+
 class SmallestEigenA(InvariantNum):
     name = "Smallest A-eigenvalue"
     code = "\u03bb\u2099"
@@ -590,10 +621,7 @@ class SmallestEigenA(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.AdjacencyMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -607,10 +635,7 @@ class SmallestEigenL(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.LaplacianMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.LaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -624,10 +649,7 @@ class SmallestEigenQ(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.SignlessLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -692,10 +714,7 @@ class SmallestEigenN(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.NormalizedLaplacianMatrix.calculate(graph))
 
     @staticmethod
     def print(graph, precision):
@@ -709,10 +728,8 @@ class SmallestEigenS(InvariantNum):
 
     @staticmethod
     def calculate(graph):
-        if nx.is_connected(graph):
-            return Utils.smallest_eigen(inv_other.SeidelMatrix.calculate(graph))
-        else:
-            return 10 ** 10
+        return Utils.smallest_eigen(inv_other.SeidelMatrix.calculate(graph))
+
 
     @staticmethod
     def print(graph, precision):
@@ -734,6 +751,20 @@ class SmallestEigenE(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(SmallestEigenE.calculate(graph), precision)
+
+
+class SmallestEigenR(InvariantNum):
+    name = "Smallest R-eigenvalue"
+    code = "r\u2099"
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.smallest_eigen(inv_other.RandicMatrix.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(SmallestEigenR.calculate(graph), precision)
 
 
 class AdjacencyEnergy(InvariantNum):
@@ -872,6 +903,20 @@ class EccentricityEnergy(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(EccentricityEnergy.calculate(graph), precision)
+
+
+class RandicEnergy(InvariantNum):
+    name = 'Randic Energy'
+    code = 'ER'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.energy(inv_other.RandicMatrix.calculate(graph))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(RandicEnergy.calculate(graph), precision)
 
 
 class AlgebraicConnectivity(InvariantNum):
@@ -1413,3 +1458,71 @@ class DeterminantEccentricityMatrix(InvariantNum):
     @staticmethod
     def print(graph, precision):
         return Utils.print_numeric(DeterminantEccentricityMatrix.calculate(graph), precision)
+
+
+class DeterminantRandicMatrix(InvariantNum):
+    name = 'Determinant R'
+    code = 'detR'
+    type = "number_spectral"
+
+    @staticmethod
+    def calculate(graph):
+        return Utils.approx_to_int(la.det(inv_other.RandicMatrix.calculate(graph)))
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(DeterminantRandicMatrix.calculate(graph), precision)
+
+
+class KirchhoffIndex(InvariantNum):
+    name = 'Kirchhoff Index'
+    code = 'Kf'
+    type = 'number_structural'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            lEigen = inv_other.LaplacianSpectrum.calculate(graph)
+            return nx.number_of_nodes(graph) * sum(1 / x for x in lEigen[1:])
+        return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(KirchhoffIndex.calculate(graph), precision)
+
+
+class DegreeKirchhoffIndex(InvariantNum):
+    name = 'Degree Kirchhoff Index'
+    code = 'K`f'
+    type = 'number_structural'
+
+    @staticmethod
+    def calculate(graph):
+        if nx.is_connected(graph):
+            nEigen = inv_other.NormalizedLaplacianSpectrum.calculate(graph)
+            return 2 * nx.number_of_edges(graph) * sum(1 / x for x in nEigen[1:])
+        return 10 ** 10
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(DegreeKirchhoffIndex.calculate(graph), precision)
+
+
+class RandicIndex(InvariantNum):
+    name = 'Randic Index'
+    code = "Ri"
+    type = 'number_structural'
+
+    @staticmethod
+    def calculate(graph):
+        randic = inv_other.RandicMatrix.calculate(graph)
+        sum = 0
+        size = nx.number_of_nodes(graph)
+        for i in range(size):
+            for j in range(i + 1, size):
+                sum += randic[i][j]
+        return sum
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_numeric(RandicIndex.calculate(graph), precision)
