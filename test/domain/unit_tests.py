@@ -144,6 +144,7 @@ class DomainUnitTests(unittest.TestCase):
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32, numpy.int64)))
             self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, float, int, numpy.int32, numpy.int64)))
+
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(trivial), bool))
             self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, bool)))
