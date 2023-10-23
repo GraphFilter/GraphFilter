@@ -27,9 +27,10 @@ class ReviewPage(QWizardPage):
         self.equation = QLabel('<i>none</i>')
         self.info = QLabel(
             'After the filtering is performed, two files will be generated:\n'
-            '• A graph6 containing the list of graphs that meet the requested conditions,'
-            ' this will be opened in Graph Filter.\n'
-            '• A text file in PDF with the summary of the information entered.')
+            '• A list of graphs (.g6 format) containing all the graphs that meet the filtering conditions. \n'
+            '   In the case of the "Find an example" method, only one graph will be returned. \n'
+            '• A PDF file containing all the filtering input and output information. \n'
+            '   The returned graphs will be opened automatically once the filtering process is complete.')
         self.info.setStyleSheet("font-weight: bold;")
 
         self.scroll_area = QScrollArea()

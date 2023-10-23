@@ -137,16 +137,21 @@ class DomainUnitTests(unittest.TestCase):
 
     def test_inv_boolean_false(self):
         no_tree = {inv_bool.Tree.name: 'false'}
-        self.assertEqual(1/265, Helper.run('graphs1.g6', '', no_tree))
+        self.assertEqual(1 / 265, Helper.run('graphs1.g6', '', no_tree))
 
     def test_all_invariants_with_trivial_graph(self):
         trivial = nx.trivial_graph()
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(trivial), (float, int, numpy.int32, numpy.int64)))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, float, int, numpy.int32, numpy.int64)))
+
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(trivial), bool))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5), (str, bool)))
         for inv in inv_other.InvariantOther().all:
-            self.assertTrue(isinstance(inv.calculate(trivial), (numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.calculate(trivial), (str, numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.print(trivial, precision=5),
+                                       (str, numpy.ndarray, list, tuple, dict, str, set)))
         for op in oper.GraphOperations().all:
             self.assertTrue(isinstance(op.calculate(trivial), nx.Graph))
 
@@ -155,10 +160,16 @@ class DomainUnitTests(unittest.TestCase):
         discon_graph = nx.from_graph6_bytes('J????OC?wF_'.encode('utf-8'))
         for inv in inv_num.InvariantNum().all:
             self.assertTrue(isinstance(inv.calculate(discon_graph), (float, int, numpy.int32, numpy.int64)))
+            self.assertTrue(
+                isinstance(inv.print(discon_graph, precision=5), (str, float, int, numpy.int32, numpy.int64)))
         for inv in inv_bool.InvariantBool().all:
             self.assertTrue(isinstance(inv.calculate(discon_graph), bool))
+            self.assertTrue(isinstance(inv.print(discon_graph, precision=5), (str, bool)))
         for inv in inv_other.InvariantOther().all:
-            self.assertTrue(isinstance(inv.calculate(discon_graph), (numpy.ndarray, list, tuple, dict, str, set)))
+            print(inv.name)
+            self.assertTrue(isinstance(inv.calculate(discon_graph), (str, numpy.ndarray, list, tuple, dict, str, set)))
+            self.assertTrue(isinstance(inv.print(discon_graph, precision=5),
+                                       (str, numpy.ndarray, list, tuple, dict, str, set)))
         for op in oper.GraphOperations().all:
             self.assertTrue(isinstance(op.calculate(discon_graph), nx.Graph))
 
@@ -233,8 +244,8 @@ class MiscellaneousTests(unittest.TestCase):
         chordal = {inv_bool.Chordal.name: 'true'}
         regular_clawfree = {inv_bool.Regular.name: 'true', inv_bool.ClawFree.name: 'true'}
         self.assertEqual(
-             1, Helper.run('graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
-                           regular_clawfree))
+            1, Helper.run('graphs3.g6', f'{a}(G)<=5 AND {a}(G)>=2 AND {diam}(G)==2',
+                          regular_clawfree))
 
         self.assertEqual(1,
                          Helper.run('graphs6.g6', f'({alpha}(G)/{gamma}(G))-3 >= (7/8)-{eigen1_a}(G)',
@@ -244,15 +255,14 @@ class MiscellaneousTests(unittest.TestCase):
 
     def test_largest_eigen_L(self):
         eigen1_l = str(inv_num.Largest1EigenL.code)
-        tree_NoBiconnected = {inv_bool.Tree.name: 'true', inv_bool.Biconnected.name: 'false'}
-        self.assertEqual(1, Helper.run('graphs5.g6', f'{eigen1_l}(G)>5', tree_NoBiconnected))
+        tree_no_biconnected = {inv_bool.Tree.name: 'true', inv_bool.Biconnected.name: 'false'}
+        self.assertEqual(1, Helper.run('graphs5.g6', f'{eigen1_l}(G)>5', tree_no_biconnected))
 
     def test_independence_and_matching(self):
         alpha = str(inv_num.IndependenceNumber.code)
         match = str(inv_num.MatchingNumber.code)
         line = str(oper.Line.code)
         self.assertEqual(1, Helper.run('graphs7.g6', f'{match}(G)=={alpha}({line}(G))', {}))
-
 
     def test_random_with_boolean_false(self):
         avg_degree = str(inv_num.DegreeAverage.code)
@@ -274,11 +284,12 @@ class MiscellaneousTests(unittest.TestCase):
         chi = str(inv_num.ChromaticNumber.code)
         omega = str(inv_num.CliqueNumber.code)
         eigen1 = str(inv_num.Largest1EigenA.code)
-        self.assertEqual(1/265, Helper.run('graphs1.g6', f'{chi}(G)>2', {}))
+        self.assertEqual(1 / 265, Helper.run('graphs1.g6', f'{chi}(G)>2', {}))
         self.assertEqual(1, Helper.run('graphs8.g6', f'{chi}(G)=={omega}(G)', {}))
         self.assertEqual(1, Helper.run('graphs7.g6', f'{chi}(G)<={eigen1}(G)+1', {}))
         self.assertEqual(1, Helper.run('graphs16.g6', f'{chi}(G)==4', {}))
         self.assertEqual(1, Helper.run('graphs17.g6', f'{chi}(G)=={omega}(G)+2', {}))
+
 
 if __name__ == '__main__':
     unittest.main()
