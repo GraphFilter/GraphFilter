@@ -1,4 +1,5 @@
 import networkx as nx
+from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from PyQt5 import QtCore
 
@@ -109,11 +110,11 @@ def handle_invalid_file_open():
 
 
 def get_name_from_save_dialog(format_file):
-    file_name = QFileDialog.getSaveFileName(caption=f"Export graph(s) to {format_file} file",
-                                            filter=f"Files (*.{format_file})", directory=
-                                            f"{project_information_store.get_file_name_without_extension()}"
-                                            f"."f"{format_file}"
-                                            )[0]
+    default_dir = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
+    default_name = project_information_store.get_file_name_without_extension()
+    file_name, _ = QFileDialog.getSaveFileName(caption=f"Export graph(s) to {format_file} file",
+                                               filter=f"Files (*.{format_file})",
+                                               directory=default_dir + f"/{default_name}")
     if file_name:
         if not QtCore.QFileInfo(file_name).suffix():
             file_name += f".{format_file}"
@@ -121,5 +122,6 @@ def get_name_from_save_dialog(format_file):
 
 
 def get_directory_name_from_existing_directory():
+    default_dir = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
     return str(QFileDialog.getExistingDirectory(caption="Select Directory",
-                                                directory=project_information_store.get_file_directory()))
+                                                directory=default_dir))
