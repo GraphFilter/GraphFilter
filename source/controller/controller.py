@@ -1,6 +1,7 @@
 import json
 
 import networkx as nx
+from PyQt5.QtCore import QStandardPaths
 from PyQt5.QtWidgets import *
 
 from source.controller.filter_controller import FilterController
@@ -60,8 +61,9 @@ class Controller:
 
     def show_open_project_window(self):
         file_dialog = QFileDialog()
+        default_dir = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
         file_dialog.setNameFilters(["Graph File (*.gml *.g6 *.txt *.json)"])
-        file_path = file_dialog.getOpenFileName(filter="Graph File (*.gml *.g6 *.txt *.json)")
+        file_path = file_dialog.getOpenFileName(filter="Graph File (*.gml *.g6 *.txt *.json)", directory=default_dir)
         project_information_store.file_path = file_path[0]
         project_information_store.current_graph_pos = {}
         file_type = project_information_store.get_file_type()
