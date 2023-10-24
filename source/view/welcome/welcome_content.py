@@ -23,7 +23,7 @@ class WelcomeContent(QWidget):
         self.title.setText("<h1>Graph Filter</h1>")
         self.title.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.version.setText("<h2>version 3.6.8</h2>")
+        self.version.setText("<h2>version 3.6.9</h2>")
         self.version.setAlignment(QtCore.Qt.AlignCenter)
 
         self.logo.setPixmap(QPixmap("resources/logos/graph_filter.png").scaled(150, 150, QtCore.Qt.KeepAspectRatio,

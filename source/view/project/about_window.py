@@ -7,7 +7,7 @@ class AboutWindow(QDialog):
     def __init__(self):
         super().__init__()
         self.data_title = r"<h1>Graph Filter</h1>"
-        self.data_version = r"<h2>Version 3.6.8</h2>"
+        self.data_version = r"<h2>Version 3.6.9</h2>"
         self.data_text = r" <p align='justify'> The goal of this software is to help researchers of Graph Theory and " \
                          r"Graph Spectral Theory establish or refute conjectures. The program allows, in an " \
                          r"intuitive way, the visualization and manipulation of graphs, using operations and a " \
