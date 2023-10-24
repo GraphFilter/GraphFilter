@@ -1,6 +1,8 @@
 import networkx as nx
-from matplotlib import pyplot as plt
 import network2tikz as nxtikz
+
+import matplotlib.pyplot as plt
+import matplotlib.backends.backend_pdf
 
 from source.domain import utils_file
 from source.domain.utils import trigger_message_box
