@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import matplotlib.backends.backend_pdf
+
 import networkx as nx
 import xlsxwriter
 import network2tikz as nxtikz
