@@ -66,7 +66,10 @@ def change_g6_file(file_path, new_g6, current_index):
     try:
         changed_data[current_index] = new_g6 + "\n"
     except IndexError:
-        changed_data.append("\n" + new_g6)
+        if "\n" in changed_data[-1]:
+            changed_data.append(new_g6)
+        else:
+            changed_data.append("\n" + new_g6)
 
     with open(file_path, "w", encoding="utf-8") as file:
         file.writelines(changed_data)
