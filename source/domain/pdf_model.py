@@ -28,7 +28,7 @@ class PDF(FPDF):
         self.cell(0, 10, f"Methods: {method}", ln=True)
 
         if cond == '':
-            self.cell(0,10,"Conditions: None",ln=True)
+            self.cell(0, 10, "Conditions: None",ln=True)
         else:
             self.multi_cell(0, 10, f"Conditions: {cond}", ln=True)
         if equations == '':
@@ -36,9 +36,9 @@ class PDF(FPDF):
         else:
             self.cell(0, 10, f"(In)equations: {equations}", ln=True)
         if description == '':
-            self.cell(0,10,"Description: None", ln=True)
+            self.cell(0, 10, "Description: None", ln=True)
         else:
-            self.multi_cell(0,10,f"Description: {description.strip()}",ln=True)
+            self.multi_cell(0, 10, f"Description: {description.strip()}",ln=True)
 
         self.cell(0, 10, f"Files: ", ln=True)
         files_txt = ''

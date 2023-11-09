@@ -1,5 +1,5 @@
 from PyQt5 import QtGui
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QFontDatabase
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from source.store import help_button_text
@@ -13,6 +13,9 @@ class EquationsPage(QWizardPage):
         self.complete = True
 
         self.incomplete_message = "Equation or conditions must be filled"
+
+        QFontDatabase.addApplicationFont('resources/fonts/DejaVuSans.ttf')
+
         self.alert_text = help_button_text.equation
 
         self.equation = QLineEdit()
@@ -24,7 +27,8 @@ class EquationsPage(QWizardPage):
 
     def set_content_attributes(self):
         self.equation.setPlaceholderText("insert your equation here...")
-        self.equation.setFont(QFont("Cambria Math", 12))
+        self.equation.setFont(QFont("DejaVu Sans", 12))
+
         self.equation.setMaximumHeight(30)
 
         self.math_tab.setMinimumWidth(500)
@@ -70,7 +74,7 @@ class TabOperations(QWidget):
             button = QPushButton(key)
             button.setText(key)
             button.setMinimumWidth(len(key))
-            button.setFont(QtGui.QFont("Cambria Math", 9))
+            button.setFont(QtGui.QFont("DejaVu Sans", 9))
             button.setToolTip(f'{key} : {dictionary[key].code}')
             button.setMaximumHeight(30)
             button.clicked.connect(update_line_text)
