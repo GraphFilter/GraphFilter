@@ -299,7 +299,7 @@ class ProjectController:
 
     def on_invalid_graph_display_alert(self):
         index = self.project_tool_bar.combo_graphs.currentIndex()
-        self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index} - Invalid')
+        self.project_tool_bar.combo_graphs.setItemText(index, f'Graph {index+1} - Invalid')
         # self.project_tool_bar.combo_graphs.setStyleSheet('color: red')
         trigger_message_box("Invalid Graph", window_title="Invalid Graph")
 
