@@ -371,9 +371,9 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('')
 
     def on_update_graph_file(self):
-        temp1 = self.graph_files_page.list_files_input.count()
+        number_of_files = self.graph_files_page.list_files_input.count()
         self.on_add_graph_file()
-        if temp1 != self.graph_files_page.list_files_input.count():
+        if number_of_files != self.graph_files_page.list_files_input.count():
             self.on_remove_graph_file()
 
     def on_insert_graph_file_path(self):
@@ -384,7 +384,6 @@ class WizardController:
     def save_graph_file_path(self, path, line_input):
         if validate_file(path):
             if path not in wizard_information_store.temp_graph_input_files and path != '':
-                # for item in line_input:
 
                 if line_input.text() != '' and line_input.text() in wizard_information_store.temp_graph_input_files:
                     wizard_information_store.temp_graph_input_files.remove(line_input.text())
