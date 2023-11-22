@@ -71,6 +71,7 @@ class UtilsToInvariants:
             formatted_rows.append(" ".join(formatted_row))
 
         return "\n".join(formatted_rows)
+
     @staticmethod
     def print_dict(value, precision):
         if type(value) is str:
