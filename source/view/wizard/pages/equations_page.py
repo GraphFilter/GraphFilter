@@ -14,7 +14,7 @@ class EquationsPage(QWizardPage):
 
         self.incomplete_message = "Equation or conditions must be filled"
 
-        QFontDatabase.addApplicationFont('resources/fonts/DejaVuSans.ttf')
+        QFontDatabase.addApplicationFont('resources/fonts/cambria.ttc')
 
         self.alert_text = help_button_text.equation
 
