@@ -55,11 +55,22 @@ class UtilsToInvariants:
         return True
 
     @staticmethod
-    def print_matrix(value, precision):
-        if type(value) is str:
-            return value
-        return np.array2string(value, precision=precision, separator=" ")
+    def print_matrix(matrix, precision):
+        if isinstance(matrix, str):
+            return matrix
 
+        formatted_rows = []
+        column_widths = [max(len(f"{cell:.{precision}f}") for cell in col) for col in zip(*matrix)]
+
+        for row in matrix:
+            formatted_row = []
+            for i, cell in enumerate(row):
+                width = column_widths[i]
+                formatted_cell = f"{cell:{' ' if cell >= 0 else ''}{width + 2}.{precision}f}"
+                formatted_row.append(formatted_cell)
+            formatted_rows.append(" ".join(formatted_row))
+
+        return "\n".join(formatted_rows)
     @staticmethod
     def print_dict(value, precision):
         if type(value) is str:
