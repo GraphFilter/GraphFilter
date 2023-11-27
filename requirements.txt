@@ -25,3 +25,5 @@ six==1.16.0
 zipp==3.10.0
 network2tikz==0.1.8
 fpdf2==2.7.4
+qtawesome==1.0.2
+colorlog==6.8.0
