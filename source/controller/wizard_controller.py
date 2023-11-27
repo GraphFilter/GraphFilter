@@ -1,15 +1,14 @@
-from source.view.wizard.pages.project_information_page import ProjectInformationWizardPage
-from source.view.wizard.pages.equations_page import EquationsPage, TabOperations
-from source.view.wizard.pages.conditions_page import ConditionsPage, ComboBoxesGroup
-from source.view.wizard.pages.method_page import MethodPage
-from source.view.wizard.pages.files_page import FilesPage
-from source.view.wizard.pages.review_page import ReviewPage
+from view.windows.wizard.pages.project_information_page import ProjectInformationWizardPage
+from view.windows.wizard.pages.equations_page import EquationsPage, TabOperations
+from view.windows.wizard.pages.conditions_page import ConditionsPage, ComboBoxesGroup
+from view.windows.wizard.pages.method_page import MethodPage
+from view.windows.wizard.pages.files_page import FilesPage
+from view.windows.wizard.pages.review_page import ReviewPage
 from source.store.project_information_store import wizard_information_store
-from source.view.wizard.wizard_window import WizardWindow
+from source.view.windows.wizard_window import WizardWindow
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import QUrl, QDesktopServices
-from source.store.operations_invariants import *
-from source.domain.equation import Equation
+from source.domain.expression_solver import Expression
 from source.domain.utils import *
 from PyQt5.QtCore import QStandardPaths as qs
 
@@ -107,6 +106,7 @@ class WizardController:
         self.wizard_window.next_button.setToolTip('Select the filtering method')
 
     def update_complete_graph_files_page(self):
+    def update_complete_graph_files_page(self):
         if self.graph_files_page.list_files_input.count() == 0:
             self.graph_files_page.complete = False
             self.wizard_window.next_button.setToolTip('Insert at least one graph file')
@@ -189,6 +189,8 @@ class WizardController:
             self.review_page.set_project_name(project_name)
         else:
             self.update_complete_project_files_page(complete_project_name=False)
+            self.update_complete_project_files_page(complete_project_name=False)
+
 
     def verify_and_save_project_folder(self):
         if validate_path(self.project_files_page.project_location_input.text()):
@@ -291,7 +293,7 @@ class WizardController:
 
     def validate_and_save_equation(self):
         equation = self.equations_page.equation.text()
-        error_message = Equation.validate_expression(equation)
+        error_message = Expression.validate(equation)
 
         if len(error_message) == 0:
             self.equations_page.complete = True

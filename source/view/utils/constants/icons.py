@@ -1,0 +1,12 @@
+class Icons:
+    FILE_DOWNLOAD = "fa5s.file-download"
+    FILE = "fa5s.file"
+    CHECK = "fa5s.check-circle"
+    WRONG = "fa5s.times-circle"
+    PLUS = "fa5s.plus-circle"
+    ADD_FOLDER = "fa5s.folder-plus"
+    FILTER = "fa5s.filter"
+    SEARCH = "fa5s.search"
+    SUCCESS = "fa5s.check-square"
+    WARNING = "fa5s.exclamation-triangle"
+    ERROR = "fa5s.times-circle"

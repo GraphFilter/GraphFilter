@@ -7,19 +7,18 @@ from PyQt5.QtWidgets import *
 
 from source.domain.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file, \
     delete_all_gml_nodes
-from source.store.export_graph_to import dict_name_export_graph_to
+from source.domain.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
-from source.view.project.project_tool_bar import EditingFeatures
-from source.view.project.project_window import ProjectWindow
-from source.view.project.project_tool_bar import ProjectToolBar
-from source.view.project.about_window import AboutWindow
-from source.view.loading.loading_gif import LoadingGif
-from source.view.project.docks.graph_information_dock import GraphInformationDock
-from source.view.project.docks.visualize_graph_dock import VisualizeGraphDock
-from source.view.project.docks.tree_file_dock import TreeFileDock
-from source.view.project.docks.invariants_checks_dock import InvariantsCheckDock
-from source.store.operations_invariants import *
-from source.store.new_graph_store import *
+from source.view.components.project_tool_bar import EditingFeatures
+from view.windows.project.project_window import ProjectWindow
+from source.view.components.project_tool_bar import ProjectToolBar
+from view.windows.project.about_window import AboutWindow
+from source.view.windows.loading_window import LoadingGif
+from view.windows.project.docks.graph_information_dock import GraphInformationDock
+from view.windows.project.docks.visualize_graph_dock import VisualizeGraphDock
+from view.windows.project.docks.tree_file_dock import TreeFileDock
+from view.windows.project.docks.invariants_checks_dock import InvariantsCheckDock
+from view.components.new_graph_store import *
 from source.domain.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box, \
     fix_graph_nodes
 from PyQt5.Qt import QUrl, QDesktopServices
@@ -41,7 +40,7 @@ class ProjectController:
         self.tree_file_dock = TreeFileDock()
 
         self.loading_gif = LoadingGif()
-        self.is_gif_in_progress = False
+        self.gif_in_progress = False
 
         self.editing_features = EditingFeatures()
 
@@ -308,7 +307,7 @@ class ProjectController:
         file_path = new_graph_store.file_path
 
         if new_graph_store.graph is not None:
-            graph, layout = fix_graph_nodes(new_graph_store.graph, new_graph_store.layout)
+            graph, layout = fix_graph_nodes(new_graph_store.graph, new_graph_store.grid)
             try:
                 graph_g6 = nx.to_graph6_bytes(graph, header=False).decode('utf-8')
             except AttributeError:
@@ -427,17 +426,17 @@ class ProjectController:
         type_item = self.tree_file_dock.model.type(index)
 
         if type_item == "File Folder" or type_item == "Folder":
-            self.is_gif_in_progress = False
+            self.gif_in_progress = False
             return
 
         single_thread = td.Thread(target=self.open_tree_file_graphs)
         single_thread.start()
         self.loading_gif.start_animation()
         self.loading_gif.show()
-        self.is_gif_in_progress = True
+        self.gif_in_progress = True
         self.project_window.setDisabled(True)
 
-        while self.is_gif_in_progress:
+        while self.gif_in_progress:
             QApplication.processEvents()
 
         single_thread.join()
@@ -490,7 +489,7 @@ class ProjectController:
         self.project_tool_bar.reset_combo_graphs()
         self.project_tool_bar.fill_combo_graphs(graphs)
 
-        self.is_gif_in_progress = False
+        self.gif_in_progress = False
         self.visualize_graph_dock.setDisabled(False)
         self.project_tool_bar.set_file_label(project_information_store.get_file_name())
 

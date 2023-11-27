@@ -6,7 +6,7 @@ import time
 
 from simpleeval import simple_eval
 
-from source.domain.equation import Equation
+from source.domain.expression_solver import Expression
 from source.store.operations_invariants import *
 
 
@@ -39,7 +39,7 @@ class FilterList:
         self.list_g6_in = list_g6_in
         self.total = len(self.list_g6_in)
         self.list_inv_bool_choices = list_inv_bool_choices
-        self.expressions, self.AND_OR = Equation.split_translate_expression(expression)
+        self.expressions, self.AND_OR = Expression.split_translate_expression(expression)
 
     def start_filter(self, list_g6_in, expression, list_inv_bool_choices):
         self.set_inputs(list_g6_in, expression, list_inv_bool_choices)

@@ -1,5 +1,4 @@
-from source.view.welcome.welcome_window import WelcomeWindow
-from source.view.welcome.welcome_content import WelcomeContent
+from source.view.windows.welcome_window import WelcomeWindow, WelcomeContent
 from source.controller.wizard_controller import WizardController
 
 
@@ -7,10 +6,7 @@ class WelcomeController:
 
     def __init__(self):
         self.welcome_window = WelcomeWindow()
-        self.welcome_content = WelcomeContent()
         self.wizard_controller = WizardController()
-
-        self.welcome_window.setCentralWidget(self.welcome_content)
 
     def show_window(self):
         self.welcome_window.show()

@@ -14,7 +14,7 @@ from source.domain.utils import trigger_message_box, handle_invalid_export_forma
 from source.domain.utils_file import import_gml_graph, create_gml_file
 from source.store.project_information_store import project_information_store
 from source.store.project_information_store import update_project_store
-from source.view.loading.loading_window import LoadingWindow
+from source.view.windows.progress_bar_window import ProgressBarWindow
 
 
 class Controller:
@@ -25,15 +25,15 @@ class Controller:
         self.filter_controller = FilterController()
         self.project_controller = ProjectController()
 
-        self.loading_window = LoadingWindow()
+        self.progress_bar_window = ProgressBarWindow()
 
         self.current_open_window = ""
 
         self.connect_events()
 
     def connect_welcome_events(self):
-        self.welcome_controller.welcome_content.new_button.clicked.connect(self.show_wizard_window)
-        self.welcome_controller.welcome_content.open_button.clicked.connect(self.show_open_project_window)
+        self.welcome_controller.welcome_window.content.new_button.clicked.connect(self.show_wizard_window)
+        self.welcome_controller.welcome_window.content.open_button.clicked.connect(self.show_open_project_window)
 
     def connect_wizard_events(self):
         self.wizard_controller.wizard_window.cancel_button.clicked.connect(self.close_wizard_window)
@@ -189,15 +189,15 @@ class Controller:
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
-                if self.loading_window.is_forced_to_close:
-                    self.loading_window.is_forced_to_close = False
+                if self.progress_bar_window.is_forced_to_close:
+                    self.progress_bar_window.is_forced_to_close = False
                     return
                 try:
                     export_g6_to_png(graph, file_dir, step)
                 except:
                     pass
                 self.update_loading_window(step)
-            self.loading_window.close()
+            self.progress_bar_window.close()
 
     def export_to_tikz(self):
         try:
@@ -213,15 +213,15 @@ class Controller:
         if file_name:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
-                if self.loading_window.is_forced_to_close:
-                    self.loading_window.is_forced_to_close = False
+                if self.progress_bar_window.is_forced_to_close:
+                    self.progress_bar_window.is_forced_to_close = False
                     return
                 try:
                     export_g6_to_tikz(graph, file_name, step)
                 except:
                     pass
                 self.update_loading_window(step)
-            self.loading_window.close()
+            self.progress_bar_window.close()
 
     def export_to_pdf(self):
         try:
@@ -237,15 +237,15 @@ class Controller:
         if file_dir:
             self.show_loading_window(len(graph_to_export))
             for step, graph in enumerate(graph_to_export):
-                if self.loading_window.is_forced_to_close:
-                    self.loading_window.is_forced_to_close = False
+                if self.progress_bar_window.is_forced_to_close:
+                    self.progress_bar_window.is_forced_to_close = False
                     return
                 try:
                     export_g6_to_pdf(graph, file_dir, step)
                 except:
                     pass
                 self.update_loading_window(step)
-            self.loading_window.close()
+            self.progress_bar_window.close()
 
     def export_to_g6(self):
         try:
@@ -262,13 +262,13 @@ class Controller:
             self.show_loading_window(len(graph_to_export))
             file = open(file_name, 'w')
             for step, graph in enumerate(graph_to_export):
-                if self.loading_window.is_forced_to_close:
-                    self.loading_window.is_forced_to_close = False
+                if self.progress_bar_window.is_forced_to_close:
+                    self.progress_bar_window.is_forced_to_close = False
                     return
                 file.write(f'{graph}\n')
                 self.update_loading_window(step)
             file.close()
-            self.loading_window.close()
+            self.progress_bar_window.close()
 
     def export_to_sheet(self):
         try:
@@ -288,16 +288,16 @@ class Controller:
                                    invariants=self.project_controller.invariants_selected,
                                    file_name=file_name,
                                    update_progress=self.update_loading_window,
-                                   loading_window=self.loading_window)
+                                   loading_window=self.progress_bar_window)
             except:
                 pass
-            self.loading_window.close()
+            self.progress_bar_window.close()
 
     def show_loading_window(self, set_total):
-        self.loading_window.progressBar.setMaximum(set_total)
-        self.loading_window.progressBar.setValue(0)
-        self.loading_window.show()
+        self.progress_bar_window.progress_bar.setMaximum(set_total)
+        self.progress_bar_window.progress_bar.setValue(0)
+        self.progress_bar_window.show()
 
     def update_loading_window(self, step):
-        self.loading_window.increase_step(step)
+        self.progress_bar_window.increase_step(step)
         QApplication.processEvents()

@@ -113,7 +113,7 @@ def get_name_from_save_dialog(format_file):
     default_dir = QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
     default_name = project_information_store.get_file_name_without_extension()
     file_name, _ = QFileDialog.getSaveFileName(caption=f"Export graph(s) to {format_file} file",
-                                               filter=f"Files (*.{format_file})",
+                                                filter=f"Files (*.{format_file})",
                                                directory=default_dir + f"/{default_name}")
     if file_name:
         if not QtCore.QFileInfo(file_name).suffix():

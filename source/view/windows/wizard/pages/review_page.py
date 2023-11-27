@@ -1,0 +1,133 @@
+from PyQt5.QtWidgets import *
+
+from source.domain.utils import clear_layout
+from source.store.texts import help_button
+from PyQt5.QtCore import Qt
+
+
+class ReviewPage(QWizardPage):
+
+    def __init__(self):
+        super().__init__()
+
+        self.complete = False
+
+        self.incomplete_message = "Fill all required information"
+        self.alert_text = help_button.review
+
+        self.project_name = QLabel()
+        self.project_name.setWordWrap(True)
+        self.project_location = QLabel()
+        self.project_location.setWordWrap(True)
+        self.project_description = QLabel('<i>none</i>')
+        self.project_description.setWordWrap(True)
+        self.conditions = {}
+        self.graph_files = []
+        self.method = QLabel()
+        self.equation = QLabel('<i>none</i>')
+        self.info = QLabel(
+            'After the filtering is performed, two files will be generated:\n'
+            '• A list of graphs (.g6 format) containing all the graphs that meet the filtering conditions. \n'
+            '   In the case of the "Find an example" method, only one graph will be returned. \n'
+            '• A PDF file containing all the filtering input and output information. \n'
+            '   The returned graphs will be opened automatically once the filtering process is complete.')
+        self.info.setStyleSheet("font-weight: bold;")
+
+        self.scroll_area = QScrollArea()
+        self.project_layout = QFormLayout()
+        self.project_layout.setVerticalSpacing(20)
+        self.graph_files_layout = QListWidget()
+        self.conditions_layout = QVBoxLayout()
+
+        self.window_layout = QVBoxLayout()
+        self.widget = QWidget()
+
+        self.set_up_layout()
+
+    def set_up_layout(self):
+        self.setTitle("Review")
+
+        self.project_layout.addRow("<b>Project Name:</b>", self.project_name)
+        self.project_layout.addRow("<b>Project location:</b>", self.project_location)
+        self.project_layout.addRow("<b>Project description:</b>", self.project_description)
+        self.project_layout.addRow("<b>Method Selected:</b>", self.method)
+        self.project_layout.addRow("<b>(In)equations:</b>", self.equation)
+        self.project_layout.addRow("<b>Conditions:</b>", self.conditions_layout)
+        self.project_layout.addRow("<b>Graph files:</b>", self.graph_files_layout)
+        self.project_layout.addRow("<b>Info: </b>", self.info)
+
+        self.graph_files_layout.setSelectionMode(QAbstractItemView.NoSelection)
+
+        self.project_layout.setContentsMargins(60, 25, 60, 25)
+        self.project_layout.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+        self.project_layout.setLabelAlignment(Qt.AlignLeft)
+
+        self.widget.setLayout(self.project_layout)
+
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setWidget(self.widget)
+        self.scroll_area.setFrameShape(QFrame.NoFrame)
+
+        aux = QVBoxLayout()
+        aux.addWidget(self.scroll_area)
+
+        self.setLayout(aux)
+
+    def set_project_name(self, project_name):
+        self.project_name.setText(project_name)
+
+    def set_project_location(self, project_location):
+        self.project_location.setText(project_location)
+
+    def set_project_description(self, project_description):
+        self.project_description.setText(project_description)
+
+    def set_method(self, method):
+        self.method.setText(f"{'Filter Graphs' if method == 'filter' else 'Find an Example'}")
+
+    def set_equation(self, equation):
+        self.equation.setWordWrap(True)
+        self.equation.setText(equation)
+
+    def set_conditions(self, conditions):
+        self.conditions = conditions
+        self.update_conditions_view()
+
+    def set_graph_files(self, graph_files):
+        self.graph_files = graph_files
+        self.update_files_view()
+
+    def update_conditions_view(self):
+        clear_layout(self.conditions_layout)
+        true_conditions = ''
+        false_conditions = ''
+        for condition, value in self.conditions.items():
+            if value == 'true':
+                true_conditions = true_conditions + f", {condition}"
+            else:
+                false_conditions = false_conditions + f", {condition}"
+        true_widget_text = QLabel()
+        true_widget_text.setWordWrap(True)
+        false_widget_text = QLabel()
+        false_widget_text.setWordWrap(True)
+
+        if true_conditions == '' and false_conditions == '':
+            self.conditions_layout.addWidget(QLabel("no boolean condition selected"))
+        elif true_conditions == '':
+            false_widget_text.setText(f"<b>graph is not</b>: {false_conditions[2:]}")
+            self.conditions_layout.addWidget(false_widget_text)
+        elif false_conditions == '':
+            true_widget_text.setText(f"<b>graph is</b>: {true_conditions[2:]}")
+            self.conditions_layout.addWidget(true_widget_text)
+        else:
+            true_widget_text.setText(f"<b>graph is</b>: {true_conditions[2:]}")
+            false_widget_text.setText(f"<b>graph is not</b>: {false_conditions[2:]}")
+            self.conditions_layout.addWidget(true_widget_text)
+            self.conditions_layout.addWidget(false_widget_text)
+
+    def update_files_view(self):
+        self.graph_files_layout.clear()
+        for file in self.graph_files:
+            self.graph_files_layout.addItem(file)

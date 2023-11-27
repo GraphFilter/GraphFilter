@@ -2,7 +2,7 @@ from source.domain.filter_list import FilterList
 from source.domain.utils import *
 from source.domain.utils_file import *
 from source.store.project_information_store import project_information_store
-from source.view.loading.loading_window import LoadingWindow
+from source.view.windows.progress_bar_window import ProgressBarWindow
 from PyQt5.QtWidgets import QApplication
 import threading as td
 
@@ -11,16 +11,16 @@ class FilterController:
 
     def __init__(self):
         self.filter_list = None
-        self.loading_window = None
+        self.progress_bar_window = None
         self.is_complete_filtering = False
 
     def start_filter(self):
         self.filter_list = FilterList()
-        self.loading_window = LoadingWindow()
+        self.progress_bar_window = ProgressBarWindow()
         g6_list = extract_files_to_list(project_information_store.temp_graph_input_files)
         number_input_graphs = len(g6_list)
-        self.loading_window.set_maximum(100)
-        self.loading_window.show()
+        self.progress_bar_window.progress_bar.set_maximum(100)
+        self.progress_bar_window.progress_bar.show()
 
         if project_information_store.temp_method == 'filter':
             single_thread = td.Thread(target=self.filter_list.start_filter,
@@ -33,7 +33,7 @@ class FilterController:
         single_thread.start()
         is_running = True
         while is_running:
-            if self.loading_window.is_forced_to_close:
+            if self.progress_bar_window.is_forced_to_close:
                 self.filter_list.is_forced_to_terminate.value = 1.0
                 single_thread.join()
                 return
@@ -61,8 +61,8 @@ class FilterController:
         project_information_store.file_path = f'{project_information_store.get_file_directory()}/' \
                                               f'{project_information_store.temp_project_name}_graphs.g6'
 
-        self.loading_window.close()
+        self.progress_bar_window.close()
 
     def update(self, value):
-        self.loading_window.increase_step(value)
+        self.progress_bar_window.progress_bar.increase_step(value)
         QApplication.processEvents()

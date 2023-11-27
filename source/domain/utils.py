@@ -7,7 +7,7 @@ import gzip
 
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
-from source.view.components.message_box import MessageBox
+from source.view.elements.message_box import MessageBox
 
 
 def validate_path(path):
