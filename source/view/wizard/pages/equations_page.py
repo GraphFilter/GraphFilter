@@ -74,7 +74,7 @@ class TabOperations(QWidget):
             button = QPushButton(key)
             button.setText(key)
             button.setMinimumWidth(len(key))
-            button.setFont(QtGui.QFont("DejaVu Sans", 9))
+            button.setFont(QtGui.QFont("Cambria Math", 9))
             button.setToolTip(f'{key} : {dictionary[key].code}')
             button.setMaximumHeight(30)
             button.clicked.connect(update_line_text)

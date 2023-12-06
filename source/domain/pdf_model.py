@@ -20,15 +20,15 @@ class PDF(FPDF):
 
         self.cell(0, 10, f'Page {self.page_no()}/{{nb}}', align='C')
 
-    def information_about_filtering(self, name, method, equations, conditions,description, input_files):
-        self.add_font('DejaVuSans', '', 'resources/fonts/DejaVuSans.ttf')
-        self.set_font('DejaVuSans')
+    def information_about_filtering(self, name, method, equations, conditions, description, input_files):
+        self.add_font('Cambria Math', '', 'resources/fonts/CambriaMath-02.ttf', uni=True)
+        self.set_font('Cambria Math')
         cond = str(conditions)[1:-1]
         self.cell(0, 10, f"Name: {name}", ln=True)
         self.cell(0, 10, f"Methods: {method}", ln=True)
 
         if cond == '':
-            self.cell(0, 10, "Conditions: None",ln=True)
+            self.cell(0, 10, "Conditions: None", ln=True)
         else:
             self.multi_cell(0, 10, f"Conditions: {cond}", ln=True)
         if equations == '':
@@ -38,7 +38,7 @@ class PDF(FPDF):
         if description == '':
             self.cell(0, 10, "Description: None", ln=True)
         else:
-            self.multi_cell(0, 10, f"Description: {description.strip()}",ln=True)
+            self.multi_cell(0, 10, f"Description: {description.strip()}", ln=True)
 
         self.cell(0, 10, f"Files: ", ln=True)
         files_txt = ''
