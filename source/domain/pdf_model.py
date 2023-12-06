@@ -21,8 +21,8 @@ class PDF(FPDF):
         self.cell(0, 10, f'Page {self.page_no()}/{{nb}}', align='C')
 
     def information_about_filtering(self, name, method, equations, conditions, description, input_files):
-        self.add_font('Cambria Math', '', 'resources/fonts/CambriaMath-02.ttf', uni=True)
-        self.set_font('Cambria Math')
+        self.add_font('DejaVuSans', '', 'resources/fonts/DejaVuSans.ttf', uni=True)
+        self.set_font('DejaVuSans')
         cond = str(conditions)[1:-1]
         self.cell(0, 10, f"Name: {name}", ln=True)
         self.cell(0, 10, f"Methods: {method}", ln=True)
