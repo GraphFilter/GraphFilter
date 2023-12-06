@@ -155,7 +155,7 @@ class WizardController:
 
     def connect_graph_files_page_events(self):
 
-        # self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
+        self.graph_files_page.update_file.clicked.connect(self.on_update_graph_file)
         self.graph_files_page.add_file.clicked.connect(self.on_add_graph_file)
         self.graph_files_page.remove_file.clicked.connect(self.on_remove_graph_file)
         self.graph_files_page.remove_all_files.clicked.connect(self.on_remove_all_files)
@@ -370,19 +370,11 @@ class WizardController:
         self.method_page.completeChanged.emit()
         self.wizard_window.next_button.setToolTip('')
 
-    """
     def on_update_graph_file(self):
-        file_dialog = QFileDialog()
-        file_dialog.setNameFilters(["Text files (*.txt *.txt.gz)", "Graph6 File (*.g6 *.g6.gz)"])
-        self.graph_files_page.tr("Text files (*.g6)")
-        file_path = file_dialog.getOpenFileName(
-            filter="Graph6 Files (*.g6 *.txt *.g6.gz *.txt.gz);;"
-                   "Text files (*.txt *.txt.gz);;"
-                   "Graph6 files (*.g6 *.g6.gz)"
-        )
-
-        self.save_graph_file_path(file_path[0], input_file[-1])
-    """""
+        number_of_files = self.graph_files_page.list_files_input.count()
+        self.on_add_graph_file()
+        if number_of_files != self.graph_files_page.list_files_input.count():
+            self.on_remove_graph_file()
 
     def on_insert_graph_file_path(self):
         line_input = QLineEdit().sender()
@@ -392,12 +384,13 @@ class WizardController:
     def save_graph_file_path(self, path, line_input):
         if validate_file(path):
             if path not in wizard_information_store.temp_graph_input_files and path != '':
+
                 if line_input.text() != '' and line_input.text() in wizard_information_store.temp_graph_input_files:
                     wizard_information_store.temp_graph_input_files.remove(line_input.text())
                 line_input.setText(path)
                 wizard_information_store.temp_graph_input_files.append(path)
                 self.review_page.set_graph_files(wizard_information_store.temp_graph_input_files)
-                self.graph_files_page.add_graph_file.setEnabled(True)
+                self.graph_files_page.add_file.setEnabled(True)
             elif path == '':
                 self.graph_files_page.complete = False
             self.graph_files_page.complete = True
