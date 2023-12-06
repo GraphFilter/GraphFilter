@@ -66,9 +66,12 @@ class UtilsToInvariants:
             formatted_row = []
             for i, cell in enumerate(row):
                 width = column_widths[i]
-                formatted_cell = f"{cell:{' ' if cell >= 0 else ''}{width + 2}.{precision}f}"
+                if cell >= 0:
+                    formatted_cell = f" {cell:{width}.{precision}f}"
+                else:
+                    formatted_cell = f"{cell:{width + 1}.{precision}f}"
                 formatted_row.append(formatted_cell)
-            formatted_rows.append(" ".join(formatted_row))
+            formatted_rows.append("".join(formatted_row))
 
         return "\n".join(formatted_rows)
 
