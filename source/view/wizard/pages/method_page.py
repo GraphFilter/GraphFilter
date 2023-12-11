@@ -17,13 +17,12 @@ class MethodPage(QWizardPage):
 
         self.filter_button = QPushButton()
         self.find_example_button = QPushButton()
-        self.blank_project =QPushButton()
+        self.blank_project = QPushButton()
 
         self.set_content_attributes()
         self.set_up_layout()
 
     def set_content_attributes(self):
-
         self.filter_button.setText("  Filter Graphs")
         self.filter_button.setIcon(Icon("filter"))
         self.filter_button.setMinimumHeight(50)
@@ -40,7 +39,7 @@ class MethodPage(QWizardPage):
 
         self.blank_project.setText(" Blank project \n "
                                    "Draw your own graphs")
-        
+
         self.blank_project.setIcon(Icon("edit"))
         self.blank_project.setMinimumHeight(50)
         self.blank_project.setMinimumWidth(100)
@@ -54,12 +53,11 @@ class MethodPage(QWizardPage):
         button_layout.addWidget(self.filter_button)
         button_layout.addWidget(self.find_example_button)
 
-
         second_button_layout = QHBoxLayout()
         second_button_layout.addWidget(self.blank_project)
-        #second_button_layout.setAlignment(Qt.AlignCenter)
-        second_button_layout.setContentsMargins(150,0,150,0)
-        #second_button_layout.
+        # second_button_layout.setAlignment(Qt.AlignCenter)
+        second_button_layout.setContentsMargins(150, 0, 150, 0)
+        # second_button_layout.
 
         layout = QVBoxLayout()
         layout.addStretch(3)
