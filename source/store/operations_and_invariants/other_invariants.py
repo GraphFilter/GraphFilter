@@ -94,7 +94,8 @@ class NormalizedLaplacianMatrix(InvariantOther):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_matrix(NormalizedLaplacianMatrix.calculate(graph), precision)
+        return Utils.print_matrix(NormalizedLaplacianMatrix.calculate(graph), precision,
+                                  NormalizedLaplacianMatrix.name)
 
 
 class DistanceMatrix(InvariantOther):
@@ -204,7 +205,7 @@ class RandicMatrix(InvariantOther):
 
     @staticmethod
     def print(graph, precision):
-        return Utils.print_matrix(RandicMatrix.calculate(graph), precision)
+        return Utils.print_matrix(RandicMatrix.calculate(graph), precision, RandicMatrix.name)
 
 
 class AdjacencySpectrum(InvariantOther):
