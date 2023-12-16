@@ -59,8 +59,8 @@ class UtilsToInvariants:
         if isinstance(matrix, str):
             return matrix
 
+        formatted_rows = []
         if name == "Randic Matrix" or name == "Normalized Laplacian Matrix":
-            formatted_rows = []
             column_widths = [max(len(f"{cell:.{precision}f}") for cell in col) for col in zip(*matrix)]
 
             for row in matrix:
@@ -70,12 +70,9 @@ class UtilsToInvariants:
                     formatted_cell = f"{cell:{width + 1}.{precision}f}" if cell < 0 else f" {cell:{width}.{precision}f}"
                     formatted_row.append(formatted_cell)
                 formatted_rows.append(" ".join(formatted_row))
-
-            return "\n".join(formatted_rows)
         else:
             if matrix.size > 0:
                 max_cell_width = max(len(str(cell)) for row in matrix for cell in row)
-                formatted_rows = []
                 for row in matrix:
                     formatted_row = []
                     for cell in row:
@@ -87,12 +84,10 @@ class UtilsToInvariants:
                                 cell_str = cell_str[:-2].ljust(max_cell_width)
                             else:
                                 cell_str = cell_str.ljust(max_cell_width + 1)
-                        formatted_row.append(cell_str)
+                        formatted_row.append(cell_str.ljust(max_cell_width + 1))
                     formatted_rows.append(" ".join(formatted_row))
 
-                return "\n".join(formatted_rows)
-            else:
-                return ""
+        return "\n".join(formatted_rows)
 
     @staticmethod
     def print_dict(value, precision):
