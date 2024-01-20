@@ -1,9 +1,0 @@
-#main_window{
-}
-
-QLabel{
-    font-family: Arial;
-    font-size: 20px;
-    margin: 0;
-    padding: 0;
-}

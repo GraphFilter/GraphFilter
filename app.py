@@ -1,19 +1,18 @@
-import os
-import sys
-from PyQt5.QtWidgets import QApplication
-from source.controller.controller import Controller
 import multiprocessing as mp
+import sys
 
-try:
-    os.chdir(sys._MEIPASS)
-except (OSError, AttributeError) as e:
-    pass
+from PyQt5.QtWidgets import QApplication
+
+from source.controller import Controller
+from source.view.elements.splash import Splash
 
 if __name__ == '__main__':
-    mp.freeze_support()
     app = QApplication(sys.argv)
+    mp.freeze_support()
+    splash = Splash()
+    splash.show()
     controller = Controller()
-
-    controller.show_welcome_window()
+    splash.close()
+    controller.start()
 
     app.exec_()
