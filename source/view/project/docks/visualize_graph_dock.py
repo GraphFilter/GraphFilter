@@ -7,6 +7,7 @@ from matplotlib.figure import Figure
 from netgraph import EditableGraph
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
+from netgraph._artists import NodeArtist
 
 from source.domain.utils import fix_graph_nodes
 from source.store.project_information_store import project_information_store
@@ -99,18 +100,79 @@ class ResizableGraph(EditableGraph):
 
         project_information_store.current_graph_pos = node_positions
 
+    def find_node(self, node_artist):
+        for node, artist in self.node_artists.items():
+            if node_artist == artist:
+                return node
+        return None
+
     def _on_key_press(self, event):
         if event.key == "enter" or event.key == "alt+enter":
             return
-        if event.key == '=':
-            self._add_node(event)
         if event.key == 'backspace':
             self._delete_nodes()
             self._delete_edges()
-        super()._on_key_press(event)
+        if event.key == '+' or event.key == '=':
+            self._add_node(event)
+            for selected_artist in self._selected_artists:
+                node = self.find_node(selected_artist)
+                if node is not None:
+                    self._add_edge((self.nodes[-1], node))
+                    self._update_edges([(self.nodes[-1], node)])
+                super()._on_key_press(event)
 
         self.restart_label()
         self.set_node_positions_store()
+
+    def _add_node(self, event):
+        if event.inaxes != self.ax:
+            print('Position outside of axis limits! Cannot create node.')
+            return
+
+        # create node ID; use smallest unused int
+        node = 0
+        while node in self.node_positions.keys():
+            node += 1
+
+        # get position of cursor place node at cursor position
+        pos = self._set_position_of_newly_created_node(event.xdata, event.ydata)
+
+        # copy attributes of last selected artist;
+        # if none is selected, use a random artist
+        node_properties = self._last_selected_node_properties
+
+        artist = NodeArtist(xy=pos, **node_properties)
+
+        self._reverse_node_artists[artist] = node
+
+        # Update data structures in parent classes:
+        # 1) InteractiveGraph
+        # 2a) DraggableGraph
+        self._draggable_artist_to_node[artist] = node
+        # 2b) EmphasizeOnHoverGraph
+        self.artist_to_key[artist] = node
+        # 2c) AnnotateOnClickGraph
+        # None
+        # 3a) Graph
+        # None
+        # 3b) ClickableArtists, SelectableArtists, DraggableArtists
+        self._clickable_artists.append(artist)
+        self._selectable_artists.append(artist)
+        self._draggable_artists.append(artist)
+        self._base_linewidth[artist] = artist._lw_data
+        self._base_edgecolor[artist] = artist.get_edgecolor()
+        # 3c) EmphasizeOnHover
+        self.emphasizeable_artists.append(artist)
+        self._base_alpha[artist] = artist.get_alpha()
+        # 3d) AnnotateOnClick
+        # None
+        # 4) BaseGraph
+        self.nodes.append(node)
+        self.node_positions[node] = pos
+        self.node_artists[node] = artist
+        self.ax.add_patch(artist)
+        # self.node_label_artists # TODO (potentially)
+        # self.node_label_offset  # TODO (potentially)
 
     def _on_motion(self, event):
         super()._on_motion(event)
@@ -122,7 +184,7 @@ class ResizableGraph(EditableGraph):
 
     def _add_or_remove_nascent_edge(self, event):
         for node, artist in self.node_artists.items():
-            if artist.contains(event)[0]:   
+            if artist.contains(event)[0]:
                 if self._nascent_edge:
                     if self._nascent_edge.source == node:
                         return
