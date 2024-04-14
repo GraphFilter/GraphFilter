@@ -5,7 +5,7 @@ import networkx as nx
 from parameterized import parameterized
 
 from source.domain.boolean_expression_solver import BooleanExpressionSolver, Properties
-from source.domain.entities import Function, MathOperations, NumericStructuralInvariants
+from source.domain.entities import MathOperations, NumericStructuralInvariants
 
 valid_equation_prioritized = [
     ("{expression} AND ({expression} OR {expression})", "n(G) + n(G) ≤ 1"),

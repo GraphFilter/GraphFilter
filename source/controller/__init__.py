@@ -14,9 +14,9 @@ class Controller:
 
     def connect_events(self):
         self.welcome_window.new_project.clicked.connect(self.show_wizard_window)
-
         self.wizard_window.cancel_button.clicked.connect(self.close_wizard_window)
         self.wizard_window.close_signal.connect(self.close_wizard_window)
+        self.wizard_window.filter_completed_signal.connect(self.show_project_window)
 
     def close_wizard_window(self):
         self.wizard_window.close()
@@ -27,3 +27,6 @@ class Controller:
     def show_wizard_window(self):
         self.welcome_window.close()
         self.wizard_window.show()
+
+    def show_project_window(self):
+        pass

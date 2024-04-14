@@ -89,7 +89,8 @@ class BooleanExpressionSolver:
         self.connectives = LOGICAL_CONNECTIVES_VALUES
         self.expression = expression
 
-        self.tree = self._create_tree(self.expression)
+        if expression:
+            self.tree = self._create_tree(self.expression)
 
     def _create_tree(self, expression) -> Operand:
         cleaned_expression, _ = remove_outer_parenthesis(expression)
@@ -174,5 +175,7 @@ class BooleanExpressionSolver:
             return right, left
         return left, right
 
-    def execute(self, expression: str):
-        return self._create_tree(expression).solve()
+    def solver(self):
+        if self.expression:
+            return self._create_tree(self.expression).solve()
+        return True

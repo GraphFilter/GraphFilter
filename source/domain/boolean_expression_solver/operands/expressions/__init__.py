@@ -15,8 +15,8 @@ class LogicExpression(SimpleEval, Operand):
 
         super(SimpleEval, self).__init__(expression)
 
-    def calculate(self):
-        self.eval(self.value)
+    def calculate(self) -> bool:
+        return self.eval(self.properties.functions.decode(self.value))
 
     def validate(self) -> bool:
         if not self.value:

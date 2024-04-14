@@ -19,7 +19,7 @@ class FileDialog(QFileDialog):
         return self.getOpenFileName(
             caption=self.file_types.name, filter=self.file_types.type_in_full, directory=DOCUMENTS_LOCATION)[0]
 
-    def get_open_file_names(self) -> str:
+    def get_open_file_names(self) -> list[str]:
         return self.getOpenFileNames(
             caption=self.file_types.name, filter=self.file_types.type_in_full, directory=DOCUMENTS_LOCATION)[0]
 

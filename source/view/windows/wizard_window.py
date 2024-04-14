@@ -16,6 +16,7 @@ from source.view.pages.review import Review
 
 class WizardWindow(QWizard):
     close_signal = QtCore.pyqtSignal()
+    filter_completed_signal = QtCore.pyqtSignal()
 
     def __init__(self):
         super().__init__(None)
@@ -75,4 +76,11 @@ class WizardWindow(QWizard):
 
     def is_mac(self):
         return self.style().objectName().lower().startswith('mac')
+
+    def validateCurrentPage(self) -> bool:
+        if self.nextId() == -1:
+            self.field("method").filter()
+            self.filter_completed_signal.emit()
+
+        return super().validateCurrentPage()
     
