@@ -815,3 +815,22 @@ class InvertibleMatrixR(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixR.calculate(graph), precision)
+
+
+class GemFree(InvariantBool):
+    name = "Gem-free"
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        for node in graph.nodes():
+            neighbors = set(graph.neighbors(node))
+            for neighbor1 in neighbors:
+                for neighbor2 in neighbors:
+                    if neighbor1 != neighbor2 and graph.has_edge(neighbor1, neighbor2):
+                        return False
+        return True
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(GemFree.calculate(graph), precision)
