@@ -1,3 +1,5 @@
+import itertools
+
 import grinpy as gp
 import networkx as nx
 import networkx.algorithms.threshold
@@ -823,12 +825,14 @@ class GemFree(InvariantBool):
 
     @staticmethod
     def calculate(graph):
-        for node in graph.nodes():
-            neighbors = set(graph.neighbors(node))
-            for neighbor1 in neighbors:
-                for neighbor2 in neighbors:
-                    if neighbor1 != neighbor2 and graph.has_edge(neighbor1, neighbor2):
-                        return False
+        gem_graph = nx.Graph()
+        gem_graph.add_nodes_from(range(5))
+        gem_graph.add_edges_from([(0, 1), (0, 2), (0, 3), (0, 4), (1, 2), (2, 3), (3, 4)])
+
+        for node_subset in set(itertools.combinations(graph.nodes(), 5)):
+            subgraph = graph.subgraph(list(node_subset))
+            if nx.is_isomorphic(subgraph, gem_graph):
+                return False
         return True
 
     @staticmethod
