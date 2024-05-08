@@ -1,3 +1,5 @@
+import itertools
+
 import grinpy as gp
 import networkx as nx
 import networkx.algorithms.threshold
@@ -815,3 +817,25 @@ class InvertibleMatrixR(InvariantBool):
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(InvertibleMatrixR.calculate(graph), precision)
+
+
+class DartFree(InvariantBool):
+    name = "Dart-free"
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        dart_graph = nx.complete_graph(4)
+        dart_graph.remove_edge(0, 1)
+        new_node = max(dart_graph.nodes()) + 1
+        dart_graph.add_edge(new_node, 0)
+
+        for node_subset in set(itertools.combinations(graph.nodes(), 5)):
+            subgraph = graph.subgraph(list(node_subset))
+            if nx.is_isomorphic(subgraph, dart_graph):
+                return False
+        return True
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(DartFree.calculate(graph), precision)
