@@ -36,13 +36,12 @@ def export_g6_to_pdf(g6code, folder, count):
     plt.close()
 
 
-def export_g6_list_to_pdf(g6codes, folder, number_rows, number_cols, loading_window, update_loading):
+def export_g6_list_to_pdf(g6codes, file_path, number_rows, number_cols, loading_window, update_loading):
     num_graphs = len(g6codes)
     graphs_per_page = number_rows * number_cols
     num_pages = math.ceil(num_graphs / graphs_per_page)
-    pdf_path = f"{folder}/Graphs.pdf"
 
-    with PdfPages(pdf_path) as pdf:
+    with PdfPages(file_path) as pdf:
         for page in range(num_pages):
             start_idx = page * graphs_per_page
             end_idx = min((page + 1) * graphs_per_page, num_graphs)
@@ -65,6 +64,9 @@ def export_g6_list_to_pdf(g6codes, folder, number_rows, number_cols, loading_win
                     return
 
                 update_loading(idx)
+
+            for j in range(i + 1, number_rows * number_cols):
+                fig.delaxes(axs.flatten()[j])
 
             pdf.savefig(fig)
             plt.close()

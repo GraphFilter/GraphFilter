@@ -262,10 +262,10 @@ class Controller:
                 handle_invalid_export_format()
                 return
 
-            file_dir = utils_file.get_directory_name_from_existing_directory()
-            if file_dir:
+            file_name = utils_file.get_name_from_save_dialog('pdf')
+            if file_name:
                 self.show_loading_window(len(graph_to_export))
-                export_g6_list_to_pdf(graph_to_export, file_dir, info_window.get_number_rows(),
+                export_g6_list_to_pdf(graph_to_export, file_name, info_window.get_number_rows(),
                                       info_window.get_number_cols(), self.loading_window, self.update_loading_window)
                 self.loading_window.close()
 
