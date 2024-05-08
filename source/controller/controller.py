@@ -9,11 +9,13 @@ from source.controller.project_controller import ProjectController
 from source.controller.welcome_controller import WelcomeController
 from source.controller.wizard_controller import WizardController
 from source.domain import utils_file
-from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet
+from source.domain.exports import export_g6_to_png, export_g6_to_tikz, export_g6_to_pdf, export_g6_to_sheet, \
+    export_g6_list_to_pdf
 from source.domain.utils import trigger_message_box, handle_invalid_export_format
 from source.domain.utils_file import import_gml_graph, create_gml_file
 from source.store.project_information_store import project_information_store
 from source.store.project_information_store import update_project_store
+from source.view.components.dialog import Dialog
 from source.view.loading.loading_window import LoadingWindow
 
 
@@ -48,6 +50,7 @@ class Controller:
         self.project_controller.tree_file_dock.export_g6_action.triggered.connect(self.export_to_g6)
         self.project_controller.tree_file_dock.export_tikz_action.triggered.connect(self.export_to_tikz)
         self.project_controller.tree_file_dock.export_pdf_action.triggered.connect(self.export_to_pdf)
+        self.project_controller.tree_file_dock.export_single_pdf_action.triggered.connect(self.export_to_single_pdf)
         self.project_controller.tree_file_dock.export_sheet_action.triggered.connect(self.export_to_sheet)
 
     def connect_events(self):
@@ -246,6 +249,25 @@ class Controller:
                     pass
                 self.update_loading_window(step)
             self.loading_window.close()
+
+    def export_to_single_pdf(self):
+        info_window = Dialog()
+        if info_window.exec_() == QDialog.Accepted:
+            try:
+                graph_to_export = self.get_graph_from_tree()
+            except:
+                return
+
+            if graph_to_export is None:
+                handle_invalid_export_format()
+                return
+
+            file_dir = utils_file.get_directory_name_from_existing_directory()
+            if file_dir:
+                self.show_loading_window(len(graph_to_export))
+                export_g6_list_to_pdf(graph_to_export, file_dir, info_window.get_number_rows(),
+                                      info_window.get_number_cols(), self.loading_window, self.update_loading_window)
+                self.loading_window.close()
 
     def export_to_g6(self):
         try:
