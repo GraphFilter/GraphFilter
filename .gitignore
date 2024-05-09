@@ -204,3 +204,5 @@ project.json
 
 source/domain/plot/data.js
 src/*.json
+
+.vscode
