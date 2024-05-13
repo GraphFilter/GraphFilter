@@ -828,7 +828,7 @@ class DartFree(InvariantBool):
         dart_graph = nx.complete_graph(4)
         dart_graph.remove_edge(0, 1)
         new_node = max(dart_graph.nodes()) + 1
-        dart_graph.add_edge(new_node, 0)
+        dart_graph.add_edge(new_node, 2)
 
         for node_subset in set(itertools.combinations(graph.nodes(), 5)):
             subgraph = graph.subgraph(list(node_subset))
