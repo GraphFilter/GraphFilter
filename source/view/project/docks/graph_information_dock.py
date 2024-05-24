@@ -39,13 +39,17 @@ class GraphInformationDock(QDockWidget):
     def update_table(self, invariants_selected):
         self.model.removeRows(0, self.model.rowCount())
         column_max_width = 0
+        font = QFont("Courier New")
+
         for key, value in invariants_selected.items():
             row = []
-            invariant_name = QtGui.QStandardItem(str(key))
+            invariant_name = QStandardItem(str(key))
             invariant_name.setEditable(False)
+            invariant_name.setFont(font)
 
-            invariant_value = QtGui.QStandardItem(value)
+            invariant_value = QStandardItem(value)
             invariant_value.setEditable(False)
+            invariant_value.setFont(font)
 
             current_column_max_width = 0
             current_column_max_width = max(UtilsToInvariants.max_line_of_string(value), current_column_max_width)

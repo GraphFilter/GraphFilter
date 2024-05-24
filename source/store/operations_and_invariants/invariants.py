@@ -55,39 +55,10 @@ class UtilsToInvariants:
         return True
 
     @staticmethod
-    def print_matrix(matrix, precision, name=""):
-        if isinstance(matrix, str):
-            return matrix
-
-        formatted_rows = []
-        if name == "Randic Matrix" or name == "Normalized Laplacian Matrix":
-            column_widths = [max(len(f"{cell:.{precision}f}") for cell in col) for col in zip(*matrix)]
-
-            for row in matrix:
-                formatted_row = []
-                for i, cell in enumerate(row):
-                    width = column_widths[i]
-                    formatted_cell = f"{cell:{width + 1}.{precision}f}" if cell < 0 else f" {cell:{width}.{precision}f}"
-                    formatted_row.append(formatted_cell)
-                formatted_rows.append(" ".join(formatted_row))
-        else:
-            if matrix.size > 0:
-                max_cell_width = max(len(str(cell)) for row in matrix for cell in row)
-                for row in matrix:
-                    formatted_row = []
-                    for cell in row:
-                        if cell == float('inf') or cell == float('-inf'):
-                            cell_str = f"{cell}".rjust(max_cell_width + 1)
-                        else:
-                            cell_str = f" {cell}" if not str(cell).startswith("-") else f"{cell}"
-                            if cell_str.endswith(".0"):
-                                cell_str = cell_str[:-2].ljust(max_cell_width)
-                            else:
-                                cell_str = cell_str.ljust(max_cell_width + 1)
-                        formatted_row.append(cell_str.ljust(max_cell_width + 1))
-                    formatted_rows.append(" ".join(formatted_row))
-
-        return "\n".join(formatted_rows)
+    def print_matrix(value, precision):
+        if type(value) is str:
+            return value
+        return np.array2string(value, precision=precision, separator=" ")
 
     @staticmethod
     def print_dict(value, precision):
