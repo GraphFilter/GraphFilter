@@ -1,6 +1,9 @@
+import gzip
 import os
 import re
 from typing import Dict
+
+import networkx as nx
 
 
 def calculate_string_difference(first_string: str, second_string: str) -> str:
@@ -40,3 +43,25 @@ def empty_values(dictionary: Dict[bool, set]):
 
 def split_camel_case(name):
     return re.sub(r'([a-z])([A-Z])', r'\1 \2', name)
+
+
+def extract_files_to_nx_list(files) -> list[nx.Graph]:
+    list_g6 = []
+    for file in files:
+        if file.endswith('.gz'):
+            file_unzipped = gzip.open(file, 'r')
+            list_g6.extend([nx.from_graph6_bytes(graph.encode('utf-8')) for graph in
+                            file_unzipped.read().decode('utf-8').splitlines()])
+        else:
+            list_g6.extend([nx.from_graph6_bytes(graph.encode('utf-8')) for graph in
+                            open(file, 'r').read().splitlines()])
+    return list_g6
+
+
+def save_nx_list_to_files(graph_list: list[nx.Graph], directory: str, base_file_name: str):
+    output_file = os.path.join(directory, f"{base_file_name}_graphs.g6")
+
+    with open(output_file, 'w') as out_file:
+        for graph in graph_list:
+            graph6_str = nx.to_graph6_bytes(graph, header=False).decode('utf-8').strip()
+            out_file.write(graph6_str + '\n')

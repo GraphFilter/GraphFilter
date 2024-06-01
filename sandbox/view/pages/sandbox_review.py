@@ -20,7 +20,7 @@ if __name__ == '__main__':
         "root/folder/folder",
         "This project is meant to research graphs given certain conditions",
         "n(G)>0 AND n(G)>3 OR n(G)>50",
-        {True: {TranslationObject("a", "b")}, False: {TranslationObject("a", "b")}},
+        {TranslationObject("a", "b"): True, TranslationObject("a", "b"): False},
         Filter(),
         [
             "root/folder/folder/file1.txt",

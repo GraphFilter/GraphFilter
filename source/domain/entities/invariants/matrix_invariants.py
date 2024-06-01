@@ -27,7 +27,7 @@ class MatrixInvariants:
             super().__init__()
 
         def calculate(self, graph):
-            return ss.csc_matrix.toarray(nx.linalg.MatrixL.laplacian_matrix(graph))
+            return ss.csc_matrix.toarray(nx.linalg.laplacian_matrix(graph))
 
         def print(self, graph, precision):
             return print_matrix(self.calculate(graph), precision)
@@ -49,7 +49,7 @@ class MatrixInvariants:
             super().__init__()
 
         def calculate(self, graph):
-            return ss.csc_matrix.toarray(nx.linalg.MatrixL.normalized_laplacian_matrix(graph))
+            return ss.csc_matrix.toarray(nx.linalg.normalized_laplacian_matrix(graph))
 
         def print(self, graph, precision):
             return print_matrix(self.calculate(graph), precision)

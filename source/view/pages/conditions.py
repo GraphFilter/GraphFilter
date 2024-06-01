@@ -1,8 +1,7 @@
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget, QWizard, QHBoxLayout, QRadioButton, QVBoxLayout
 
-from source.commons import empty_values
-from source.domain.entities import BOOLEAN_STRUCTURAL_INVARIANTS, BOOLEAN_SPECTRAL_INVARIANTS
+from source.domain.entities import BOOLEAN_STRUCTURAL_INVARIANTS, BOOLEAN_SPECTRAL_INVARIANTS, Invariant
 from source.view.components.boolean_items_selector import BooleanItemsSelector
 from source.view.elements.icon_label import IconLabel
 from source.view.elements.message_box import MessageBoxDescription
@@ -16,7 +15,7 @@ class Conditions(WizardPage):
         super().__init__()
 
         self.invariants_boolean_selector = self.InvariantsBooleanSelector()
-        self.info_label =  self.instance_info_label()
+        self.info_label = self.instance_info_label()
 
         self.set_content_attributes()
         self.set_up_layout()
@@ -40,7 +39,7 @@ class Conditions(WizardPage):
         self.registerField("conditions*", self.invariants_boolean_selector)
 
     def isComplete(self) -> bool:
-        if not empty_values(self.field("conditions")) or self.field("equation"):
+        if len(self.field("conditions")) != 0 or self.field("equation"):
             self.layout().removeWidget(self.info_label)
             self.info_label.deleteLater()
             self.info_label = self.instance_info_label()
@@ -65,7 +64,7 @@ class Conditions(WizardPage):
             super().__init__()
             self.structural_invariants_group = BooleanItemsSelector("Structural", BOOLEAN_STRUCTURAL_INVARIANTS)
             self.spectral_invariants_group = BooleanItemsSelector("Spectral", BOOLEAN_SPECTRAL_INVARIANTS)
-            self.selected_conditions = {True: set(), False: set()}
+            self.selected_conditions = {}
             self.setProperty("conditions", self.selected_conditions)
 
             self.set_up_layout()
@@ -86,14 +85,12 @@ class Conditions(WizardPage):
 
         def handler(self):
             name = QRadioButton().sender().parent().item
-            stats = True if QRadioButton().sender().objectName() == 'true' else False
+            stats: bool = True if QRadioButton().sender().objectName() == 'true' else False
 
-            if name not in self.selected_conditions[stats]:
-                self.selected_conditions[stats].add(name)
+            if name in self.selected_conditions.keys() and self.selected_conditions[name] == stats:
+                del self.selected_conditions[name]
             else:
-                self.selected_conditions[stats].discard(name)
-
-            self.selected_conditions[not stats].discard(name)
+                self.selected_conditions[name] = stats
 
             self.setProperty("conditions", self.selected_conditions)
             self.conditionsChanged.emit()
