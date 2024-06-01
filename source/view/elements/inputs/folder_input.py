@@ -28,6 +28,6 @@ class FolderInput(Input):
         self.validInput.emit()
         return QValidator.Acceptable
 
-    def setText(self, a0: str | None):
+    def setText(self, a0):
         super().setText(a0)
         self.validator()

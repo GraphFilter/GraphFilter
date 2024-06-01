@@ -1,6 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWizard, QDesktopWidget, QToolBar, QAction, QWizardPage, QStyle
+from PyQt5.QtWidgets import QWizard, QDesktopWidget
 from PyQt5 import QtCore
 
 from source.view.elements.message_box import MessageBox
@@ -16,7 +16,6 @@ from source.view.pages.review import Review
 
 class WizardWindow(QWizard):
     close_signal = QtCore.pyqtSignal()
-    filter_completed_signal = QtCore.pyqtSignal()
 
     def __init__(self):
         super().__init__(None)
@@ -76,11 +75,3 @@ class WizardWindow(QWizard):
 
     def is_mac(self):
         return self.style().objectName().lower().startswith('mac')
-
-    def validateCurrentPage(self) -> bool:
-        if self.nextId() == -1:
-            self.field("method").filter()
-            self.filter_completed_signal.emit()
-
-        return super().validateCurrentPage()
-    

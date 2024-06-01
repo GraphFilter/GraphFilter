@@ -5,7 +5,7 @@ from source.view.items.typography import H4
 
 
 class CaptionContainer(QWidget):
-    def __init__(self, title: str, content: str | QLabel):
+    def __init__(self, title: str, content):
         super().__init__()
 
         self.title = H4(title, QtCore.Qt.AlignLeft)

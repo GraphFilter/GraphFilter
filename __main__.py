@@ -7,8 +7,8 @@ from source.controller import Controller
 from source.view.elements.splash import Splash
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
     mp.freeze_support()
+    app = QApplication(sys.argv)
     splash = Splash()
     splash.show()
     controller = Controller()

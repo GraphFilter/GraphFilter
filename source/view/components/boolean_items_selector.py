@@ -71,7 +71,7 @@ class BooleanItemsSelector(QGroupBox):
             super().__init__()
             self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        def add_element(self, element: QWidget | QLayout):
+        def add_element(self, element):
             super().add_element(element)
             self.scroll_area.widget().setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 

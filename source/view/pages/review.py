@@ -3,7 +3,6 @@ from typing import Dict
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 
-from source.commons import empty_values
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.form_template_layout import FormTemplateLayout
 from source.view.components.header_label import HeaderLabel
@@ -83,7 +82,7 @@ class Review(WizardPage):
             if equation:
                 layout.addLayout(self.Equation(equation))
 
-            if conditions and not empty_values(conditions):
+            if conditions and len(conditions) != 0:
                 layout.addWidget(self.Conditions(conditions))
 
             super().__init__(f"<p>Settings for method <b><code>{method.name}</code></b></p>", layout)
@@ -108,10 +107,12 @@ class Review(WizardPage):
                 self.setLayout(
                     ResponsiveLayout(
                         ButtonCollection().factory(
-                            conditions[True], Chip, Icons.CHECK, background_color=Colors.GREEN()
+                            [invariant for invariant, selected in conditions.items() if selected], Chip, Icons.CHECK,
+                            background_color=Colors.GREEN()
                         ) +
                         ButtonCollection().factory(
-                            conditions[False], Chip, Icons.WRONG, background_color=Colors.DARK_RED
+                            [invariant for invariant, selected in conditions.items() if not selected], Chip, Icons.WRONG,
+                            background_color=Colors.DARK_RED
                         )
                     )
                 )

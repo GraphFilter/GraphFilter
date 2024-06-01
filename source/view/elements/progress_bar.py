@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QProgressBar
+from PyQt5.QtWidgets import QProgressBar, QApplication
 
 
 class ProgressBar(QProgressBar):
@@ -9,6 +9,7 @@ class ProgressBar(QProgressBar):
 
     def increase_step(self, value):
         self.setValue(value)
+        QApplication.processEvents()
 
     def set_maximum(self, value):
         self.setMaximum(value)

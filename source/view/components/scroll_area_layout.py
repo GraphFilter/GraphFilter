@@ -18,7 +18,7 @@ class ScrollAreaLayout(QVBoxLayout):
         self.scroll_area.setFrameShape(QFrame.NoFrame)
         self.scroll_area.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-    def add_element(self, element: QWidget | QLayout):
+    def add_element(self, element):
         if isinstance(element, QLayout):
             self.element_layout = element
             widget_aux = QWidget()

@@ -1,57 +1,75 @@
-import networkx as nx
+from abc import ABC, abstractmethod
+from PyQt5 import QtCore
 from source.commons.objects.translation_object import TranslationObject
 from source.domain.boolean_expression_solver import Properties, BooleanExpressionSolver
+import networkx as nx
+
+from source.worker.extract_graphs import ExtractGraphs
+from source.worker.filter_worker import FilterWorker
 
 
-class Filter(TranslationObject):
-    def __init__(self,
-                 graphs: list[nx.Graph] = None,
-                 equation: str = None,
-                 conditions: dict[bool, set] = None,
-                 name: str = "Filter"
-                 ):
+class GenericFilter(TranslationObject, ABC):
+    update_signal = QtCore.pyqtSignal(int, str)
+
+    def __init__(self, name: str = ""):
         super().__init__(name=name)
-        if conditions is None:
-            conditions = {}
-        self.graphs = graphs
+        self.was_finalized = False
+        self.equation = None
+        self.conditions = None
+        self.directory = None
+        self.file_name = None
+        self.graphs_output_list = []
+
+    def process(self, files: list[str], parent_window):
+        extract_graphs = ExtractGraphs(files, parent_window, self.run)
+        extract_graphs.start()
+
+    def run(self, graphs_list, parent_window):
+        worker = FilterWorker(graphs_list, self, parent_window, self.directory, self.file_name)
+        worker.start()
+
+    def set_attributes(self, equation, conditions, directory, file_name):
         self.equation = equation
         self.conditions = conditions
+        self.directory = directory
+        self.file_name = file_name
 
-    def filter(self) -> list[nx.Graph]:
-        return [graph for graph in self.graphs if self._validate_equation(graph) and self._validate_conditions(graph)]
+    def validate_graph(self, graph: nx.Graph):
+        if self._validate_equation(graph) and self._validate_conditions(graph):
+            return graph
+        else:
+            return None
 
     def _validate_equation(self, graph: nx.Graph) -> bool:
         return BooleanExpressionSolver(self.equation, Properties(names={"G": graph, "g": graph})).solver()
 
     def _validate_conditions(self, graph: nx.Graph) -> bool:
-        for condition, invariants_set in self.conditions.items():
-            for invariant in invariants_set:
-                if invariant.calculate(graph) != condition:
-                    return False
-        return True
+        if self.conditions is None:
+            return True
+        for invariant, selected in self.conditions.items():
+            return invariant.calculate(graph) == selected
+
+    @abstractmethod
+    def execute(self, graph):
+        pass
+
+    def finalize(self):
+        self.was_finalized = True
+        return self.graphs_output_list
 
 
-class FindAnExample(Filter):
-    def __init__(self,
-                 graphs: list[nx.Graph] = None,
-                 equation: str = None,
-                 conditions: dict[bool, set] = None
-                 ):
-        super().__init__(graphs, equation, conditions, "Find an Example")
+class Filter(GenericFilter):
+    def __init__(self, name: str = "Filter"):
+        super().__init__(name=name)
 
-    def filter(self) -> nx.Graph:
-        return next(
-            (graph for graph in self.graphs if self._validate_equation(graph) and self._validate_conditions(graph)),
-            None)
+    def execute(self, graph):
+        self.graphs_output_list.append(graph)
 
-    # @staticmethod
-    # def extract_files_to_list(files):
-    #     list_g6 = []
-    #     for file in files:
-    #         if file.endswith('.gz'):
-    #             file_unzipped = gzip.open(file, 'r')
-    #             list_g6.extend([nx.from_graph6_bytes(graph.encode('utf-8')) for graph in
-    #                             file_unzipped.read().decode('utf-8').splitlines()])
-    #         else:
-    #             list_g6.extend(open(file, 'r').read().splitlines())
-    #     return list_g6
+
+class FindAnExample(GenericFilter):
+    def __init__(self):
+        super().__init__("Find an Example")
+
+    def execute(self, graph):
+        self.graphs_output_list.append(graph)
+        self.was_finalized = True

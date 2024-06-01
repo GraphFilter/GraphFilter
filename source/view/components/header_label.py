@@ -47,7 +47,7 @@ class HeaderLabel(QWidget):
             )
 
     class Body(QGroupBox):
-        def __init__(self, element: QWidget | QLayout):
+        def __init__(self, element):
             super().__init__()
             self.setStyleSheet(
                 f"""
@@ -62,7 +62,7 @@ class HeaderLabel(QWidget):
             self.setFlat(True)
             self.add_element(element)
 
-        def add_element(self, element: QWidget | QLayout):
+        def add_element(self, element):
             if isinstance(element, QLayout):
                 self.setLayout(element)
             elif isinstance(element, QWidget):
