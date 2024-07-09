@@ -66,12 +66,3 @@ def extract_files_to_nx_list(files) -> List[nx.Graph]:
             except NetworkXError:
                 pass
     return list_g6
-
-
-def save_nx_list_to_files(graph_list: list[nx.Graph], directory: str, base_file_name: str):
-    output_file = os.path.join(directory, f"{base_file_name}_graphs.g6")
-
-    with open(output_file, 'w') as out_file:
-        for graph in graph_list:
-            graph6_str = nx.to_graph6_bytes(graph, header=False).decode('utf-8').strip()
-            out_file.write(graph6_str + '\n')

@@ -1,3 +1,5 @@
+from PyQt6.QtCore import Qt
+
 from sandbox import Sandbox
 from source.view.elements.buttons.key_button import KeyButton
 from source.view.elements.message_box import MessageBoxDescription

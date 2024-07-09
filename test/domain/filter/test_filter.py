@@ -12,7 +12,7 @@ class TestGraphProcessor(unittest.TestCase):
         self.processor = Filter()
         self.graphs_list = [nx.erdos_renyi_graph(10, 0.5) for _ in range(100000)]
 
-    @patch('source.domain.filter.ProcessPoolExecutor', wraps=ProcessPoolExecutor)
+    @patch('source.worker.filter.ProcessPoolExecutor', wraps=ProcessPoolExecutor)
     def test_process_manager(self, MockExecutor):
 
         result = self.processor.process(self.graphs_list, )

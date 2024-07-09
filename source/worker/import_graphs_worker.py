@@ -4,7 +4,7 @@ from source.commons import extract_files_to_nx_list
 from source.worker import ProgressLabels
 
 
-class ExtractGraphs(QThread):
+class ImportGraphsWorker(QThread):
     result_signal = pyqtSignal(list, object)
     start_signal = pyqtSignal(str)
 
@@ -17,8 +17,9 @@ class ExtractGraphs(QThread):
     def connect_signals(self):
         self.result_signal.connect(self.finalize_method)
         self.start_signal.connect(self.parent().setLabelText)
+        self.parent().canceled.connect(self.terminate)
 
     def run(self):
-        self.start_signal.emit(ProgressLabels.EXTRACT_GRAPHS)
+        self.start_signal.emit(ProgressLabels.IMPORT_GRAPHS)
         list_graphs = extract_files_to_nx_list(self.files)
         self.result_signal.emit(list_graphs, self.parent())

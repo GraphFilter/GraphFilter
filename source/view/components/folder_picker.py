@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QHBoxLayout, QWidget, QSizePolicy
+from PyQt6.QtWidgets import QHBoxLayout, QWidget, QSizePolicy, QVBoxLayout
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.verifiable_input import VerifiableInput
@@ -16,29 +16,31 @@ class FolderPicker(QWidget):
         for adding folders, and a text input field for specifying the file location.
         """
         super().__init__()
-        self.button = DefaultButton(translation_object=TranslationObject(""), icon=Icons.ADD_FOLDER)
+        self.button = DefaultButton(translation_object=TranslationObject(""), icon=Icons.ADD_FOLDER, font_size=11)
         self.input = VerifiableInput(FolderInput(), "Location", font_size=11)
         self._set_content_attributes()
         self._set_up_layout()
         self._connect_events()
 
     def _set_content_attributes(self):
-
         self.button.setFixedHeight(self.input.input.height())
         self.button.setStyleSheet(self.button.styleSheet() + "padding-right: 5px;")
         self.input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
-        self.input.layout().setContentsMargins(0, 0, 0, 0)
+        self.button.setContentsMargins(0, 0, 0, 0)
+        self.input.layout().setContentsMargins(0, 2, 0, 0)
 
     def _set_up_layout(self):
         layout = QHBoxLayout()
+        layout_aux = QVBoxLayout()
+        layout_aux.addWidget(self.button, 0)
+        layout_aux.setAlignment(self.button, Qt.AlignmentFlag.AlignTop)
 
         layout.addWidget(self.input, 1)
-        layout.addWidget(self.button, 0)
+        layout.addLayout(layout_aux)
 
-        layout.setAlignment(self.button, Qt.AlignmentFlag.AlignTop)
+        layout.setAlignment(layout_aux, Qt.AlignmentFlag.AlignTop)
         layout.setAlignment(self.input, Qt.AlignmentFlag.AlignTop)
-
         self.setLayout(layout)
 
     def get_input(self):

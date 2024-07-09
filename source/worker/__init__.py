@@ -1,4 +1,4 @@
 class ProgressLabels:
-    EXTRACT_GRAPHS = "Extracting files"
+    IMPORT_GRAPHS = "Importing graphs"
     FILTERING = "Filtering..."
     DEFAULT = "Loading resources"

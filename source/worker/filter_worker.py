@@ -1,14 +1,11 @@
-import os
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor, wait, ALL_COMPLETED
 from typing import List
-
-import networkx as nx
-import numpy as np
 from PyQt6.QtCore import QThread, pyqtSignal
-
-from source.commons import save_nx_list_to_files
 from source.view.windows.progress_window import ProgressConfigurations
 from source.worker import ProgressLabels
+import networkx as nx
+import numpy as np
+import os
 
 NUMBER_CORES = int(np.ceil((1 / 3) * os.cpu_count()))
 
@@ -17,13 +14,12 @@ class FilterWorker(QThread):
     progress_signal = pyqtSignal(int, str, object)
     result_signal = pyqtSignal(list)
 
-    def __init__(self, graphs_list: List[nx.Graph], method, parent, directory, file_name):
+    def __init__(self, graphs_list: List[nx.Graph], method, parent):
         super().__init__(parent)
         self.graphs_list = graphs_list
         self.method = method
-        self.directory = directory
-        self.file_name = file_name
         self.configurations = ProgressConfigurations(False, len(self.graphs_list) - 1)
+        self.executor = None
         self.connect_signals()
 
     def connect_signals(self):
@@ -32,10 +28,14 @@ class FilterWorker(QThread):
         self.parent().canceled.connect(self.terminate)
 
     def run(self):
-        with ProcessPoolExecutor(max_workers=NUMBER_CORES) as executor:
-            for step, graph in enumerate(executor.map(self.method.validate_graph,
-                                                      self.graphs_list,
-                                                      chunksize=self.get_chunk_size())):
+        self.executor = ProcessPoolExecutor(max_workers=NUMBER_CORES)
+        try:
+            futures = [
+                self.executor.submit(self.method.validate_graph, graph)
+                for graph in self.graphs_list
+            ]
+            for step, future in enumerate(wait(futures, return_when=ALL_COMPLETED).done):
+                graph = future.result()
                 self.progress_signal.emit(step, ProgressLabels.FILTERING, self.configurations)
                 if graph:
                     self.method.execute(graph)
@@ -43,9 +43,14 @@ class FilterWorker(QThread):
                     self.progress_signal.emit(len(self.graphs_list) - 1, "", self.configurations)
                     break
 
-            list_graphs = self.method.finalize()
-            save_nx_list_to_files(list_graphs, self.directory, self.file_name)
-            self.result_signal.emit(list_graphs)
+            self.result_signal.emit(self.method.finalize())
+        finally:
+            self.executor.shutdown(wait=True)
+
+    def terminate(self):
+        if self.executor:
+            self.executor.shutdown(wait=False)
+        super().terminate()
 
     def get_chunk_size(self):
         return int(len(self.graphs_list) / NUMBER_CORES)

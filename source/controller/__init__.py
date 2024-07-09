@@ -2,6 +2,7 @@ from source.view.windows.progress_window import ProgressWindow
 from source.view.windows.project_window import ProjectWindow
 from source.view.windows.welcome_window import WelcomeWindow
 from source.view.windows.wizard_window import WizardWindow
+from source.worker.export_graphs_worker import ExportGraphsWorker
 
 
 class Controller:
@@ -37,13 +38,12 @@ class Controller:
     def start_filter(self):
         self.progress_window.show()
         method = self.wizard_window.field("method")
-        method.set_attributes(self.wizard_window.field("equation"),
-                              self.wizard_window.field("conditions"),
-                              self.wizard_window.field("location"),
-                              self.wizard_window.field("name"))
+        method.set_attributes(self.wizard_window.field("equation"), self.wizard_window.field("conditions"))
         method.process(self.wizard_window.field("files"), self.progress_window)
 
-    def finish_filter(self):
+    def finish_filter(self, list_graphs):
+        export = ExportGraphsWorker(list_graphs, self.wizard_window.field("location"), self.wizard_window.field("name"))
+        export.save_nx_list_to_files()
         self.project_window.show()
 
     def show_project_window(self):

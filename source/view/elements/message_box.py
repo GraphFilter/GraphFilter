@@ -26,7 +26,7 @@ class MessageBox(QMessageBox):
         self.setText(description.title)
         self.setInformativeText(description.text)
 
-        self.setWindowFlag(Qt.WindowState.WindowStaysOnTopHint)
+        self.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)
         self.setDefaultButton(QMessageBox.StandardButton.Ok)
 
         self.resize_text(description.text)

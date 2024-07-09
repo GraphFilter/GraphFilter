@@ -16,8 +16,6 @@ if __name__ == '__main__':
     timer = QTimer()
     timer.timeout.connect(sandbox.element.close)
     timer.timeout.connect(sandbox.quit)
-    timer.start(1000)
+    timer.start(2000)
 
     sandbox.start()
-
-

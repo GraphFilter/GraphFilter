@@ -51,6 +51,9 @@ class Conditions(WizardPage):
     def initializePage(self) -> None:
         self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
+    def cleanupPage(self) -> None:
+        pass
+
     @staticmethod
     def instance_info_label() -> IconLabel:
         return IconLabel().set_content_attributes(

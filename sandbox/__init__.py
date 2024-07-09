@@ -1,7 +1,9 @@
 import logging.config
 import os
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLayout, QDesktopWidget
+
+from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLayout
 import importlib
 
 
@@ -49,8 +51,7 @@ class Sandbox(CustomApplication):
         return self.element
 
     def set_initial_size(self):
-        desktop = QDesktopWidget()
-        screen_rect = desktop.screenGeometry(desktop.primaryScreen())
+        screen_rect = QGuiApplication.primaryScreen().geometry()
         target_width = int(screen_rect.width() * 0.6)
         target_height = int(screen_rect.height() * 0.6)
 
@@ -59,7 +60,7 @@ class Sandbox(CustomApplication):
     def start(self):
         self.add_element()
         self.window.show()
-        sys.exit(self.exec_())
+        sys.exit(self.exec())
 
 
 def get_module_relative_path(file_path: str):

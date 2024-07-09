@@ -9,7 +9,7 @@ from PyQt6 import QtCore
 from PyQt6.QtWidgets import QApplication, QPushButton, QMainWindow
 
 from source.controller import Controller
-from source.domain.filter import Filter, FindAnExample
+from source.domain.filter import Filter
 
 
 class GraphHandler:
@@ -37,8 +37,9 @@ class WizardMock(QMainWindow):
         self.cancel_button = QPushButton()
         self.start_button = QPushButton()
         self.setWindowTitle("Wizard mock")
-        print("Creating files")
-        self.relative_path = os.path.relpath(GraphHandler.save_graphs_to_file(10000, 'graphs.g6'))
+        self.relative_path = os.path.relpath(GraphHandler.save_graphs_to_file(50000, 'graphs.g6'))
+        self.script_path = os.path.dirname(os.path.realpath(__file__))
+        self.name = "graphs"
 
         atexit.register(self.cleanup)
 
@@ -46,13 +47,19 @@ class WizardMock(QMainWindow):
         if field_name == "files":
             return [self.relative_path]
         if field_name == "method":
-            return FindAnExample()
+            return Filter()
         if field_name == "equation":
             return "N(G) > 0"
+        if field_name == "name":
+            return self.name
+        if field_name == "location":
+            return self.script_path
 
     def cleanup(self):
         if os.path.exists(self.relative_path):
             os.remove(self.relative_path)
+        if os.path.exists(self.script_path):
+            os.remove(os.path.join(self.script_path, self.name + "_graphs.g6"))
 
 
 if __name__ == "__main__":
