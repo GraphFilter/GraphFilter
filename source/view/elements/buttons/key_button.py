@@ -1,4 +1,4 @@
-from PyQt5 import QtGui
+from PyQt6 import QtGui
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.elements.buttons import GenericButton

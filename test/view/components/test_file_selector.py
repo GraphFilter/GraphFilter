@@ -2,9 +2,9 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QApplication
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.file_selection_manager import FileSelectionManager

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QScrollArea, QSizePolicy, QVBoxLayout, QLayout, QWidget, QFrame
+from PyQt6.QtWidgets import QScrollArea, QSizePolicy, QVBoxLayout, QLayout, QWidget, QFrame
 
 
 class ScrollAreaLayout(QVBoxLayout):
@@ -15,8 +15,8 @@ class ScrollAreaLayout(QVBoxLayout):
 
     def _set_content_attributes(self):
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setFrameShape(QFrame.NoFrame)
-        self.scroll_area.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_area.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
 
     def add_element(self, element):
         if isinstance(element, QLayout):

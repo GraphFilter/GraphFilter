@@ -1,5 +1,5 @@
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
+from PyQt6.QtWidgets import *
+from PyQt6.QtCore import *
 
 from source.view.elements.progress_bar import ProgressBar
 

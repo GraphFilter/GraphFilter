@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QWidget, QVBoxLayout
 
 from source.view.elements.icon_label import IconLabel
 from source.view.elements.inputs import Input
@@ -12,7 +12,7 @@ from source.view.utils.icons import Icons
 class VerifiableInput(QWidget):
 
     def __init__(self,
-                 input: Input,
+                 set_input: Input,
                  placeholder: str,
                  font_size: int = BUTTON_FONT_SIZE
                  ):
@@ -27,7 +27,7 @@ class VerifiableInput(QWidget):
         """
         super().__init__()
         self.validation = IconLabel()
-        self.input = input
+        self.input = set_input
         self.placeholder = placeholder
         self.font_size = font_size
         self.key_pressed = ""
@@ -49,7 +49,7 @@ class VerifiableInput(QWidget):
         layout = QVBoxLayout()
 
         layout.addWidget(self.input)
-        layout.addWidget(self.validation, alignment=Qt.AlignTop)
+        layout.addWidget(self.validation, alignment=Qt.AlignmentFlag.AlignTop)
         layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 0)
         self.setLayout(layout)

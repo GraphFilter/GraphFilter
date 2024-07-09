@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWizardPage
+from PyQt6.QtWidgets import QWizardPage
 
 
 class WizardPage(QWizardPage):

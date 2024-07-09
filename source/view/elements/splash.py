@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QSplashScreen
+from PyQt6.QtWidgets import QSplashScreen
 
 from source.view.items.logo import SoftwareLogo
 

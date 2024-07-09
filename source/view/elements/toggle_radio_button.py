@@ -1,5 +1,5 @@
-from PyQt5 import QtGui
-from PyQt5.QtWidgets import QRadioButton
+from PyQt6 import QtGui
+from PyQt6.QtWidgets import QRadioButton
 
 
 class ToggleRadioButton(QRadioButton):

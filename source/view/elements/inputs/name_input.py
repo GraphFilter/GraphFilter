@@ -1,6 +1,6 @@
 import logging
 
-from PyQt5.QtGui import QValidator
+from PyQt6.QtGui import QValidator
 import re
 
 from source.view.elements.inputs import Input
@@ -16,14 +16,14 @@ class NameInput(Input):
             super().validator()
         except NameError as e:
             self.invalidInput.emit("Name input cannot be empty", AttributeError)
-            return QValidator.Invalid
+            return QValidator.State.Invalid
         if not file_name_regex.match(self.text()):
             self.invalidInput.emit(f"Invalid file name", ValueError)
             logging.error(f"Invalid file name")
-            return QValidator.Invalid
+            return QValidator.State.Invalid
 
         self.validInput.emit()
-        return QValidator.Acceptable
+        return QValidator.State.Acceptable
 
     def keyPressEvent(self, event) -> None:
         super().keyPressEvent(event)

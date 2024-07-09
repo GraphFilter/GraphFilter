@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QTextEdit, QHBoxLayout, QWizard
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import QTextEdit, QHBoxLayout, QWizard
 
 from source.view.components.folder_picker import FolderPicker
 from source.view.components.form_template_layout import FormTemplateLayout
@@ -55,13 +55,13 @@ class Information(WizardPage):
         return self.location_picker.has_acceptable_input() and self.input_name.has_acceptable_input()
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, False)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, False)
 
     def showEvent(self, a0):
         self.input_name.input.setFocus()
 
     def cleanupPage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     class Description(QHBoxLayout):
         def __init__(self):
@@ -80,7 +80,7 @@ class Information(WizardPage):
 
         def set_up_layout(self):
             self.title.layout().setContentsMargins(0, 0, 15, 0)
-            self.addWidget(self.title, alignment=Qt.AlignTop)
+            self.addWidget(self.title, alignment=Qt.AlignmentFlag.AlignTop)
             self.addWidget(self.input)
 
     subtitle = """Add some information to help you identify your project."""

@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QThread, pyqtSignal, QObject
+from PyQt6.QtCore import QThread, pyqtSignal, QObject
 
 from source.commons import extract_files_to_nx_list
 from source.worker import ProgressLabels

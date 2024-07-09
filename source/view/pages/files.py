@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWizard
+from PyQt6.QtWidgets import QWizard
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.file_selection_manager import FileSelectionManager
@@ -41,7 +41,7 @@ class Files(WizardPage):
         return True if self.field("files") else False
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     def cleanupPage(self) -> None:
         return

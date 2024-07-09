@@ -1,6 +1,6 @@
-from PyQt5 import QtCore
-from PyQt5.QtGui import QFont, QColor
-from PyQt5.QtWidgets import QPushButton, QWidget
+from PyQt6 import QtCore
+from PyQt6.QtGui import QFont, QColor
+from PyQt6.QtWidgets import QPushButton, QWidget
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.utils.colors import Colors
@@ -62,10 +62,10 @@ class GenericButton(QPushButton):
         return text_color
 
     def get_width(self, widget_object: QWidget):
-        return self.get_minimum_size() + widget_object.getContentsMargins()[3] * 4
+        return self.get_minimum_size() + widget_object.contentsMargins().bottom() * 4
 
     def calculate_combined_width(self, widget: QWidget):
-        return self.get_minimum_size() + widget.getContentsMargins()[3] * 4
+        return self.get_minimum_size() + widget.contentsMargins().bottom() * 4
 
     def get_font_size(self):
         return self.fontInfo().pixelSize()
@@ -78,6 +78,6 @@ class GenericButton(QPushButton):
 
     def rescale_font(self, widget_object: QWidget):
         font_size = int(
-            (widget_object.width() - widget_object.getContentsMargins()[0]) / len(self.translation_object.name))
+            (widget_object.width() - widget_object.contentsMargins().left()) / len(self.translation_object.name))
 
         return font_size

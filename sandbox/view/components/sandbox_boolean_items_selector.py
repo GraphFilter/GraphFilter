@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QRadioButton
+from PyQt6.QtWidgets import QRadioButton
 
 from sandbox import Sandbox
 from source.domain.entities import BOOLEAN_SPECTRAL_INVARIANTS

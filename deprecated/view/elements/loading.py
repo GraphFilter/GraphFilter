@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QMovie
+from PyQt6.QtGui import QMovie
 
 
 class Loading(QMovie):

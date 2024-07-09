@@ -1,9 +1,9 @@
 import os.path
 
 import networkx
-from PyQt5.QtGui import QCursor
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import *
+from PyQt6.QtGui import QCursor
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import *
 
 from deprecated.utils_file import create_gml_file, change_gml_file, import_gml_graph, change_g6_file, \
     delete_all_gml_nodes
@@ -21,7 +21,7 @@ from view.windows.project.docks.invariants_checks_dock import InvariantsCheckDoc
 from view.components.new_graph_store import *
 from deprecated.utils import match_graph_code, add_vertex, handle_invalid_graph_open, trigger_message_box, \
     fix_graph_nodes
-from PyQt5.Qt import QUrl, QDesktopServices
+from PyQt6.Qt import QUrl, QDesktopServices
 import json
 import threading as td
 

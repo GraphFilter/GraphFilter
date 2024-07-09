@@ -1,7 +1,7 @@
 import logging.config
 import os
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLayout, QDesktopWidget
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLayout, QDesktopWidget
 import importlib
 
 

@@ -1,8 +1,8 @@
-from PyQt5.QtCore import Qt, pyqtSignal, QUrl
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
+from PyQt6.QtCore import Qt, pyqtSignal, QUrl
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
 
-from source.commons.objects.nameable_object import NameableObject
+from source.commons.objects.translation_object import TranslationObject
 from source.view.components.group_button import GroupButton
 from source.view.components.scroll_area_layout import ScrollAreaLayout
 from source.view.elements.buttons import GenericButton
@@ -48,7 +48,7 @@ class FileSelectionManager(QWidget):
     def _set_content_attributes(self):
         self.scroll_area.add_element(self.file_list)
         self.custom_button_group.setMinimumWidth(self.custom_button_group.biggest_button_width)
-        self.file_list.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.file_list.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
 
     def _set_up_layout(self):
         layout = QHBoxLayout()
@@ -58,22 +58,22 @@ class FileSelectionManager(QWidget):
         buttons = QVBoxLayout()
 
         top_buttons = QVBoxLayout()
-        top_buttons.addWidget(self.add_file_button, alignment=Qt.AlignTop)
-        top_buttons.addWidget(self.remove_file_button, alignment=Qt.AlignTop)
-        top_buttons.addWidget(self.remove_all_files_button, alignment=Qt.AlignTop)
+        top_buttons.addWidget(self.add_file_button, alignment=Qt.AlignmentFlag.AlignTop)
+        top_buttons.addWidget(self.remove_file_button, alignment=Qt.AlignmentFlag.AlignTop)
+        top_buttons.addWidget(self.remove_all_files_button, alignment=Qt.AlignmentFlag.AlignTop)
 
         buttons.addLayout(top_buttons)
-        top_buttons.setAlignment(Qt.AlignTop)
+        top_buttons.setAlignment(Qt.AlignmentFlag.AlignTop)
         buttons.addSpacing(30)
 
         if self.custom_button_group:
             buttons.addWidget(self.custom_button_group)
             self.custom_button_group.setMinimumWidth(
                 self.custom_button_group.biggest_button_width +
-                self.custom_button_group.getContentsMargins()[0] +
-                self.custom_button_group.getContentsMargins()[2] +
-                self.custom_button_group.grid.getContentsMargins()[0] +
-                self.custom_button_group.grid.getContentsMargins()[2]
+                self.custom_button_group.contentsMargins().left() +
+                self.custom_button_group.contentsMargins().right() +
+                self.custom_button_group.grid.contentsMargins().left() +
+                self.custom_button_group.grid.contentsMargins().right()
             )
 
             self.custom_button_group.setMaximumHeight(self.custom_button_group.biggest_button_minimum_height * 2)
@@ -114,11 +114,11 @@ class FileSelectionManager(QWidget):
 
     class AddFileButton(DefaultButton):
         def __init__(self):
-            super().__init__(NameableObject("Add Files"))
+            super().__init__(TranslationObject("Add Files"))
 
     class RemoveFilesButton(DefaultButton):
         def __init__(self):
-            super().__init__(NameableObject("Remove Files"))
+            super().__init__(TranslationObject("Remove Files"))
             self.setEnabled(False)
 
         def set_visibility(self, selected_files: int):
@@ -126,7 +126,7 @@ class FileSelectionManager(QWidget):
 
     class RemoveAllFilesButton(DefaultButton):
         def __init__(self):
-            super().__init__(NameableObject("Remove All"))
+            super().__init__(TranslationObject("Remove All"))
             self.setEnabled(False)
 
         def set_visibility(self, count_files: int):

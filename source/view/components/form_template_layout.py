@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QFormLayout, QSizePolicy
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QFormLayout, QSizePolicy
 
 from source.view.components.scroll_area_layout import ScrollAreaLayout
 from source.view.items import pair_widgets
@@ -25,7 +25,7 @@ class FormTemplateLayout(ScrollAreaLayout):
         self.add_element(self.form)
 
     def _configure_scroll(self):
-        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
     def _add_items(self):
         for pair in self.pairs:
@@ -33,12 +33,12 @@ class FormTemplateLayout(ScrollAreaLayout):
                 self.form.addRow(pair.key, pair.value)
 
                 pair.key.setContentsMargins(0, 0, 27, 0)
-                pair.key.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-                pair.value.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-                self.form.setAlignment(pair.key, Qt.AlignVCenter)
+                pair.key.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+                pair.value.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+                self.form.setAlignment(pair.key, Qt.AlignmentFlag.AlignVCenter)
             else:
                 self.form.addRow(pair)
 
-        self.form.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+        self.form.setFieldGrowthPolicy(QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow)
         self.form.setVerticalSpacing(15)
-        self.form.setLabelAlignment(Qt.AlignLeft)
+        self.form.setLabelAlignment(Qt.AlignmentFlag.AlignLeft)

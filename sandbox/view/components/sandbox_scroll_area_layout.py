@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout
+from PyQt6.QtWidgets import QVBoxLayout
 
 from sandbox import Sandbox
 from source.commons.objects.translation_object import TranslationObject

@@ -1,7 +1,7 @@
-from PyQt5 import QtCore
-from PyQt5.QtCore import QRect
-from PyQt5.QtGui import QMovie
-from PyQt5.QtWidgets import QDialog, QWidget, QLabel, QHBoxLayout, QApplication
+from PyQt6 import QtCore
+from PyQt6.QtCore import QRect
+from PyQt6.QtGui import QMovie
+from PyQt6.QtWidgets import QDialog, QWidget, QLabel, QHBoxLayout, QApplication
 
 
 class LoadingGif(QDialog):

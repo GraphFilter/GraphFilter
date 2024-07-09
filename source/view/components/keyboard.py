@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QTabWidget
+from PyQt6.QtWidgets import QVBoxLayout, QTabWidget
 
 from source.commons import split_camel_case
 from source.commons.objects.translation_object import TranslationObject

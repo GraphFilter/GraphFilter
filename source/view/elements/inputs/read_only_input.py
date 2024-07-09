@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QFont
+from PyQt6.QtGui import QFont
 
 from source.view.elements.inputs import Input
 

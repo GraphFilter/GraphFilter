@@ -1,12 +1,12 @@
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 import matplotlib
 
 import networkx as nx
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 from netgraph import EditableGraph
-from PyQt5.QtCore import Qt
-from PyQt5 import QtCore
+from PyQt6.QtCore import Qt
+from PyQt6 import QtCore
 
 from deprecated.utils import fix_graph_nodes
 from deprecated.store.project_information_store import project_information_store

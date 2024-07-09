@@ -1,7 +1,7 @@
 from abc import ABC, ABCMeta, abstractmethod
-from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtGui import QValidator
-from PyQt5.QtWidgets import QLineEdit
+from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtGui import QValidator
+from PyQt6.QtWidgets import QLineEdit
 
 
 class InputMixin:
@@ -19,12 +19,12 @@ class Input(QLineEdit, ABC, InputMixin, metaclass=InputMeta):
 
     def __init__(self):
         super().__init__()
-        self.setFocusPolicy(Qt.ClickFocus)
+        self.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Home:
+        if event.key() == Qt.Key.Key_Home:
             self.setCursorPosition(0)
-        elif event.key() == Qt.Key_End:
+        elif event.key() == Qt.Key.Key_End:
             self.setCursorPosition(len(self.text()))
         else:
             super().keyPressEvent(event)
@@ -35,4 +35,4 @@ class Input(QLineEdit, ABC, InputMixin, metaclass=InputMeta):
             raise NameError("Empty field")
 
     def hasAcceptableInput(self) -> bool:
-        return True if self.validator() is QValidator.Acceptable else False
+        return True if self.validator() is QValidator.State.Acceptable else False

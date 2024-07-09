@@ -1,8 +1,8 @@
 import logging
 import math
 
-from PyQt5.QtWidgets import QGridLayout, QGroupBox
-from PyQt5 import QtCore
+from PyQt6.QtWidgets import QGridLayout, QGroupBox
+from PyQt6 import QtCore
 
 from source.view.elements.buttons import GenericButton
 from source.view.components.scroll_area_layout import ScrollAreaLayout

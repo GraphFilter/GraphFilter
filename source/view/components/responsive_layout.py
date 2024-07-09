@@ -1,6 +1,7 @@
-from PyQt5.QtCore import QRect
-from PyQt5.QtWidgets import QLayout, QWidgetItem
-from PyQt5 import QtCore, QtWidgets
+from PyQt6.QtCore import QRect
+from PyQt6.QtGui import QGuiApplication
+from PyQt6.QtWidgets import QLayout, QWidgetItem
+from PyQt6 import QtCore
 
 
 class ResponsiveLayout(QLayout):
@@ -34,18 +35,15 @@ class ResponsiveLayout(QLayout):
         self.create_layout(rect)
 
     def sizeHint(self):
-        screen_geometry = QtWidgets.QDesktopWidget().screenGeometry()
-
-        new_width = int(screen_geometry.width() * 0.5)
-        new_height = int(screen_geometry.height() * 0.5)
+        screen_rect = QGuiApplication.primaryScreen().geometry()
+        new_width = int(screen_rect.width() * 0.5)
+        new_height = int(screen_rect.height() * 0.5)
 
         return QtCore.QSize(new_width, new_height)
 
     def minimumSize(self):
-        screen_geometry = QtWidgets.QDesktopWidget().screenGeometry()
-
-        new_width = int(screen_geometry.width() * 0.1)
-        # new_height = int(screen_geometry.height() * 0.1)
+        screen_rect = QGuiApplication.primaryScreen().geometry()
+        new_width = int(screen_rect.width() * 0.1)
 
         if self.items:
             new_width = max(self.items, key=lambda x: x.widget().width(), default=None).widget().width() + 12
@@ -53,8 +51,8 @@ class ResponsiveLayout(QLayout):
         return QtCore.QSize(new_width, 0)
 
     def maximumSize(self):
-        screen_geometry = QtWidgets.QDesktopWidget().screenGeometry()
-        return QtCore.QSize(screen_geometry.width(), screen_geometry.height())
+        screen_rect = QGuiApplication.primaryScreen().geometry()
+        return QtCore.QSize(screen_rect.width(), screen_rect.height())
 
     def add_widgets(self, widgets: list):
         for widget in widgets:

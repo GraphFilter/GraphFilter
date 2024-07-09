@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QGroupBox, QGridLayout, QVBoxLayout, QSizePolicy, QLabel, QWidget, QLayout
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QGroupBox, QGridLayout, QVBoxLayout, QSizePolicy, QLabel, QWidget
 
 from source.commons import split_camel_case
 from source.commons.objects.nameable_object import NameableObject
@@ -45,7 +45,7 @@ class BooleanItemsSelector(QGroupBox):
         self.scroll_area.add_element(self.grid)
 
         layout.addLayout(self.scroll_area)
-        scroll_layout.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        scroll_layout.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         scroll_layout.add_element(layout)
         self.setLayout(scroll_layout)
 
@@ -56,7 +56,7 @@ class BooleanItemsSelector(QGroupBox):
     def connect(self, handler):
         self.handler = handler if handler is not None else self.handler
         for row in range(len(self.items)):
-            column: BooleanItemsSelector.BooleanGroupItem = self.grid.itemAt(row).widget()
+            column: QWidget = self.grid.itemAt(row).widget()
             for item in column.children():
                 if isinstance(item, ToggleRadioButton):
                     item.clicked.connect(self.handler)
@@ -69,11 +69,11 @@ class BooleanItemsSelector(QGroupBox):
     class CustomScrollAreaLayout(ScrollAreaLayout):
         def __init__(self):
             super().__init__()
-            self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         def add_element(self, element):
             super().add_element(element)
-            self.scroll_area.widget().setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            self.scroll_area.widget().setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
 
     class Header(QGroupBox):
 
@@ -82,10 +82,10 @@ class BooleanItemsSelector(QGroupBox):
             grid_layout_aux = QGridLayout()
             grid_layout_aux.setColumnStretch(0, 1)
             grid_layout_aux.setRowStretch(0, 0)
-            grid_layout_aux.addWidget(QLabel(""), 0, 0, Qt.AlignLeft)
+            grid_layout_aux.addWidget(QLabel(""), 0, 0, Qt.AlignmentFlag.AlignLeft)
             grid_layout_aux.setColumnMinimumWidth(0, minimum_width)
-            grid_layout_aux.addWidget(QLabel("TRUE"), 0, 1, Qt.AlignCenter)
-            grid_layout_aux.addWidget(QLabel("FALSE"), 0, 2, Qt.AlignCenter)
+            grid_layout_aux.addWidget(QLabel("TRUE"), 0, 1, Qt.AlignmentFlag.AlignCenter)
+            grid_layout_aux.addWidget(QLabel("FALSE"), 0, 2, Qt.AlignmentFlag.AlignCenter)
             grid_layout_aux.setColumnMinimumWidth(1, 50)
             grid_layout_aux.setColumnMinimumWidth(2, 50)
             self.setLayout(grid_layout_aux)
@@ -110,10 +110,10 @@ class BooleanItemsSelector(QGroupBox):
             grid_layout_aux = QGridLayout()
             grid_layout_aux.setColumnStretch(0, 1)
             grid_layout_aux.setRowStretch(0, 0)
-            grid_layout_aux.addWidget(QLabel(split_camel_case(self.item.name)), 0, 0, Qt.AlignLeft)
+            grid_layout_aux.addWidget(QLabel(split_camel_case(self.item.name)), 0, 0, Qt.AlignmentFlag.AlignLeft)
 
-            grid_layout_aux.addWidget(self.radio_true, 0, 1, Qt.AlignCenter)
-            grid_layout_aux.addWidget(self.radio_false, 0, 2, Qt.AlignCenter)
+            grid_layout_aux.addWidget(self.radio_true, 0, 1, Qt.AlignmentFlag.AlignCenter)
+            grid_layout_aux.addWidget(self.radio_false, 0, 2, Qt.AlignmentFlag.AlignCenter)
             grid_layout_aux.setColumnMinimumWidth(1, 50)
             grid_layout_aux.setColumnMinimumWidth(2, 50)
             self.setLayout(grid_layout_aux)

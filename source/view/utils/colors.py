@@ -1,5 +1,5 @@
-from PyQt5.QtGui import QPalette
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtGui import QPalette
+from PyQt6.QtWidgets import QApplication
 
 
 def is_dark_theme() -> bool:

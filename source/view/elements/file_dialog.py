@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QFileDialog
+from PyQt6.QtWidgets import QFileDialog
 
 from source.view.utils.constants import DOCUMENTS_LOCATION
 from source.view.utils.file_types import FileTypes

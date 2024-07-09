@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QHBoxLayout, QWidget, QSizePolicy
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import QHBoxLayout, QWidget, QSizePolicy
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.verifiable_input import VerifiableInput
@@ -26,8 +26,8 @@ class FolderPicker(QWidget):
 
         self.button.setFixedHeight(self.input.input.height())
         self.button.setStyleSheet(self.button.styleSheet() + "padding-right: 5px;")
-        self.input.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.input.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+        self.button.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
         self.input.layout().setContentsMargins(0, 0, 0, 0)
 
     def _set_up_layout(self):
@@ -36,8 +36,8 @@ class FolderPicker(QWidget):
         layout.addWidget(self.input, 1)
         layout.addWidget(self.button, 0)
 
-        layout.setAlignment(self.button, Qt.AlignTop)
-        layout.setAlignment(self.input, Qt.AlignTop)
+        layout.setAlignment(self.button, Qt.AlignmentFlag.AlignTop)
+        layout.setAlignment(self.input, Qt.AlignmentFlag.AlignTop)
 
         self.setLayout(layout)
 

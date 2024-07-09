@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QSizePolicy
+from PyQt6.QtWidgets import QSizePolicy
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.elements.buttons import GenericButton
@@ -27,4 +27,4 @@ class Chip(GenericButton):
         self.setStyleSheet(self.styleSheet() + style)
         self.setFixedHeight(self.font_size * 2)
         self.setFixedWidth(self.get_minimum_size() + 24)
-        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)

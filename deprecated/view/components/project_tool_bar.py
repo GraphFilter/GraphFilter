@@ -1,11 +1,11 @@
 
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
 from deprecated.export_graph_to import dict_name_export_graph_to
 from source.store.operations_graph import dict_name_operations_graph
 from source.view.elements.icon import Icon
 from view.components.new_graph_store import *
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 
 
 class ProjectToolBar(QToolBar):

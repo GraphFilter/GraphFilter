@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QLayout
+from PyQt6.QtWidgets import QWidget, QLayout
 
 
 def clear_layout_recursively(layout: QLayout):

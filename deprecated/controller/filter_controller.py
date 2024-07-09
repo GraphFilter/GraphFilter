@@ -3,7 +3,7 @@ from deprecated.utils import *
 from deprecated.utils_file import *
 from deprecated.store.project_information_store import project_information_store
 from deprecated.view.windows.progress_bar_window import ProgressBarWindow
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication
 import threading as td
 
 

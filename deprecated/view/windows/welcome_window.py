@@ -1,5 +1,5 @@
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import *
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import *
 
 from deprecated.utils import set_view_size
 from source.view.elements.buttons.generic_button import DefaultButton

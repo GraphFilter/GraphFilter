@@ -1,8 +1,8 @@
 import json
 
 import networkx as nx
-from PyQt5.QtCore import QStandardPaths
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import QStandardPaths
+from PyQt6.QtWidgets import *
 
 from deprecated.controller.filter_controller import FilterController
 from deprecated.controller.project_controller import ProjectController

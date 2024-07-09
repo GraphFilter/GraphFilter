@@ -1,6 +1,6 @@
 import typing
 
-from PyQt5.QtGui import QValidator, QFont
+from PyQt6.QtGui import QValidator, QFont
 
 from source.domain.boolean_expression_solver import BooleanExpressionSolver, Properties
 from source.view.elements.inputs import Input
@@ -19,16 +19,16 @@ class EquationInput(Input):
             expression_solver = BooleanExpressionSolver(self.text(), self.properties)
             expression_solver.verify()
             self.validInput.emit()
-            return QValidator.Acceptable
+            return QValidator.State.Acceptable
         except NameError as e:
             self.invalidInput.emit(self.empty_input_message, NameError)
-            return QValidator.Acceptable
+            return QValidator.State.Acceptable
         except ValueError as e:
             self.invalidInput.emit(e.args[0].args[0], ValueError)
-            return QValidator.Invalid
+            return QValidator.State.Invalid
         except AttributeError as e:
             self.invalidInput.emit(e.args[0], AttributeError)
-            return QValidator.Invalid
+            return QValidator.State.Invalid
 
     def setText(self, a0: typing.Optional[str]) -> None:
         new_text = self.properties.operators.decode(a0)

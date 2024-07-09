@@ -1,7 +1,7 @@
 import networkx as nx
-from PyQt5.QtCore import QStandardPaths
-from PyQt5.QtWidgets import QMessageBox, QFileDialog
-from PyQt5 import QtCore
+from PyQt6.QtCore import QStandardPaths
+from PyQt6.QtWidgets import QMessageBox, QFileDialog
+from PyQt6 import QtCore
 
 from deprecated.utils import trigger_message_box
 from deprecated.store.project_information_store import project_information_store

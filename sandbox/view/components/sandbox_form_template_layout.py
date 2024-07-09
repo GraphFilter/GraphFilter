@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QLabel
+from PyQt6.QtWidgets import QLabel
 from sandbox import Sandbox
 from source.view.items.pair_widgets import PairWidgets
 

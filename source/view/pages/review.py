@@ -1,7 +1,7 @@
 from typing import Dict
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import *
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.form_template_layout import FormTemplateLayout
@@ -51,12 +51,12 @@ class Review(WizardPage):
         return True
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, False)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, False)
         self.set_up_layout()
 
     def cleanupPage(self) -> None:
         self.update()
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     class Information(HeaderLabel):
 
@@ -98,7 +98,7 @@ class Review(WizardPage):
                     ]
                 )
 
-                self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+                self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         class Conditions(QGroupBox):
             def __init__(self, conditions):
@@ -111,8 +111,8 @@ class Review(WizardPage):
                             background_color=Colors.GREEN()
                         ) +
                         ButtonCollection().factory(
-                            [invariant for invariant, selected in conditions.items() if not selected], Chip, Icons.WRONG,
-                            background_color=Colors.DARK_RED
+                            [invariant for invariant, selected in conditions.items() if not selected], Chip,
+                            Icons.WRONG, background_color=Colors.DARK_RED
                         )
                     )
                 )
@@ -122,7 +122,7 @@ class Review(WizardPage):
         def __init__(self, files: list[str]):
             content = FileList()
 
-            content.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            content.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
             content.add_items(files)
             content.setFixedHeight((content.sizeHintForRow(0) + 1) * content.count())
 
@@ -133,9 +133,9 @@ class Review(WizardPage):
             layout = QVBoxLayout()
 
             content = FileList()
-            content.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+            content.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
             content.add_items([f"{location}/{name}.g6", f"{location}/{name}.pdf"])
-            content.setFixedHeight((content.sizeHintForRow(0) + content.getContentsMargins()[1] * 2) * content.count())
+            content.setFixedHeight((content.sizeHintForRow(0) + content.contentsMargins().top() * 2) * content.count())
 
             layout.addWidget(content)
 

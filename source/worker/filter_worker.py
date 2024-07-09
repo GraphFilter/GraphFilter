@@ -4,7 +4,7 @@ from typing import List
 
 import networkx as nx
 import numpy as np
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 
 from source.commons import save_nx_list_to_files
 from source.view.windows.progress_window import ProgressConfigurations

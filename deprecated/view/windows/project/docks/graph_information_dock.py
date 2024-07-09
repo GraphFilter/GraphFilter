@@ -1,6 +1,6 @@
-from PyQt5 import QtGui
-from PyQt5.Qt import *
-from PyQt5.QtWidgets import *
+from PyQt6 import QtGui
+from PyQt6.Qt import *
+from PyQt6.QtWidgets import *
 
 from source.domain.operations_and_invariants.utils_invariant import UtilsToInvariants
 

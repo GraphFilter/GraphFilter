@@ -2,8 +2,8 @@ import math
 import os
 import os.path
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtGui import QDesktopServices
+from PyQt6.QtCore import QUrl
+from PyQt6.QtGui import QDesktopServices
 
 from deprecated.utils import validate_file_name, add_vertex
 from deprecated.view.windows.new_graph_dialog import NewGraphDialog

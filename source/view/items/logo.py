@@ -1,6 +1,6 @@
-from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QLabel
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QLabel, QSizePolicy
 
 
 class Logo(QLabel):
@@ -9,7 +9,8 @@ class Logo(QLabel):
 
         self.file_path = file_path
 
-        pixmap = QPixmap(file_path).scaled(width, height, QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
+        pixmap = QPixmap(file_path).scaled(width, height, Qt.AspectRatioMode.KeepAspectRatio,
+                                           Qt.TransformationMode.SmoothTransformation)
 
         if not pixmap.isNull():
             self.setPixmap(pixmap)

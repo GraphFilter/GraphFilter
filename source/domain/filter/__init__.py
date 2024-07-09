@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from PyQt5 import QtCore
+from PyQt6 import QtCore
 from source.commons.objects.translation_object import TranslationObject
 from source.domain.boolean_expression_solver import Properties, BooleanExpressionSolver
 import networkx as nx

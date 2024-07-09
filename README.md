@@ -51,7 +51,7 @@ The program is supported by any Windows, Linux and Mac. No installation is requi
 
 |    Calculations of invariants                   |   GUI development                                           |  Utilities                                               |
 | :------------:                                  | :---------:                                                 | :---------:                                              |
-| [Networkx](https://networkx.org/)               | [PyQt5](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
+| [Networkx](https://networkx.org/)               | [PyQt6](https://www.riverbankcomputing.com/software/pyqt/)  | [Matplotlib](https://matplotlib.org/)                    |
 | [Grinpy](https://github.com/somacdivad/grinpy)  | [Netgraph](https://github.com/paulbrodersen/netgraph)       | [network2tikz](https://github.com/hackl/network2tikz)    |
 | [Numpy](https://numpy.org/)                     |                                                             | [simpleeval](https://github.com/danthedeckie/simpleeval) |
 

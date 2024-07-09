@@ -1,9 +1,9 @@
 import sys
 import unittest
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QApplication
 
 from source.domain.entities import NUMERIC_SPECTRAL_INVARIANTS
 from source.view.components.group_button import GroupButton

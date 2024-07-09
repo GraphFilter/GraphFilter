@@ -5,7 +5,7 @@ import re
 import networkx as nx
 import gzip
 
-from PyQt5.QtWidgets import QApplication, QMessageBox
+from PyQt6.QtWidgets import QApplication, QMessageBox
 
 from source.view.elements.message_box import MessageBox
 

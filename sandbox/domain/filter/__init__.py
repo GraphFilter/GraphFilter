@@ -5,8 +5,8 @@ from unittest.mock import MagicMock, patch
 import networkx as nx
 import numpy as np
 
-from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QApplication, QPushButton, QMainWindow
 
 from source.controller import Controller
 from source.domain.filter import Filter, FindAnExample

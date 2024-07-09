@@ -2,7 +2,7 @@ import qtawesome
 
 from source.view.utils.colors import Colors
 
-from PyQt5.QtGui import QIcon
+from PyQt6.QtGui import QIcon
 
 
 class Icons:

@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import *
-from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap
+from PyQt6.QtWidgets import *
+from PyQt6 import QtCore
+from PyQt6.QtGui import QPixmap
 
 
 class AboutWindow(QDialog):

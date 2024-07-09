@@ -1,7 +1,7 @@
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QWidget, QWizard, QHBoxLayout, QRadioButton, QVBoxLayout
+from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtWidgets import QWidget, QWizard, QHBoxLayout, QRadioButton, QVBoxLayout
 
-from source.domain.entities import BOOLEAN_STRUCTURAL_INVARIANTS, BOOLEAN_SPECTRAL_INVARIANTS, Invariant
+from source.domain.entities import BOOLEAN_STRUCTURAL_INVARIANTS, BOOLEAN_SPECTRAL_INVARIANTS
 from source.view.components.boolean_items_selector import BooleanItemsSelector
 from source.view.elements.icon_label import IconLabel
 from source.view.elements.message_box import MessageBoxDescription
@@ -49,7 +49,7 @@ class Conditions(WizardPage):
         return False
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     @staticmethod
     def instance_info_label() -> IconLabel:

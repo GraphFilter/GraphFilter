@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 from source.worker import ProgressLabels
 
@@ -16,8 +16,8 @@ class ProgressWindow(QtWidgets.QProgressDialog):
     def __init__(self):
         super().__init__(labelText=ProgressLabels.DEFAULT)
         self._set_content_attributes()
-        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowContextHelpButtonHint)
-        self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowCloseButtonHint)
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowType.WindowContextHelpButtonHint)
+        self.setWindowFlags(self.windowFlags() | QtCore.Qt.WindowType.WindowCloseButtonHint)
         self.close()
 
     def _set_content_attributes(self):

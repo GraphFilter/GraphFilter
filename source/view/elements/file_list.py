@@ -1,8 +1,8 @@
 import logging
 
-from PyQt5.QtCore import QSize, pyqtSignal, Qt
-from PyQt5.QtWidgets import QListWidget, QAbstractItemView, QListWidgetItem
-from PyQt5 import QtCore
+from PyQt6.QtCore import QSize, pyqtSignal, Qt
+from PyQt6.QtWidgets import QListWidget, QAbstractItemView, QListWidgetItem
+from PyQt6 import QtCore
 
 from source.view.utils.icons import Icons
 
@@ -18,12 +18,12 @@ class FileList(QListWidget):
         self.set_content_attributes()
 
     def set_content_attributes(self):
-        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.setIconSize(QSize(20, 20))
         self.setAlternatingRowColors(True)
 
     def add_item(self, name: str):
-        if not self.findItems(name, Qt.MatchExactly):
+        if not self.findItems(name, Qt.MatchFlag.MatchExactly):
             item = QListWidgetItem(name, self)
             color = self.palette().color(self.palette().WindowText).name()
 

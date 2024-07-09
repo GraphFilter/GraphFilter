@@ -1,9 +1,9 @@
 import sys
 import unittest
 
-from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QRadioButton, QApplication
+from PyQt6.QtCore import pyqtSignal, Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QRadioButton, QApplication
 
 from source.domain.entities import BOOLEAN_STRUCTURAL_INVARIANTS, BooleanStructuralInvariants
 from source.view.components.boolean_items_selector import BooleanItemsSelector

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import *
+from PyQt6.QtWidgets import *
 
 from source.domain.boolean_expression_solver import Properties
 from source.view.components.keyboard import Keyboard
@@ -32,13 +32,13 @@ class Equation(WizardPage):
         return self.keyboard.input.input.hasAcceptableInput()
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     def showEvent(self, a0):
         self.keyboard.input.input.setFocus()
 
     def cleanupPage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, False)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, False)
 
     subtitle = """Write an mathematical equation or inequality, using the numeric invariants and operations."""
 

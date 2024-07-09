@@ -1,8 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWizard, QDesktopWidget
-from PyQt5 import QtCore
-
+from PyQt6.QtCore import Qt, QSize, pyqtSignal
+from PyQt6.QtGui import QIcon, QGuiApplication
+from PyQt6.QtWidgets import QWizard
 from source.view.elements.message_box import MessageBox
 from source.view.items.logo import SoftwareLogo
 from source.view.pages import WizardPage
@@ -15,17 +13,17 @@ from source.view.pages.review import Review
 
 
 class WizardWindow(QWizard):
-    close_signal = QtCore.pyqtSignal()
+    close_signal = pyqtSignal()
 
     def __init__(self):
         super().__init__(None)
 
         self.title_bar = "New Project"
 
-        self.cancel_button = self.button(QWizard.CancelButton)
-        self.start_button = self.button(QWizard.FinishButton)
-        self.next_button = self.button(QWizard.NextButton)
-        self.help_button = self.button(QWizard.HelpButton)
+        self.cancel_button = self.button(QWizard.WizardButton.CancelButton)
+        self.start_button = self.button(QWizard.WizardButton.FinishButton)
+        self.next_button = self.button(QWizard.WizardButton.NextButton)
+        self.help_button = self.button(QWizard.WizardButton.HelpButton)
 
         self.set_window_attributes()
         self.set_content()
@@ -35,14 +33,15 @@ class WizardWindow(QWizard):
         self.setWindowIcon(QIcon(SoftwareLogo().pixmap))
         self.setWindowTitle(self.title_bar)
 
-        self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
-        self.setWindowFlags(Qt.CustomizeWindowHint | Qt.WindowMinimizeButtonHint | Qt.WindowCloseButtonHint)
+        self.setWindowFlag(Qt.WindowType.WindowContextHelpButtonHint, False)
+        self.setWindowFlag(Qt.WindowType.WindowMinimizeButtonHint)
+        self.setWindowFlag(Qt.WindowType.WindowCloseButtonHint)
 
-        self.setOption(QWizard.HaveHelpButton, True)
-        self.setOption(QWizard.HelpButtonOnRight, False)
+        self.setOption(QWizard.WizardOption.HaveHelpButton, True)
+        self.setOption(QWizard.WizardOption.HelpButtonOnRight, False)
 
-        self.setWizardStyle(QWizard.ClassicStyle)
-        self.setButtonText(QWizard.FinishButton, "Start")
+        self.setWizardStyle(QWizard.WizardStyle.ClassicStyle)
+        self.setButtonText(QWizard.WizardButton.FinishButton, "Start")
         self.setFixedSize()
 
     def set_content(self):
@@ -56,15 +55,14 @@ class WizardWindow(QWizard):
         self.next_button.setShortcut("Return")
 
     def display_help_button(self):
-        MessageBox(self.currentPage().help_message).exec_()
+        MessageBox(self.currentPage().help_message).exec()
 
     def addPage(self, page: WizardPage):
         super().addPage(page)
         page.set_properties()
 
-    def setFixedSize(self, a0: QtCore.QSize = None) -> None:
-        desktop = QDesktopWidget()
-        screen_rect = desktop.screenGeometry(desktop.primaryScreen())
+    def setFixedSize(self, size: QSize = None) -> None:
+        screen_rect = QGuiApplication.primaryScreen().geometry()
         target_width = int(screen_rect.width() * 0.6)
         target_height = int(screen_rect.height() * 0.6)
         super().setFixedSize(target_width, target_height)

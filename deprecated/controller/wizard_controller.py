@@ -6,11 +6,11 @@ from view.windows.wizard.pages.files_page import FilesPage
 from view.windows.wizard.pages.review_page import ReviewPage
 from deprecated.store.project_information_store import wizard_information_store
 from source.view.windows.wizard_window import WizardWindow
-from PyQt5.QtWidgets import *
-from PyQt5.Qt import QUrl, QDesktopServices
+from PyQt6.QtWidgets import *
+from PyQt6.Qt import QUrl, QDesktopServices
 from source.domain.boolean_expression_solver import Expression
 from deprecated.utils import *
-from PyQt5.QtCore import QStandardPaths as qs
+from PyQt6.QtCore import QStandardPaths as qs
 
 
 def open_url(url):

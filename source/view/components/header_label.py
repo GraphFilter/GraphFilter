@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import QWidget, QGroupBox, QLabel, QVBoxLayout, QLayout
+from PyQt6.QtWidgets import QWidget, QGroupBox, QLabel, QVBoxLayout, QLayout
 
 from source.view.utils.colors import Colors
 
 
 class HeaderLabel(QWidget):
 
-    def __init__(self, title: str, body: QWidget):
+    def __init__(self, title: str, body: QLayout | QWidget):
         """
         This widget is designed to combine a header and a body widget within a vertical layout.
         It provides a convenient way to organize and display a title along with additional content.

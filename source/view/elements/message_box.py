@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import *
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import *
 
 from source.view.utils.colors import Colors
 from source.view.utils.icons import Icons
@@ -15,10 +15,10 @@ class MessageBox(QMessageBox):
 
     def __init__(self,
                  description: MessageBoxDescription,
-                 icon: int = QMessageBox.Information,
+                 icon = QMessageBox.Icon.Information,
                  window_title: str = 'Information'):
         super().__init__()
-        self.setTextFormat(Qt.RichText)
+        self.setTextFormat(Qt.TextFormat.RichText)
 
         self.setWindowTitle(window_title)
         self.setWindowIcon(Icons.INFO(color=Colors.TEXT()))
@@ -26,8 +26,8 @@ class MessageBox(QMessageBox):
         self.setText(description.title)
         self.setInformativeText(description.text)
 
-        self.setWindowFlag(Qt.WindowStaysOnTopHint)
-        self.setDefaultButton(QMessageBox.Ok)
+        self.setWindowFlag(Qt.WindowState.WindowStaysOnTopHint)
+        self.setDefaultButton(QMessageBox.StandardButton.Ok)
 
         self.resize_text(description.text)
 

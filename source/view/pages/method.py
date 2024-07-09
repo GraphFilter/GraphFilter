@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QWizard, QWidget
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtWidgets import QVBoxLayout, QSpacerItem, QSizePolicy, QWizard, QWidget
 
 from source.domain.filter import Filter, FindAnExample
 from source.view.elements.buttons.default_button import DefaultButton
@@ -37,10 +37,10 @@ class Method(WizardPage):
         return True if self.field("method") else False
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     def cleanupPage(self) -> None:
-        self.wizard().setOption(QWizard.HaveHelpButton, True)
+        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
 
     class Options(QWidget):
         methodChanged = pyqtSignal()
@@ -68,25 +68,25 @@ class Method(WizardPage):
         def set_up_layout(self):
             layout = QVBoxLayout()
 
-            spacer_item_top = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
+            spacer_item_top = QSpacerItem(40, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
             layout.addItem(spacer_item_top)
 
             button_layout = QVBoxLayout()
 
             button_layout.addWidget(self.filter_button)
             button_layout.setSpacing(30)
-            button_layout.setAlignment(self.filter_button, Qt.AlignHCenter)
+            button_layout.setAlignment(self.filter_button, Qt.AlignmentFlag.AlignHCenter)
 
             button_layout.addWidget(self.find_example_button)
-            button_layout.setAlignment(self.find_example_button, Qt.AlignHCenter)
+            button_layout.setAlignment(self.find_example_button, Qt.AlignmentFlag.AlignHCenter)
 
             layout.addLayout(button_layout)
 
-            spacer_item_bottom = QSpacerItem(40, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
+            spacer_item_bottom = QSpacerItem(40, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
             layout.addItem(spacer_item_bottom)
 
-            self.filter_button.setFocusPolicy(Qt.NoFocus)
-            self.find_example_button.setFocusPolicy(Qt.NoFocus)
+            self.filter_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+            self.find_example_button.setFocusPolicy(Qt.FocusPolicy.NoFocus)
 
             self.setLayout(layout)
 
@@ -110,7 +110,8 @@ class Method(WizardPage):
             <p>
                 <dl>
                     <dt><code>Filter Graphs</code></dt>
-                    <dd>analyzes each graph and discard from the result list those that do not satisfy the conditions</dd>
+                    <dd>analyzes each graph and discard from the result list those that do not satisfy the conditions
+                    </dd>
                     <dt><code>Find an example</code></dt>
                     <dd>stop the search in the first graph that satisfy the conditions, or when the list ends</dd>
                 </dl>

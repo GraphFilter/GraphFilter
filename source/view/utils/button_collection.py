@@ -1,7 +1,7 @@
 from typing import Type
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QWidget
+from PyQt6.QtGui import QIcon
+from PyQt6.QtWidgets import QWidget
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.elements.buttons import GenericButton

@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPalette
-from PyQt5.QtWidgets import QHBoxLayout, QWidget, QLabel
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPalette, QFont
+from PyQt6.QtWidgets import QHBoxLayout, QWidget, QLabel
 
 from source.view.utils.icons import Icons
 
@@ -33,9 +33,9 @@ class IconLabel(QWidget):
         layout = QHBoxLayout()
         layout.addWidget(self.icon_label)
         layout.addWidget(self.message_label, stretch=1)
-        layout.setAlignment(Qt.AlignLeft)
+        layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         layout.setContentsMargins(0, 10, 0, 0)
         self.setLayout(layout)
 
-    def set_font(self, font: str):
+    def set_font(self, font: QFont):
         self.message_label.setFont(font)
