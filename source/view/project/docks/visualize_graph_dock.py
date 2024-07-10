@@ -107,19 +107,19 @@ class ResizableGraph(EditableGraph):
         return None
 
     def _on_key_press(self, event):
-        if event.key == "enter" or event.key == "alt+enter":
+        if event.key in ("enter", "alt+enter"):
             return
-        if event.key == 'backspace':
+        if event.key in ('backspace', 'delete', '-'):
             self._delete_nodes()
             self._delete_edges()
-        if event.key == '+' or event.key == '=':
+        if event.key in ('insert', '+', '='):
+            print(event.key)
             self._add_node(event)
             for selected_artist in self._selected_artists:
                 node = self.find_node(selected_artist)
                 if node is not None:
                     self._add_edge((self.nodes[-1], node))
                     self._update_edges([(self.nodes[-1], node)])
-                super()._on_key_press(event)
 
         self.restart_label()
         self.set_node_positions_store()
