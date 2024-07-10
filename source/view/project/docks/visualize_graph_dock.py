@@ -198,5 +198,5 @@ class ResizableGraph(EditableGraph):
             artist = self.ax.text(x + dx, y + dy, label, **node_label_fontdict)
 
             if node in self.node_label_artists:
-                self.node_label_artists[node].remove()
+                self.node_label_artists[node].remove()  
             self.node_label_artists[node] = artist
