@@ -11,6 +11,7 @@ class Dialog(QDialog):
         self.label_cols = QLabel("Enter number of columns:")
         self.input_field_cols = QLineEdit()
         self.button = QPushButton("OK")
+        self.button.setDisabled(True)
         self.set_up_layout()
 
         self.button.clicked.connect(self.accept)
@@ -28,6 +29,10 @@ class Dialog(QDialog):
     def validate_input(self):
         sender = self.sender()
         text = sender.text()
+        if self.get_number_rows() and self.get_number_cols():
+            self.button.setDisabled(False)
+        else:
+            self.button.setDisabled(True)
         try:
             value = int(text)
             if value <= 0:
@@ -37,7 +42,13 @@ class Dialog(QDialog):
             sender.clear()
 
     def get_number_rows(self):
-        return int(self.input_field_rows.text())
+        try:
+            return int(self.input_field_rows.text())
+        except ValueError:
+            return None
 
     def get_number_cols(self):
-        return int(self.input_field_cols.text())
+        try:
+            return int(self.input_field_cols.text())
+        except ValueError:
+            return None
