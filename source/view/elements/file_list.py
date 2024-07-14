@@ -25,7 +25,7 @@ class FileList(QListWidget):
     def add_item(self, name: str):
         if not self.findItems(name, Qt.MatchFlag.MatchExactly):
             item = QListWidgetItem(name, self)
-            color = self.palette().color(self.palette().WindowText).name()
+            color = self.palette().text().color().name()
 
             item.setIcon(Icons.FILE(color))
 

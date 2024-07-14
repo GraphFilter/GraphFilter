@@ -48,7 +48,7 @@ class GenericButton(QPushButton):
 
     def get_text_color(self):
         background_color_rgb = QColor(self.background_color) \
-            if self.background_color is not None else self.palette().color(self.palette().Button)
+            if self.background_color is not None else self.palette().button().color()
         red, green, blue = background_color_rgb.red(), background_color_rgb.green(), background_color_rgb.blue()
         luminance = 0.299 * red + 0.587 * green + 0.114 * blue
 

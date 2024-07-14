@@ -1,9 +1,8 @@
 from PyQt6.QtGui import QPalette
-from PyQt6.QtWidgets import QApplication
 
 
 def is_dark_theme() -> bool:
-    theme_color = QApplication.instance().palette().color(QPalette.Window)
+    theme_color = QPalette().window().color()
     return True if theme_color.value() < 128 else False
 
 

@@ -18,7 +18,7 @@ class IconLabel(QWidget):
     def set_content_attributes(self, icon: Icons, message: str, color: str = None, styles: str = None):
         message = message
 
-        icon_object = icon(color) if color is not None else icon(self.palette().color(QPalette.WindowText).name())
+        icon_object = icon(color) if color is not None else icon(self.palette().text().color().name())
 
         self.icon_label.setPixmap(icon_object.pixmap(15, 15))
         self.message_label.setWordWrap(True)
