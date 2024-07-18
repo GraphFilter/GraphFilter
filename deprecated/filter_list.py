@@ -6,7 +6,7 @@ import time
 
 from simpleeval import simple_eval
 
-from source.domain.boolean_expression_solver import Expression
+from source.worker.boolean_expression_solver import Expression
 from source.store.operations_invariants import *
 
 

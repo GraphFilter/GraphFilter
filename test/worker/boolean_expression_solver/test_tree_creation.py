@@ -2,8 +2,8 @@ import unittest
 
 from parameterized import parameterized
 
-from source.domain.boolean_expression_solver import BooleanExpressionSolver, Properties
-from source.domain.boolean_expression_solver.node import Node
+from source.worker.boolean_expression_solver import BooleanExpressionSolver, Properties
+from source.worker.boolean_expression_solver.node import Node
 from source.domain.entities import MathOperations
 
 unary_numeric_expressions = [

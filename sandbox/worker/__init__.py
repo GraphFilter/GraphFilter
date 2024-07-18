@@ -8,7 +8,8 @@ import numpy as np
 from PyQt6 import QtCore
 from PyQt6.QtWidgets import QApplication, QPushButton, QMainWindow
 
-from source.controller import Controller
+from source.domain import Parameters
+from source.domain.entities import BooleanStructuralInvariants
 from source.domain.filter import Filter
 
 
@@ -34,26 +35,24 @@ class WizardMock(QMainWindow):
 
     def __init__(self):
         super().__init__()
+        from source.domain.filter import Filter
         self.cancel_button = QPushButton()
         self.start_button = QPushButton()
         self.setWindowTitle("Wizard mock")
-        self.relative_path = os.path.relpath(GraphHandler.save_graphs_to_file(50000, 'graphs.g6'))
+        self.relative_path = os.path.relpath(GraphHandler.save_graphs_to_file(5000, 'graphs.g6'))
         self.script_path = os.path.dirname(os.path.realpath(__file__))
-        self.name = "graphs"
+        self.name = "example_filter"
+        self.parameters = Parameters(
+            self.name,
+            Filter(),
+            "N(G) > 0",
+            {BooleanStructuralInvariants.Planar(): True, BooleanStructuralInvariants.Biconnected(): False},
+            "Description mock",
+            [self.relative_path],
+            self.script_path
+        )
 
         atexit.register(self.cleanup)
-
-    def field(self, field_name: str):
-        if field_name == "files":
-            return [self.relative_path]
-        if field_name == "method":
-            return Filter()
-        if field_name == "equation":
-            return "N(G) > 0"
-        if field_name == "name":
-            return self.name
-        if field_name == "location":
-            return self.script_path
 
     def cleanup(self):
         if os.path.exists(self.relative_path):
@@ -64,12 +63,11 @@ class WizardMock(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-
     wizard = WizardMock()
 
     with patch('source.controller.WelcomeWindow', new=MagicMock), \
             patch('source.controller.WizardWindow', new=lambda: wizard):
+        from source.controller import Controller
         controller = Controller()
         controller.start_filter()
-
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

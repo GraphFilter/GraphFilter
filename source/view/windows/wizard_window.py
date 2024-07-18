@@ -1,6 +1,7 @@
 from PyQt6.QtCore import Qt, QSize, pyqtSignal
 from PyQt6.QtGui import QIcon, QGuiApplication
 from PyQt6.QtWidgets import QWizard
+from source.domain import Parameters
 from source.view.elements.message_box import MessageBox
 from source.view.items.logo import SoftwareLogo
 from source.view.pages import WizardPage
@@ -28,6 +29,8 @@ class WizardWindow(QWizard):
         self.set_window_attributes()
         self.set_content()
         self.help_button.clicked.connect(self.display_help_button)
+
+        self.parameters: Parameters = None
 
     def set_window_attributes(self):
         self.setWindowIcon(QIcon(SoftwareLogo().pixmap))
@@ -70,6 +73,18 @@ class WizardWindow(QWizard):
     def closeEvent(self, event):
         self.close_signal.emit()
         event.accept()
+
+    def done(self, result: int) -> None:
+        self.parameters = Parameters(
+            self.field("name"),
+            self.field("method"),
+            self.field("equation"),
+            self.field("conditions"),
+            self.field("description"),
+            self.field("files"),
+            self.field("location")
+        )
+        return super().done(result)
 
     def is_mac(self):
         return self.style().objectName().lower().startswith('mac')

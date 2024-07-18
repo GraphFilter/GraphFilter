@@ -11,7 +11,7 @@ class ProgressConfigurations:
 
 class ProgressWindow(QtWidgets.QProgressDialog):
     update_signal = QtCore.pyqtSignal(int, str)
-    finish = QtCore.pyqtSignal(list)
+    finish = QtCore.pyqtSignal(list, list)
 
     def __init__(self):
         super().__init__(labelText=ProgressLabels.DEFAULT)

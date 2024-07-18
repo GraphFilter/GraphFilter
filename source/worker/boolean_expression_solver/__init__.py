@@ -1,7 +1,7 @@
-from source.domain.boolean_expression_solver.operands.expressions import LogicExpression
-from source.domain.boolean_expression_solver.operands.connectives import Connectives, Operand, LOGICAL_CONNECTIVES, \
+from source.worker.boolean_expression_solver.operands.expressions import LogicExpression
+from source.worker.boolean_expression_solver.operands.connectives import Connectives, Operand, \
     LOGICAL_CONNECTIVES_VALUES
-from source.domain.boolean_expression_solver.utils import *
+from source.worker.boolean_expression_solver.utils import *
 from source.domain.entities import Function, Operator, DOMAINS, Unicode
 
 

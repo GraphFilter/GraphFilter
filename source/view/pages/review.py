@@ -1,7 +1,5 @@
-from typing import Dict
-
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import *
+from PyQt6 import QtWidgets
 
 from source.commons.objects.translation_object import TranslationObject
 from source.view.components.form_template_layout import FormTemplateLayout
@@ -31,8 +29,8 @@ class Review(WizardPage):
         self.setTitle("Review")
         self.setSubTitle(self.subtitle)
 
-    def fill(self) -> QLayout:
-        layout = QVBoxLayout()
+    def fill(self) -> QtWidgets.QLayout:
+        layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.Information(self.field("name"), self.field("location"), self.field("description")))
         layout.addWidget(self.Settings(self.field("equation"), self.field("conditions"), self.field("method")))
         layout.addWidget(self.Input(self.field("files")))
@@ -51,17 +49,17 @@ class Review(WizardPage):
         return True
 
     def initializePage(self) -> None:
-        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, False)
+        self.wizard().setOption(QtWidgets.QWizard.WizardOption.HaveHelpButton, False)
         self.set_up_layout()
 
     def cleanupPage(self) -> None:
         self.update()
-        self.wizard().setOption(QWizard.WizardOption.HaveHelpButton, True)
+        self.wizard().setOption(QtWidgets.QWizard.WizardOption.HaveHelpButton, True)
 
     class Information(HeaderLabel):
 
         def __init__(self, name: str, location: str, description: str):
-            layout = QVBoxLayout()
+            layout = QtWidgets.QVBoxLayout()
 
             self.name = CaptionContainer("Project Name", name)
             self.location = CaptionContainer("Project Location", Code(location))
@@ -76,8 +74,8 @@ class Review(WizardPage):
 
     class Settings(HeaderLabel):
 
-        def __init__(self, equation: str, conditions: Dict[bool, set[TranslationObject]], method: TranslationObject):
-            layout = QVBoxLayout()
+        def __init__(self, equation: str, conditions, method: TranslationObject):
+            layout = QtWidgets.QVBoxLayout()
 
             if equation:
                 layout.addLayout(self.Equation(equation))
@@ -100,7 +98,7 @@ class Review(WizardPage):
 
                 self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
-        class Conditions(QGroupBox):
+        class Conditions(QtWidgets.QGroupBox):
             def __init__(self, conditions):
                 super().__init__()
 
@@ -130,7 +128,7 @@ class Review(WizardPage):
 
     class Output(HeaderLabel):
         def __init__(self, name: str, location: str):
-            layout = QVBoxLayout()
+            layout = QtWidgets.QVBoxLayout()
 
             content = FileList()
             content.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
@@ -148,7 +146,6 @@ class Review(WizardPage):
                     color=Colors.BLUE_TEXT()
                 )
             layout.addWidget(label)
-
             super().__init__("Output", layout)
 
     subtitle = """Review all parameters inserted on previous steps."""

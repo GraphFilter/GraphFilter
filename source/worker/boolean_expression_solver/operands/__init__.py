@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from source.domain.boolean_expression_solver.node import Node
+from source.worker.boolean_expression_solver.node import Node
 
 
 class Operand(Node, ABC):

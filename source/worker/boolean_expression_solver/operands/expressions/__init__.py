@@ -3,7 +3,7 @@ import numpy
 
 from simpleeval import FunctionNotDefined, NameNotDefined, SimpleEval
 
-from source.domain.boolean_expression_solver.operands import Operand
+from source.worker.boolean_expression_solver.operands import Operand
 
 
 class LogicExpression(SimpleEval, Operand):

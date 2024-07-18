@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from source.commons.objects.translation_object import TranslationObject
-from source.domain.boolean_expression_solver import Properties, BooleanExpressionSolver
+from source.worker.boolean_expression_solver import Properties, BooleanExpressionSolver
 import networkx as nx
 
 from source.worker.import_graphs_worker import ImportGraphsWorker

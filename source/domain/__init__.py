@@ -1,9 +1,20 @@
-import logging.config
-import os
+from typing import Dict, List
+from source.domain.entities.invariants import Invariant
 
-root_directory = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../'))
 
-os.chdir(root_directory)
-
-config_file_path = os.path.abspath(os.path.join(root_directory, 'config.ini'))
-logging.config.fileConfig(config_file_path)
+class Parameters: 
+    def __init__(self,
+                 name: str,
+                 method,
+                 equation: str,
+                 conditions: Dict[Invariant, bool],
+                 description: str,
+                 files: List[str],
+                 location: str):
+        self.name = name
+        self.method = method
+        self.equation = equation
+        self.conditions = conditions
+        self.description = description
+        self.files = files
+        self.location = location

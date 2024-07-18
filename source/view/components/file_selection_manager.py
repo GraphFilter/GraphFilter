@@ -1,5 +1,5 @@
 from PyQt6.QtCore import Qt, pyqtSignal, QUrl
-from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtGui import QDesktopServices, QKeyEvent
 from PyQt6.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
 
 from source.commons.objects.translation_object import TranslationObject
@@ -111,6 +111,12 @@ class FileSelectionManager(QWidget):
     def set_selected_files(self, files: list[str]):
         self.setProperty("files", files)
         self.listChanged.emit()
+
+    def keyPressEvent(self, event: QKeyEvent | None) -> None:
+        print(event.key())
+        if event.key() == Qt.Key.Key_Delete:
+            self.remove_file()
+        return super().keyPressEvent(event)
 
     class AddFileButton(DefaultButton):
         def __init__(self):

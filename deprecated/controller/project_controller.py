@@ -172,7 +172,7 @@ class ProjectController:
         if file_type == ".json":
             f = open(file_path)
             data = json.load(f)
-            graph = list(data['filtered_graphs'])
+            graph = list(data['num_filtered_graphs'])
 
             graph.pop(current_index)
             graph = tuple(graph)
@@ -185,7 +185,7 @@ class ProjectController:
 
             f = open(file_path)
             new_data = json.load(f)
-            new_json_file = tuple(new_data['filtered_graphs'])
+            new_json_file = tuple(new_data['num_filtered_graphs'])
 
             self.project_tool_bar.reset_combo_graphs()
             if new_json_file == ():
@@ -474,7 +474,7 @@ class ProjectController:
             if type_item == "json File":
                 f = open(file_path)
                 data = json.load(f)
-                graphs = tuple(data['filtered_graphs'])
+                graphs = tuple(data['num_filtered_graphs'])
             else:
                 with open(file_path) as file:
                     graphs = file.read().splitlines()

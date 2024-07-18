@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import QVBoxLayout, QTabWidget
 
 from source.commons import split_camel_case
 from source.commons.objects.translation_object import TranslationObject
-from source.domain.boolean_expression_solver import Properties
+from source.worker.boolean_expression_solver import Properties
 from source.view.components.group_button import GroupButton
 from source.view.components.verifiable_input import VerifiableInput
 from source.view.elements.buttons.key_button import KeyButton

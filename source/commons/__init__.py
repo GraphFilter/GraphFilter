@@ -1,7 +1,7 @@
 import gzip
 import os
 import re
-from typing import Dict, List, Union
+from typing import List, Union
 
 import networkx as nx
 from networkx import NetworkXError
@@ -32,14 +32,6 @@ def validate_path(path):
             except IOError:
                 return False
     return os.path.isdir(path)
-
-
-def empty_values(dictionary: Dict[bool, set]):
-    if dictionary is not None:
-        for value in dictionary.values():
-            if isinstance(value, set) and len(value) > 0:
-                return False
-    return True
 
 
 def split_camel_case(name):

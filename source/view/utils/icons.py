@@ -7,9 +7,6 @@ from PyQt6.QtGui import QIcon
 
 class Icons:
 
-    def __call__(self, color: str):
-        return self
-
     @staticmethod
     def _get(name: str, color=Colors.TEXT) -> QIcon:
         icon = qtawesome.icon(name, color=color)

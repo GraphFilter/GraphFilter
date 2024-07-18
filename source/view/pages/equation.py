@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import *
 
-from source.domain.boolean_expression_solver import Properties
+from source.worker.boolean_expression_solver import Properties
 from source.view.components.keyboard import Keyboard
 from source.view.elements.message_box import MessageBoxDescription
 from source.view.pages import WizardPage

@@ -1,4 +1,4 @@
-from source.domain.boolean_expression_solver.operands import Operand
+from source.worker.boolean_expression_solver.operands import Operand
 from source.domain.entities import get_inner_classes, Operator
 
 

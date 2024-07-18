@@ -15,7 +15,7 @@ class MessageBox(QMessageBox):
 
     def __init__(self,
                  description: MessageBoxDescription,
-                 icon = QMessageBox.Icon.Information,
+                 icon=QMessageBox.Icon.Information,
                  window_title: str = 'Information'):
         super().__init__()
         self.setTextFormat(Qt.TextFormat.RichText)

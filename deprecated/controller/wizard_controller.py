@@ -8,7 +8,7 @@ from deprecated.store.project_information_store import wizard_information_store
 from source.view.windows.wizard_window import WizardWindow
 from PyQt6.QtWidgets import *
 from PyQt6.Qt import QUrl, QDesktopServices
-from source.domain.boolean_expression_solver import Expression
+from source.worker.boolean_expression_solver import Expression
 from deprecated.utils import *
 from PyQt6.QtCore import QStandardPaths as qs
 

@@ -1,5 +1,5 @@
 from sandbox import Sandbox
-from source.domain.boolean_expression_solver import Properties
+from source.worker.boolean_expression_solver import Properties
 from source.view.elements.inputs.equation_input import EquationInput
 
 

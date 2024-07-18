@@ -3,8 +3,8 @@ from itertools import product
 
 from parameterized import parameterized
 
-from source.domain.boolean_expression_solver import Properties
-from source.domain.entities import Operator, Function
+from source.worker.boolean_expression_solver import Properties
+from source.domain.entities import Function
 
 input_string = "num"
 whitespace_expressions = []

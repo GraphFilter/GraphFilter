@@ -2,7 +2,7 @@ import typing
 
 from PyQt6.QtGui import QValidator, QFont
 
-from source.domain.boolean_expression_solver import BooleanExpressionSolver, Properties
+from source.worker.boolean_expression_solver import BooleanExpressionSolver, Properties
 from source.view.elements.inputs import Input
 
 

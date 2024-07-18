@@ -1,5 +1,5 @@
 from sandbox import Sandbox
-from source.domain.boolean_expression_solver import Properties
+from source.worker.boolean_expression_solver import Properties
 from source.domain.entities import Function, Operator, Calculator
 
 

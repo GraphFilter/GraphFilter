@@ -12,7 +12,7 @@ NUMBER_CORES = int(np.ceil((1 / 3) * os.cpu_count()))
 
 class FilterWorker(QThread):
     progress_signal = pyqtSignal(int, str, object)
-    result_signal = pyqtSignal(list)
+    result_signal = pyqtSignal(list, list)
 
     def __init__(self, graphs_list: List[nx.Graph], method, parent):
         super().__init__(parent)
@@ -42,8 +42,7 @@ class FilterWorker(QThread):
                 if self.method.was_finalized:
                     self.progress_signal.emit(len(self.graphs_list) - 1, "", self.configurations)
                     break
-
-            self.result_signal.emit(self.method.finalize())
+            self.result_signal.emit(self.method.finalize(), self.graphs_list)
         finally:
             self.executor.shutdown(wait=True)
 

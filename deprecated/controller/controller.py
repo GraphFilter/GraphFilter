@@ -168,7 +168,7 @@ class Controller:
         if type_item == "json File":
             f = open(file_path)
             data = json.load(f)
-            return tuple(data['filtered_graphs'])
+            return tuple(data['num_filtered_graphs'])
         if type_item == "g6 File" or type_item == "txt File":
             with open(file_path) as file:
                 return file.read().splitlines()

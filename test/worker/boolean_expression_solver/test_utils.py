@@ -1,6 +1,6 @@
 import unittest
 
-from source.domain.boolean_expression_solver import remove_outer_parenthesis
+from source.worker.boolean_expression_solver import remove_outer_parenthesis
 
 
 class TestUtils(unittest.TestCase):
