@@ -1,6 +1,6 @@
 import unittest
 from concurrent.futures import ProcessPoolExecutor
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import networkx as nx
 
 from source.domain.filter import Filter
