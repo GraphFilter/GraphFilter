@@ -29,7 +29,7 @@ providing for visualization a filtered list of graphs according to the propertie
 > This project is a reimplementation in python of [GraphFilter](https://github.com/GraphFilter/GraphFilter-Deprecated) project in order to provide more functionalities to the software, in addition to better performance.
 > * Graph Filter v1.1 was published in [Anais of X-ERMAC-RS: Encontro Regional de Matemática Aplicada e Computacional](https://editora.pucrs.br/edipucrs/acessolivre/anais/1501/assets/edicoes/2020/arquivos/105.pdf).
 > * Graph Filter v2.0 was published in [Anais do LIII Simpósio Brasileiro de Pesquisa Operacional, 2021](https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br).
-> * Graph Filter v3.0 was published in [Abstract booklet of Workshop Stpectral Graph Theory, 2023]([https://proceedings.science/sbpo-series/sbpo-2021/papers/graph-filter-2-0--nova-versao-do--software-para-filtragem-de-grafos?lang=pt-br](https://drive.google.com/file/d/11WGPjxmX73waSOUTQYX1Ag5JtnSiQKET/view)).
+> * Graph Filter v3.0 was published in [Abstract booklet of Workshop Stpectral Graph Theory, 2023](http://spectralgraphtheory.org/)
 
 The Graph Filter is a software to help graph researchers, with a simple and intuitive interface. It allows you to draw, save and manipulate graphs with the mouse and keyboard. It provides more than 170 invariants (spectral and structural) and some graph operations, which are calculated in a few clicks.
 
