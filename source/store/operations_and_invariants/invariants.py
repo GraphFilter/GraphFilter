@@ -1,3 +1,6 @@
+import itertools
+
+import networkx as nx
 import numpy as np
 import numpy.linalg as la
 
@@ -153,3 +156,11 @@ class UtilsToInvariants:
         trace = matrix.trace()
         eig = UtilsToInvariants.spectrum(matrix)
         return sum([np.absolute(x - (float(trace) / float(matrix.shape[0]))) for x in eig])
+
+    @staticmethod
+    def has_isomorphic_subgraph(graph, target_graph):
+        for node_subset in itertools.combinations(graph.nodes(), len(target_graph.nodes())):
+            subgraph = graph.subgraph(node_subset)
+            if nx.is_isomorphic(subgraph, target_graph):
+                return True
+        return False
