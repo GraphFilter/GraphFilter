@@ -1,5 +1,3 @@
-import itertools
-
 import grinpy as gp
 import networkx as nx
 import networkx.algorithms.threshold
@@ -829,11 +827,7 @@ class GemFree(InvariantBool):
         gem_graph.add_nodes_from(range(5))
         gem_graph.add_edges_from([(0, 1), (0, 2), (0, 3), (0, 4), (1, 2), (2, 3), (3, 4)])
 
-        for node_subset in set(itertools.combinations(graph.nodes(), 5)):
-            subgraph = graph.subgraph(list(node_subset))
-            if nx.is_isomorphic(subgraph, gem_graph):
-                return False
-        return True
+        return not Utils.has_isomorphic_subgraph(graph, gem_graph)
 
     @staticmethod
     def print(graph, precision):
@@ -851,12 +845,47 @@ class DartFree(InvariantBool):
         new_node = max(dart_graph.nodes()) + 1
         dart_graph.add_edge(new_node, 2)
 
-        for node_subset in set(itertools.combinations(graph.nodes(), 5)):
-            subgraph = graph.subgraph(list(node_subset))
-            if nx.is_isomorphic(subgraph, dart_graph):
-                return False
-        return True
+        return not Utils.has_isomorphic_subgraph(graph, dart_graph)
 
     @staticmethod
     def print(graph, precision):
         return Utils.print_boolean(DartFree.calculate(graph), precision)
+
+
+class DiamondFree(InvariantBool):
+    name = "Diamond-free"
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        diamond_graph = nx.diamond_graph()
+
+        return not Utils.has_isomorphic_subgraph(graph, diamond_graph)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(DiamondFree.calculate(graph), precision)
+
+
+class DoubleDiamondFree(InvariantBool):
+    name = "Double Diamond-free"
+    type = 'bool_structural'
+
+    @staticmethod
+    def calculate(graph):
+        double_diamond_graph = nx.Graph()
+
+        central_node = 0
+        double_diamond_graph.add_node(central_node)
+
+        double_diamond_graph.add_edges_from([(1, 2), (2, 3)])
+        double_diamond_graph.add_edges_from([(4, 5), (5, 6)])
+
+        for node in range(1, 7):
+            double_diamond_graph.add_edge(central_node, node)
+
+        return not Utils.has_isomorphic_subgraph(graph, double_diamond_graph)
+
+    @staticmethod
+    def print(graph, precision):
+        return Utils.print_boolean(DoubleDiamondFree.calculate(graph), precision)
